@@ -1,0 +1,32 @@
+{
+    "name": "infinety-es/nova-menu-builder",
+    "description": "A Laravel Nova tool.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Infinety\\MenuBuilder\\": "src/"
+        },
+        "files": [
+          "src/Http/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Infinety\\MenuBuilder\\MenuBuilderServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
