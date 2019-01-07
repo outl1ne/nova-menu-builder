@@ -34,7 +34,30 @@ public function tools()
         new \Infinety\MenuBuilder\MenuBuilder(),
     ];
 }
+```
 
+## Helpers
+
+There are two helpers built in for your blades
+
+* **menu_builder('slug')**.    
+
+	Creates an html menu for given slug. Extra options are not required. By default tags are `ul` and `li`, and without html classes.
+
+```php
+{!! menu_builder('main') !!}
+
+//or
+
+{!! menu_builder('main', 'parent-class', 'child-class', 'dl', 'dd') !!}
+```
+
+* **menu_json('slug')**.   
+
+	Returns a json with all items for given slug.
+
+```php
+{!! menu_json('main') !!}
 ```
 
 

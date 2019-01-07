@@ -3,8 +3,17 @@
 use Infinety\MenuBuilder\Http\Models\Menu;
 
 if (!function_exists('menu_builder')) {
+
     /**
-     * @param $slug
+     * Creates an html menu from the given slug
+     *
+     * @param   string  $slug
+     * @param   string  $parentClass  Class/es for parent tags
+     * @param   [type]  $childClass   Class/es for child tags
+     * @param   [type]  $parentTag    Parent Tag. Default to: ul
+     * @param   [type]  $childTag     Child Tag. Default to: li
+     *
+     * @return  html
      */
     function menu_builder($slug, $parentClass = null, $childClass = null, $parentTag = null, $childTag = null)
     {
@@ -18,9 +27,13 @@ if (!function_exists('menu_builder')) {
 }
 
 if (!function_exists('menu_json')) {
+
     /**
-     * @param $slug
-     * @return mixed
+     * Return menu items in json format
+     *
+     * @param   string  $slug
+     *
+     * @return  json
      */
     function menu_json($slug)
     {
