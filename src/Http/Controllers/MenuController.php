@@ -35,7 +35,7 @@ class MenuController extends Controller
      */
     public function saveItems(Request $request)
     {
-        $menu = Menu::find((int) $request->get('menu'));
+        $menu = Menu::find((int)$request->get('menu'));
         $items = $request->get('items');
         $i = 1;
         foreach ($items as $item) {
