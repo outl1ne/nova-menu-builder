@@ -163,18 +163,50 @@ class MenuController extends Controller
     public function getLinkTypes()
     {
         $linkTypes = [];
-        foreach (self::$linkableModels as $linkClassString) {
-            if (!class_exists($linkClassString)) continue;
+        foreach (self::$linkableModels as $linkClass) {
+            if (!class_exists($linkClass)) continue;
 
-            $linkModel = new $linkClassString;
             $linkTypes[] = [
-                'name' => $linkModel->menuLinkName(),
-                'type' => $linkModel->menuLinkType(),
-                'class' => $linkClassString,
-                'options' => $linkModel->menuLinkOptions()
+                'name' => $linkClass::menuLinkName(),
+                'type' => $linkClass::menuLinkType(),
+                'class' => $linkClass,
+                'options' => $linkClass::menuLinkOptions()
             ];
         }
+        
         return response()->json($linkTypes, 200);
+    }
+
+    public function getMenus() {
+        $data = [];
+        foreach (Menu::all()->load('rootMenuItems') as $menu) {
+            $data[] = [
+                'name' => $menu->name,
+                'slug' => $menu->slug,
+                'locale' => $menu->locale,
+                'menuItems' => $this->getMenusMenuItems($menu->rootMenuItems)
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+    protected function getMenusMenuItems($menuItemsArray) {
+        if (!isset($menuItemsArray)) return [];
+        $data = [];
+
+        foreach($menuItemsArray as $menuItem) {
+            if (!class_exists($menuItem->class)) continue;
+            $data[] = [
+                'name' => $menuItem->name,
+                'value' => $menuItem->customValue,
+                'enabled' => $menuItem->enabled,
+                'target' => $menuItem->target,
+                'type' => $menuItem->class::menuLinkIdentifier(),
+                'children' => $this->getMenusMenuItems($menuItem->children)
+            ];
+        }
+
+        return $data;
     }
 } 
  
