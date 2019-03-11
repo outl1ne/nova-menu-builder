@@ -160,6 +160,8 @@ class MenuController extends Controller
     {
         $linkTypes = [];
         foreach (self::$linkableModels as $linkClassString) {
+            if (!class_exists($linkClassString)) continue;
+
             $linkModel = new $linkClassString;
             $linkTypes[] = [
                 'name' => $linkModel->menuLinkName(),
