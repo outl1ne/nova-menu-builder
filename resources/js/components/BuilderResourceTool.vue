@@ -21,7 +21,7 @@
           <vue-nestable-handle :item="item" class="handle flex flex-wrap">
             <div class="w-2/3">
               <span class="font-semibold">{{ item.name }}</span>
-              <span class="font-lighter text-80 ml-4 text-sm">{{ item.value }}</span>
+              <span class="font-lighter text-80 ml-4 text-sm">{{ item.displayValue }}</span>
             </div>
             <div class="buttons w-1/3 flex justify-end content-center">
               <button

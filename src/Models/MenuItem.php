@@ -15,7 +15,7 @@ class MenuItem extends Model
         'enabled' => 'boolean',
     ];
 
-    protected $appends = ['enabledClass'];
+    protected $appends = ['enabledClass', 'displayValue'];
 
     public function menu()
     {
@@ -45,6 +45,13 @@ class MenuItem extends Model
     public function scopeEnabled($query)
     {
         return $query->where('enabled', 1);
+    }
+
+    public function getDisplayValueAttribute() {
+        if (class_exists($this->class)) {
+            return $this->class::menuLinkSubtitleDisplayValue($this->value);
+        }
+        return $this->value;
     }
 }
 

@@ -40,6 +40,17 @@ class MenuLinkable
     }
 
     /**
+     * Get subtitle shown in CMS menu items list.
+     *
+     * @param string $value
+     * @return string
+     **/
+    public static function menuLinkSubtitleDisplayValue(string $value): string
+    {
+        return $value;
+    }
+
+    /**
      * Get the value of the link visible to the front-end.
      * 
      * Can be anything. It is up to you how you will handle parsing it.
