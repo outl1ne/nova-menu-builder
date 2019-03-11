@@ -4,17 +4,22 @@ namespace OptimistDigital\MenuBuilder\Classes;
 
 class MenuItemStaticURL extends MenuLinkable
 {
-    public function menuLinkType(): string
+    public static function menuLinkIdentifier(): string
     {
         return 'static-url';
     }
 
-    public function menuLinkName(): string
+    public static function menuLinkType(): string
+    {
+        return 'static-url';
+    }
+
+    public static function menuLinkName(): string
     {
         return 'Static URL';
     }
 
-    public function menuLinkOptions(): array
+    public static function menuLinkOptions(): array
     {
         return [];
     }

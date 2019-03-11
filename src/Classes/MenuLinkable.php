@@ -5,11 +5,21 @@ namespace OptimistDigital\MenuBuilder\Classes;
 class MenuLinkable
 {
     /**
+     * Get the menu link identifier.
+     *
+     * @return string
+     **/
+    public static function menuLinkIdentifier(): string
+    {
+        throw new \Exception('[MenuLinkable] Must implement function [menuLinkIdentifier(): string].');
+    }
+
+    /**
      * Get menu link name shown in CMS when selecting link type.
      *
      * @return string
      **/
-    public function menuLinkName(): string
+    public static function menuLinkName(): string
     {
         throw new \Exception('[MenuLinkable] Must implement function [menuLinkName(): string].');
         return '';
@@ -20,7 +30,7 @@ class MenuLinkable
      *
      * @return string select|static-url
      **/
-    public function menuLinkType(): string
+    public static function menuLinkType(): string
     {
         return 'select';
     }
@@ -33,7 +43,7 @@ class MenuLinkable
      *
      * @return array
      **/
-    public function menuLinkOptions(): array
+    public static function menuLinkOptions(): array
     {
         throw new \Exception('[MenuLinkable] Must implement function [menuLinkOptions(): string].');
         return [];
@@ -58,9 +68,8 @@ class MenuLinkable
      * @param string $value The key from options list that was selected.
      * @return any
      **/
-    public function menuLinkValue(string $value)
+    public static function menuLinkValue(string $value)
     {
-        throw new \Exception('[MenuLinkable] Must implement function [menuLinkValue()].');
-        return [];
+        return $value;
     }
 }

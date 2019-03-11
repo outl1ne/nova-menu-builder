@@ -53,6 +53,13 @@ class MenuItem extends Model
         }
         return $this->value;
     }
+
+    public function getCustomValueAttribute() {
+        if (class_exists($this->class)) {
+            return $this->class::menuLinkValue($this->value);
+        }
+        return $this->value;
+    }
 }
 
  
