@@ -5,17 +5,20 @@ namespace OptimistDigital\MenuBuilder\Classes;
 class MenuLinkable
 {
     /**
-     * Get the menu link identifier.
+     * Get the menu link identifier that can be used to tell different custom
+     * links apart (ie 'page' or 'product').
      *
      * @return string
      **/
     public static function menuLinkIdentifier(): string
     {
         throw new \Exception('[MenuLinkable] Must implement function [menuLinkIdentifier(): string].');
+        return '';
     }
 
     /**
      * Get menu link name shown in CMS when selecting link type.
+     * ie ('Product Link').
      *
      * @return string
      **/
@@ -50,7 +53,7 @@ class MenuLinkable
     }
 
     /**
-     * Get subtitle shown in CMS menu items list.
+     * Get the subtitle value shown in CMS menu items list.
      *
      * @param string $value
      * @return string

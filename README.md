@@ -27,8 +27,6 @@ php artisan vendor:publish --tag=migrations
 php artisan migrate
 ```
 
-## Usage
-
 Register the tool with Nova. This is typically done in the `tools()` method of the `NovaServiceProvider`.
 
 ```php
@@ -40,6 +38,84 @@ public function tools()
         // ...
         new \OptimistDigital\MenuBuilder\MenuBuilder(),
     ];
+}
+```
+
+## Usage
+
+### Custom `MenuLinkable` classes
+
+Nova menu builder allows you to create a select field for custom models (ie Pages or Products).
+
+First, create a class that extends the `OptimistDigital\MenuBuilder\Classes\MenuLinkable` class.
+
+Then overwrite the following methods:
+
+```php
+/**
+ * Get the menu link identifier that can be used to tell different custom
+ * links apart (ie 'page' or 'product').
+ *
+ * @return string
+ **/
+public static function menuLinkIdentifier(): string {
+    // Example usecase
+    // return 'page';
+    return '';
+}
+
+
+/**
+ * Get menu link name shown in  a dropdown in CMS when selecting link type
+ * ie ('Product Link').
+ *
+ * @return string
+ **/
+public static function menuLinkName(): string {
+    // Example usecase
+    // return 'Page Link';
+    return '';
+}
+
+
+/**
+ * Get list of options shown in a select dropdown.
+ *
+ * Should be a map of [key => value, ...], where key is a unique identifier
+ * and value is the displayed string.
+ *
+ * @return array
+ **/
+public static function menuLinkOptions(): array {
+    // Example usecase
+    // return Page::all()->pluck('name', 'id');
+    return [];
+}
+
+/**
+ * Get the subtitle value shown in CMS menu items list.
+ *
+ * @param string $value
+ * @return string
+ **/
+public static function menuLinkSubtitleDisplayValue(string $value): string {
+    // Example usecase
+    // return 'Page: ' . Page::find($value)->name;
+    return $value;
+}
+
+/**
+ * Get the value of the link visible to the front-end.
+ *
+ * Can be anything. It is up to you how you will handle parsing it.
+ *
+ * @param string $value The key from options list that was selected.
+ * @return any
+ **/
+public static function menuLinkValue(string $value) {
+    // Example usecase
+    // return Page::find($value);
+    return $value;
 }
 ```
 
