@@ -14,27 +14,25 @@ This [Laravel Nova](https://github.com/InfinetyEs/Nova-Menu-Builder) allows you 
 
 ## Installation
 
-You can install the package in to a Laravel app that uses [Nova](https://nova.laravel.com) via composer:
+Install the package in to a Laravel app that uses [Nova](https://nova.laravel.com) via Composer:
 
 ```bash
 composer require optimistdigital/nova-menu-builder
 ```
 
-Then you should publish the database table file and migrate it:
+Then publish the database migration and run migrate:
 
 ```bash
-php artisan vendor:publish --tag=menu-builder-migration
+php artisan vendor:publish --tag=migrations
 php artisan migrate
 ```
 
 ## Usage
 
-Next up, you must register the tool with Nova. This is typically done in the tools method of the NovaServiceProvider.
+Register the tool with Nova. This is typically done in the `tools()` method of the `NovaServiceProvider`.
 
 ```php
 // in app/Providers/NovaServiceProvider.php
-
-// ...
 
 public function tools()
 {
