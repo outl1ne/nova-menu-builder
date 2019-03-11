@@ -1,23 +1,17 @@
 <?php
 
 use OptimistDigital\MenuBuilder\Models\Menu;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-if (!function_exists('menu_json')) {
-
-    /**
-     * Return menu items in json format
-     *
-     * @param   string  $slug
-     *
-     * @return  json
-     */
-    function menu_json($slug)
-    {
-        $menu = Menu::whereSlug($slug)->first();
-        if (!$menu) {
-            return '';
-        }
-
-        return $menu->optionsMenu()->toJson();
-    }
+/**
+ * Returns the menu with given slug as a complete JSOn.
+ *
+ * @param string $slug Slug of the menu.
+ * @return JSON
+ * @throws ModelNotFoundException When menu can not be found.
+ **/
+function menu_builder_json(string $slug)
+{
+    $menu = Menu::whereSlug($slug)->firstOrFail();
+    return $menu->optionsMenu()->toJson();
 }
