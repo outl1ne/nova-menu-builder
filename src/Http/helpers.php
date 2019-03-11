@@ -13,5 +13,5 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 function menu_builder_json(string $slug)
 {
     $menu = Menu::whereSlug($slug)->firstOrFail();
-    return $menu->optionsMenu()->toJson();
+    return $menu->rootMenuItems->toJson();
 }

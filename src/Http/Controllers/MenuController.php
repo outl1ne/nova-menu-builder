@@ -36,7 +36,7 @@ class MenuController extends Controller
         }
 
         return Menu::find($request->get('menu'))
-            ->optionsMenu()
+            ->rootMenuItems
             ->filter(function($item) {
                 return class_exists($item->class);
             });

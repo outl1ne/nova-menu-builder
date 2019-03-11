@@ -16,31 +16,13 @@ class Menu extends Model
         });
     }
 
-    public function items()
+    public function rootMenuItems()
     {
-        return $this->hasMany(MenuItem::class);
-    }
-
-    public function parentItems()
-    {
-        return $this->hasMany(MenuItem::class)->whereNull('parent_id');
-    }
-
-    public function optionsMenu()
-    {
-        return $this->parentItems()
+        return $this
+            ->hasMany(MenuItem::class)
+            ->where('parent_id', null)
             ->orderby('parent_id')
             ->orderby('order')
-            ->orderby('name')
-            ->get();
-    }
-
-    public function optionsMenuEnabled()
-    {
-        return $this->parentItems()->where('enabled', 1)
-            ->orderby('parent_id')
-            ->orderby('order')
-            ->orderby('name')
-            ->get();
+            ->orderby('name');
     }
 }

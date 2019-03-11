@@ -36,6 +36,16 @@ class MenuItem extends Model
     {
         return ($this->enabled) ? 'enabled' : 'disabled';
     }
+
+    public function scopeRoot($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('enabled', 1);
+    }
 }
 
  
