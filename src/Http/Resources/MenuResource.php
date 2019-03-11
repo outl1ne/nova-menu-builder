@@ -61,10 +61,6 @@ class MenuResource extends Resource
 
             Text::make(__('Slug'), 'slug')->hideWhenCreating()->hideWhenUpdating(),
 
-            Text::make(__('Menu Helper'), function () {
-                return "<code class='p-2 bg-30 text-sm'><span class='text-primary'>{!!</span> <span class='text-info'>menu_builder(</span><span class='text-success'>'" . $this->slug . "'</span><span class='text-info'>)</span> <span class='text-primary'>!!}</span></code>";
-            })->asHtml()->hideWhenCreating()->hideWhenUpdating(),
-
             BuilderResourceTool::make(),
         ];
     }
