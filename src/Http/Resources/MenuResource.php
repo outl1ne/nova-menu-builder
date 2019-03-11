@@ -40,6 +40,10 @@ class MenuResource extends Resource
      */
     public static $displayInNavigation = false;
 
+    protected static $locales = [
+        'en_US' => 'English'
+    ];
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -55,9 +59,9 @@ class MenuResource extends Resource
                 ->sortable()
                 ->rules('required', 'max:255', 'unique:menus,name'),
 
-            Select::make(__('Locale'), 'locale')->options([
-                'en_US' => 'English'
-            ])->displayUsingLabels(),
+            Select::make(__('Locale'), 'locale')
+                ->options(self::$locales)
+                ->displayUsingLabels(),
 
             Text::make(__('Slug'), 'slug')->hideWhenCreating()->hideWhenUpdating(),
 
@@ -137,5 +141,10 @@ class MenuResource extends Resource
     public static function uriKey()
     {
         return 'menu-builder';
+    }
+
+    public static function locales($newLocales)
+    {
+        self::$locales = $newLocales;
     }
 }

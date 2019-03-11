@@ -140,6 +140,20 @@ Route::get('/menus', '\OptimistDigital\MenuBuilder\Http\Controllers\MenuControll
 
 ## Localization
 
+### Menu locales
+
+To define locales that you can select for your menus, please register them as follows in `AppServiceProvider`:
+
+```php
+public function boot()
+{
+    \OptimistDigital\MenuBuilder\Http\Resources\MenuResource::locales([
+        'en_US' => 'English',
+        'et_EE' => 'Estonian'
+    ]);
+}
+```
+
 Set your translations in the corresponding xx.json file located in /resources/lang/vendor/nova
 
 ## Changelog
