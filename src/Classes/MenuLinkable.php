@@ -1,6 +1,6 @@
 <?php
 
-namespace Infinety\MenuBuilder\Classes;
+namespace OptimistDigital\MenuBuilder\Classes;
 
 class MenuLinkable
 {

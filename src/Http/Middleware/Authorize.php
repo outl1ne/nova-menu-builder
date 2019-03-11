@@ -1,8 +1,8 @@
 <?php
 
-namespace Infinety\MenuBuilder\Http\Middleware;
+namespace OptimistDigital\MenuBuilder\Http\Middleware;
 
-use Infinety\MenuBuilder\MenuBuilder;
+use OptimistDigital\MenuBuilder\MenuBuilder;
 
 class Authorize
 {

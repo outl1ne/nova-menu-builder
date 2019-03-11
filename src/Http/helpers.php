@@ -1,30 +1,6 @@
 <?php
 
-use Infinety\MenuBuilder\Models\Menu;
-
-if (!function_exists('menu_builder')) {
-
-    /**
-     * Creates an html menu from the given slug
-     *
-     * @param   string  $slug
-     * @param   string  $parentClass  Class/es for parent tags
-     * @param   [type]  $childClass   Class/es for child tags
-     * @param   [type]  $parentTag    Parent Tag. Default to: ul
-     * @param   [type]  $childTag     Child Tag. Default to: li
-     *
-     * @return  html
-     */
-    function menu_builder($slug, $parentClass = null, $childClass = null, $parentTag = null, $childTag = null)
-    {
-        $menu = Menu::whereSlug($slug)->first();
-        if (!$menu) {
-            return '';
-        }
-
-        return $menu->render($parentTag, $childTag, $parentClass, $childClass);
-    }
-}
+use OptimistDigital\MenuBuilder\Models\Menu;
 
 if (!function_exists('menu_json')) {
 

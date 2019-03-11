@@ -1,10 +1,10 @@
 <?php
 
-namespace Infinety\MenuBuilder\Http\Resources;
+namespace OptimistDigital\MenuBuilder\Http\Resources;
 
 use Illuminate\Http\Request;
-use Infinety\MenuBuilder\BuilderResourceTool;
-use Infinety\MenuBuilder\Models\Menu;
+use OptimistDigital\MenuBuilder\BuilderResourceTool;
+use OptimistDigital\MenuBuilder\Models\Menu;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;

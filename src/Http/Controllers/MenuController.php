@@ -1,22 +1,22 @@
 <?php
 
-namespace Infinety\MenuBuilder\Http\Controllers;
+namespace OptimistDigital\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Infinety\MenuBuilder\Models\Menu;
-use Infinety\MenuBuilder\Models\MenuItem;
-use Infinety\MenuBuilder\Http\Requests\NewMenuItemRequest;
+use OptimistDigital\MenuBuilder\Models\Menu;
+use OptimistDigital\MenuBuilder\Models\MenuItem;
+use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
 
 class MenuController extends Controller
 {
     protected static $linkableModels = [
-        \Infinety\MenuBuilder\Classes\MenuItemStaticURL::class
+        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class
     ];
 
     public static function linkableModels(array $models)
     {
-        static::$linkableModels = [\Infinety\MenuBuilder\Classes\MenuItemStaticURL::class];
+        static::$linkableModels = [\OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class];
         foreach ($models as $model) {
             static::$linkableModels[] = $model;
         }
@@ -60,18 +60,17 @@ class MenuController extends Controller
         ]);
     }
 
-    /**
-     * Create new menu item
-     *
-     * @param   NewMenuItemRequest  $request
-     *
-     * @return  json
-     */
+     /**
+      * Creates a new MenuItem from request. 
+      *
+      * @param NewMenuItemRequest $request
+      * @return JSON
+      **/
     public function createNew(NewMenuItemRequest $request)
     {
         $data = $request->all();
         $data['order'] = MenuItem::max('id') + 1;
-        $menuItem = MenuItem::create($data);
+        MenuItem::create($data);
 
         return response()->json([
             'success' => true,
@@ -79,12 +78,11 @@ class MenuController extends Controller
     }
 
     /**
-     * Get menu item to edit
+     * Returns the menu item to edit in JSON.
      *
-     * @param   \Infinety\MenuBuilder\Models\MenuItem  $item
-     *
-     * @return  json
-     */
+     * @param MenuItem $item
+     * @return JSON
+     **/
     public function edit(MenuItem $item)
     {
         return $item->toJson();
@@ -93,7 +91,7 @@ class MenuController extends Controller
     /**
      * Update the given menu item
      *
-     * @param   \Infinety\MenuBuilder\Models\MenuItem  $item
+     * @param   \OptimistDigital\MenuBuilder\Models\MenuItem  $item
      * @param   NewMenuItemRequest  $request
      *
      * @return  json
@@ -108,12 +106,11 @@ class MenuController extends Controller
     }
 
     /**
-     * Destroy current menu item and all his childrens
+     * Deletes the MenuItem and its children MenuItems.
      *
-     * @param   \Infinety\MenuBuilder\Models\MenuItem  $item
-     *
-     * @return  json
-     */
+     * @param MenuItem $item
+     * @return JSON
+     **/
     public function destroy(MenuItem $item)
     {
         $item->children()->delete();

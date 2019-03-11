@@ -1,6 +1,6 @@
 <?php
 
-namespace Infinety\MenuBuilder;
+namespace OptimistDigital\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -14,8 +14,8 @@ class MenuBuilder extends Tool
      */
     public function boot()
     {
-        Nova::script('menu-builder', __DIR__.'/../dist/js/tool.js');
-        Nova::style('menu-builder', __DIR__.'/../dist/css/tool.css');
+        Nova::script('menu-builder', __DIR__ . '/../dist/js/tool.js');
+        Nova::style('menu-builder', __DIR__ . '/../dist/css/tool.css');
     }
 
     /**

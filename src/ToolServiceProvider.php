@@ -1,11 +1,11 @@
 <?php
 
-namespace Infinety\MenuBuilder;
+namespace OptimistDigital\MenuBuilder;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Infinety\MenuBuilder\Http\Middleware\Authorize;
-use Infinety\MenuBuilder\Http\Resources\MenuResource;
+use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
+use OptimistDigital\MenuBuilder\Http\Resources\MenuResource;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 
@@ -18,7 +18,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'menu-builder');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'menu-builder');
 
         $this->app->booted(function () {
             $this->routes();
@@ -47,9 +47,9 @@ class MenuBuilderServiceProvider extends ServiceProvider
         }
 
         Route::middleware(['nova', Authorize::class])
-            ->namespace('Infinety\MenuBuilder\Http\Controllers')
+            ->namespace('OptimistDigital\MenuBuilder\Http\Controllers')
             ->prefix('nova-vendor/menu-builder')
-            ->group(__DIR__.'/../routes/api.php');
+            ->group(__DIR__ . '/../routes/api.php');
     }
 
     /**
@@ -58,7 +58,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
     private function publishMigrations()
     {
         $this->publishes([
-            __DIR__.'/Migrations/create_menus_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_menus_table.php'),
+            __DIR__ . '/Migrations/create_menus_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_menus_table.php'),
         ], 'menu-builder-migration');
     }
 
