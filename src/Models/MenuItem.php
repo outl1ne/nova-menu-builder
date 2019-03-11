@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Route;
 use Infinety\MenuBuilder\Models\Menu;
 
-class MenuItems extends Model
+class MenuItem extends Model
 {
     /**
      * @var array

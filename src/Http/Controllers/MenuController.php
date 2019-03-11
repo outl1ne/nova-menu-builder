@@ -5,7 +5,7 @@ namespace Infinety\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Infinety\MenuBuilder\Models\Menu;
-use Infinety\MenuBuilder\Models\MenuItems;
+use Infinety\MenuBuilder\Models\MenuItem;
 use Infinety\MenuBuilder\Http\Requests\NewMenuItemRequest;
 
 class MenuController extends Controller
@@ -70,8 +70,8 @@ class MenuController extends Controller
     public function createNew(NewMenuItemRequest $request)
     {
         $data = $request->all();
-        $data['order'] = MenuItems::max('id') + 1;
-        $menuItem = MenuItems::create($data);
+        $data['order'] = MenuItem::max('id') + 1;
+        $menuItem = MenuItem::create($data);
 
         return response()->json([
             'success' => true,
@@ -81,11 +81,11 @@ class MenuController extends Controller
     /**
      * Get menu item to edit
      *
-     * @param   \Infinety\MenuBuilder\Models\MenuItems  $item
+     * @param   \Infinety\MenuBuilder\Models\MenuItem  $item
      *
      * @return  json
      */
-    public function edit(MenuItems $item)
+    public function edit(MenuItem $item)
     {
         return $item->toJson();
     }
@@ -93,12 +93,12 @@ class MenuController extends Controller
     /**
      * Update the given menu item
      *
-     * @param   \Infinety\MenuBuilder\Models\MenuItems  $item
+     * @param   \Infinety\MenuBuilder\Models\MenuItem  $item
      * @param   NewMenuItemRequest  $request
      *
      * @return  json
      */
-    public function update(MenuItems $item, NewMenuItemRequest $request)
+    public function update(MenuItem $item, NewMenuItemRequest $request)
     {
         $item->update($request->all());
 
@@ -110,11 +110,11 @@ class MenuController extends Controller
     /**
      * Destroy current menu item and all his childrens
      *
-     * @param   \Infinety\MenuBuilder\Models\MenuItems  $item
+     * @param   \Infinety\MenuBuilder\Models\MenuItem  $item
      *
      * @return  json
      */
-    public function destroy(MenuItems $item)
+    public function destroy(MenuItem $item)
     {
         $item->children()->delete();
         $item->delete();
@@ -134,7 +134,7 @@ class MenuController extends Controller
      */
     private function saveMenuItem($order, $item, $parentId = null)
     {
-        $menuItem = MenuItems::find($item['id']);
+        $menuItem = MenuItem::find($item['id']);
         $menuItem->order = $order;
         $menuItem->parent_id = $parentId;
         $menuItem->save();

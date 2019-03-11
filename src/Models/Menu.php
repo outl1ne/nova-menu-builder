@@ -4,7 +4,7 @@ namespace Infinety\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Infinety\MenuBuilder\Models\MenuItems;
+use Infinety\MenuBuilder\Models\MenuItem;
 
 class Menu extends Model
 {
@@ -35,7 +35,7 @@ class Menu extends Model
      */
     public function items(): HasMany
     {
-        return $this->hasMany(MenuItems::class);
+        return $this->hasMany(MenuItem::class);
     }
 
     /**
@@ -43,7 +43,7 @@ class Menu extends Model
      */
     public function parentItems(): HasMany
     {
-        return $this->hasMany(MenuItems::class)->whereNull('parent_id');
+        return $this->hasMany(MenuItem::class)->whereNull('parent_id');
     }
 
     /**
