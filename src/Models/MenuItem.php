@@ -15,7 +15,7 @@ class MenuItem extends Model
         'enabled' => 'boolean',
     ];
 
-    protected $appends = ['link', 'type', 'enabledClass'];
+    protected $appends = ['enabledClass'];
 
     public function menu()
     {
@@ -37,3 +37,5 @@ class MenuItem extends Model
         return ($this->enabled) ? 'enabled' : 'disabled';
     }
 }
+
+ 
