@@ -4,9 +4,10 @@ namespace Infinety\MenuBuilder\Http\Resources;
 
 use Illuminate\Http\Request;
 use Infinety\MenuBuilder\BuilderResourceTool;
-use Infinety\MenuBuilder\Http\Models\Menu;
+use Infinety\MenuBuilder\Models\Menu;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Resource;
 
 class MenuResource extends Resource
@@ -54,10 +55,14 @@ class MenuResource extends Resource
                 ->sortable()
                 ->rules('required', 'max:255', 'unique:menus,name'),
 
+            Select::make(__('Locale'), 'locale')->options([
+                'en_US' => 'English'
+            ])->displayUsingLabels(),
+
             Text::make(__('Slug'), 'slug')->hideWhenCreating()->hideWhenUpdating(),
 
             Text::make(__('Menu Helper'), function () {
-                return "<code class='p-2 bg-30 text-sm'><span class='text-primary'>{!!</span> <span class='text-info'>menu_builder(</span><span class='text-success'>'".$this->slug."'</span><span class='text-info'>)</span> <span class='text-primary'>!!}</span></code>";
+                return "<code class='p-2 bg-30 text-sm'><span class='text-primary'>{!!</span> <span class='text-info'>menu_builder(</span><span class='text-success'>'" . $this->slug . "'</span><span class='text-info'>)</span> <span class='text-primary'>!!}</span></code>";
             })->asHtml()->hideWhenCreating()->hideWhenUpdating(),
 
             BuilderResourceTool::make(),
@@ -105,8 +110,7 @@ class MenuResource extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-        ];
+        return [];
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-use Infinety\MenuBuilder\Http\Models\Menu;
+use Infinety\MenuBuilder\Models\Menu;
 
 if (!function_exists('menu_builder')) {
 

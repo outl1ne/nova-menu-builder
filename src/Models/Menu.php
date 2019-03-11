@@ -1,10 +1,10 @@
 <?php
 
-namespace Infinety\MenuBuilder\Http\Models;
+namespace Infinety\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Infinety\MenuBuilder\Http\Models\MenuItems;
+use Infinety\MenuBuilder\Models\MenuItems;
 
 class Menu extends Model
 {
@@ -109,14 +109,14 @@ class Menu extends Model
 
         foreach ($items as $item) {
             $content = $item->html();
-            $menu .= $this->buildTag($this->defaultChildTag, $this->childClass).$content;
+            $menu .= $this->buildTag($this->defaultChildTag, $this->childClass) . $content;
 
             if ($item->children()->count() > 0) {
                 $childrenContent = $this->renderItem($item->children);
 
                 $menu .= $this->buildTag($this->defaultParentTag)
-                .$childrenContent
-                .$this->closeTag($this->defaultParentTag);
+                    . $childrenContent
+                    . $this->closeTag($this->defaultParentTag);
             }
 
             $menu .= $this->closeTag($this->defaultChildTag);
@@ -138,8 +138,8 @@ class Menu extends Model
         $end = "</{$this->defaultParentTag}>";
 
         return $this->buildTag($this->defaultParentTag, $this->parentClass)
-        .$content
-        .$this->closeTag($this->defaultParentTag);
+            . $content
+            . $this->closeTag($this->defaultParentTag);
     }
 
     /**
