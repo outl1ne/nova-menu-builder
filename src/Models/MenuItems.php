@@ -1,19 +1,19 @@
 <?php
 
-namespace Infinety\MenuBuilder\Http\Models;
+namespace Infinety\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Route;
-use Infinety\MenuBuilder\Http\Models\Menu;
+use Infinety\MenuBuilder\Models\Menu;
 
 class MenuItems extends Model
 {
     /**
      * @var array
      */
-    protected $fillable = ['menu_id', 'name', 'url', 'route', 'parameters', 'target', 'parent_id', 'order', 'enabled', 'classes'];
+    protected $fillable = ['menu_id', 'name', 'value', 'class', 'parameters', 'target', 'parent_id', 'order', 'enabled'];
 
     /**
      * @var mixed
@@ -129,6 +129,6 @@ class MenuItems extends Model
      */
     public function html()
     {
-        return '<a class="nav-link '.$this->classes.'" href="'.$this->link.'" target="'.$this->target.'">'.$this->name.'</a>';
+        return '<a class="nav-link ' . $this->classes . '" href="' . $this->link . '" target="' . $this->target . '">' . $this->name . '</a>';
     }
 }

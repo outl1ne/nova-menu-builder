@@ -22,17 +22,16 @@ class CreateMenusTable extends Migration
         });
 
         Schema::create('menu_items', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('menu_id')->nullable();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('menu_id')->nullable();
             $table->string('name');
-            $table->string('url')->nullable();
-            $table->string('route')->nullable();
-            $table->json('parameters')->nullable();
+            $table->string('class')->nullable();
+            $table->string('value')->nullable();
             $table->string('target')->default('_self');
+            $table->json('parameters')->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('order');
             $table->boolean('enabled')->default(1);
-            $table->string('classes')->nullable();
             $table->timestamps();
 
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');

@@ -5,11 +5,23 @@ namespace Infinety\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Infinety\MenuBuilder\Models\Menu;
-use Infinety\MenuBuilder\Http\Models\MenuItems;
+use Infinety\MenuBuilder\Models\MenuItems;
 use Infinety\MenuBuilder\Http\Requests\NewMenuItemRequest;
 
 class MenuController extends Controller
 {
+    protected static $linkableModels = [
+        \Infinety\MenuBuilder\Classes\MenuItemStaticURL::class
+    ];
+
+    public static function linkableModels(array $models)
+    {
+        static::$linkableModels = [\Infinety\MenuBuilder\Classes\MenuItemStaticURL::class];
+        foreach ($models as $model) {
+            static::$linkableModels[] = $model;
+        }
+    }
+
     /**
      * Return menu items for given menu
      *
@@ -69,7 +81,7 @@ class MenuController extends Controller
     /**
      * Get menu item to edit
      *
-     * @param   \Infinety\MenuBuilder\Http\Models\MenuItems  $item
+     * @param   \Infinety\MenuBuilder\Models\MenuItems  $item
      *
      * @return  json
      */
@@ -81,7 +93,7 @@ class MenuController extends Controller
     /**
      * Update the given menu item
      *
-     * @param   \Infinety\MenuBuilder\Http\Models\MenuItems  $item
+     * @param   \Infinety\MenuBuilder\Models\MenuItems  $item
      * @param   NewMenuItemRequest  $request
      *
      * @return  json
@@ -98,7 +110,7 @@ class MenuController extends Controller
     /**
      * Destroy current menu item and all his childrens
      *
-     * @param   \Infinety\MenuBuilder\Http\Models\MenuItems  $item
+     * @param   \Infinety\MenuBuilder\Models\MenuItems  $item
      *
      * @return  json
      */
@@ -146,4 +158,21 @@ class MenuController extends Controller
             }
         }
     }
-}
+
+    public function getLinkTypes()
+    {
+        $linkTypes = [];
+        foreach (self::$linkableModels as $linkClassString) {
+            $linkModel = new $linkClassString;
+            $linkTypes[] = [
+                'name' => $linkModel->menuLinkName(),
+                'type' => $linkModel->menuLinkType(),
+                'class' => $linkClassString,
+                'options' => $linkModel->menuLinkOptions()
+            ];
+        }
+        return response()->json($linkTypes, 200);
+    }
+} 
+ 
+

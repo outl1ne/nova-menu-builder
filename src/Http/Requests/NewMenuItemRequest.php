@@ -25,31 +25,12 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'menu_id' => 'required|exists:menus,id',
-            'name'    => 'required',
-            'type'    => 'required|in:link,route',
-            'target'  => 'required|in:_self,_blank',
+            'name' => 'required',
+            'class' => 'required',
+            'target' => 'required|in:_self,_blank',
+            'value' => 'required'
         ];
-
-        if (request()->get('type') == 'link') {
-            $rules['url'] = 'required';
-        }
-
-        if (request()->get('type') == 'route') {
-            $rules['route'] = [
-                'required',
-                function ($attribute, $value, $fail) {
-                    if (Route::has($value)) {
-                        return true;
-                    }
-
-                    return $fail(ucfirst($attribute).' not is a real route name');
-                },
-            ];
-            // $rules['parameters'] = 'required';
-        }
-
-        return $rules;
     }
 }
