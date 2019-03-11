@@ -49,7 +49,18 @@ Nova menu builder allows you to create a select field for custom models (ie Page
 
 First, create a class that extends the `OptimistDigital\MenuBuilder\Classes\MenuLinkable` class.
 
-Then overwrite the following methods:
+Secondly, register the class in `AppServiceProvider` like so (you can do it elsewhere as well, but this is usually a good entry point):
+
+```php
+public function boot()
+{
+    \OptimistDigital\MenuBuilder\Http\Controllers\MenuController::linkableModels([
+        \App\Classes\MenuItemProductLink::class // Your class to register
+    ]);
+}
+```
+
+In the created class, overwrite the following methods:
 
 ```php
 /**
@@ -117,6 +128,14 @@ public static function menuLinkValue(string $value) {
     // return Page::find($value);
     return $value;
 }
+```
+
+### Returning the menus in a JSON API
+
+If you want to return the menus in a separate API endpoint, you can just call an existing method that handles all the formatting.
+
+```php
+Route::get('/menus', '\OptimistDigital\MenuBuilder\Http\Controllers\MenuController@getMenus');
 ```
 
 ## Localization
