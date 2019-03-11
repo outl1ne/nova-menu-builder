@@ -35,7 +35,11 @@ class MenuController extends Controller
             abort(503);
         }
 
-        return Menu::find($request->get('menu'))->optionsMenu();
+        return Menu::find($request->get('menu'))
+            ->optionsMenu()
+            ->filter(function($item) {
+                return class_exists($item->class);
+            });
     }
 
     /**
