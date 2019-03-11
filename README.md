@@ -2,7 +2,7 @@
 
 Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-Menu-Builder).
 
-This [Laravel Nova](https://github.com/InfinetyEs/Nova-Menu-Builder) allows you to create and manage menus and menu items.
+This [Laravel Nova](https://github.com/InfinetyEs/Nova-Menu-Builder) package allows you to create and manage menus and menu items.
 
 ## Features
 
