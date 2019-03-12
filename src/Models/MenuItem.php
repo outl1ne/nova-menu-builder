@@ -49,14 +49,14 @@ class MenuItem extends Model
 
     public function getDisplayValueAttribute() {
         if (class_exists($this->class)) {
-            return $this->class::menuLinkSubtitleDisplayValue($this->value);
+            return $this->class::getDisplayValue($this->value);
         }
         return $this->value;
     }
 
     public function getCustomValueAttribute() {
         if (class_exists($this->class)) {
-            return $this->class::menuLinkValue($this->value);
+            return $this->class::getValue($this->value);
         }
         return $this->value;
     }

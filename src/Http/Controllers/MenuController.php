@@ -167,10 +167,10 @@ class MenuController extends Controller
             if (!class_exists($linkClass)) continue;
 
             $linkTypes[] = [
-                'name' => $linkClass::menuLinkName(),
-                'type' => $linkClass::menuLinkType(),
+                'name' => $linkClass::getName(),
+                'type' => $linkClass::getType(),
                 'class' => $linkClass,
-                'options' => $linkClass::menuLinkOptions()
+                'options' => $linkClass::getOptions()
             ];
         }
         
@@ -201,7 +201,7 @@ class MenuController extends Controller
                 'value' => $menuItem->customValue,
                 'enabled' => $menuItem->enabled,
                 'target' => $menuItem->target,
-                'type' => $menuItem->class::menuLinkIdentifier(),
+                'type' => $menuItem->class::getIdentifier(),
                 'children' => $this->getMenusMenuItems($menuItem->children)
             ];
         }

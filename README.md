@@ -69,7 +69,7 @@ In the created class, overwrite the following methods:
  *
  * @return string
  **/
-public static function menuLinkIdentifier(): string {
+public static function getIdentifier(): string {
     // Example usecase
     // return 'page';
     return '';
@@ -82,7 +82,7 @@ public static function menuLinkIdentifier(): string {
  *
  * @return string
  **/
-public static function menuLinkName(): string {
+public static function getName(): string {
     // Example usecase
     // return 'Page Link';
     return '';
@@ -97,7 +97,7 @@ public static function menuLinkName(): string {
  *
  * @return array
  **/
-public static function menuLinkOptions(): array {
+public static function getOptions(): array {
     // Example usecase
     // return Page::all()->pluck('name', 'id');
     return [];
@@ -109,7 +109,7 @@ public static function menuLinkOptions(): array {
  * @param string $value
  * @return string
  **/
-public static function menuLinkSubtitleDisplayValue(string $value): string {
+public static function getDisplayValue(string $value): string {
     // Example usecase
     // return 'Page: ' . Page::find($value)->name;
     return $value;
@@ -123,7 +123,7 @@ public static function menuLinkSubtitleDisplayValue(string $value): string {
  * @param string $value The key from options list that was selected.
  * @return any
  **/
-public static function menuLinkValue(string $value) {
+public static function getValue(string $value) {
     // Example usecase
     // return Page::find($value);
     return $value;
