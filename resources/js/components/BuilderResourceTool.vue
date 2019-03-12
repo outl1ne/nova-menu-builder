@@ -408,7 +408,7 @@ export default {
 
     updateItem() {
       api
-        .update(this.update, this.newItem)
+        .update(this.update, this.newItemData)
         .then(() => {
           this.getData();
           this.modalItem = false;
