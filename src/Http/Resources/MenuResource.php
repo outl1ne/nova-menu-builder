@@ -57,13 +57,15 @@ class MenuResource extends Resource
 
             Text::make(__('Name'), 'name')
                 ->sortable()
-                ->rules('required', 'max:255', 'unique:menus,name'),
+                ->rules('required', 'max:255'),
+
+            Text::make(__('Slug'), 'slug')
+                ->sortable()
+                ->rules('required', 'max:255', 'unique:menus,slug,NULL,NULL,locale,' . $request->locale),
 
             Select::make(__('Locale'), 'locale')
                 ->options(self::$locales)
                 ->displayUsingLabels(),
-
-            Text::make(__('Slug'), 'slug')->hideWhenCreating()->hideWhenUpdating(),
 
             BuilderResourceTool::make(),
         ];
