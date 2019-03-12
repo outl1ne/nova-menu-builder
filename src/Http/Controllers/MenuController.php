@@ -7,21 +7,10 @@ use Illuminate\Routing\Controller;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
+use OptimistDigital\MenuBuilder\MenuBuilder;
 
 class MenuController extends Controller
 {
-    protected static $linkableModels = [
-        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class
-    ];
-
-    public static function linkableModels(array $models)
-    {
-        static::$linkableModels = [\OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class];
-        foreach ($models as $model) {
-            static::$linkableModels[] = $model;
-        }
-    }
-
     /**
      * Return menu items for given menu
      *
@@ -163,7 +152,9 @@ class MenuController extends Controller
     public function getLinkTypes()
     {
         $linkTypes = [];
-        foreach (self::$linkableModels as $linkClass) {
+        $models = MenuBuilder::getModels();
+
+        foreach ($models as $linkClass) {
             if (!class_exists($linkClass)) continue;
 
             $linkTypes[] = [

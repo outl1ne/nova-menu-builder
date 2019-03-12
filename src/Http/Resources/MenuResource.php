@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Resource;
+use OptimistDigital\MenuBuilder\MenuBuilder;
 
 class MenuResource extends Resource
 {
@@ -40,10 +41,6 @@ class MenuResource extends Resource
      */
     public static $displayInNavigation = false;
 
-    protected static $locales = [
-        'en_US' => 'English'
-    ];
-
     /**
      * Get the fields displayed by the resource.
      *
@@ -64,7 +61,7 @@ class MenuResource extends Resource
                 ->rules('required', 'max:255', 'unique:menus,slug,NULL,NULL,locale,' . $request->locale),
 
             Select::make(__('Locale'), 'locale')
-                ->options(self::$locales)
+                ->options(MenuBuilder::getLocales())
                 ->displayUsingLabels(),
 
             BuilderResourceTool::make(),
@@ -143,10 +140,5 @@ class MenuResource extends Resource
     public static function uriKey()
     {
         return 'menu-builder';
-    }
-
-    public static function locales($newLocales)
-    {
-        self::$locales = $newLocales;
     }
 }

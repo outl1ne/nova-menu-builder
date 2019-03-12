@@ -49,14 +49,22 @@ Nova menu builder allows you to create a select field for custom models (ie Page
 
 First, create a class that extends the `OptimistDigital\MenuBuilder\Classes\MenuLinkable` class.
 
-Secondly, register the class in `AppServiceProvider` like so (you can do it elsewhere as well, but this is usually a good entry point):
+Secondly, register the class in the constructor of `MenuBuilder` in `NovaServiceProvider`'s `tools()` function like so:
 
 ```php
-public function boot()
+// in app/Providers/NovaServiceProvider.php
+
+public function tools()
 {
-    \OptimistDigital\MenuBuilder\Http\Controllers\MenuController::linkableModels([
-        \App\Classes\MenuItemProductLink::class // Your class to register
-    ]);
+    return [
+        // ...
+        new \OptimistDigital\MenuBuilder\MenuBuilder([
+            'linkable_models' => [
+                \App\Classes\CustomMenuLinkable::class,
+            ],
+            'locales' => null, // Optional, default is ['en_US' => 'English']
+        ]),
+    ];
 }
 ```
 
@@ -142,15 +150,23 @@ Route::get('/menus', '\OptimistDigital\MenuBuilder\Http\Controllers\MenuControll
 
 ### Menu locales
 
-To define locales that you can select for your menus, please register them as follows in `AppServiceProvider`:
+To define locales that you can select for your menus, please register them in the constructor of `MenuBuilder` in `NovaServiceProvider`'s `tools()` function:
 
 ```php
-public function boot()
+// in app/Providers/NovaServiceProvider.php
+
+public function tools()
 {
-    \OptimistDigital\MenuBuilder\Http\Resources\MenuResource::locales([
-        'en_US' => 'English',
-        'et_EE' => 'Estonian'
-    ]);
+    return [
+        // ...
+        new \OptimistDigital\MenuBuilder\MenuBuilder([
+            'linkable_models' => null, // Optional
+            'locales' => [
+               'en_US' => 'English',
+               'et_EE' => 'Estonian',
+            ],
+        ]),
+    ];
 }
 ```
 

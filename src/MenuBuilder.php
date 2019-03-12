@@ -7,6 +7,29 @@ use Laravel\Nova\Tool;
 
 class MenuBuilder extends Tool
 {
+    protected static $linkableModels = [
+        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class
+    ];
+
+    protected static $locales = [
+        'en_US' => 'English'
+    ];
+
+    public function __construct(array $data = null)
+    {
+        if (empty($data)) return;
+
+        if (isset($data['locales']) && is_array($data['locales'])) {
+            self::$locales = $data['locales'];
+        }
+
+        if (isset($data['linkable_models']) && is_array($data['linkable_models'])) {
+            foreach ($data['linkable_models'] as $model) {
+                self::$linkableModels[] = $model;
+            }
+        }
+    }
+
     /**
      * Perform any tasks that need to happen when the tool is booted.
      *
@@ -26,5 +49,15 @@ class MenuBuilder extends Tool
     public function renderNavigation()
     {
         return view('menu-builder::navigation');
+    }
+
+    public static function getLocales()
+    {
+        return self::$locales;
+    }
+
+    public static function getModels()
+    {
+        return self::$linkableModels;
     }
 }
