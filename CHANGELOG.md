@@ -2,10 +2,10 @@
 
 All notable changes to `optimistdigital/nova-menu-builder` will be documented in this file
 
-## 2.0.0 - 2019-03-11
-
-Reworked core logic.
-
-## 1.0.0 - 2019-01-07
+## 1.0.0 - 2019-03-12
 
 Initial release.
+
+- Managing menus (w/ customizable locales) and menu items
+- Nesting and re-ordering of menu-items
+- Creation of custom link options (ie links to models such as Page or Product)

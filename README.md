@@ -1,33 +1,39 @@
 # Nova Menu Builder
 
-Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-Menu-Builder).
-
 This [Laravel Nova](https://github.com/InfinetyEs/Nova-Menu-Builder) package allows you to create and manage menus and menu items.
+
+Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-Menu-Builder).
 
 ## Features
 
-- Managing multiple menus
-- Managing menu items
-- Re-ordering menu-items
-- Nesting menu-items
-- Creating custom `MenuLinkable` classes that allow picking of custom models (ie Pages)
+- Managing menus (w/ customizable locales) and menu items
+- Nesting and re-ordering of menu-items
+- Creation of custom link options (ie links to models such as Page or Product)
+
+## Screenshots
+
+![Menu List](docs/menu-list.png)
+
+![View Menu](docs/view-menu.png)
+
+![Menu Item Edit](docs/menu-item-edit.png)
 
 ## Installation
 
-Install the package in to a Laravel app that uses [Nova](https://nova.laravel.com) via Composer:
+Install the package in a Laravel Nova project via Composer:
 
 ```bash
 composer require optimistdigital/nova-menu-builder
 ```
 
-Then publish the database migration and run migrate:
+Publish the database migration(s) and run migrate:
 
 ```bash
 php artisan vendor:publish --tag=migrations
 php artisan migrate
 ```
 
-Register the tool with Nova. This is typically done in the `tools()` method of the `NovaServiceProvider`.
+Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
 
 ```php
 // in app/Providers/NovaServiceProvider.php
@@ -146,9 +152,7 @@ If you want to return the menus in a separate API endpoint, you can just call an
 Route::get('/menus', '\OptimistDigital\MenuBuilder\Http\Controllers\MenuController@getMenus');
 ```
 
-## Localization
-
-### Menu locales
+### Menu locale options
 
 To define locales that you can select for your menus, please register them in the constructor of `MenuBuilder` in `NovaServiceProvider`'s `tools()` function:
 
@@ -169,8 +173,6 @@ public function tools()
     ];
 }
 ```
-
-Set your translations in the corresponding xx.json file located in /resources/lang/vendor/nova
 
 ## Credits
 
