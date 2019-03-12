@@ -172,10 +172,6 @@ public function tools()
 
 Set your translations in the corresponding xx.json file located in /resources/lang/vendor/nova
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
 ## Credits
 
 - [Tarvo Reinpalu](https://github.com/Tarpsvo)
@@ -184,4 +180,4 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Nova menu builder is open-sourced software licensed under the [MIT license](LICENSE.md).
