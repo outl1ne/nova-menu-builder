@@ -4,6 +4,8 @@ This [Laravel Nova](https://github.com/InfinetyEs/Nova-Menu-Builder) package all
 
 Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-Menu-Builder).
 
+As opposed to the original menu-builder, this package is mainly targeted towards the creation of headless content management systems and expects data to be returned through an API.
+
 ## Features
 
 - Managing menus (w/ customizable locales) and menu items
