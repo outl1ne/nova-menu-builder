@@ -37,8 +37,8 @@ class MenuBuilder extends Tool
      */
     public function boot()
     {
-        Nova::script('menu-builder', __DIR__ . '/../dist/js/tool.js');
-        Nova::style('menu-builder', __DIR__ . '/../dist/css/tool.css');
+        Nova::script('nova-menu', __DIR__ . '/../dist/js/tool.js');
+        Nova::style('nova-menu', __DIR__ . '/../dist/css/tool.css');
     }
 
     /**
@@ -48,7 +48,7 @@ class MenuBuilder extends Tool
      */
     public function renderNavigation()
     {
-        return view('menu-builder::navigation');
+        return view('nova-menu::navigation');
     }
 
     public static function getLocales()

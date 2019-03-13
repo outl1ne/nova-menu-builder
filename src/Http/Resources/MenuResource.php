@@ -139,6 +139,6 @@ class MenuResource extends Resource
      */
     public static function uriKey()
     {
-        return 'menu-builder';
+        return 'nova-menu';
     }
 }

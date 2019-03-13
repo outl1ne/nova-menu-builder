@@ -24,6 +24,6 @@ class BuilderResourceTool extends ResourceTool
      */
     public function component()
     {
-        return 'menu-builder';
+        return 'nova-menu';
     }
 }

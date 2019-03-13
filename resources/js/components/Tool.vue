@@ -1,5 +1,5 @@
 <template>
-  <resource-index :resourceName="'menu-builder'"></resource-index>
+  <resource-index :resourceName="'nova-menu'"></resource-index>
 </template>
 
 <script></script>

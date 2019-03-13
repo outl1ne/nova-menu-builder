@@ -18,7 +18,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'menu-builder');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu');
 
         $this->app->booted(function () {
             $this->routes();
@@ -48,7 +48,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
         Route::middleware(['nova', Authorize::class])
             ->namespace('OptimistDigital\MenuBuilder\Http\Controllers')
-            ->prefix('nova-vendor/menu-builder')
+            ->prefix('nova-vendor/nova-menu')
             ->group(__DIR__ . '/../routes/api.php');
     }
 

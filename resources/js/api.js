@@ -1,7 +1,7 @@
 export default {
   getItems(menu) {
     return window.axios
-      .post('/nova-vendor/menu-builder/items', {
+      .post('/nova-vendor/nova-menu/items', {
         menu: menu,
       })
       .then(response => response.data);
@@ -9,7 +9,7 @@ export default {
 
   saveItems(menu, menuItems) {
     return window.axios
-      .post('/nova-vendor/menu-builder/save-items', {
+      .post('/nova-vendor/nova-menu/save-items', {
         menu: menu,
         items: menuItems,
       })
@@ -17,24 +17,22 @@ export default {
   },
 
   create(menuItem) {
-    return window.axios.post('/nova-vendor/menu-builder/new-item', menuItem).then(response => response.data);
+    return window.axios.post('/nova-vendor/nova-menu/new-item', menuItem).then(response => response.data);
   },
 
   edit(menu) {
-    return window.axios.get('/nova-vendor/menu-builder/edit/' + menu).then(response => response.data);
+    return window.axios.get('/nova-vendor/nova-menu/edit/' + menu).then(response => response.data);
   },
 
   update(menuItemId, menuItem) {
-    return window.axios
-      .post('/nova-vendor/menu-builder/update/' + menuItemId, menuItem)
-      .then(response => response.data);
+    return window.axios.post('/nova-vendor/nova-menu/update/' + menuItemId, menuItem).then(response => response.data);
   },
 
   destroy(menuItemId) {
-    return window.axios.post('/nova-vendor/menu-builder/destroy/' + menuItemId).then(response => response.data);
+    return window.axios.post('/nova-vendor/nova-menu/destroy/' + menuItemId).then(response => response.data);
   },
 
   getLinkTypes() {
-    return window.axios.get('/nova-vendor/menu-builder/link-types').then(response => response.data);
+    return window.axios.get('/nova-vendor/nova-menu/link-types').then(response => response.data);
   },
 };
