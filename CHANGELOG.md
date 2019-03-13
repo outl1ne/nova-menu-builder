@@ -2,6 +2,10 @@
 
 All notable changes to `optimistdigital/nova-menu-builder` will be documented in this file
 
+## 1.0.1 - 2019-03-13
+
+- Add proper support for parameters field.
+
 ## 1.0.0 - 2019-03-12
 
 Initial release.
