@@ -13,6 +13,7 @@ class MenuItem extends Model
 
     protected $casts = [
         'enabled' => 'boolean',
+        'parameters' => 'array',
     ];
 
     protected $appends = ['enabledClass', 'displayValue'];
@@ -56,7 +57,7 @@ class MenuItem extends Model
 
     public function getCustomValueAttribute() {
         if (class_exists($this->class)) {
-            return $this->class::getValue($this->value);
+            return $this->class::getValue($this->value, $this->parameters);
         }
         return $this->value;
     }

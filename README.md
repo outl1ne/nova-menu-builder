@@ -135,9 +135,10 @@ public static function getDisplayValue(string $value): string {
  * Can be anything. It is up to you how you will handle parsing it.
  *
  * @param string $value The key from options list that was selected.
+ * @param array $parameters The JSON parameters added to the item.
  * @return any
  **/
-public static function getValue(string $value) {
+public static function getValue(string $value, array $parameters = null)
     // Example usecase
     // return Page::find($value);
     return $value;

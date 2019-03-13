@@ -327,11 +327,21 @@ export default {
     newItemData() {
       return {
         ...this.newItem,
+        parameters: this.newItem.parameters && JSON.parse(this.newItem.parameters),
         class: this.linkType.class,
       };
     },
   },
   methods: {
+    isValidJSON(data) {
+      if (!data || data[0] !== '{') return false;
+      try {
+        JSON.parse(data);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
     newItemMenu() {
       this.update = false;
       this.modalItem = true;
@@ -355,7 +365,8 @@ export default {
 
     editMenu(item) {
       api.edit(item.id).then(result => {
-        result.parameters = beautify(result.parameters, { indent_size: 2 });
+        result.parameters = result.parameters ? beautify(JSON.stringify(result.parameters), { indent_size: 2 }) : '';
+
         this.update = result.id;
         this.newItem = result;
         this.modalItem = true;
@@ -395,6 +406,11 @@ export default {
     },
 
     confirmItemCreate() {
+      if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
+        this.$toasted.show('Invalid JSON in parameters field.', { type: 'error' });
+        return;
+      }
+
       api
         .create(this.newItemData)
         .then(() => {
@@ -407,6 +423,11 @@ export default {
     },
 
     updateItem() {
+      if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
+        this.$toasted.show('Invalid JSON in parameters field.', { type: 'error' });
+        return;
+      }
+
       api
         .update(this.update, this.newItemData)
         .then(() => {
