@@ -58,7 +58,7 @@ class MenuResource extends Resource
 
             Text::make(__('Slug'), 'slug')
                 ->sortable()
-                ->rules('required', 'max:255', 'unique:menus,slug,NULL,NULL,locale,' . $request->locale),
+                ->rules('required', 'max:255', Rule::unique('menus', 'slug')->where('locale', $request->get('locale'))),
 
             Select::make(__('Locale'), 'locale')
                 ->options(MenuBuilder::getLocales())
