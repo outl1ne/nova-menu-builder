@@ -29,7 +29,7 @@
       "OptimistDigital\\MenuBuilder\\": "src/"
     },
     "files": [
-      "src/Http/helpers.php"
+      "src/helpers.php"
     ]
   },
   "extra": {
