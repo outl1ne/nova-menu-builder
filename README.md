@@ -147,10 +147,13 @@ public static function getValue(string $value, array $parameters = null)
 
 ### Returning the menus in a JSON API
 
-If you want to return the menus in a separate API endpoint, you can just call an existing method that handles all the formatting.
+A helper function `nova_get_menus` is globally registered in this package which returns all the menus including their menu items in an API friendly format.
 
 ```php
-Route::get('/menus', '\OptimistDigital\MenuBuilder\Http\Controllers\MenuController@getMenus');
+public function getMenus(Request $request) {
+    $menusResponse = nova_get_menus();
+    return response()->json($menusResponse);
+}
 ```
 
 ### Menu locale options

@@ -48,19 +48,27 @@ class MenuItem extends Model
         return $query->where('enabled', 1);
     }
 
-    public function getDisplayValueAttribute() {
+    public function getDisplayValueAttribute()
+    {
         if (class_exists($this->class)) {
             return $this->class::getDisplayValue($this->value);
         }
         return $this->value;
     }
 
-    public function getCustomValueAttribute() {
+    public function getTypeAttribute()
+    {
+        if (class_exists($this->class)) {
+            return $this->class::getIdentifier($this->value, $this->parameters);
+        }
+        return null;
+    }
+
+    public function getCustomValueAttribute()
+    {
         if (class_exists($this->class)) {
             return $this->class::getValue($this->value, $this->parameters);
         }
         return $this->value;
     }
 }
-
- 

@@ -8,8 +8,8 @@ if (!function_exists('nova_get_menus')) {
         $formatMenuItem = function ($menuItem) use (&$formatMenuItem) {
             return [
                 'id' => $menuItem->id,
-                'type' => $menuItem->class::getIdentifier(),
-                'value' => $menuItem->class::getValue($menuItem->value, $menuItem->parameters),
+                'type' => $menuItem->type,
+                'value' => $menuItem->customValue,
                 'target' => $menuItem->target,
                 'parameters' => $menuItem->parameters,
                 'enabled' => $menuItem->enabled,

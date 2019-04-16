@@ -26,7 +26,7 @@ class MenuController extends Controller
 
         return Menu::find($request->get('menu'))
             ->rootMenuItems
-            ->filter(function($item) {
+            ->filter(function ($item) {
                 return class_exists($item->class);
             });
     }
@@ -40,7 +40,7 @@ class MenuController extends Controller
      */
     public function saveItems(Request $request)
     {
-        $menu = Menu::find((int) $request->get('menu'));
+        $menu = Menu::find((int)$request->get('menu'));
         $items = $request->get('items');
         $i = 1;
         foreach ($items as $item) {
@@ -53,12 +53,12 @@ class MenuController extends Controller
         ]);
     }
 
-     /**
-      * Creates a new MenuItem from request. 
-      *
-      * @param NewMenuItemRequest $request
-      * @return JSON
-      **/
+    /**
+     * Creates a new MenuItem from request. 
+     *
+     * @param NewMenuItemRequest $request
+     * @return JSON
+     **/
     public function createNew(NewMenuItemRequest $request)
     {
         $data = $request->all();
@@ -164,41 +164,7 @@ class MenuController extends Controller
                 'options' => $linkClass::getOptions()
             ];
         }
-        
+
         return response()->json($linkTypes, 200);
     }
-
-    public function getMenus() {
-        $data = [];
-        foreach (Menu::all()->load('rootMenuItems') as $menu) {
-            $data[] = [
-                'name' => $menu->name,
-                'slug' => $menu->slug,
-                'locale' => $menu->locale,
-                'menuItems' => $this->getMenusMenuItems($menu->rootMenuItems)
-            ];
-        }
-        return response()->json($data, 200);
-    }
-
-    protected function getMenusMenuItems($menuItemsArray) {
-        if (!isset($menuItemsArray)) return [];
-        $data = [];
-
-        foreach($menuItemsArray as $menuItem) {
-            if (!class_exists($menuItem->class)) continue;
-            $data[] = [
-                'name' => $menuItem->name,
-                'value' => $menuItem->customValue,
-                'enabled' => $menuItem->enabled,
-                'target' => $menuItem->target,
-                'type' => $menuItem->class::getIdentifier(),
-                'children' => $this->getMenusMenuItems($menuItem->children)
-            ];
-        }
-
-        return $data;
-    }
-} 
- 
-
+}
