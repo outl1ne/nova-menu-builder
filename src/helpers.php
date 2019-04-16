@@ -8,13 +8,10 @@ if (!function_exists('nova_get_menus')) {
         $formatMenuItem = function ($menuItem) use (&$formatMenuItem) {
             return [
                 'id' => $menuItem->id,
-                'menuId' => $menuItem->menu_id,
                 'type' => $menuItem->class::getIdentifier(),
-                'value' => $menuItem->value,
+                'value' => $menuItem->class::getValue($menuItem->value, $menuItem->parameters),
                 'target' => $menuItem->target,
                 'parameters' => $menuItem->parameters,
-                'parentId' => $menuItem->parent_id,
-                'order' => $menuItem->order,
                 'enabled' => $menuItem->enabled,
                 'children' => empty($menuItem->children) ? [] : $menuItem->children->map($formatMenuItem),
             ];
@@ -27,6 +24,7 @@ if (!function_exists('nova_get_menus')) {
                     'id' => $menu->id,
                     'name' => $menu->name,
                     'slug' => $menu->slug,
+                    'locale' => $menu->locale,
                     'menuItems' => collect($menu->rootMenuItems)->map($formatMenuItem),
                 ];
             });
