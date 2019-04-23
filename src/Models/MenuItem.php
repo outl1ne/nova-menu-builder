@@ -23,6 +23,11 @@ class MenuItem extends Model
         return $this->belongsTo(Menu::class);
     }
 
+    public function hasChildren()
+    {
+        return count($this->children) > 0;
+    }
+
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id')->with('children');

@@ -7,11 +7,6 @@ use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class Menu extends Model
 {
-    public function hasChildren()
-    {
-        return count($this->rootMenuItems) > 0;
-    }
-
     public function menuItems()
     {
         return $this->rootMenuItems();
