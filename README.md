@@ -29,7 +29,7 @@ composer require optimistdigital/nova-menu-builder
 Publish the database migration(s) and run migrate:
 
 ```bash
-php artisan vendor:publish --tag=migrations
+php artisan vendor:publish --tag=nova-menu-builder-migrations
 php artisan migrate
 ```
 
