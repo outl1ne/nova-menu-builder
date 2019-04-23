@@ -7,11 +7,6 @@ use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class Menu extends Model
 {
-    public function menuItems()
-    {
-        return $this->rootMenuItems();
-    }
-
     public function rootMenuItems()
     {
         return $this
