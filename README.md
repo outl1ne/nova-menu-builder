@@ -156,6 +156,13 @@ public function getMenus(Request $request) {
 }
 ```
 
+### Return single menu by slug.
+
+```php
+$menu = nova_get_menu('slug-id');
+}
+```
+
 ### Menu locale options
 
 To define locales that you can select for your menus, please register them in the constructor of `MenuBuilder` in `NovaServiceProvider`'s `tools()` function:
