@@ -51,7 +51,7 @@ public function tools()
 
 ```blade
 @php
-    $menu = nova_get_menu('main-header-es');
+    $menu = getMenuBySlug('main-header-es');
 
 
     function drawMenu($menu){ // This should be ported to blade.
@@ -186,13 +186,6 @@ A helper function `nova_get_menus` is globally registered in this package which 
 public function getMenus(Request $request) {
     $menusResponse = nova_get_menus();
     return response()->json($menusResponse);
-}
-```
-
-### Return single menu by slug.
-
-```php
-$menu = nova_get_menu('slug-id');
 }
 ```
 
