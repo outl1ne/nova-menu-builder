@@ -34,8 +34,6 @@ if (!function_exists('nova_get_menus')) {
 if (!function_exists('nova_get_menu')) {
     function nova_get_menu(string $slug)
     {
-        return Menu::whereSlug($slug)
-            ->with('rootMenuItems')
-            ->first();
+        return Menu::whereSlug($slug)->with('rootMenuItems')->first();
     }
 }

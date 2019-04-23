@@ -49,6 +49,39 @@ public function tools()
 
 ## Usage
 
+```blade
+@php
+    $menu = nova_get_menu('main-header-es');
+
+
+    function drawMenu($menu){ // This should be ported to blade.
+        $has_children = $menu->hasChildren() ? 'menu-item-has-children' : '';
+        $is_active = set_active($menu->value, ' active current-menu-item');
+        echo '<li class="'.$has_children . $is_active.'">';
+        echo '<a href="'.url($menu->value).'" target="'.$menu->target.'">'. $menu->name .'</a>';
+        if ($has_children):
+            drawMenuItem($menu);
+        endif;
+        echo '</li>';
+    }
+
+    function drawMenuItem($menuItem){ // This should be ported to blade.
+        echo '<ul class="sub-menu">';
+            foreach ($menuItem->children as $subMenuItem):
+                 drawMenu($subMenuItem);
+            endforeach;
+        echo '</ul>';
+    }
+
+@endphp
+
+<ul class="primary-menu-menu">
+    @foreach ($menu->rootMenuItems as $menuItem)
+        {{ drawMenu($menuItem) }}
+    @endforeach
+</ul>
+```
+
 ### Custom `MenuLinkable` classes
 
 Nova menu builder allows you to create a select field for custom models (ie Pages or Products).
