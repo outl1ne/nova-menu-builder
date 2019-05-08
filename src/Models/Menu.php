@@ -34,6 +34,7 @@ class Menu extends Model
     {
         return [
             'id' => $menuItem->id,
+            'name' => $menuItem->name,
             'type' => $menuItem->type,
             'value' => $menuItem->customValue,
             'target' => $menuItem->target,
