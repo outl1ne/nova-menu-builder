@@ -147,6 +147,8 @@ public static function getValue(string $value, array $parameters = null)
 
 ### Returning the menus in a JSON API
 
+#### nova_get_menus()
+
 A helper function `nova_get_menus` is globally registered in this package which returns all the menus including their menu items in an API friendly format.
 
 ```php
@@ -155,6 +157,10 @@ public function getMenus(Request $request) {
     return response()->json($menusResponse);
 }
 ```
+
+#### nova_get_menu(\$menuSlug)
+
+To get a single menu, you can use the helper function `nova_get_menu('slug')`. Returns null if no menu with the slug is found or returns the menu if it is found.
 
 ### Menu locale options
 
