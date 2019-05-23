@@ -149,7 +149,7 @@ class MenuController extends Controller
         }
     }
 
-    public function getLinkTypes()
+    public function getLinkTypes($locale)
     {
         $linkTypes = [];
         $models = MenuBuilder::getModels();
@@ -161,7 +161,7 @@ class MenuController extends Controller
                 'name' => $linkClass::getName(),
                 'type' => $linkClass::getType(),
                 'class' => $linkClass,
-                'options' => $linkClass::getOptions()
+                'options' => $linkClass::getOptions($locale)
             ];
         }
 

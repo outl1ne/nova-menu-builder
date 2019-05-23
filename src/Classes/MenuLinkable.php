@@ -40,7 +40,7 @@ abstract class MenuLinkable
      *
      * @return array
      **/
-    public static function getOptions(): array
+    public static function getOptions($locale): array
     {
         return [];
     }

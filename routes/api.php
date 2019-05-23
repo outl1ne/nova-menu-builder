@@ -19,5 +19,5 @@ Route::post('/new-item', 'MenuController@createNew');
 Route::get('/edit/{item}', 'MenuController@edit');
 Route::post('/update/{item}', 'MenuController@update');
 Route::post('/destroy/{item}', 'MenuController@destroy');
-Route::get('/link-types', 'MenuController@getLinkTypes');
+Route::get('/link-types/{locale}', 'MenuController@getLinkTypes');
 
