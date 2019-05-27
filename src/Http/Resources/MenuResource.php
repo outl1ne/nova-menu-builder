@@ -49,7 +49,7 @@ class MenuResource extends Resource
      */
     public function fields(Request $request)
     {
-        $resourceLocale = static::$model::whereId($request->route("resourceId"))->value("locale");
+        $resourceLocale = static::$model::whereId($request->route('resourceId'))->value('locale');
 
         return [
             ID::make()->sortable(),
