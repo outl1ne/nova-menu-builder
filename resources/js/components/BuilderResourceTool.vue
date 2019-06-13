@@ -9,9 +9,7 @@
           title="Add"
           class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
           v-on:click="newItemMenu()"
-        >
-          {{ __('Add item') }}
-        </button>
+        >{{ __('Add item') }}</button>
       </div>
     </div>
 
@@ -38,7 +36,7 @@
                 >
                   <path
                     d="M4.3 10.3l10-10a1 1 0 0 1 1.4 0l4 4a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-.7.3H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 .3-.7zM6 14h2.59l9-9L15 2.41l-9 9V14zm10-2a1 1 0 0 1 2 0v6a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4c0-1.1.9-2 2-2h6a1 1 0 1 1 0 2H2v14h14v-6z"
-                  />
+                  ></path>
                 </svg>
               </button>
 
@@ -56,7 +54,7 @@
                 >
                   <path
                     d="M6 4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6H1a1 1 0 1 1 0-2h5zM4 6v12h12V6H4zm8-2V2H8v2h4zM8 8a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1z"
-                  />
+                  ></path>
                 </svg>
               </button>
             </div>
@@ -74,47 +72,48 @@
               transform="translate(-779 -695)"
               fill="#A8B9C5"
               fill-rule="nonzero"
-            />
+            ></path>
           </svg>
 
-          <h3 class="text-base text-80 font-normal mb-6">
-            {{ __('No menu items yet') }}
-          </h3>
+          <h3 class="text-base text-80 font-normal mb-6">{{ __('No menu items yet') }}</h3>
 
           <div>
-            <button class="btn btn-sm btn-outline" v-on:click="newItemMenu()">
-              {{ __('Add item') }}
-            </button>
+            <button class="btn btn-sm btn-outline" v-on:click="newItemMenu()">{{ __('Add item') }}</button>
           </div>
         </div>
       </div>
     </template>
 
     <div ref="modals">
-      <modal ref="modalConfirm" v-if="modalConfirm" :name="'modalConfirm'" :align="'flex justify-end'" :width="400">
+      <modal
+        ref="modalConfirm"
+        v-if="modalConfirm"
+        :name="'modalConfirm'"
+        :align="'flex justify-end'"
+        :width="400"
+      >
         <div slot="container">
           <h2 class="mb-6 text-90 font-normal text-xl">{{ __('Delete item') }}</h2>
-          <p v-if="itemToDelete.children.length > 0" class="text-80 leading-normal mb-4">
-            {{ __("Take care. All children items will be deleted cause you're deleting the parent.") }}
-          </p>
-          <p class="text-80 leading-normal">
-            {{ __('Are you sure to delete this menu item?') }}
-          </p>
+          <p
+            v-if="itemToDelete.children.length > 0"
+            class="text-80 leading-normal mb-4"
+          >{{ __("Take care. All children items will be deleted cause you're deleting the parent.") }}</p>
+          <p class="text-80 leading-normal">{{ __('Are you sure to delete this menu item?') }}</p>
         </div>
         <div slot="buttons">
           <div class="ml-auto">
-            <button type="button" @click.prevent="closeModal" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
-              {{ __('Cancel') }}
-            </button>
+            <button
+              type="button"
+              @click.prevent="closeModal"
+              class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+            >{{ __('Cancel') }}</button>
 
             <button
               id="confirm-overwrite-button"
               ref="confirmButton"
               @click.prevent="confirmItemDelete"
               class="btn btn-default btn-danger"
-            >
-              {{ __('Yes, remove!') }}
-            </button>
+            >{{ __('Yes, remove!') }}</button>
           </div>
         </div>
       </modal>
@@ -122,7 +121,7 @@
       <modal ref="modalItem" v-if="modalItem" :name="'modalItem'" :align="'flex justify-end'">
         <div slot="container">
           <div class="flex flex-wrap justify-between mb-6">
-            <h2 class=" text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
+            <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
             <toggle-button
               v-model="newItem.enabled"
               :color="switchColor"
@@ -135,9 +134,7 @@
           <form autocomplete="off">
             <div class="flex border-b border-40">
               <div class="w-1/5 py-4">
-                <label class="inline-block text-80 pt-2 leading-tight">
-                  {{ __('Name') }}
-                </label>
+                <label class="inline-block text-80 pt-2 leading-tight">{{ __('Name') }}</label>
               </div>
               <div class="py-4 w-4/5">
                 <input
@@ -146,31 +143,34 @@
                   type="text"
                   :placeholder="this.__('Name')"
                   class="w-full form-control form-input form-input-bordered"
-                />
+                >
               </div>
             </div>
             <div class="flex border-b border-40">
               <div class="w-1/5 py-4">
-                <label class="inline-block text-80 pt-2 leading-tight">
-                  {{ __('Link type') }}
-                </label>
+                <label class="inline-block text-80 pt-2 leading-tight">{{ __('Type') }}</label>
               </div>
               <div class="py-4 w-4/5">
-                <select v-model="linkType" id="type" class="w-full form-control form-select">
-                  <option value="" selected="selected" disabled="disabled">
-                    {{ __('Choose an option') }}
-                  </option>
+                <select
+                  v-model="linkType"
+                  id="type"
+                  class="w-full form-control form-select"
+                  @change="onChangeType"
+                >
+                  <option value selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-                  <option :value="linkType" v-for="(linkType, i) of linkTypes" :key="i">{{ linkType.name }}</option>
+                  <option
+                    :value="linkType"
+                    v-for="(linkType, i) of linkTypes"
+                    :key="i"
+                  >{{ linkType.name }}</option>
                 </select>
               </div>
             </div>
             <template v-if="linkType.type == 'static-url'">
               <div class="flex border-b border-40">
                 <div class="w-1/5 py-4">
-                  <label class="inline-block text-80 pt-2 leading-tight">
-                    {{ __('URL') }}
-                  </label>
+                  <label class="inline-block text-80 pt-2 leading-tight">{{ __('URL') }}</label>
                 </div>
                 <div class="py-4 w-4/5">
                   <input
@@ -179,7 +179,7 @@
                     type="text"
                     :placeholder="this.__('URL')"
                     class="w-full form-control form-input form-input-bordered"
-                  />
+                  >
                 </div>
               </div>
             </template>
@@ -187,28 +187,28 @@
             <template v-if="linkType.type == 'select'">
               <div class="flex border-b border-40">
                 <div class="w-1/5 py-4">
-                  <label class="inline-block text-80 pt-2 leading-tight">
-                    {{ __('Model') }}
-                  </label>
+                  <label class="inline-block text-80 pt-2 leading-tight">{{ __('Model') }}</label>
                 </div>
 
                 <div class="py-4 w-4/5">
                   <select v-model="newItem.value" id="type" class="w-full form-control form-select">
-                    <option value="" selected="selected" disabled="disabled">
-                      {{ __('Choose an option') }}
-                    </option>
+                    <option
+                      value
+                      selected="selected"
+                      disabled="disabled"
+                    >{{ __('Choose an option') }}</option>
 
-                    <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">
-                      {{ linkType.options[key] }}
-                    </option>
+                    <option
+                      :value="key"
+                      v-for="(key, i) of Object.keys(linkType.options)"
+                      :key="i"
+                    >{{ linkType.options[key] }}</option>
                   </select>
                 </div>
               </div>
               <div class="flex border-b border-40">
                 <div class="w-1/5 py-4">
-                  <label class="inline-block text-80 pt-2 leading-tight">
-                    {{ __('Parameters') }}
-                  </label>
+                  <label class="inline-block text-80 pt-2 leading-tight">{{ __('Parameters') }}</label>
                 </div>
                 <div class="py-4 w-4/5">
                   <codemirror
@@ -219,17 +219,14 @@
                 </div>
               </div>
             </template>
-
-            <div class="flex border-b border-40" v-if="linkType.type">
+            <div class="flex border-b border-40" v-if="linkType.type && linkType.type !== 'text'">
               <div class="w-1/5 py-4">
-                <label class="inline-block text-80 pt-2 leading-tight">
-                  {{ __('Open in') }}
-                </label>
+                <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
               </div>
               <div class="py-4 w-4/5">
                 <select v-model="newItem.target" id="type" class="w-full form-control form-select">
-                  <option value="_self"> {{ __('Same window') }} </option>
-                  <option value="_blank"> {{ __('New window') }} </option>
+                  <option value="_self">{{ __('Same window') }}</option>
+                  <option value="_blank">{{ __('New window') }}</option>
                 </select>
               </div>
             </div>
@@ -237,9 +234,11 @@
         </div>
         <div slot="buttons">
           <div class="ml-auto">
-            <button type="button" @click.prevent="closeModal" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
-              {{ __('Cancel') }}
-            </button>
+            <button
+              type="button"
+              @click.prevent="closeModal"
+              class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+            >{{ __('Cancel') }}</button>
 
             <button
               v-if="update == false"
@@ -247,9 +246,7 @@
               ref="confirmButton"
               @click.prevent="confirmItemCreate"
               class="btn btn-default btn-primary"
-            >
-              {{ __('Create menu item') }}
-            </button>
+            >{{ __('Create menu item') }}</button>
 
             <button
               v-else
@@ -257,9 +254,7 @@
               ref="confirmButton"
               @click.prevent="updateItem"
               class="btn btn-default btn-primary"
-            >
-              {{ __('Update menu item') }}
-            </button>
+            >{{ __('Update menu item') }}</button>
           </div>
         </div>
       </modal>
@@ -374,6 +369,14 @@ export default {
         this.linkType = this.linkTypes.find(lt => lt.class === this.newItem.class);
       });
     },
+
+    onChangeType() {
+      if (this.linkType.type === 'text') {
+        this.newItem.value = null;
+        this.newItem.parameters = null;
+      }
+    },
+
     removeMenu(item) {
       this.itemToDelete = item;
       this.modalConfirm = true;
