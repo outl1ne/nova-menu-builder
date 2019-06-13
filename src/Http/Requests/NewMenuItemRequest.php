@@ -25,14 +25,6 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
-        $class = class_basename($this->get('class'));
-
-        return [
-            'menu_id' => 'required|exists:menus,id',
-            'name' => 'required',
-            'class' => 'required',
-            'target' => 'required|in:_self,_blank',
-            'value' => $class === class_basename(MenuItemText::class) ? '' : 'required'
-        ];
+        return $this->get('class')::getRules();
     }
 }
