@@ -22,7 +22,7 @@ abstract class MenuItemBase
 
     /**
      * Get menu link type.
-     * 
+     *
      * Only 'select' is supported for custom MenuLinkables.
      *
      * @return string select|static-url|text
@@ -42,7 +42,7 @@ abstract class MenuItemBase
 
     /**
      * Get the value of the link visible to the front-end.
-     * 
+     *
      * Can be anything. It is up to you how you will handle parsing it.
      *
      * @param string $value The key from options list that was selected.

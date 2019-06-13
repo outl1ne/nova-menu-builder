@@ -14,9 +14,9 @@ class MenuController extends Controller
     /**
      * Return menu items for given menu
      *
-     * @param   Request  $Request
+     * @param Request $request
      *
-     * @return  Collection | json
+     * @return Collection|json
      */
     public function items(Request $request)
     {
@@ -54,7 +54,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Creates a new MenuItem from request. 
+     * Creates a new MenuItem from request.
      *
      * @param NewMenuItemRequest $request
      * @return JSON
@@ -84,8 +84,8 @@ class MenuController extends Controller
     /**
      * Update the given menu item
      *
-     * @param   \OptimistDigital\MenuBuilder\Models\MenuItem  $item
-     * @param   NewMenuItemRequest  $request
+     * @param \OptimistDigital\MenuBuilder\Models\MenuItem $item
+     * @param NewMenuItemRequest $request
      *
      * @return  json
      */
@@ -117,9 +117,9 @@ class MenuController extends Controller
     /**
      * Save the menu item
      *
-     * @param   int  $order
-     * @param   array  $item
-     * @param   int  $parentId
+     * @param int $order
+     * @param array $item
+     * @param int $parentId
      *
      */
     private function saveMenuItem($order, $item, $parentId = null)
@@ -135,7 +135,7 @@ class MenuController extends Controller
     /**
      * Recurisve save menu items childrens
      *
-     * @param   array  $item
+     * @param array $item
      *
      */
     private function checkChildren($item)
