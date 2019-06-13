@@ -403,7 +403,7 @@ export default {
         menu_id: this.resourceId,
       };
 
-      this.linkType = {};
+      this.linkType = '';
     },
 
     confirmItemCreate() {
