@@ -6,7 +6,7 @@ abstract class MenuItemText extends MenuItemBase
 {
     public static function getIdentifier(): string
     {
-        return 'Text';
+        return 'text';
     }
 
     public static function getName(): string
