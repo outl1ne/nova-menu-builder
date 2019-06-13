@@ -157,12 +157,17 @@ class MenuController extends Controller
         foreach ($models as $linkClass) {
             if (!class_exists($linkClass)) continue;
 
-            $linkTypes[] = [
+            $data = [
                 'name' => $linkClass::getName(),
                 'type' => $linkClass::getType(),
                 'class' => $linkClass,
-                'options' => $linkClass::getOptions($locale)
             ];
+
+            if (method_exists($linkClass, 'getOptions')) {
+                $data['options'] = $linkClass::getOptions($locale);
+            }
+
+            $linkTypes[] = $data;
         }
 
         return response()->json($linkTypes, 200);

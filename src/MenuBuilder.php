@@ -8,7 +8,8 @@ use Laravel\Nova\Tool;
 class MenuBuilder extends Tool
 {
     protected static $linkableModels = [
-        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class
+        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class,
+        \OptimistDigital\MenuBuilder\Classes\MenuItemText::class,
     ];
 
     protected static $locales = [

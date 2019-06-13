@@ -4,6 +4,7 @@ namespace OptimistDigital\MenuBuilder\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
+use OptimistDigital\MenuBuilder\Classes\MenuItemText;
 
 class NewMenuItemRequest extends FormRequest
 {
@@ -24,12 +25,6 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'menu_id' => 'required|exists:menus,id',
-            'name' => 'required',
-            'class' => 'required',
-            'target' => 'required|in:_self,_blank',
-            'value' => 'required'
-        ];
+        return $this->get('class')::getRules();
     }
 }
