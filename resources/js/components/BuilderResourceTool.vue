@@ -157,7 +157,7 @@
                   class="w-full form-control form-select"
                   @change="onChangeType"
                 >
-                  <option value selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
+                  <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
                   <option
                     :value="linkType"
@@ -193,7 +193,7 @@
                 <div class="py-4 w-4/5">
                   <select v-model="newItem.value" id="type" class="w-full form-control form-select">
                     <option
-                      value
+                      value=""
                       selected="selected"
                       disabled="disabled"
                     >{{ __('Choose an option') }}</option>
@@ -290,10 +290,10 @@ export default {
     modalItem: false,
     itemToDelete: null,
     update: false,
-    linkType: {},
+    linkType: '',
     newItem: {
       name: null,
-      value: null,
+      value: '',
       target: '_self',
       parameters: '',
       active: true,
@@ -371,10 +371,8 @@ export default {
     },
 
     onChangeType() {
-      if (this.linkType.type === 'text') {
-        this.newItem.value = null;
-        this.newItem.parameters = null;
-      }
+      this.newItem.value = '';
+      this.newItem.parameters = null;
     },
 
     removeMenu(item) {
@@ -398,7 +396,7 @@ export default {
     resetNewItem() {
       this.newItem = {
         name: null,
-        value: null,
+        value: '',
         target: '_self',
         parameters: '',
         enabled: true,
