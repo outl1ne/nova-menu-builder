@@ -111,7 +111,7 @@ public static function getName(): string {
  *
  * @return array
  **/
-public static function getOptions(): array {
+public static function getOptions($locale): array {
     // Example usecase
     // return Page::all()->pluck('name', 'id');
     return [];
