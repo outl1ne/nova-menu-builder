@@ -113,7 +113,7 @@ public static function getName(): string {
  **/
 public static function getOptions($locale): array {
     // Example usecase
-    // return Page::all()->pluck('name', 'id');
+    // return Page::all()->pluck('name', 'id')->toArray();
     return [];
 }
 
