@@ -12,9 +12,9 @@ class Menu extends Model
         return $this
             ->hasMany(MenuItem::class)
             ->where('parent_id', null)
-            ->orderby('parent_id')
-            ->orderby('order')
-            ->orderby('name');
+            ->orderBy('parent_id')
+            ->orderBy('order')
+            ->orderBy('name');
     }
 
     public function formatForAPI()
