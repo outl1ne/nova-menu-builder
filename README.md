@@ -123,7 +123,7 @@ public static function getOptions($locale): array {
  * @param string $value
  * @return string
  **/
-public static function getDisplayValue(string $value): string {
+public static function getDisplayValue($value = null) {
     // Example usecase
     // return 'Page: ' . Page::find($value)->name;
     return $value;
@@ -138,7 +138,7 @@ public static function getDisplayValue(string $value): string {
  * @param array $parameters The JSON parameters added to the item.
  * @return any
  **/
-public static function getValue(string $value, array $parameters = null)
+public static function getValue($value = null, array $parameters = null)
     // Example usecase
     // return Page::find($value);
     return $value;

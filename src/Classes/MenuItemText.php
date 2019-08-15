@@ -19,12 +19,12 @@ abstract class MenuItemText extends MenuItemBase
         return 'text';
     }
 
-    public static function getDisplayValue(?string $value): string
+    public static function getDisplayValue($value = null)
     {
         return '';
     }
 
-    public static function getValue(?string $value, array $parameters = null)
+    public static function getValue($value = null, array $parameters = null)
     {
         return null;
     }
