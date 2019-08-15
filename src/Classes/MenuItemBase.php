@@ -35,7 +35,7 @@ abstract class MenuItemBase
      * @param string $value
      * @return string
      **/
-    public static function getDisplayValue(string $value): string
+    public static function getDisplayValue(?string $value): string
     {
         return $value;
     }
@@ -49,7 +49,7 @@ abstract class MenuItemBase
      * @param array $parameters The JSON parameters added to the item.
      * @return any
      **/
-    public static function getValue(string $value, array $parameters = null)
+    public static function getValue(?string $value, array $parameters = null)
     {
         return $value;
     }
