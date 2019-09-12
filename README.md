@@ -33,6 +33,33 @@ php artisan vendor:publish --tag=nova-menu-builder-migrations
 php artisan migrate
 ```
 
+Optionally you can publish menu template and configuration:
+
+```bash
+php artisan vendor:publish --tag=nova-menu-builder-views
+php artisan vendor:publish --tag=nova-menu-builder-config
+```
+
+With configuration you can customize resource controller. To avoid controller double-loading [nova-issues #1928](https://github.com/laravel/nova-issues/issues/1928) create it outside of `App\Nova directory`:
+
+```php
+// create app/Menus/MenuResource.php:
+
+namespace App\Menus;
+
+use OptimistDigital\MenuBuilder\Http\Resources\MenuResource as BaseMenu;
+
+class MenuResource extends BaseMenu {}
+
+// in config/nova-menu.php:
+
+use App\Menus\MenuResource;
+
+return [
+    'resource' => MenuResource::class,
+];
+```
+
 Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
 
 ```php
