@@ -40,7 +40,7 @@ php artisan vendor:publish --tag=nova-menu-builder-views
 php artisan vendor:publish --tag=nova-menu-builder-config
 ```
 
-With configuration you can customize resource controller. To avoid controller double-loading [nova-issues #1928](https://github.com/laravel/nova-issues/issues/1928) create it outside of `App\Nova directory`:
+With configuration you can customize resource controller. To avoid controller double-loading [nova-issues #1928](https://github.com/laravel/nova-issues/issues/1928) create it outside of `App\Nova` directory:
 
 ```php
 // create app/Menus/MenuResource.php:
@@ -165,7 +165,7 @@ public static function getDisplayValue($value = null) {
  * @param array $parameters The JSON parameters added to the item.
  * @return any
  **/
-public static function getValue($value = null, array $parameters = null)
+public static function getValue($value = null, array $parameters = null){
     // Example usecase
     // return Page::find($value);
     return $value;
