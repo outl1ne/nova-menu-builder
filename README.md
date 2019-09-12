@@ -165,7 +165,7 @@ public static function getDisplayValue($value = null) {
  * @param array $parameters The JSON parameters added to the item.
  * @return any
  **/
-public static function getValue($value = null, array $parameters = null){
+public static function getValue($value = null, array $parameters = null) {
     // Example usecase
     // return Page::find($value);
     return $value;
