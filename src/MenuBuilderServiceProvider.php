@@ -26,12 +26,16 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
         $this->publishMigrations();
 
+        $this->publishViews();
+
+        $this->publishConfig();
+
         Nova::serving(function (ServingNova $event) {
             //
         });
 
         Nova::resources([
-            MenuResource::class,
+            config('nova-menu.resource', MenuResource::class),
         ]);
     }
 
@@ -60,6 +64,26 @@ class MenuBuilderServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/Migrations/create_menus_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_menus_table.php'),
         ], 'nova-menu-builder-migrations');
+    }
+
+    /**
+     * Publish sidebar menu item template
+     */
+    private function publishViews()
+    {
+        $this->publishes([
+            __DIR__.'/../resources/views/' => resource_path('views/vendor/nova-menu'),
+        ], 'nova-menu-builder-views');
+    }
+
+    /**
+     * Publish config
+     */
+    private function publishConfig()
+    {
+        $this->publishes([
+            __DIR__.'/../config/' => config_path(),
+        ], 'nova-menu-builder-config');
     }
 
     /**
