@@ -161,11 +161,15 @@ public static function getDisplayValue($value = null) {
  *
  * Can be anything. It is up to you how you will handle parsing it.
  *
+ * This will only be called when using the nova_get_menu()
+ * and nova_get_menus() helpers or when you call formatForAPI()
+ * on the Menu model.
+ *
  * @param string $value The key from options list that was selected.
  * @param array $parameters The JSON parameters added to the item.
  * @return any
  **/
-public static function getValue($value = null, array $parameters = null) {
+public static function getValue($value = null, array $parameters = null)
     // Example usecase
     // return Page::find($value);
     return $value;
