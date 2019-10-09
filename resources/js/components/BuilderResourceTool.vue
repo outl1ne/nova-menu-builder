@@ -87,7 +87,7 @@
     <div ref="modals">
       <modal
         ref="modalConfirm"
-        v-if="modalConfirm"
+        :show="modalConfirm"
         :name="'modalConfirm'"
         :align="'flex justify-end'"
         :width="400"
@@ -95,7 +95,7 @@
         <div slot="container">
           <h2 class="mb-6 text-90 font-normal text-xl">{{ __('Delete item') }}</h2>
           <p
-            v-if="itemToDelete.children.length > 0"
+            v-if="itemToDelete && itemToDelete.children.length > 0"
             class="text-80 leading-normal mb-4"
           >{{ __("Take care. All children items will be deleted cause you're deleting the parent.") }}</p>
           <p class="text-80 leading-normal">{{ __('Are you sure to delete this menu item?') }}</p>
@@ -118,7 +118,7 @@
         </div>
       </modal>
 
-      <modal ref="modalItem" v-if="modalItem" :name="'modalItem'" :align="'flex justify-end'">
+      <modal ref="modalItem" :show="modalItem" :name="'modalItem'" :align="'flex justify-end'">
         <div slot="container">
           <div class="flex flex-wrap justify-between mb-6">
             <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
@@ -337,6 +337,7 @@ export default {
         return false;
       }
     },
+
     newItemMenu() {
       this.update = false;
       this.modalItem = true;
@@ -379,6 +380,7 @@ export default {
       this.itemToDelete = item;
       this.modalConfirm = true;
     },
+
     confirmItemDelete() {
       api
         .destroy(this.itemToDelete.id)

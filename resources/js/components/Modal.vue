@@ -1,17 +1,15 @@
 <template>
-  <portal to="modals" :name="name">
-    <transition name="fade">
-      <modal>
-        <div class="bg-white rounded-lg shadow-lg" :style="style">
-          <div class="p-8"><slot name="container"></slot></div>
+  <transition name="fade">
+    <modal v-if="show">
+      <div class="bg-white rounded-lg shadow-lg" :style="style">
+        <div class="p-8"><slot name="container"></slot></div>
 
-          <div class="bg-30 px-6 py-3 flex">
-            <div class="w-full " :class="align"><slot name="buttons"></slot></div>
-          </div>
+        <div class="bg-30 px-6 py-3 flex">
+          <div class="w-full " :class="align"><slot name="buttons"></slot></div>
         </div>
-      </modal>
-    </transition>
-  </portal>
+      </div>
+    </modal>
+  </transition>
 </template>
 
 <script>
@@ -31,6 +29,11 @@ export default {
       type: String,
       default: '',
       required: false,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+      required: true,
     },
   },
 
