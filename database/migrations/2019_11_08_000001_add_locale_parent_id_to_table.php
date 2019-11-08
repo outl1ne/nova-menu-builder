@@ -12,7 +12,7 @@ class AddLocaleParentIdToTable extends Migration
      */
     public function up()
     {
-        Schema::table('menus', function($table) {
+        Schema::table('menus', function ($table) {
             $table->bigInteger('locale_parent_id')->nullable()->unsigned();
 
             $table->foreign('locale_parent_id')->references('id')->on('menus');
@@ -22,8 +22,8 @@ class AddLocaleParentIdToTable extends Migration
 
     public function down()
     {
-        Schema::table('menus', function($table) {
-            $table->dropForeign('locale_parent_id');
+        Schema::table('menus', function ($table) {
+            $table->dropForeign(['locale_parent_id']);
             $table->dropColumn('locale_parent_id');
             $table->dropUnique(['locale_parent_id', 'locale']);
         });
