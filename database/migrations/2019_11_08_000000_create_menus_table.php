@@ -23,7 +23,7 @@ class CreateMenusTable extends Migration
             DB::statement('DELETE FROM migrations WHERE migration = "' . $migrationName .'"');
             return;
         }
-        
+
         Schema::create('menus', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');

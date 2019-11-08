@@ -8,7 +8,6 @@ use OptimistDigital\MenuBuilder\BuilderResourceTool;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-
 use Laravel\Nova\Resource;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\NovaLocaleField\LocaleField;
@@ -49,7 +48,7 @@ class MenuResource extends Resource
         $resourceLocale = static::$model::whereId($request->route('resourceId'))->value('locale');
         $locales = MenuBuilder::getLocales();
 
-        $fields = array(
+        $fields = [
             ID::make()->sortable(),
 
             Text::make(__('Name'), 'name')
@@ -60,7 +59,7 @@ class MenuResource extends Resource
                 ->sortable()
                 ->creationRules('required', 'max:255', "unique:menus,slug,NULL,id,locale,$request->locale")
                 ->updateRules('required', 'max:255', "unique:menus,slug,{{resourceId}},id,locale,$request->locale"),
-        );
+        ];
 
         if (class_exists('\OptimistDigital\NovaLang\NovaLang')) {
             $fields[] = \OptimistDigital\NovaLang\NovaLangField\NovaLangField::make('Locale', 'locale', 'locale_parent_id')->onlyOnForms();
@@ -75,7 +74,7 @@ class MenuResource extends Resource
             $fields[] = Text::make('Locale', 'locale')->exceptOnForms();
         }
 
-        $fields[] = BuilderResourceTool::make()->withMeta(["locale" => $resourceLocale]);
+        $fields[] = BuilderResourceTool::make()->withMeta(['locale' => $resourceLocale]);
         return $fields;
     }
 
