@@ -72,7 +72,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
     private function publishViews()
     {
         $this->publishes([
-            __DIR__.'/../resources/views/' => resource_path('views/vendor/nova-menu'),
+            __DIR__ . '/../resources/views/' => resource_path('views/vendor/nova-menu'),
         ], 'nova-menu-builder-views');
     }
 
@@ -82,7 +82,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
     private function publishConfig()
     {
         $this->publishes([
-            __DIR__.'/../config/' => config_path(),
+            __DIR__ . '/../config/' => config_path(),
         ], 'nova-menu-builder-config');
     }
 
