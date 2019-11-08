@@ -5,10 +5,10 @@ Nova.booting((Vue, router) => {
     {
       name: 'nova-menu',
       path: '/nova-menu',
-      component: require('./components/Tool'),
+      component: require('./components/Tool').default,
     },
   ]);
 
   Vue.use(ToggleButton);
-  Vue.component('nova-menu', require('./components/BuilderResourceTool'));
+  Vue.component('nova-menu', require('./components/BuilderResourceTool').default);
 });
