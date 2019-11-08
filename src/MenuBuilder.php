@@ -12,17 +12,9 @@ class MenuBuilder extends Tool
         \OptimistDigital\MenuBuilder\Classes\MenuItemText::class,
     ];
 
-    protected static $locales = [
-        'en_US' => 'English'
-    ];
-
     public function __construct(array $data = null)
     {
         if (empty($data)) return;
-
-        if (isset($data['locales']) && is_array($data['locales'])) {
-            self::$locales = $data['locales'];
-        }
 
         if (isset($data['linkable_models']) && is_array($data['linkable_models'])) {
             foreach ($data['linkable_models'] as $model) {
@@ -52,10 +44,14 @@ class MenuBuilder extends Tool
         return view('nova-menu::navigation');
     }
 
-    public static function getLocales()
+    public static function getLocales(): array
     {
-        return self::$locales;
+        $localesConfig = config('nova-menu.locales', ['en' => 'English']);
+        if (is_callable($localesConfig)) return call_user_func($localesConfig);
+        if (is_array($localesConfig)) return $localesConfig;
+        return ['en' => 'English'];
     }
+
 
     public static function getModels()
     {
