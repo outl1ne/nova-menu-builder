@@ -47,6 +47,7 @@ class MenuResource extends Resource
     {
         $resourceLocale = static::$model::whereId($request->route('resourceId'))->value('locale');
         $locales = MenuBuilder::getLocales();
+        $hasManyDifferentLocales = Menu::select('locale')->distinct()->get()->count() > 1;
 
         $fields = [
             ID::make()->sortable(),
@@ -67,10 +68,11 @@ class MenuResource extends Resource
             $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')->locales($locales)->onlyOnForms();
         }
 
-        if (count($locales) > 1)
+        if (count($locales) > 1) {
             $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')
-                ->locales($locales)->exceptOnForms();
-        else {
+                ->locales($locales)
+                ->exceptOnForms();
+        } else if ($hasManyDifferentLocales) {
             $fields[] = Text::make('Locale', 'locale')->exceptOnForms();
         }
 
