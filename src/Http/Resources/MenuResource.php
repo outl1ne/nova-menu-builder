@@ -3,13 +3,14 @@
 namespace OptimistDigital\MenuBuilder\Http\Resources;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use OptimistDigital\MenuBuilder\BuilderResourceTool;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Resource;
 use OptimistDigital\MenuBuilder\MenuBuilder;
+use OptimistDigital\NovaLocaleField\LocaleField;
 
 class MenuResource extends Resource
 {
@@ -20,12 +21,6 @@ class MenuResource extends Resource
      */
     public static $model = Menu::class;
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -46,12 +41,14 @@ class MenuResource extends Resource
      *
      * @param \Illuminate\Http\Request $request
      * @return array
+     * @throws \Exception
      */
     public function fields(Request $request)
     {
         $resourceLocale = static::$model::whereId($request->route('resourceId'))->value('locale');
+        $locales = MenuBuilder::getLocales();
 
-        return [
+        $fields = [
             ID::make()->sortable(),
 
             Text::make(__('Name'), 'name')
@@ -62,13 +59,23 @@ class MenuResource extends Resource
                 ->sortable()
                 ->creationRules('required', 'max:255', "unique:menus,slug,NULL,id,locale,$request->locale")
                 ->updateRules('required', 'max:255', "unique:menus,slug,{{resourceId}},id,locale,$request->locale"),
-
-            Select::make(__('Locale'), 'locale')
-                ->options(MenuBuilder::getLocales())
-                ->displayUsingLabels(),
-
-            BuilderResourceTool::make()->withMeta(["locale" => $resourceLocale]),
         ];
+
+        if (class_exists('\OptimistDigital\NovaLang\NovaLang')) {
+            $fields[] = \OptimistDigital\NovaLang\NovaLangField\NovaLangField::make('Locale', 'locale', 'locale_parent_id')->onlyOnForms();
+        } else {
+            $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')->locales($locales)->onlyOnForms();
+        }
+
+        if (count($locales) > 1)
+            $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')
+                ->locales($locales)->exceptOnForms();
+        else {
+            $fields[] = Text::make('Locale', 'locale')->exceptOnForms();
+        }
+
+        $fields[] = BuilderResourceTool::make()->withMeta(['locale' => $resourceLocale]);
+        return $fields;
     }
 
     /**
@@ -143,5 +150,16 @@ class MenuResource extends Resource
     public static function uriKey()
     {
         return 'nova-menu';
+    }
+
+    public function title()
+    {
+        return $this->name . ' (' . $this->slug . ')';
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (class_exists('\OptimistDigital\NovaLang\NovaLang')) $query->where('menus.locale', nova_lang_get_active_locale());
+        return $query;
     }
 }
