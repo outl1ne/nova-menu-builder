@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 
 class CreateMenusTable extends Migration
@@ -13,6 +15,14 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
+        $existingMigration = DB::select('SELECT migration AS name FROM migrations WHERE migration LIKE "%create_menus_table"');
+        if (count($existingMigration) > 0) {
+            $migrationName = $existingMigration[0]->name;
+            $migrationFileName = "$migrationName.php";
+            File::delete(database_path('migrations/'.$migrationFileName));
+            DB::statement('DELETE FROM migrations WHERE migration = "' . $migrationName .'"');
+            return;
+        }
         Schema::create('menus', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');

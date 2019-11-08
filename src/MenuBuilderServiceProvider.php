@@ -62,7 +62,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
     private function publishMigrations()
     {
         $this->publishes([
-            __DIR__ . '/Migrations/create_menus_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_menus_table.php'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'nova-menu-builder-migrations');
     }
 
