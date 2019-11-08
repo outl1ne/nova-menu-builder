@@ -7,21 +7,10 @@ use Laravel\Nova\Tool;
 
 class MenuBuilder extends Tool
 {
-    protected static $linkableModels = [
+    protected static $defaultLinkableModels = [
         \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class,
         \OptimistDigital\MenuBuilder\Classes\MenuItemText::class,
     ];
-
-    public function __construct(array $data = null)
-    {
-        if (empty($data)) return;
-
-        if (isset($data['linkable_models']) && is_array($data['linkable_models'])) {
-            foreach ($data['linkable_models'] as $model) {
-                self::$linkableModels[] = $model;
-            }
-        }
-    }
 
     /**
      * Perform any tasks that need to happen when the tool is booted.
@@ -55,6 +44,10 @@ class MenuBuilder extends Tool
 
     public static function getModels()
     {
-        return self::$linkableModels;
+        $configuredLinkableModels = config('nova-menu.linkable_models', []);
+        return array_merge(
+            static::$defaultLinkableModels,
+            $configuredLinkableModels,
+        );
     }
 }
