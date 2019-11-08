@@ -9,6 +9,8 @@ Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-
 - Managing menus (w/ customizable locales) and menu items
 - Nesting and re-ordering of menu-items
 - Creation of custom link options (ie links to models such as Page or Product)
+- Support for different languages
+- Optional `nova-lang` support
 
 ## Screenshots
 
@@ -33,31 +35,16 @@ php artisan vendor:publish --tag=nova-menu-builder-migrations
 php artisan migrate
 ```
 
-Optionally you can publish menu template and configuration:
+Publish the configuration file and edit it to your preference:
 
 ```bash
-php artisan vendor:publish --tag=nova-menu-builder-views
 php artisan vendor:publish --tag=nova-menu-builder-config
 ```
 
-With configuration you can customize resource controller. To avoid controller double-loading [nova-issues #1928](https://github.com/laravel/nova-issues/issues/1928) create it outside of `App\Nova` directory:
+Optionally you can publish menu template:
 
-```php
-// create app/Menus/MenuResource.php:
-
-namespace App\Menus;
-
-use OptimistDigital\MenuBuilder\Http\Resources\MenuResource as BaseMenu;
-
-class MenuResource extends BaseMenu {}
-
-// in config/nova-menu.php:
-
-use App\Menus\MenuResource;
-
-return [
-    'resource' => MenuResource::class,
-];
+```bash
+php artisan vendor:publish --tag=nova-menu-builder-views
 ```
 
 Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
@@ -69,36 +56,56 @@ public function tools()
 {
     return [
         // ...
-        new \OptimistDigital\MenuBuilder\MenuBuilder(),
+        new \OptimistDigital\MenuBuilder\MenuBuilder,
     ];
 }
 ```
 
 ## Usage
 
+### Menu locale options
+
+You can define the locales for the menus in the config file.
+
+```php
+// in config/nova-menu.php
+
+return [
+  // ...
+  'locales' => [
+    'en_US' => 'English',
+    'et_EE' => 'Estonian',
+  ],
+
+  // or using a closure:
+
+  'locales' => function() {
+    return nova_lang_get_locales();
+  }
+
+  // or if you want to use a function, but still be able to cache it:
+
+  'locales' => '\App\Configuration\NovaMenuConfiguration@getLocales',
+  // ...
+];
+```
+
 ### Custom `MenuLinkable` classes
 
 Nova menu builder allows you to create a select field for custom models (ie Pages or Products).
 
-First, create a class that extends the `OptimistDigital\MenuBuilder\Classes\MenuLinkable` class.
-
-Secondly, register the class in the constructor of `MenuBuilder` in `NovaServiceProvider`'s `tools()` function like so:
+Create a class that extends the `OptimistDigital\MenuBuilder\Classes\MenuLinkable` class and register it in the config file.
 
 ```php
-// in app/Providers/NovaServiceProvider.php
+// in config/nova-menu.php
 
-public function tools()
-{
-    return [
-        // ...
-        new \OptimistDigital\MenuBuilder\MenuBuilder([
-            'linkable_models' => [
-                \App\Classes\CustomMenuLinkable::class,
-            ],
-            'locales' => null, // Optional, default is ['en_US' => 'English']
-        ]),
-    ];
-}
+return [
+  // ...
+  'linkable_models' => [
+    \App\Classes\CustomMenuLinkable::class,
+  ],
+  // ...
+];
 ```
 
 In the created class, overwrite the following methods:
@@ -176,6 +183,34 @@ public static function getValue($value = null, array $parameters = null)
 }
 ```
 
+### Custom menu resource
+
+You can customize the resource controller through the config file.
+
+To avoid controller double-loading [nova-issues #1928](https://github.com/laravel/nova-issues/issues/1928) create it outside of `App\Nova` directory:
+
+```php
+// Create app/Menus/MenuResource.php:
+
+namespace App\Menus;
+
+use OptimistDigital\MenuBuilder\Http\Resources\MenuResource as BaseMenuResource;
+
+class MenuResource extends BaseMenuResource {
+  //
+}
+
+// in config/nova-menu.php:
+
+use App\Menus\MenuResource;
+
+return [
+    // ...
+    'resource' => MenuResource::class,
+    // ...
+];
+```
+
 ### Returning the menus in a JSON API
 
 #### nova_get_menus()
@@ -193,28 +228,6 @@ public function getMenus(Request $request) {
 
 To get a single menu, you can use the helper function `nova_get_menu('slug')`. Returns null if no menu with the slug is found or returns the menu if it is found.
 
-### Menu locale options
-
-To define locales that you can select for your menus, please register them in the constructor of `MenuBuilder` in `NovaServiceProvider`'s `tools()` function:
-
-```php
-// in app/Providers/NovaServiceProvider.php
-
-public function tools()
-{
-    return [
-        // ...
-        new \OptimistDigital\MenuBuilder\MenuBuilder([
-            'linkable_models' => null, // Optional
-            'locales' => [
-               'en_US' => 'English',
-               'et_EE' => 'Estonian',
-            ],
-        ]),
-    ];
-}
-```
-
 ## Credits
 
 - [Tarvo Reinpalu](https://github.com/Tarpsvo)
@@ -223,4 +236,4 @@ public function tools()
 
 ## License
 
-Nova menu builder is open-sourced software licensed under the [MIT license](LICENSE.md).
+Nova Menu Builder is open-sourced software licensed under the [MIT license](LICENSE.md).
