@@ -18,6 +18,9 @@ NB! This release contains breaking changes. All configuration options were moved
 - Added better localization support through `nova-locale-field`
 - Moved all config options from tool constructor to `config/nova-menu.php`
 - Updated all packages
+- All migrations are now loaded automatically
+  - Publishing migrations is not necessary anymore
+  - Running `migrate` will delete the original migration from project source
 
 ## [1.4.2] - 2019-10-09
 

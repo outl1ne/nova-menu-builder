@@ -18,16 +18,18 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Load views
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu');
+
+        // Load migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->app->booted(function () {
             $this->routes();
         });
 
         $this->publishMigrations();
-
         $this->publishViews();
-
         $this->publishConfig();
 
         Nova::serving(function (ServingNova $event) {
@@ -46,9 +48,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     protected function routes()
     {
-        if ($this->app->routesAreCached()) {
-            return;
-        }
+        if ($this->app->routesAreCached()) return;
 
         Route::middleware(['nova', Authorize::class])
             ->namespace('OptimistDigital\MenuBuilder\Http\Controllers')
