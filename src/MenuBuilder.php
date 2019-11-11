@@ -55,4 +55,14 @@ class MenuBuilder extends Tool
     {
         return class_exists('\OptimistDigital\NovaLang\NovaLang');
     }
+
+    public static function getMenusTableName()
+    {
+        return config('nova-menu.menus_table_name', 'nova_menu_menus');
+    }
+
+    public static function getMenuItemsTableName()
+    {
+        return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
+    }
 }

@@ -3,10 +3,17 @@
 namespace OptimistDigital\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class Menu extends Model
 {
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->setTable(MenuBuilder::getMenusTableName());
+    }
+
     public function rootMenuItems()
     {
         return $this

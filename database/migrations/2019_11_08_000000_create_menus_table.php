@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use OptimistDigital\MenuBuilder\MenuBuilder;
 
 class CreateMenusTable extends Migration
 {
@@ -27,7 +28,7 @@ class CreateMenusTable extends Migration
             return;
         }
 
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -37,7 +38,7 @@ class CreateMenusTable extends Migration
             $table->unique(['slug', 'locale']);
         });
 
-        Schema::create('menu_items', function (Blueprint $table) {
+        Schema::create(MenuBuilder::getMenuItemsTableName(), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('menu_id')->nullable();
             $table->string('name');
@@ -50,7 +51,7 @@ class CreateMenusTable extends Migration
             $table->boolean('enabled')->default(1);
             $table->timestamps();
 
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->foreign('menu_id')->references('id')->on(MenuBuilder::getMenusTableName())->onDelete('cascade');
         });
     }
 
@@ -61,7 +62,7 @@ class CreateMenusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_items');
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists(MenuBuilder::getMenuItemsTableName());
+        Schema::dropIfExists(MenuBuilder::getMenusTableName());
     }
 }
