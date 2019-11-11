@@ -2,6 +2,8 @@
 
 namespace OptimistDigital\MenuBuilder\Classes;
 
+use OptimistDigital\MenuBuilder\MenuBuilder;
+
 abstract class MenuItemBase
 {
     /**
@@ -60,8 +62,10 @@ abstract class MenuItemBase
 
     public static function getRules(): array
     {
+        $menusTableName = MenuBuilder::getMenusTableName();
+
         return [
-            'menu_id' => 'required|exists:menus,id',
+            'menu_id' => "required|exists:$menusTableName,id",
             'name' => 'required',
             'class' => 'required',
             'target' => 'required|in:_self,_blank',
