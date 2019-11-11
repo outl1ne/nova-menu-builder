@@ -16,18 +16,38 @@
     </div>
 
     <template v-if="menuItems.length > 0">
-      <vue-nestable v-model="menuItems" @change="change" classProp="enabledClass">
+      <vue-nestable v-model="menuItems" @change="change" classProp="classProp">
         <template slot-scope="{ item }" :placeholder="this.__('Add a new menu item')">
           <vue-nestable-handle :item="item" class="handle flex flex-wrap">
-            <div class="w-2/3">
-              <span class="font-semibold">{{ item.name }}</span>
-              <span class="font-lighter text-80 ml-4 text-sm">{{ item.displayValue }}</span>
+            <div :class="`item-data w-2/3 flex ${!hasChildren(item) && 'pl-3'}`">
+              <button
+                v-if="hasChildren(item)"
+                @click="toggleMenuChildrenCascade(item)"
+                title="Edit"
+                class="appearance-none cursor-pointer text-70 hover:text-primary flex pl-4 pr-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="6"
+                  viewBox="0 0 10 6"
+                  :class="`fill-current ${isCascadeOpen(item) && 'btn-cascade-open'}`"
+                >
+                  <path
+                    fill="var(--90)"
+                    d="M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
+                  ></path>
+                </svg>
+              </button>
+
+              <div class="font-semibold">{{ item.name }}</div>
+              <div class="font-lighter text-80 ml-4 text-sm">{{ item.displayValue }}</div>
             </div>
             <div class="buttons w-1/3 flex justify-end content-center">
               <button
                 @click="editMenu(item)"
                 title="Edit"
-                class="appearance-none cursor-pointer text-70 hover:text-primary mr-3 self-center"
+                class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -282,6 +302,9 @@ export default {
       menu_id: null,
       enabled: true,
     },
+    defaultMenuItemProps: {
+      classProp: [],
+    },
     cmOptions: {
       tabSize: 2,
       theme: 'dracula',
@@ -304,6 +327,7 @@ export default {
     newItemData() {
       return {
         ...this.newItem,
+        ...this.defaultMenuItemProps,
         parameters: this.newItem.parameters && JSON.parse(this.newItem.parameters),
         class: this.linkType.class,
       };
@@ -333,11 +357,21 @@ export default {
 
     getData() {
       api.getItems(this.resourceId).then(result => {
-        this.menuItems = _.values(result);
+        this.menuItems = this.setMenuItemProperties(_.values(result));
       });
 
       api.getLinkTypes(this.$attrs.panel.fields[0].locale).then(result => {
         this.linkTypes = _.values(result);
+      });
+    },
+
+    setMenuItemProperties(menuItems) {
+      return menuItems.map(item => {
+        return {
+          ...item,
+          classProp: [],
+          children: Array.isArray(item.children) ? this.setMenuItemProperties(item.children) : item.children,
+        };
       });
     },
 
@@ -443,6 +477,22 @@ export default {
         _.map(errors, error => this.$toasted.show(error, { type: 'error' }));
       }
     },
+
+    toggleMenuChildrenCascade(item) {
+      if (item.classProp.find(className => className === 'hide-cascade')) {
+        item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
+      } else {
+        item.classProp.push('hide-cascade');
+      }
+    },
+
+    hasChildren(item) {
+      return Array.isArray(item.children) && item.children.length;
+    },
+
+    isCascadeOpen(item) {
+      return !item.classProp.find(className => className === 'hide-cascade');
+    },
   },
   mounted() {
     this.newItem.menu_id = this.resourceId;
@@ -500,7 +550,7 @@ export default {
 
 .handle {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px 0 0;
   height: 45px;
   line-height: 45px;
 }
@@ -541,8 +591,14 @@ export default {
 .nestable [draggable='true'] {
   cursor: move;
 }
-
 .disabled {
   opacity: 0.5;
+}
+.btn-cascade-open {
+  transform: rotate(180deg);
+  transform-origin: center center;
+}
+.hide-cascade > ol {
+  display: none;
 }
 </style>
