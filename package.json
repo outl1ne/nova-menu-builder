@@ -9,8 +9,7 @@
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "check-format": "prettier --list-different 'resources/**/*.{css,js,vue}'",
-    "format": "prettier --write 'resources/**/*.{css,js,vue}'",
-    "lint": "eslint resources/js --fix --ext js,vue"
+    "format": "prettier --write 'resources/**/*.{css,js,vue}'"
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
@@ -18,8 +17,8 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-vue": "^6.0.0",
     "laravel-mix": "^5.0.0",
-    "prettier": "^1.18.2",
-    "resolve-url-loader": "^3.1.0",
+    "prettier": "^1.19.1",
+    "resolve-url-loader": "^3.1.1",
     "sass": "^1.23.3",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"
