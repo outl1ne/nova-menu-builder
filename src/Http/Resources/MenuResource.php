@@ -19,6 +19,7 @@ class MenuResource extends Resource
 
     public function fields(Request $request)
     {
+        $menusTableName = MenuBuilder::getMenusTableName();
         $resourceLocale = static::$model::whereId($request->route('resourceId'))->value('locale');
         $locales = MenuBuilder::getLocales();
         $hasManyDifferentLocales = Menu::select('locale')->distinct()->get()->count() > 1;
@@ -30,8 +31,8 @@ class MenuResource extends Resource
 
             Text::make(__('Slug'), 'slug')
                 ->sortable()
-                ->creationRules('required', 'max:255', "unique:menus,slug,NULL,id,locale,$request->locale")
-                ->updateRules('required', 'max:255', "unique:menus,slug,{{resourceId}},id,locale,$request->locale"),
+                ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id,locale,$request->locale")
+                ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id,locale,$request->locale"),
         ];
 
         if (MenuBuilder::hasNovaLang()) {
