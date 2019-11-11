@@ -9,7 +9,9 @@
           title="Add"
           class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
           v-on:click="newItemMenu()"
-        >{{ __('Add item') }}</button>
+        >
+          {{ __('Add item') }}
+        </button>
       </div>
     </div>
 
@@ -85,35 +87,28 @@
     </template>
 
     <div ref="modals">
-      <modal
-        ref="modalConfirm"
-        :show="modalConfirm"
-        :name="'modalConfirm'"
-        :align="'flex justify-end'"
-        :width="400"
-      >
+      <modal ref="modalConfirm" :show="modalConfirm" :name="'modalConfirm'" :align="'flex justify-end'" :width="400">
         <div slot="container">
           <h2 class="mb-6 text-90 font-normal text-xl">{{ __('Delete item') }}</h2>
-          <p
-            v-if="itemToDelete && itemToDelete.children.length > 0"
-            class="text-80 leading-normal mb-4"
-          >{{ __("Take care. All children items will be deleted cause you're deleting the parent.") }}</p>
+          <p v-if="itemToDelete && itemToDelete.children.length > 0" class="text-80 leading-normal mb-4">
+            {{ __("Take care. All children items will be deleted cause you're deleting the parent.") }}
+          </p>
           <p class="text-80 leading-normal">{{ __('Are you sure to delete this menu item?') }}</p>
         </div>
         <div slot="buttons">
           <div class="ml-auto">
-            <button
-              type="button"
-              @click.prevent="closeModal"
-              class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-            >{{ __('Cancel') }}</button>
+            <button type="button" @click.prevent="closeModal" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
+              {{ __('Cancel') }}
+            </button>
 
             <button
               id="confirm-overwrite-button"
               ref="confirmButton"
               @click.prevent="confirmItemDelete"
               class="btn btn-default btn-danger"
-            >{{ __('Yes, remove!') }}</button>
+            >
+              {{ __('Yes, remove!') }}
+            </button>
           </div>
         </div>
       </modal>
@@ -143,7 +138,7 @@
                   type="text"
                   :placeholder="this.__('Name')"
                   class="w-full form-control form-input form-input-bordered"
-                >
+                />
               </div>
             </div>
             <div class="flex border-b border-40">
@@ -151,19 +146,10 @@
                 <label class="inline-block text-80 pt-2 leading-tight">{{ __('Type') }}</label>
               </div>
               <div class="py-4 w-4/5">
-                <select
-                  v-model="linkType"
-                  id="type"
-                  class="w-full form-control form-select"
-                  @change="onChangeType"
-                >
+                <select v-model="linkType" id="type" class="w-full form-control form-select" @change="onChangeType">
                   <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-                  <option
-                    :value="linkType"
-                    v-for="(linkType, i) of linkTypes"
-                    :key="i"
-                  >{{ linkType.name }}</option>
+                  <option :value="linkType" v-for="(linkType, i) of linkTypes" :key="i">{{ linkType.name }}</option>
                 </select>
               </div>
             </div>
@@ -179,7 +165,7 @@
                     type="text"
                     :placeholder="this.__('URL')"
                     class="w-full form-control form-input form-input-bordered"
-                  >
+                  />
                 </div>
               </div>
             </template>
@@ -192,17 +178,11 @@
 
                 <div class="py-4 w-4/5">
                   <select v-model="newItem.value" id="type" class="w-full form-control form-select">
-                    <option
-                      value=""
-                      selected="selected"
-                      disabled="disabled"
-                    >{{ __('Choose an option') }}</option>
+                    <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-                    <option
-                      :value="key"
-                      v-for="(key, i) of Object.keys(linkType.options)"
-                      :key="i"
-                    >{{ linkType.options[key] }}</option>
+                    <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">{{
+                      linkType.options[key]
+                    }}</option>
                   </select>
                 </div>
               </div>
@@ -234,11 +214,9 @@
         </div>
         <div slot="buttons">
           <div class="ml-auto">
-            <button
-              type="button"
-              @click.prevent="closeModal"
-              class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-            >{{ __('Cancel') }}</button>
+            <button type="button" @click.prevent="closeModal" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
+              {{ __('Cancel') }}
+            </button>
 
             <button
               v-if="update == false"
@@ -246,7 +224,9 @@
               ref="confirmButton"
               @click.prevent="confirmItemCreate"
               class="btn btn-default btn-primary"
-            >{{ __('Create menu item') }}</button>
+            >
+              {{ __('Create menu item') }}
+            </button>
 
             <button
               v-else
@@ -254,7 +234,9 @@
               ref="confirmButton"
               @click.prevent="updateItem"
               class="btn btn-default btn-primary"
-            >{{ __('Update menu item') }}</button>
+            >
+              {{ __('Update menu item') }}
+            </button>
           </div>
         </div>
       </modal>
