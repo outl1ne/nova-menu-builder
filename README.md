@@ -22,29 +22,17 @@ Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-
 
 ## Installation
 
-Install the package in a Laravel Nova project via Composer:
+Install the package in a Laravel Nova project via Composer, run migrations and edit the config file:
 
 ```bash
+# Install the package
 composer require optimistdigital/nova-menu-builder
-```
 
-Publish the database migration(s) and run migrate:
-
-```bash
-php artisan vendor:publish --tag=nova-menu-builder-migrations
+# Run automatically loaded migrations
 php artisan migrate
-```
 
-Publish the configuration file and edit it to your preference:
-
-```bash
+# Publish the configuration file and edit it to your preference
 php artisan vendor:publish --tag=nova-menu-builder-config
-```
-
-Optionally you can publish menu template:
-
-```bash
-php artisan vendor:publish --tag=nova-menu-builder-views
 ```
 
 Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
@@ -59,6 +47,12 @@ public function tools()
         new \OptimistDigital\MenuBuilder\MenuBuilder,
     ];
 }
+```
+
+Optionally you can publish menu template:
+
+```bash
+php artisan vendor:publish --tag=nova-menu-builder-views
 ```
 
 ## Usage
@@ -86,6 +80,10 @@ return [
   // or if you want to use a function, but still be able to cache it:
 
   'locales' => '\App\Configuration\NovaMenuConfiguration@getLocales',
+
+  // or
+
+  'locales' => 'nova_lang_get_locales',
   // ...
 ];
 ```

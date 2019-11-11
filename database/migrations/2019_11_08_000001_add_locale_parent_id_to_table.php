@@ -23,9 +23,9 @@ class AddLocaleParentIdToTable extends Migration
     public function down()
     {
         Schema::table('menus', function ($table) {
+            $table->dropUnique(['locale_parent_id', 'locale']);
             $table->dropForeign(['locale_parent_id']);
             $table->dropColumn('locale_parent_id');
-            $table->dropUnique(['locale_parent_id', 'locale']);
         });
     }
 }

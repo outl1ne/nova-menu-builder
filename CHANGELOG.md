@@ -15,7 +15,7 @@ NB! This release contains breaking changes. All configuration options were moved
 
 ### Changed
 
-- Added better localization support through `nova-locale-field`
+- Better localization support through `nova-locale-field`
 - Moved all config options from tool constructor to `config/nova-menu.php`
 - Updated all packages
 - All migrations are now loaded automatically
