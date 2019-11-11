@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use OptimistDigital\MenuBuilder\BuilderResourceTool;
 use OptimistDigital\MenuBuilder\Models\Menu;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Resource;
 use OptimistDigital\MenuBuilder\MenuBuilder;
@@ -25,8 +24,6 @@ class MenuResource extends Resource
         $hasManyDifferentLocales = Menu::select('locale')->distinct()->get()->count() > 1;
 
         $fields = [
-            ID::make()->sortable(),
-
             Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
