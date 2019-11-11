@@ -46,8 +46,8 @@ The new defaults are `nova_menu_menus` and `nova_menu_menu_items`. If you wish t
 **NB! Keep in mind that the configuration must be changed before running the migrations as the migration take the configured names for tables.**
 
 ```php
-    'menus_table_name' => 'menus',
-    'menu_items_table_name' => 'menu_items',
+'menus_table_name' => 'menus',
+'menu_items_table_name' => 'menu_items',
 ```
 
 ## Migrations
@@ -55,3 +55,5 @@ The new defaults are `nova_menu_menus` and `nova_menu_menu_items`. If you wish t
 Migrations are now loaded automatically This aims to reduce the number of migration files inside the end project's folder and keep them more relevant.
 
 The migration names are no longer dynamic and running `php artisan migrate` **will actually delete the original migration from your project source automatically**, so don't be alarmed to see a missing migration in your Git changelog.
+
+Run `php artisan migrate` to run one new migration and automatically delete the old migration file.
