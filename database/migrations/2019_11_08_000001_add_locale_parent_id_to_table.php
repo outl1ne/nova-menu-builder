@@ -16,16 +16,16 @@ class AddLocaleParentIdToTable extends Migration
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
             $table->bigInteger('locale_parent_id')->nullable()->unsigned();
 
-            $table->foreign('locale_parent_id')->references('id')->on(MenuBuilder::getMenusTableName());
-            $table->unique(['locale_parent_id', 'locale']);
+            $table->foreign('locale_parent_id', 'menus_locale_parent_id_foreign')->references('id')->on(MenuBuilder::getMenusTableName());
+            $table->unique(['locale_parent_id', 'locale'], 'menus_locale_parent_id_locale_unique');
         });
     }
 
     public function down()
     {
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->dropUnique(['locale_parent_id', 'locale']);
-            $table->dropForeign(['locale_parent_id']);
+            $table->dropUnique('menus_locale_parent_id_locale_unique');
+            $table->dropForeign('menus_locale_parent_id_foreign');
             $table->dropColumn('locale_parent_id');
         });
     }
