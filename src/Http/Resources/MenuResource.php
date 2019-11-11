@@ -14,35 +14,10 @@ use OptimistDigital\NovaLocaleField\LocaleField;
 
 class MenuResource extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
     public static $model = Menu::class;
-
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
-    public static $search = [
-        'id',
-    ];
-
-    /**
-     * @var mixed
-     */
+    public static $search = ['name', 'slug'];
     public static $displayInNavigation = false;
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return array
-     * @throws \Exception
-     */
     public function fields(Request $request)
     {
         $resourceLocale = static::$model::whereId($request->route('resourceId'))->value('locale');
@@ -80,75 +55,16 @@ class MenuResource extends Resource
         return $fields;
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function cards(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function filters(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function lenses(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
     public static function label()
     {
         return 'Menus';
     }
 
-    /**
-     * Get the displayable singular label of the resource.
-     *
-     * @return string
-     */
     public static function singularLabel()
     {
         return 'Menu';
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
     public static function uriKey()
     {
         return 'nova-menu';
