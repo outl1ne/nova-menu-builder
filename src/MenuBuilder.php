@@ -50,4 +50,9 @@ class MenuBuilder extends Tool
             $configuredLinkableModels,
         );
     }
+
+    public static function hasNovaLang()
+    {
+        return class_exists('\OptimistDigital\NovaLang\NovaLang');
+    }
 }

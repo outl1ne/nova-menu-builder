@@ -62,7 +62,7 @@ class MenuResource extends Resource
                 ->updateRules('required', 'max:255', "unique:menus,slug,{{resourceId}},id,locale,$request->locale"),
         ];
 
-        if (class_exists('\OptimistDigital\NovaLang\NovaLang')) {
+        if (MenuBuilder::hasNovaLang()) {
             $fields[] = \OptimistDigital\NovaLang\NovaLangField\NovaLangField::make('Locale', 'locale', 'locale_parent_id')->onlyOnForms();
         } else {
             $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')->locales($locales)->onlyOnForms();
@@ -161,7 +161,7 @@ class MenuResource extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if (class_exists('\OptimistDigital\NovaLang\NovaLang')) $query->where('menus.locale', nova_lang_get_active_locale());
+        if (MenuBuilder::hasNovaLang()) $query->where('menus.locale', nova_lang_get_active_locale());
         return $query;
     }
 }
