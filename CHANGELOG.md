@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2019-11-08
+## [2.0.0] - 2019-11-11
 
-NB! This release contains breaking changes. All configuration options were moved to `config/nova-menu.php`.
+NB! This release contains breaking changes. All configuration options were moved from `MenuBuilder` constructor to `config/nova-menu.php`.
 
 ### Added
 
@@ -17,6 +17,7 @@ NB! This release contains breaking changes. All configuration options were moved
 
 - Added better localization support through `nova-locale-field`
 - Moved all config options from tool constructor to `config/nova-menu.php`
+- Updated all packages
 
 ## [1.4.2] - 2019-10-09
 
@@ -151,6 +152,7 @@ public static function getValue($value = null, array $parameters = null)
 - Nesting and re-ordering of menu-items
 - Creation of custom link options (ie links to Laravel models)
 
+[2.0.0]: https://github.com/optimistdigital/nova-menu-builder/compare/1.4.2...2.0.0
 [1.4.2]: https://github.com/optimistdigital/nova-menu-builder/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/optimistdigital/nova-menu-builder/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/optimistdigital/nova-menu-builder/compare/1.3.3...1.4.0
