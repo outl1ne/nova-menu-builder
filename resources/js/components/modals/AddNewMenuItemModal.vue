@@ -1,9 +1,9 @@
 <template>
-  <modal ref="modalItem" :show="modalItem" :name="'modalItem'" :align="'flex justify-end'">
+  <modal ref="showModal" :show="showModal" :name="'showModal'" :align="'flex justify-end'">
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
-        <toggle-button v-model="newItem.enabled" :color="switchColor" :width="70" :sync="true" :labels="toogleLabels" />
+        <toggle-button v-model="newItem.enabled" :color="switchColor" :width="70" :sync="true" :labels="toggleLabels" />
       </div>
 
       <form autocomplete="off">
@@ -113,9 +113,30 @@
 <script>
 import Modal from './Modal';
 export default {
-  props: [],
+  props: ['newItem', 'showModal', 'updateItem', 'closeModal', 'confirmItemCreate', 'update', 'linkType'],
   components: {
     Modal,
+  },
+  data: () => ({
+    toggleLabels: false,
+    switchColor: {},
+    cmOptions: {
+      tabSize: 2,
+      theme: 'dracula',
+      lineNumbers: true,
+      lineWrapping: true,
+      foldGutter: true,
+      line: true,
+      mode: {
+        name: 'javascript',
+        json: true,
+      },
+    },
+    cmPlaceholder: '{\n  "id": 1\n}',
+  }),
+  mounted() {
+    this.toggleLabels = { checked: this.__('Enabled'), unchecked: this.__('Disabled') };
+    this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
   },
 };
 </script>
