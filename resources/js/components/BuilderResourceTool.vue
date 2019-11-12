@@ -9,7 +9,7 @@
       :duplicateMenuItem="duplicateMenuItem"
       v-if="menuItems.length > 0"
     />
-    <new-menu-item :newMenuItem="newItemMenu" />
+    <new-menu-item :newMenuItem="newItemMenu" v-else />
     <div ref="modals">
       <DeleteConfirmationModal
         :modalConfirm="modalConfirm"
@@ -242,7 +242,7 @@ export default {
         .catch(request => {
           this.handleErrors(request);
         });
-    }
+    },
   },
   mounted() {
     this.newItem.menu_id = this.resourceId;
