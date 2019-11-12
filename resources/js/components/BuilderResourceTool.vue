@@ -275,11 +275,12 @@ export default {
 
 .nestable-item-content {
   /*padding: 10px;*/
-  border: 1px solid #ccc;
-  background: #fafafa;
+  border: 1px solid #fff;
+  background: #fff;
   -webkit-border-radius: 3px;
-  border-radius: 3px;
+  border-radius: 0.5rem;
   box-sizing: border-box;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
 
 .handle {

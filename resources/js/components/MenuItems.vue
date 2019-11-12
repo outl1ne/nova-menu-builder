@@ -23,7 +23,7 @@
             </svg>
           </button>
 
-          <div class="font-semibold">{{ item.name }}</div>
+          <div class="text-90">{{ item.name }}</div>
           <div class="font-lighter text-80 ml-4 text-sm">{{ item.displayValue }}</div>
         </div>
 
