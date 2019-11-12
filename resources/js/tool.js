@@ -10,5 +10,8 @@ Nova.booting((Vue, router) => {
   ]);
 
   Vue.use(ToggleButton);
+  Vue.component('edit-menu-hierarchy', require('./components/MenuItems').default);
+  Vue.component('new-menu-item', require('./components/NewMenuItem').default);
+  Vue.component('edit-menu-head', require('./components/MenuEditHead').default);
   Vue.component('nova-menu', require('./components/BuilderResourceTool').default);
 });
