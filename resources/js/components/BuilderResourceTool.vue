@@ -2,10 +2,11 @@
   <div class="py-3">
     <edit-menu-head :newMenuItem="newItemMenu" />
     <edit-menu-hierarchy
-      :menuItems="menuItems"
+      v-model="menuItems"
       :editMenu="editMenu"
       :removeMenu="removeMenu"
       :change="change"
+      :duplicateMenuItem="duplicateMenuItem"
       v-if="menuItems.length > 0"
     />
     <new-menu-item :newMenuItem="newItemMenu" />
@@ -229,6 +230,19 @@ export default {
         _.map(errors, error => this.$toasted.show(error, { type: 'error' }));
       }
     },
+
+    duplicateMenuItem(item) {
+      api
+        .duplicate(item.id)
+        .then(() => {
+          this.getData();
+          this.resetNewItem();
+          this.$toasted.show(this.__('Item duplicated!'), { type: 'success' });
+        })
+        .catch(request => {
+          this.handleErrors(request);
+        });
+    }
   },
   mounted() {
     this.newItem.menu_id = this.resourceId;
