@@ -26,11 +26,11 @@
   </modal>
 </template>
 <script>
-  import Modal from './Modal';
-  export default {
-    props: ['modalConfirm', 'itemToDelete', 'closeModal', 'confirmItemDelete'],
-    components: {
-      Modal,
-    },
-  }
+import Modal from './Modal';
+export default {
+  props: ['modalConfirm', 'itemToDelete', 'closeModal', 'confirmItemDelete'],
+  components: {
+    Modal,
+  },
+};
 </script>

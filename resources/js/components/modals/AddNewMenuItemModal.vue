@@ -3,13 +3,7 @@
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
-        <toggle-button
-          v-model="newItem.enabled"
-          :color="switchColor"
-          :width="70"
-          :sync="true"
-          :labels="toogleLabels"
-        />
+        <toggle-button v-model="newItem.enabled" :color="switchColor" :width="70" :sync="true" :labels="toogleLabels" />
       </div>
 
       <form autocomplete="off">
@@ -68,7 +62,7 @@
 
                 <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">{{
                   linkType.options[key]
-                  }}</option>
+                }}</option>
               </select>
             </div>
           </div>
@@ -77,11 +71,7 @@
               <label class="inline-block text-80 pt-2 leading-tight">{{ __('Parameters') }}</label>
             </div>
             <div class="py-4 w-4/5">
-              <codemirror
-                v-model="newItem.parameters"
-                :options="cmOptions"
-                :placeholder="cmPlaceholder"
-              ></codemirror>
+              <codemirror v-model="newItem.parameters" :options="cmOptions" :placeholder="cmPlaceholder"></codemirror>
             </div>
           </div>
         </template>
@@ -113,12 +103,7 @@
           {{ __('Create menu item') }}
         </button>
 
-        <button
-          v-else
-          ref="confirmButton"
-          @click.prevent="updateItem"
-          class="btn btn-default btn-primary"
-        >
+        <button v-else ref="confirmButton" @click.prevent="updateItem" class="btn btn-default btn-primary">
           {{ __('Update menu item') }}
         </button>
       </div>
@@ -126,11 +111,11 @@
   </modal>
 </template>
 <script>
-  import Modal from './Modal';
-  export default {
-    props: [],
-    components: {
-      Modal,
-    },
-  }
+import Modal from './Modal';
+export default {
+  props: [],
+  components: {
+    Modal,
+  },
+};
 </script>

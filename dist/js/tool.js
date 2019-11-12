@@ -728,39 +728,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['newItem', 'showModal', 'updateItem', 'closeModal', 'confirmItemCreate', 'update', 'linkType'],
+  props: [],
   components: {
     Modal: _Modal__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  data: function data() {
-    return {
-      toggleLabels: false,
-      switchColor: {},
-      cmOptions: {
-        tabSize: 2,
-        theme: 'dracula',
-        lineNumbers: true,
-        lineWrapping: true,
-        foldGutter: true,
-        line: true,
-        mode: {
-          name: 'javascript',
-          json: true
-        }
-      },
-      cmPlaceholder: '{\n  "id": 1\n}'
-    };
-  },
-  mounted: function mounted() {
-    this.toggleLabels = {
-      checked: this.__('Enabled'),
-      unchecked: this.__('Disabled')
-    };
-    this.switchColor = {
-      checked: '#21b978',
-      unchecked: '#dae1e7',
-      disabled: '#eef1f4'
-    };
   }
 });
 
@@ -39695,10 +39665,10 @@ var render = function() {
   return _c(
     "modal",
     {
-      ref: "showModal",
+      ref: "modalItem",
       attrs: {
-        show: _vm.showModal,
-        name: "showModal",
+        show: _vm.modalItem,
+        name: "modalItem",
         align: "flex justify-end"
       }
     },
@@ -39717,7 +39687,7 @@ var render = function() {
                 color: _vm.switchColor,
                 width: 70,
                 sync: true,
-                labels: _vm.toggleLabels
+                labels: _vm.toogleLabels
               },
               model: {
                 value: _vm.newItem.enabled,
