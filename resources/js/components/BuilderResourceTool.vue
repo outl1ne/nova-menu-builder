@@ -25,6 +25,9 @@
         :confirmItemCreate="confirmItemCreate"
         :update="update"
         :linkType="linkType"
+        v-on:linkType="updateLinkType"
+        :linkTypes="linkTypes"
+        :onChangeType="onChangeType"
       />
     </div>
   </div>
@@ -32,15 +35,8 @@
 
 <script>
 import _ from 'lodash';
-import { VueNestable, VueNestableHandle } from 'vue-nestable';
-import { codemirror } from 'vue-codemirror';
 import beautify from 'js-beautify';
 
-import 'codemirror/addon/display/placeholder.js';
-//themes
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/dracula.css';
-import 'codemirror/mode/javascript/javascript';
 import api from '../api';
 
 import DeleteConfirmationModal from './modals/MenuItemDeleteConfirmModal';
@@ -49,9 +45,6 @@ import AddNewItemModal from './modals/AddNewMenuItemModal';
 export default {
   props: ['resourceName', 'resourceId', 'field'],
   components: {
-    VueNestable,
-    VueNestableHandle,
-    codemirror,
     DeleteConfirmationModal,
     AddNewItemModal,
   },
@@ -242,6 +235,10 @@ export default {
         .catch(request => {
           this.handleErrors(request);
         });
+    },
+
+    updateLinkType(linkType) {
+      this.linkType = this.linkTypes.find(type => type.type === linkType);
     },
   },
   mounted() {

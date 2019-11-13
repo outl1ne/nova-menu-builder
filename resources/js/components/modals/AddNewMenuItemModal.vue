@@ -26,10 +26,10 @@
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Type') }}</label>
           </div>
           <div class="py-4 w-4/5">
-            <select v-model="linkType" class="w-full form-control form-select" @change="onChangeType">
+            <select :value="linkType.type" @input="e => this.$emit('linkType', e.target.value)" class="w-full form-control form-select" @change="onChangeType">
               <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-              <option :value="linkType" v-for="(linkType, i) of linkTypes" :key="i">{{ linkType.name }}</option>
+              <option :value="type.type" v-for="(type, i) of linkTypes" :key="i">{{ type.name }}</option>
             </select>
           </div>
         </div>
@@ -112,10 +112,19 @@
 </template>
 <script>
 import Modal from './Modal';
+import { codemirror } from 'vue-codemirror';
+
+import 'codemirror/addon/display/placeholder.js';
+//themes
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/dracula.css';
+import 'codemirror/mode/javascript/javascript';
+
 export default {
-  props: ['newItem', 'showModal', 'updateItem', 'closeModal', 'confirmItemCreate', 'update', 'linkType'],
+  props: ['newItem', 'showModal', 'updateItem', 'closeModal', 'confirmItemCreate', 'update', 'linkType', 'linkTypes', 'onChangeType'],
   components: {
     Modal,
+    codemirror,
   },
   data: () => ({
     toggleLabels: false,
@@ -137,6 +146,6 @@ export default {
   mounted() {
     this.toggleLabels = { checked: this.__('Enabled'), unchecked: this.__('Disabled') };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
-  },
+  }
 };
 </script>
