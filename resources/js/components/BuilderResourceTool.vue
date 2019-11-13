@@ -115,14 +115,12 @@ export default {
         menuStorage = {};
       }
       menuStorage[this.resourceId] = menuItemsState;
-      console.log('SET LOCAL STATE')
       localStorage.setItem('menuManagerItemsState', JSON.stringify(menuStorage));
     },
 
     getMenuLocalState() {
       const menuStorage = JSON.parse(localStorage.getItem('menuManagerItemsState'));
       if (!menuStorage || !menuStorage[this.resourceId]) return null;
-      console.log('GET LOCAL STATE')
       return menuStorage[this.resourceId];
     },
 
