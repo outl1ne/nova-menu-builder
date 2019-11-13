@@ -136,11 +136,11 @@ export default {
 
     setMenuItemProperties(menuItems, localItemsState = null) {
       return menuItems.map(item => {
-        const localItemState = Array.isArray(localItemsState) && localItemsState.find(localItem => +localItem.id === +item.id) || {};
+        const localItemState = Array.isArray(localItemsState) && localItemsState.find(localItem => +localItem.id === +item.id);
         return {
           ...item,
           classProp: [localItemState && !localItemState.cascade ? 'hide-cascade' : ''],
-          children: Array.isArray(item.children) ? this.setMenuItemProperties(item.children, localItemState.children) : item.children,
+          children: Array.isArray(item.children) ? this.setMenuItemProperties(item.children, localItemState && localItemState.children) : item.children,
         };
       });
     },
