@@ -26,13 +26,19 @@
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Type') }}</label>
           </div>
           <div class="py-4 w-4/5">
-            <select :value="linkType.type" @input="e => this.$emit('linkType', e.target.value)" class="w-full form-control form-select" @change="onChangeType">
+            <select
+              :value="linkType.class"
+              @input="e => this.$emit('linkType', e.target.value)"
+              class="w-full form-control form-select"
+              @change="onChangeType"
+            >
               <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-              <option :value="type.type" v-for="(type, i) of linkTypes" :key="i">{{ type.name }}</option>
+              <option :value="type.class" v-for="(type, i) of linkTypes" :key="i">{{ type.name }}</option>
             </select>
           </div>
         </div>
+        {{ log('linkType', linkType) }}
         <template v-if="linkType.type == 'static-url'">
           <div class="flex border-b border-40">
             <div class="w-1/5 py-4">
@@ -60,9 +66,9 @@
               <select v-model="newItem.value" class="w-full form-control form-select">
                 <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-                <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">{{
-                  linkType.options[key]
-                }}</option>
+                <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">
+                  {{ linkType.options[key] }}
+                </option>
               </select>
             </div>
           </div>
@@ -121,7 +127,17 @@ import 'codemirror/theme/dracula.css';
 import 'codemirror/mode/javascript/javascript';
 
 export default {
-  props: ['newItem', 'showModal', 'updateItem', 'closeModal', 'confirmItemCreate', 'update', 'linkType', 'linkTypes', 'onChangeType'],
+  props: [
+    'newItem',
+    'showModal',
+    'updateItem',
+    'closeModal',
+    'confirmItemCreate',
+    'update',
+    'linkType',
+    'linkTypes',
+    'onChangeType',
+  ],
   components: {
     Modal,
     codemirror,
@@ -146,6 +162,6 @@ export default {
   mounted() {
     this.toggleLabels = { checked: this.__('Enabled'), unchecked: this.__('Disabled') };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
-  }
+  },
 };
 </script>

@@ -7,6 +7,7 @@
       :removeMenu="removeMenu"
       :change="change"
       :duplicateMenuItem="duplicateMenuItem"
+      :saveMenuLocalState="saveMenuLocalState"
       v-if="menuItems.length > 0"
     />
     <new-menu-item :newMenuItem="newItemMenu" v-else />
@@ -62,9 +63,7 @@ export default {
       active: true,
       menu_id: null,
       enabled: true,
-    },
-    defaultMenuItemProps: {
-      classProp: [],
+      classProp: []
     },
     menuItems: [],
     linkTypes: void 0,
@@ -73,7 +72,6 @@ export default {
     newItemData() {
       return {
         ...this.newItem,
-        ...this.defaultMenuItemProps,
         parameters: this.newItem.parameters && JSON.parse(this.newItem.parameters),
         class: this.linkType.class,
       };
@@ -101,22 +99,51 @@ export default {
       this.resetNewItem();
     },
 
+    getCascadeState(menuItem) {
+      return {
+        id: menuItem.id,
+        cascade: menuItem.classProp ? !menuItem.classProp.find(className => className === 'hide-cascade') : true,
+        children: Array.isArray(menuItem.children) && menuItem.children.map(item => item && this.getCascadeState(item))
+      }
+    },
+
+    saveMenuLocalState() {
+      if (!Array.isArray(this.menuItems) || this.menuItems.length === 0) return;
+      const menuItemsState = this.menuItems.map(item => item && this.getCascadeState(item));
+      let menuStorage = this.getMenuLocalState();
+      if (!menuStorage) {
+        menuStorage = {};
+      }
+      menuStorage[this.resourceId] = menuItemsState;
+      console.log('SET LOCAL STATE')
+      localStorage.setItem('menuManagerItemsState', JSON.stringify(menuStorage));
+    },
+
+    getMenuLocalState() {
+      const menuStorage = JSON.parse(localStorage.getItem('menuManagerItemsState'));
+      if (!menuStorage || !menuStorage[this.resourceId]) return null;
+      console.log('GET LOCAL STATE')
+      return menuStorage[this.resourceId];
+    },
+
     getData() {
       api.getItems(this.resourceId).then(result => {
-        this.menuItems = this.setMenuItemProperties(_.values(result));
+        this.menuItems = this.setMenuItemProperties(_.values(result), this.getMenuLocalState());
       });
 
       api.getLinkTypes(this.$attrs.panel.fields[0].locale).then(result => {
         this.linkTypes = _.values(result);
+        console.log('this.linkTypes', this.linkTypes)
       });
     },
 
-    setMenuItemProperties(menuItems) {
+    setMenuItemProperties(menuItems, localItemsState = null) {
       return menuItems.map(item => {
+        const localItemState = Array.isArray(localItemsState) && localItemsState.find(localItem => +localItem.id === +item.id) || {};
         return {
           ...item,
-          classProp: [],
-          children: Array.isArray(item.children) ? this.setMenuItemProperties(item.children) : item.children,
+          classProp: [localItemState && !localItemState.cascade ? 'hide-cascade' : ''],
+          children: Array.isArray(item.children) ? this.setMenuItemProperties(item.children, localItemState.children) : item.children,
         };
       });
     },
@@ -238,7 +265,7 @@ export default {
     },
 
     updateLinkType(linkType) {
-      this.linkType = this.linkTypes.find(type => type.type === linkType);
+      this.linkType = this.linkTypes.find(type => type.class === linkType);
     },
   },
   mounted() {

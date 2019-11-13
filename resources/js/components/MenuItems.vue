@@ -106,6 +106,10 @@ export default {
       type: Function,
       required: true,
     },
+    saveMenuLocalState: {
+      type: Function,
+      required: true,
+    },
   },
 
   components: {
@@ -129,6 +133,7 @@ export default {
       } else {
         item.classProp.push('hide-cascade');
       }
+      this.saveMenuLocalState();
     },
 
     isCascadeOpen(item) {

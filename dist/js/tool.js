@@ -143,6 +143,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -168,9 +169,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         parameters: '',
         active: true,
         menu_id: null,
-        enabled: true
-      },
-      defaultMenuItemProps: {
+        enabled: true,
         classProp: []
       },
       menuItems: [],
@@ -179,7 +178,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     newItemData: function newItemData() {
-      return _objectSpread({}, this.newItem, {}, this.defaultMenuItemProps, {
+      return _objectSpread({}, this.newItem, {
         parameters: this.newItem.parameters && JSON.parse(this.newItem.parameters),
         "class": this.linkType["class"]
       });
@@ -205,38 +204,79 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.modalConfirm = false;
       this.resetNewItem();
     },
-    getData: function getData() {
+    getCascadeState: function getCascadeState(menuItem) {
       var _this = this;
 
+      return {
+        id: menuItem.id,
+        cascade: menuItem.classProp ? !menuItem.classProp.find(function (className) {
+          return className === 'hide-cascade';
+        }) : true,
+        children: Array.isArray(menuItem.children) && menuItem.children.map(function (item) {
+          return item && _this.getCascadeState(item);
+        })
+      };
+    },
+    saveMenuLocalState: function saveMenuLocalState() {
+      var _this2 = this;
+
+      if (!Array.isArray(this.menuItems) || this.menuItems.length === 0) return;
+      var menuItemsState = this.menuItems.map(function (item) {
+        return item && _this2.getCascadeState(item);
+      });
+      var menuStorage = this.getMenuLocalState();
+
+      if (!menuStorage) {
+        menuStorage = {};
+      }
+
+      menuStorage[this.resourceId] = menuItemsState;
+      console.log('SET LOCAL STATE');
+      localStorage.setItem('menuManagerItemsState', JSON.stringify(menuStorage));
+    },
+    getMenuLocalState: function getMenuLocalState() {
+      var menuStorage = JSON.parse(localStorage.getItem('menuManagerItemsState'));
+      if (!menuStorage || !menuStorage[this.resourceId]) return null;
+      console.log('GET LOCAL STATE');
+      return menuStorage[this.resourceId];
+    },
+    getData: function getData() {
+      var _this3 = this;
+
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].getItems(this.resourceId).then(function (result) {
-        _this.menuItems = _this.setMenuItemProperties(lodash__WEBPACK_IMPORTED_MODULE_0___default.a.values(result));
+        _this3.menuItems = _this3.setMenuItemProperties(lodash__WEBPACK_IMPORTED_MODULE_0___default.a.values(result), _this3.getMenuLocalState());
       });
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].getLinkTypes(this.$attrs.panel.fields[0].locale).then(function (result) {
-        _this.linkTypes = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.values(result);
+        _this3.linkTypes = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.values(result);
+        console.log('this.linkTypes', _this3.linkTypes);
       });
     },
     setMenuItemProperties: function setMenuItemProperties(menuItems) {
-      var _this2 = this;
+      var _this4 = this;
 
+      var localItemsState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       return menuItems.map(function (item) {
+        var localItemState = Array.isArray(localItemsState) && localItemsState.find(function (localItem) {
+          return +localItem.id === +item.id;
+        }) || {};
         return _objectSpread({}, item, {
-          classProp: [],
-          children: Array.isArray(item.children) ? _this2.setMenuItemProperties(item.children) : item.children
+          classProp: [localItemState && !localItemState.cascade ? 'hide-cascade' : ''],
+          children: Array.isArray(item.children) ? _this4.setMenuItemProperties(item.children, localItemState.children) : item.children
         });
       });
     },
     editMenu: function editMenu(item) {
-      var _this3 = this;
+      var _this5 = this;
 
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].edit(item.id).then(function (result) {
         result.parameters = result.parameters ? js_beautify__WEBPACK_IMPORTED_MODULE_1___default()(JSON.stringify(result.parameters), {
           indent_size: 2
         }) : '';
-        _this3.update = result.id;
-        _this3.newItem = result;
-        _this3.modalItem = true;
-        _this3.linkType = _this3.linkTypes.find(function (lt) {
-          return lt["class"] === _this3.newItem["class"];
+        _this5.update = result.id;
+        _this5.newItem = result;
+        _this5.modalItem = true;
+        _this5.linkType = _this5.linkTypes.find(function (lt) {
+          return lt["class"] === _this5.newItem["class"];
         });
       });
     },
@@ -249,19 +289,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.modalConfirm = true;
     },
     confirmItemDelete: function confirmItemDelete() {
-      var _this4 = this;
+      var _this6 = this;
 
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].destroy(this.itemToDelete.id).then(function () {
-        _this4.getData();
+        _this6.getData();
 
-        _this4.$toasted.show(_this4.__('Item removed successfully!'), {
+        _this6.$toasted.show(_this6.__('Item removed successfully!'), {
           type: 'success'
         });
 
-        _this4.itemToDelete = null;
-        _this4.modalConfirm = false;
+        _this6.itemToDelete = null;
+        _this6.modalConfirm = false;
       })["catch"](function (request) {
-        _this4.handleErrors(request);
+        _this6.handleErrors(request);
       });
     },
     resetNewItem: function resetNewItem() {
@@ -276,7 +316,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.linkType = '';
     },
     confirmItemCreate: function confirmItemCreate() {
-      var _this5 = this;
+      var _this7 = this;
 
       if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
         this.$toasted.show('Invalid JSON in parameters field.', {
@@ -286,19 +326,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].create(this.newItemData).then(function () {
-        _this5.getData();
+        _this7.getData();
 
-        _this5.modalItem = false;
+        _this7.modalItem = false;
 
-        _this5.resetNewItem();
+        _this7.resetNewItem();
 
-        _this5.$toasted.show(_this5.__('Item created!'), {
+        _this7.$toasted.show(_this7.__('Item created!'), {
           type: 'success'
         });
       })["catch"](this.handleErrors);
     },
     updateItem: function updateItem() {
-      var _this6 = this;
+      var _this8 = this;
 
       if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
         this.$toasted.show('Invalid JSON in parameters field.', {
@@ -308,63 +348,63 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].update(this.update, this.newItemData).then(function () {
-        _this6.getData();
+        _this8.getData();
 
-        _this6.modalItem = false;
+        _this8.modalItem = false;
 
-        _this6.resetNewItem();
+        _this8.resetNewItem();
 
-        _this6.$toasted.show(_this6.__('Item updated!'), {
+        _this8.$toasted.show(_this8.__('Item updated!'), {
           type: 'success'
         });
       })["catch"](function (request) {
-        _this6.handleErrors(request);
+        _this8.handleErrors(request);
       });
     },
     change: function change() {
-      var _this7 = this;
+      var _this9 = this;
 
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].saveItems(this.resourceId, this.menuItems).then(function () {
-        _this7.$toasted.show(_this7.__('Menu reordered!'), {
+        _this9.$toasted.show(_this9.__('Menu reordered!'), {
           type: 'success'
         });
       })["catch"](function () {
-        _this7.$toasted.show(_this7.__('Error on server!'), {
+        _this9.$toasted.show(_this9.__('Error on server!'), {
           type: 'error'
         });
       });
     },
     handleErrors: function handleErrors(request) {
-      var _this8 = this;
+      var _this10 = this;
 
       var errors = request.response.data.errors;
 
       if (errors) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.map(errors, function (error) {
-          return _this8.$toasted.show(error, {
+          return _this10.$toasted.show(error, {
             type: 'error'
           });
         });
       }
     },
     duplicateMenuItem: function duplicateMenuItem(item) {
-      var _this9 = this;
+      var _this11 = this;
 
       _api__WEBPACK_IMPORTED_MODULE_2__["default"].duplicate(item.id).then(function () {
-        _this9.getData();
+        _this11.getData();
 
-        _this9.resetNewItem();
+        _this11.resetNewItem();
 
-        _this9.$toasted.show(_this9.__('Item duplicated!'), {
+        _this11.$toasted.show(_this11.__('Item duplicated!'), {
           type: 'success'
         });
       })["catch"](function (request) {
-        _this9.handleErrors(request);
+        _this11.handleErrors(request);
       });
     },
     updateLinkType: function updateLinkType(linkType) {
       this.linkType = this.linkTypes.find(function (type) {
-        return type.type === linkType;
+        return type["class"] === linkType;
       });
     }
   },
@@ -532,6 +572,10 @@ __webpack_require__.r(__webpack_exports__);
     duplicateMenuItem: {
       type: Function,
       required: true
+    },
+    saveMenuLocalState: {
+      type: Function,
+      required: true
     }
   },
   components: {
@@ -556,6 +600,8 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         item.classProp.push('hide-cascade');
       }
+
+      this.saveMenuLocalState();
     },
     isCascadeOpen: function isCascadeOpen(item) {
       return !item.classProp.find(function (className) {
@@ -636,6 +682,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var codemirror_theme_dracula_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(codemirror_theme_dracula_css__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var codemirror_mode_javascript_javascript__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! codemirror/mode/javascript/javascript */ "./node_modules/codemirror/mode/javascript/javascript.js");
 /* harmony import */ var codemirror_mode_javascript_javascript__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(codemirror_mode_javascript_javascript__WEBPACK_IMPORTED_MODULE_5__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -39333,7 +39385,8 @@ var render = function() {
               editMenu: _vm.editMenu,
               removeMenu: _vm.removeMenu,
               change: _vm.change,
-              duplicateMenuItem: _vm.duplicateMenuItem
+              duplicateMenuItem: _vm.duplicateMenuItem,
+              saveMenuLocalState: _vm.saveMenuLocalState
             },
             model: {
               value: _vm.menuItems,
@@ -39863,7 +39916,7 @@ var render = function() {
                   "select",
                   {
                     staticClass: "w-full form-control form-select",
-                    domProps: { value: _vm.linkType.type },
+                    domProps: { value: _vm.linkType.class },
                     on: {
                       input: function(e) {
                         return this$1.$emit("linkType", e.target.value)
@@ -39887,7 +39940,7 @@ var render = function() {
                     _vm._l(_vm.linkTypes, function(type, i) {
                       return _c(
                         "option",
-                        { key: i, domProps: { value: type.type } },
+                        { key: i, domProps: { value: type.class } },
                         [_vm._v(_vm._s(type.name))]
                       )
                     })
@@ -39896,7 +39949,11 @@ var render = function() {
                 )
               ])
             ]),
-            _vm._v(" "),
+            _vm._v(
+              "\n      " +
+                _vm._s(_vm.log("linkType", _vm.linkType)) +
+                "\n      "
+            ),
             _vm.linkType.type == "static-url"
               ? [
                   _c("div", { staticClass: "flex border-b border-40" }, [
@@ -40008,7 +40065,13 @@ var render = function() {
                             return _c(
                               "option",
                               { key: i, domProps: { value: key } },
-                              [_vm._v(_vm._s(_vm.linkType.options[key]))]
+                              [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.linkType.options[key]) +
+                                    "\n              "
+                                )
+                              ]
                             )
                           })
                         ],
