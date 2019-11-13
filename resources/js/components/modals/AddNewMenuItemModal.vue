@@ -38,7 +38,6 @@
             </select>
           </div>
         </div>
-        {{ log('linkType', linkType) }}
         <template v-if="linkType.type == 'static-url'">
           <div class="flex border-b border-40">
             <div class="w-1/5 py-4">
