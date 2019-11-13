@@ -131,7 +131,6 @@ export default {
 
       api.getLinkTypes(this.$attrs.panel.fields[0].locale).then(result => {
         this.linkTypes = _.values(result);
-        console.log('this.linkTypes', this.linkTypes)
       });
     },
 
