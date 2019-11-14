@@ -76,7 +76,7 @@ class MenuResource extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
         if (MenuBuilder::hasNovaLang()) {
-            $query->where(MenuBuilder::getMenusTableName().'.locale', nova_lang_get_active_locale());
+            $query->where(MenuBuilder::getMenusTableName() . '.locale', nova_lang_get_active_locale());
         }
         return $query;
     }
