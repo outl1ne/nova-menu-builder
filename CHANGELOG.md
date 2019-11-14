@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.3] - 2019-11-14
 
+### Added
+
+- Added functionality to collapse menu item's children
+
 ### Changed
 
 - Fixed hardcoded column name (thanks to [@naska-it](https://github.com/naska-it))
