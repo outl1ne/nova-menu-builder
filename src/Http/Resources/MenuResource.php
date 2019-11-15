@@ -31,8 +31,8 @@ class MenuResource extends Resource
 
             Text::make(__('Slug'), 'slug')
                 ->sortable()
-                ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id,locale,$request->locale")
-                ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id,locale,$request->locale"),
+                ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id,locale,{$request->get('locale')}")
+                ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id,locale,{$request->get('locale')}"),
         ];
 
         if (MenuBuilder::hasNovaLang()) {
