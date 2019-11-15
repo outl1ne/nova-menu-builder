@@ -52,10 +52,16 @@ public function tools()
 }
 ```
 
-Optionally you can publish menu template:
+### Optionally publish views/migrations
+
+This is only useful if you want to overwrite either the views or migrations. If you wish to use the menu builder as it comes out of the box, you don't need these.
 
 ```bash
+# Publish views (optional)
 php artisan vendor:publish --tag=nova-menu-builder-views
+
+# Publish migrations to overwrite them (optional)
+php artisan vendor:publish --tag=nova-menu-builder-migrations
 ```
 
 ## Usage
