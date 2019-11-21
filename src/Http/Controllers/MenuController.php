@@ -176,25 +176,25 @@ class MenuController extends Controller
     }
 
     /**
-     * @param MenuItem $menuItem
-     * @return \Illuminate\Http\JsonResponse
+     * @param MenuItem $item
+     * @return string
      */
-    public function duplicate(MenuItem $menuItem)
+    public function duplicate(MenuItem $item)
     {
-        $this->recursivelyDuplicate($menuItem, $menuItem->parent_id);
+        $this->recursivelyDuplicate($item, $item->parent_id);
         return response()->json([
             'success' => true,
         ]);
     }
 
-    protected function recursivelyDuplicate(MenuItem $menuItem, $parentId = null) {
-        $data = $menuItem->toArray();
+    protected function recursivelyDuplicate(MenuItem $item, $parentId = null) {
+        $data = $item->toArray();
         $data['order'] = MenuItem::max('id') + 1;
         unset($data['id']);
         if ($parentId != null) $data['parent_id'] = $parentId;
-        $item = MenuItem::create($data);
+        $newItem = MenuItem::create($data);
         /** @var Collection $children */
-        $children = $menuItem->children()->get();
-        foreach ($children as $child) $this->recursivelyDuplicate($child, $item->id);
+        $children = $newItem->children()->get();
+        if (is_array($children)) foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
     }
 }

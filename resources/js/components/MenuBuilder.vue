@@ -1,15 +1,10 @@
 <template>
-  <vue-nestable
-    :value="value"
-    @input="val => this.$emit('input', val)"
-    @change="change"
-    classProp="classProp"
-  >
+  <vue-nestable :value="value" @input="val => $emit('input', val)" @change="$emit('onChangeMenu')" classProp="classProp">
     <vue-nestable-handle slot-scope="{ item }" :item="item" class="handle flex flex-wrap">
       <div :class="`item-data w-2/3 flex ${!hasChildren(item) && 'pl-3'}`">
         <button
           v-if="hasChildren(item)"
-          @click="$emit('toggleMenuChildrenCascade', item)"
+          @click="toggleMenuChildrenCascade(item)"
           title="Edit"
           class="appearance-none cursor-pointer text-70 hover:text-primary flex pl-4 pr-4"
         >
@@ -63,7 +58,7 @@ export default {
     value: {
       type: Array,
       required: true,
-    }
+    },
   },
 
   components: {
@@ -82,12 +77,10 @@ export default {
     },
 
     toggleMenuChildrenCascade(item) {
-      if (item.classProp.find(className => className === 'hide-cascade')) {
+      if (item.classProp.find(className => className === 'hide-cascade'))
         item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
-      } else {
-        item.classProp.push('hide-cascade');
-      }
-      this.saveMenuLocalState();
+      else item.classProp.push('hide-cascade');
+      this.$emit('saveMenuLocalState', item);
     },
 
     isCascadeOpen(item) {
