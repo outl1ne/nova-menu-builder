@@ -47,7 +47,7 @@ class MenuBuilder extends Tool
         $configuredLinkableModels = config('nova-menu.linkable_models', []);
         return array_merge(
             static::$defaultLinkableModels,
-            $configuredLinkableModels,
+            $configuredLinkableModels
         );
     }
 
