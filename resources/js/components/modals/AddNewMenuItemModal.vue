@@ -1,5 +1,6 @@
+
 <template>
-  <modal ref="showModal" :show="showModal" :name="'showModal'" :align="'flex justify-end'">
+  <modal :show="showModal" :align="'flex justify-end'">
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
@@ -28,9 +29,8 @@
           <div class="py-4 w-4/5">
             <select
               :value="linkType.class"
-              @input="e => this.$emit('linkType', e.target.value)"
+              @input="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-select"
-              @change="onChangeType"
             >
               <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
@@ -38,7 +38,7 @@
             </select>
           </div>
         </div>
-        <template v-if="linkType.type == 'static-url'">
+        <template v-if="linkType.type === 'static-url'">
           <div class="flex border-b border-40">
             <div class="w-1/5 py-4">
               <label class="inline-block text-80 pt-2 leading-tight">{{ __('URL') }}</label>
@@ -48,21 +48,21 @@
                 v-model="newItem.value"
                 id="url"
                 type="text"
-                :placeholder="this.__('URL')"
+                :placeholder="__('URL')"
                 class="w-full form-control form-input form-input-bordered"
               />
             </div>
           </div>
         </template>
 
-        <template v-if="linkType.type == 'select'">
+        <template v-if="linkType.type === 'select'">
           <div class="flex border-b border-40">
             <div class="w-1/5 py-4">
               <label class="inline-block text-80 pt-2 leading-tight">{{ __('Model') }}</label>
             </div>
 
             <div class="py-4 w-4/5">
-              <select v-model="newItem.value" class="w-full form-control form-select">
+              <select @input="e => $emit('onLinkModelUpdate', e.target.value)" class="w-full form-control form-select">
                 <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
                 <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">
@@ -95,20 +95,19 @@
     </div>
     <div slot="buttons">
       <div class="ml-auto">
-        <button type="button" @click.prevent="closeModal" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
+        <button type="button" @click.prevent="$emit('closeModal')" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
           {{ __('Cancel') }}
         </button>
 
         <button
-          v-if="update == false"
-          ref="confirmButton"
-          @click.prevent="confirmItemCreate"
+          v-if="update === false"
+          @click.prevent="$emit('confirmItemCreate')"
           class="btn btn-default btn-primary"
         >
           {{ __('Create menu item') }}
         </button>
 
-        <button v-else ref="confirmButton" @click.prevent="updateItem" class="btn btn-default btn-primary">
+        <button v-else @click.prevent="$emit('updateItem')" class="btn btn-default btn-primary">
           {{ __('Update menu item') }}
         </button>
       </div>
@@ -129,13 +128,9 @@ export default {
   props: [
     'newItem',
     'showModal',
-    'updateItem',
-    'closeModal',
-    'confirmItemCreate',
     'update',
     'linkType',
-    'linkTypes',
-    'onChangeType',
+    'linkTypes'
   ],
   components: {
     Modal,
