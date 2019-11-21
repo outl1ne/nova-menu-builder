@@ -195,6 +195,6 @@ class MenuController extends Controller
         $newItem = MenuItem::create($data);
         /** @var Collection $children */
         $children = $newItem->children()->get();
-        if (is_array($children)) foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
+        foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
     }
 }
