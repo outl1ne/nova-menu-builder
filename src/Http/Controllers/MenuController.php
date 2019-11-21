@@ -5,11 +5,11 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use Tightenco\Collect\Support\Collection;
 
 class MenuController extends Controller
 {
@@ -176,33 +176,25 @@ class MenuController extends Controller
     }
 
     /**
-     * @param $locale
+     * @param MenuItem $menuItem
      * @return \Illuminate\Http\JsonResponse
      */
-    public function duplicate($menuItemId)
+    public function duplicate(MenuItem $menuItem)
     {
-        $model = MenuItem::whereId($menuItemId)->firstOrFail();
-        $this->recursivelyDuplicate($model, $model->parent_id);
-
+        $this->recursivelyDuplicate($menuItem, $menuItem->parent_id);
         return response()->json([
             'success' => true,
         ]);
     }
 
-    protected function recursivelyDuplicate(Model $model, $parentId = null) {
-        $data = $model->toArray();
+    protected function recursivelyDuplicate(MenuItem $menuItem, $parentId = null) {
+        $data = $menuItem->toArray();
         $data['order'] = MenuItem::max('id') + 1;
         unset($data['id']);
-        if ($parentId != null)
-            $data['parent_id'] = $parentId;
-
+        if ($parentId != null) $data['parent_id'] = $parentId;
         $item = MenuItem::create($data);
         /** @var Collection $children */
-        $children = $model->children()->get();
-        if (count($children)) {
-            foreach ($children as $child) {
-                $this->recursivelyDuplicate($child, $item->id);
-            }
-        }
+        $children = $menuItem->children()->get();
+        foreach ($children as $child) $this->recursivelyDuplicate($child, $item->id);
     }
 }
