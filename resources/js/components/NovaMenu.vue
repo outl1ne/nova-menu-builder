@@ -279,9 +279,7 @@ export default {
   right: -12px;
   margin-top: -72px;
 }
-/*
-  * Style for nestable
-  */
+
 .nestable {
   position: relative;
 }

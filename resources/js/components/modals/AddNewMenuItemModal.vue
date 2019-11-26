@@ -1,5 +1,5 @@
 <template>
-  <modal :show="showModal" :align="'flex justify-end'">
+  <modal :show="showModal" :align="'flex justify-end'" class="add-new-menu-item-modal">
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
@@ -122,7 +122,6 @@ import Modal from './Modal';
 import { codemirror } from 'vue-codemirror';
 
 import 'codemirror/addon/display/placeholder.js';
-//themes
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 import 'codemirror/mode/javascript/javascript';
@@ -139,7 +138,7 @@ export default {
     cmOptions: {
       tabSize: 2,
       theme: 'dracula',
-      lineNumbers: true,
+      lineNumbers: false,
       lineWrapping: true,
       foldGutter: true,
       line: true,
@@ -148,7 +147,7 @@ export default {
         json: true,
       },
     },
-    cmPlaceholder: '{\n  "id": 1\n}',
+    cmPlaceholder: '{\n  "exampleValue": 5\n}',
   }),
   mounted() {
     this.toggleLabels = { checked: this.__('Enabled'), unchecked: this.__('Disabled') };
@@ -156,3 +155,17 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.add-new-menu-item-modal {
+  .CodeMirror {
+    height: 100px;
+    border-radius: 0.5rem;
+    padding: 5px;
+
+    .CodeMirror-placeholder {
+      color: rgba(#6272a4, 0.7);
+    }
+  }
+}
+</style>

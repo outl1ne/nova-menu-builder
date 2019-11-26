@@ -50,13 +50,6 @@
 </template>
 <script>
 import { VueNestable, VueNestableHandle } from 'vue-nestable';
-import { codemirror } from 'vue-codemirror';
-
-import 'codemirror/addon/display/placeholder.js';
-//themes
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/dracula.css';
-import 'codemirror/mode/javascript/javascript';
 
 export default {
   props: {
@@ -69,7 +62,6 @@ export default {
   components: {
     VueNestable,
     VueNestableHandle,
-    codemirror,
   },
 
   data: () => ({
