@@ -40,7 +40,7 @@
         <button
           v-on:click="$emit('removeMenu', item)"
           title="Delete"
-          class="appearance-none cursor-pointer text-70 hover:text-primary mr-3 self-center"
+          class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >
           <menu-builder-delete-icon />
         </button>
