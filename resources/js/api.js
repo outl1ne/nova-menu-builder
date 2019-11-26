@@ -1,42 +1,33 @@
 export default {
-  getItems(menu) {
-    return window.axios
-      .post('/nova-vendor/nova-menu/items', {
-        menu: menu,
-      })
-      .then(response => response.data);
+  async getItems(menuId) {
+    return Nova.request().get(`/nova-vendor/nova-menu/menu/${menuId}`);
   },
 
-  saveItems(menu, menuItems) {
-    return window.axios
-      .post('/nova-vendor/nova-menu/save-items', {
-        menu: menu,
-        items: menuItems,
-      })
-      .then(response => response.data);
+  async saveItems(menuId, menuItems) {
+    return Nova.request().post(`/nova-vendor/nova-menu/menu/${menuId}`, { menuItems });
   },
 
-  create(menuItem) {
-    return window.axios.post('/nova-vendor/nova-menu/new-item', menuItem).then(response => response.data);
+  async create(menuItem) {
+    return Nova.request().post(`/nova-vendor/nova-menu/items`, menuItem);
   },
 
-  edit(menu) {
-    return window.axios.get('/nova-vendor/nova-menu/edit/' + menu).then(response => response.data);
+  async getMenuItem(menuItemId) {
+    return Nova.request().get(`/nova-vendor/nova-menu/items/${menuItemId}`);
   },
 
-  update(menuItemId, menuItem) {
-    return window.axios.post('/nova-vendor/nova-menu/update/' + menuItemId, menuItem).then(response => response.data);
+  async update(menuItemId, menuItem) {
+    return Nova.request().post(`/nova-vendor/nova-menu/items/${menuItemId}`, menuItem);
   },
 
-  destroy(menuItemId) {
-    return window.axios.post('/nova-vendor/nova-menu/destroy/' + menuItemId).then(response => response.data);
+  async destroy(menuItemId) {
+    return Nova.request().delete(`/nova-vendor/nova-menu/items/${menuItemId}`);
   },
 
-  duplicate(menuItemId) {
-    return window.axios.post('/nova-vendor/nova-menu/duplicate/' + menuItemId).then(response => response.data);
+  async duplicate(menuItemId) {
+    return Nova.request().post(`/nova-vendor/nova-menu/items/${menuItemId}/duplicate`);
   },
 
-  getLinkTypes(locale) {
-    return window.axios.get('/nova-vendor/nova-menu/link-types/' + locale).then(response => response.data);
+  async getLinkTypes(locale) {
+    return Nova.request().get(`/nova-vendor/nova-menu/link-types/${locale}`);
   },
 };

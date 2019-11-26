@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\Route;
 | are loaded by the ServiceProvider of your tool. They are protected
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
- */
+*/
 
-Route::any('/items', 'MenuController@items');
-Route::post('/save-items', 'MenuController@saveItems');
-Route::post('/new-item', 'MenuController@createNew');
-Route::get('/edit/{item}', 'MenuController@edit');
-Route::post('/update/{item}', 'MenuController@update');
-Route::post('/destroy/{item}', 'MenuController@destroy');
+Route::get('/menu/{menu}', 'MenuController@getMenuItems');
+Route::post('/menu/{menu}', 'menuController@saveMenuItems');
+
+Route::post('/items', 'MenuController@createMenuItem');
+Route::get('/items/{menuItem}', 'MenuController@getMenuItem');
+Route::post('/items/{menuItem}', 'MenuController@updateMenuItem');
+Route::delete('/items/{menuItem}', 'MenuController@deleteMenuItem');
+Route::post('/items/{menuItem}/duplicate', 'MenuController@duplicateMenuItem');
+
 Route::get('/link-types/{locale}', 'MenuController@getLinkTypes');
-Route::post('/duplicate/{item}', 'MenuController@duplicate');
-

@@ -2,10 +2,8 @@
 
 namespace OptimistDigital\MenuBuilder\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Collection;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
@@ -14,143 +12,104 @@ use OptimistDigital\MenuBuilder\MenuBuilder;
 class MenuController extends Controller
 {
     /**
-     * Return menu items for given menu
+     * Return root menu items for one menu.
      *
-     * @param Request $request
-     *
-     * @return Collection|json
-     */
-    public function items(Request $request)
+     * @param Illuminate\Http\Request $request
+     * @param OptimistDigital\MenuBuilder\Models\Menu $menu
+     * @return Illuminate\Http\Response
+     **/
+    public function getMenuItems(Request $request, Menu $menu)
     {
-        if (!$request->has('menu')) {
-            abort(503);
-        }
+        if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
 
-        return Menu::find($request->get('menu'))
-            ->rootMenuItems
-            ->filter(function ($item) {
-                return class_exists($item->class);
-            });
+        $menuItems = $menu->rootMenuItems->filter(function ($item) {
+            return class_exists($item->class);
+        });
+
+        return response()->json($menuItems, 200);
     }
 
     /**
-     * Save menu items when reordering
+     * Save menu items.
      *
-     * @param   Request  $request
-     *
-     * @return  json
-     */
-    public function saveItems(Request $request)
+     * @param Illuminate\Http\Request $request
+     * @param OptimistDigital\MenuBuilder\Models\Menu $menu
+     * @return Illuminate\Http\Response
+     **/
+    public function saveMenuItems(Request $request, Menu $menu)
     {
-        $menu = Menu::find((int) $request->get('menu'));
-        $items = $request->get('items');
+        $items = $request->get('menuItems');
+
         $i = 1;
         foreach ($items as $item) {
-            $this->saveMenuItem($i, $item);
+            $this->saveMenuItemWithNewOrder($i, $item);
             $i++;
         }
 
-        return response()->json([
-            'success' => true,
-        ]);
+        return response()->json(['success' => true], 200);
     }
 
     /**
-     * Creates a new MenuItem from request.
+     * Creates new MenuItem.
      *
-     * @param NewMenuItemRequest $request
-     * @return JSON
+     * @param OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest $request
+     * @return Illuminate\Http\Response
      **/
-    public function createNew(NewMenuItemRequest $request)
+    public function createMenuItem(NewMenuItemRequest $request)
     {
         $data = $request->all();
         $data['order'] = MenuItem::max('id') + 1;
         MenuItem::create($data);
-
-        return response()->json([
-            'success' => true,
-        ]);
+        return response()->json(['success' => true], 200);
     }
 
     /**
-     * Returns the menu item to edit in JSON.
+     * Returns the menu item as JSON.
      *
-     * @param MenuItem $item
-     * @return JSON
+     * @param OptimistDigital\MenuBuilder\Models\MenuItem $menuItem
+     * @return Illuminate\Http\Response
      **/
-    public function edit(MenuItem $item)
+    public function getMenuItem(MenuItem $menuItem)
     {
-        return $item->toJson();
+        return isset($menuItem)
+            ? response()->json($menuItem, 200)
+            : resonse()->json(['error' => 'item_not_found'], 400);
     }
 
     /**
-     * Update the given menu item
+     * Updates a MenuItem.
      *
-     * @param \OptimistDigital\MenuBuilder\Models\MenuItem $item
-     * @param NewMenuItemRequest $request
-     *
-     * @return  json
-     */
-    public function update(MenuItem $item, NewMenuItemRequest $request)
-    {
-        $item->update($request->all());
-
-        return response()->json([
-            'success' => true,
-        ]);
-    }
-
-    /**
-     * Deletes the MenuItem and its children MenuItems.
-     *
-     * @param MenuItem $item
-     * @return JSON
+     * @param OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest $request
+     * @param OptimistDigital\MenuBuilder\Models\MenuItem $menuItem
+     * @return Illuminate\Http\Response
      **/
-    public function destroy(MenuItem $item)
+    public function updateMenuItem(NewMenuItemRequest $request, MenuItem $menuItem)
     {
-        $item->children()->delete();
-        $item->delete();
+        if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
 
-        return response()->json([
-            'success' => true,
-        ]);
+        $menuItem->update($request->all());
+        return response()->json(['success' => true], 200);
     }
 
     /**
-     * Save the menu item
+     * Deletes a MenuItem.
      *
-     * @param int $order
-     * @param array $item
-     * @param int $parentId
-     *
-     */
-    private function saveMenuItem($order, $item, $parentId = null)
+     * @param OptimistDigital\MenuBuilder\Models\MenuItem $menuItem
+     * @return Illuminate\Http\Response
+     **/
+    public function deleteMenuItem(MenuItem $menuItem)
     {
-        $menuItem = MenuItem::find($item['id']);
-        $menuItem->order = $order;
-        $menuItem->parent_id = $parentId;
-        $menuItem->save();
-
-        $this->checkChildren($item);
+        $menuItem->children()->delete();
+        $menuItem->delete();
+        return response()->json(['success' => true], 200);
     }
 
     /**
-     * Recurisve save menu items childrens
+     * Get link types for locale.
      *
-     * @param array $item
-     *
-     */
-    private function checkChildren($item)
-    {
-        if (count($item['children']) > 0) {
-            $i = 1;
-            foreach ($item['children'] as $child) {
-                $this->saveMenuItem($i, $child, $item['id']);
-                $i++;
-            }
-        }
-    }
-
+     * @param string $locale
+     * @return Illuminate\Http\Response
+     **/
     public function getLinkTypes($locale)
     {
         $linkTypes = [];
@@ -176,25 +135,59 @@ class MenuController extends Controller
     }
 
     /**
-     * @param MenuItem $item
-     * @return string
-     */
-    public function duplicate(MenuItem $item)
+     * Duplicates a MenuItem.
+     *
+     * @param OptimistDigital\MenuBuilder\Models\MenuItem $menuItem
+     * @return Illuminate\Http\Response
+     **/
+    public function duplicateMenuItem(MenuItem $menuItem)
     {
-        $this->recursivelyDuplicate($item, $item->parent_id);
-        return response()->json([
-            'success' => true,
-        ]);
+        if (empty($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
+
+        $this->recursivelyDuplicate($menuItem, $menuItem->parent_id);
+        return response()->json(['success' => true], 200);
     }
 
-    protected function recursivelyDuplicate(MenuItem $item, $parentId = null) {
+
+
+    // ------------------------------
+    // Helpers
+    // ------------------------------
+
+    private function recursivelyOrderChildren($item)
+    {
+        if (count($item['children']) > 0) {
+            foreach ($item['children'] as $i => $child) {
+                $this->saveMenuItemWithNewOrder($i + 1, $child, $item['id']);
+            }
+        }
+    }
+
+    private function saveMenuItemWithNewOrder($orderNr, $item, $parentId = null)
+    {
+        $menuItem = MenuItem::find($item['id']);
+        $menuItem->order = $orderNr;
+        $menuItem->parent_id = $parentId;
+        $menuItem->save();
+
+        // Check children
+        if (count($item['children']) > 0) {
+            foreach ($item['children'] as $i => $child) {
+                $this->saveMenuItemWithNewOrder($i + 1, $child, $item['id']);
+            }
+        }
+
+        $this->recursivelyOrderChildren($item);
+    }
+
+    protected function recursivelyDuplicate(MenuItem $item, $parentId = null)
+    {
         $data = $item->toArray();
         $data['order'] = MenuItem::max('id') + 1;
         unset($data['id']);
         if ($parentId != null) $data['parent_id'] = $parentId;
         $newItem = MenuItem::create($data);
-        /** @var Collection $children */
-        $children = $newItem->children()->get();
+        $children = $newItem->children;
         foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
     }
 }

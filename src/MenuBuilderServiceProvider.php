@@ -32,10 +32,6 @@ class MenuBuilderServiceProvider extends ServiceProvider
         $this->publishViews();
         $this->publishConfig();
 
-        Nova::serving(function (ServingNova $event) {
-            //
-        });
-
         Nova::resources([
             config('nova-menu.resource', MenuResource::class),
         ]);
@@ -84,15 +80,5 @@ class MenuBuilderServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/' => config_path(),
         ], 'nova-menu-builder-config');
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

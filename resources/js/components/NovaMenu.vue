@@ -120,14 +120,10 @@ export default {
       return menuStorage[`resource-${this.resourceId}`];
     },
 
-    getData() {
-      api.getItems(this.resourceId).then(result => {
-        this.menuItems = this.setMenuItemProperties(_.values(result), this.getMenuLocalState());
-      });
-
-      api.getLinkTypes(this.$attrs.panel.fields[0].locale).then(result => {
-        this.linkTypes = _.values(result);
-      });
+    async getData() {
+      const menuItems = (await api.getItems(this.resourceId)).data;
+      this.menuItems = this.setMenuItemProperties(_.values(menuItems), this.getMenuLocalState());
+      this.linkTypes = _.values((await api.getLinkTypes(this.$attrs.panel.fields[0].locale)).data);
     },
 
     setMenuItemProperties(menuItems, localItemsState = null) {
@@ -146,16 +142,15 @@ export default {
       });
     },
 
-    editMenu(item) {
-      api.edit(item.id).then(result => {
-        result.parameters = result.parameters ? beautify(JSON.stringify(result.parameters), { indent_size: 2 }) : '';
-
-        this.update = result.id;
-        this.newItem = result;
-        this.modalItem = true;
-
-        this.linkType = this.linkTypes.find(lt => lt.class === this.newItem.class);
-      });
+    async editMenu(item) {
+      const menuItem = (await api.getMenuItem(item.id)).data;
+      menuItem.parameters = menuItem.parameters
+        ? beautify(JSON.stringify(menuItem.parameters), { indent_size: 2 })
+        : '';
+      this.update = menuItem.id;
+      this.newItem = menuItem;
+      this.modalItem = true;
+      this.linkType = this.linkTypes.find(lt => lt.class === this.newItem.class);
     },
 
     removeMenu(item) {
@@ -190,21 +185,21 @@ export default {
       this.linkType = '';
     },
 
-    confirmItemCreate() {
+    async confirmItemCreate() {
       if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
         this.$toasted.show('Invalid JSON in parameters field.', { type: 'error' });
         return;
       }
 
-      api
-        .create(this.newItemData)
-        .then(() => {
-          this.getData();
-          this.modalItem = false;
-          this.resetNewItem();
-          this.$toasted.show(this.__('Item created!'), { type: 'success' });
-        })
-        .catch(this.handleErrors);
+      try {
+        await api.create(this.newItemData);
+        this.getData();
+        this.modalItem = false;
+        this.resetNewItem();
+        this.$toasted.show(this.__('Item created!'), { type: 'success' });
+      } catch (e) {
+        this.handleErrors(e);
+      }
     },
 
     updateItem() {
