@@ -61,7 +61,11 @@
             </div>
 
             <div class="py-4 w-4/5">
-              <select @input="e => $emit('onLinkModelUpdate', e.target.value)" class="w-full form-control form-select">
+              <select
+                :value="newItem.value"
+                @input="e => $emit('onLinkModelUpdate', e.target.value)"
+                class="w-full form-control form-select"
+              >
                 <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
                 <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">
