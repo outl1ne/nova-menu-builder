@@ -1,5 +1,10 @@
 <template>
-  <vue-nestable :value="value" @input="val => $emit('input', val)" @change="$emit('onChangeMenu')" classProp="classProp">
+  <vue-nestable
+    :value="value"
+    @input="val => $emit('input', val)"
+    @change="$emit('onChangeMenu')"
+    classProp="classProp"
+  >
     <vue-nestable-handle slot-scope="{ item }" :item="item" class="handle flex flex-wrap">
       <div :class="`item-data w-2/3 flex ${!hasChildren(item) && 'pl-3'}`">
         <button

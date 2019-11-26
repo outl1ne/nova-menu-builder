@@ -9,7 +9,11 @@
     </div>
     <div slot="buttons">
       <div class="ml-auto">
-        <button type="button" @click.prevent="$emit('closeModal')" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
+        <button
+          type="button"
+          @click.prevent="$emit('closeModal')"
+          class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+        >
           {{ __('Cancel') }}
         </button>
 

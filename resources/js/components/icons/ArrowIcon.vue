@@ -13,7 +13,7 @@
   </svg>
 </template>
 <script>
-  export default {
-    props: ['wrapperClass']
-  }
+export default {
+  props: ['wrapperClass'],
+};
 </script>

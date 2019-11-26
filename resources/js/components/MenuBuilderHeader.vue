@@ -7,15 +7,10 @@
       <button
         title="Add"
         class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
-        v-on:click="newMenuItem"
+        @click="$emit('addNewMenuItem')"
       >
         {{ __('Add item') }}
       </button>
     </div>
   </div>
 </template>
-<script>
-export default {
-  props: ['newMenuItem'],
-};
-</script>

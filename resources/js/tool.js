@@ -10,10 +10,10 @@ Nova.booting((Vue, router) => {
   ]);
 
   Vue.use(ToggleButton);
-  Vue.component('nova-menu', require('./components/NovaMenuResource').default);
+  Vue.component('nova-menu', require('./components/NovaMenu').default);
   Vue.component('menu-builder-header', require('./components/MenuBuilderHeader').default);
   Vue.component('menu-builder', require('./components/MenuBuilder').default);
-  Vue.component('new-menu-item', require('./components/NewMenuItem').default);
+  Vue.component('empty-menu-builder-placeholder', require('./components/EmptyMenuBuilderPlaceholder').default);
   Vue.component('menu-builder-arrow-icon', require('./components/icons/ArrowIcon').default);
   Vue.component('menu-builder-edit-icon', require('./components/icons/EditIcon').default);
   Vue.component('menu-builder-duplicate-icon', require('./components/icons/DuplicateIcon').default);

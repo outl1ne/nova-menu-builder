@@ -1,4 +1,3 @@
-
 <template>
   <modal :show="showModal" :align="'flex justify-end'">
     <div slot="container">
@@ -95,15 +94,15 @@
     </div>
     <div slot="buttons">
       <div class="ml-auto">
-        <button type="button" @click.prevent="$emit('closeModal')" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
+        <button
+          type="button"
+          @click.prevent="$emit('closeModal')"
+          class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+        >
           {{ __('Cancel') }}
         </button>
 
-        <button
-          v-if="update === false"
-          @click.prevent="$emit('confirmItemCreate')"
-          class="btn btn-default btn-primary"
-        >
+        <button v-if="update === false" @click.prevent="$emit('confirmItemCreate')" class="btn btn-default btn-primary">
           {{ __('Create menu item') }}
         </button>
 
@@ -125,13 +124,7 @@ import 'codemirror/theme/dracula.css';
 import 'codemirror/mode/javascript/javascript';
 
 export default {
-  props: [
-    'newItem',
-    'showModal',
-    'update',
-    'linkType',
-    'linkTypes'
-  ],
+  props: ['newItem', 'showModal', 'update', 'linkType', 'linkTypes'],
   components: {
     Modal,
     codemirror,
