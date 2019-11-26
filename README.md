@@ -11,6 +11,7 @@ Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-
 
 - Managing menus (w/ customizable locales) and menu items
 - Nesting and re-ordering of menu-items
+- Menu items collapse and duplicate options in the UI
 - Creation of custom link options (ie links to models such as Page or Product)
 - Support for different languages
 - Optional `nova-lang` support
