@@ -11,26 +11,24 @@
       v-if="menuItems.length > 0"
     />
     <empty-menu-builder-placeholder @addNewMenuItem="addNewMenuItem" v-else />
-    <div>
-      <add-new-menu-item-modal
-        :newItem="newItem"
-        :showModal="modalItem !== false"
-        :update="update"
-        :linkType="linkType"
-        :linkTypes="linkTypes"
-        @updateItem="updateItem"
-        @confirmItemCreate="confirmItemCreate"
-        @closeModal="closeModal"
-        @onLinkTypeUpdate="updateLinkType"
-        @onLinkModelUpdate="updateLinkModel"
-      />
-      <delete-menu-item-confirmation-modal
-        :modalConfirm="modalConfirm"
-        :itemToDelete="itemToDelete"
-        @closeModal="closeModal"
-        @confirmItemDelete="confirmItemDelete"
-      />
-    </div>
+    <add-new-menu-item-modal
+      :newItem="newItem"
+      :showModal="modalItem !== false"
+      :update="update"
+      :linkType="linkType"
+      :linkTypes="linkTypes"
+      @updateItem="updateItem"
+      @confirmItemCreate="confirmItemCreate"
+      @closeModal="closeModal"
+      @onLinkTypeUpdate="updateLinkType"
+      @onLinkModelUpdate="updateLinkModel"
+    />
+    <delete-menu-item-confirmation-modal
+      :modalConfirm="modalConfirm"
+      :itemToDelete="itemToDelete"
+      @closeModal="closeModal"
+      @confirmItemDelete="confirmItemDelete"
+    />
   </div>
 </template>
 
