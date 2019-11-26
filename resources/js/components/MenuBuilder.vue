@@ -16,8 +16,10 @@
           <menu-builder-arrow-icon :wrapperClass="`${isCascadeOpen(item) && 'btn-cascade-open'}`" />
         </button>
 
-        <div class="text-90">{{ item.name }}</div>
-        <div class="font-lighter text-80 ml-4 text-sm">{{ item.displayValue }}</div>
+        <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">{{ item.name }}</div>
+        <div :class="`font-lighter text-80 ml-4 text-sm ${!item.enabled ? 'opacity-25' : ''}`">
+          {{ item.displayValue }}
+        </div>
       </div>
 
       <div class="buttons w-1/3 flex justify-end content-center">
@@ -74,9 +76,11 @@ export default {
     },
 
     toggleMenuChildrenCascade(item) {
-      if (item.classProp.find(className => className === 'hide-cascade'))
+      if (item.classProp.find(className => className === 'hide-cascade')) {
         item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
-      else item.classProp.push('hide-cascade');
+      } else {
+        item.classProp.push('hide-cascade');
+      }
       this.$emit('saveMenuLocalState', item);
     },
 
