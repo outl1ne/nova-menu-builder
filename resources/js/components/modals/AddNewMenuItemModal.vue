@@ -6,7 +6,7 @@
         <toggle-button v-model="newItem.enabled" :color="switchColor" :width="70" :sync="true" :labels="toggleLabels" />
       </div>
 
-      <form autocomplete="off">
+      <form autocomplete="off" @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')">
         <div class="flex border-b border-40">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Name') }}</label>
