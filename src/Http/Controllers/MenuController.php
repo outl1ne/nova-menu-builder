@@ -2,8 +2,10 @@
 
 namespace OptimistDigital\MenuBuilder\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
@@ -171,5 +173,28 @@ class MenuController extends Controller
         }
 
         return response()->json($linkTypes, 200);
+    }
+
+    /**
+     * @param MenuItem $item
+     * @return string
+     */
+    public function duplicate(MenuItem $item)
+    {
+        $this->recursivelyDuplicate($item, $item->parent_id);
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    protected function recursivelyDuplicate(MenuItem $item, $parentId = null) {
+        $data = $item->toArray();
+        $data['order'] = MenuItem::max('id') + 1;
+        unset($data['id']);
+        if ($parentId != null) $data['parent_id'] = $parentId;
+        $newItem = MenuItem::create($data);
+        /** @var Collection $children */
+        $children = $newItem->children()->get();
+        foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
     }
 }

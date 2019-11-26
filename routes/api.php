@@ -20,4 +20,5 @@ Route::get('/edit/{item}', 'MenuController@edit');
 Route::post('/update/{item}', 'MenuController@update');
 Route::post('/destroy/{item}', 'MenuController@destroy');
 Route::get('/link-types/{locale}', 'MenuController@getLinkTypes');
+Route::post('/duplicate/{item}', 'MenuController@duplicate');
 

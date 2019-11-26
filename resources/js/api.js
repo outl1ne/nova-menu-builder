@@ -32,6 +32,10 @@ export default {
     return window.axios.post('/nova-vendor/nova-menu/destroy/' + menuItemId).then(response => response.data);
   },
 
+  duplicate(menuItemId) {
+    return window.axios.post('/nova-vendor/nova-menu/duplicate/' + menuItemId).then(response => response.data);
+  },
+
   getLinkTypes(locale) {
     return window.axios.get('/nova-vendor/nova-menu/link-types/' + locale).then(response => response.data);
   },
