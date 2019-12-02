@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/menu/{menu}', 'MenuController@getMenuItems');
-Route::post('/menu/{menu}', 'menuController@saveMenuItems');
+Route::post('/menu/{menu}', 'MenuController@saveMenuItems');
 
 Route::post('/items', 'MenuController@createMenuItem');
 Route::get('/items/{menuItem}', 'MenuController@getMenuItem');
