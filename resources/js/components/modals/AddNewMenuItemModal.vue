@@ -74,15 +74,15 @@
               </select>
             </div>
           </div>
-          <div class="flex border-b border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('Parameters') }}</label>
-            </div>
-            <div class="py-4 w-4/5">
-              <codemirror v-model="newItem.parameters" :options="cmOptions" :placeholder="cmPlaceholder"></codemirror>
-            </div>
-          </div>
         </template>
+        <div class="flex border-b border-40">
+          <div class="w-1/5 py-4">
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('Parameters') }}</label>
+          </div>
+          <div class="py-4 w-4/5">
+            <codemirror v-model="newItem.parameters" :options="cmOptions" :placeholder="cmPlaceholder"></codemirror>
+          </div>
+        </div>
         <div class="flex border-b border-40" v-if="linkType.type && linkType.type !== 'text'">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
