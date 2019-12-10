@@ -183,7 +183,6 @@ class MenuController extends Controller
     protected function recursivelyDuplicate(MenuItem $item, $parentId = null)
     {
         $data = $item->toArray();
-        $data['order'] = MenuItem::max('id') + 1;
         unset($data['id']);
         if ($parentId != null) $data['parent_id'] = $parentId;
         $newItem = MenuItem::create($data);
