@@ -4,6 +4,7 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
@@ -144,15 +145,34 @@ class MenuController extends Controller
     {
         if (empty($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
 
-        $this->recursivelyDuplicate($menuItem, $menuItem->parent_id);
+        $this->shiftMenuItemsWithHigherOrder($menuItem);
+        $this->recursivelyDuplicate($menuItem, $menuItem->parent_id, $menuItem->order + 1);
+        
         return response()->json(['success' => true], 200);
     }
-
 
 
     // ------------------------------
     // Helpers
     // ------------------------------
+
+    /**
+     * Increase order number of every menu item that has higher order number than ours by one
+     *
+     * @param MenuItem $menuItem
+     */
+    private function shiftMenuItemsWithHigherOrder(MenuItem $menuItem) {
+        $tableName = $menuItem->getTable();
+        $menuItemParent = $menuItem->parent_id ? "menuitem.parent_id=$menuItem->parent_id" : 'menuitem.parent_id IS NULL';
+        DB::statement(<<<SQL
+            UPDATE $tableName as menuitem 
+            SET menuitem.order = menuitem.order + 1 
+            WHERE menuitem.order > $menuItem->order 
+            AND menuitem.menu_id=$menuItem->menu_id 
+            AND $menuItemParent
+SQL
+        );
+    }
 
     private function recursivelyOrderChildren($item)
     {
@@ -180,12 +200,12 @@ class MenuController extends Controller
         $this->recursivelyOrderChildren($item);
     }
 
-    protected function recursivelyDuplicate(MenuItem $item, $parentId = null)
+    protected function recursivelyDuplicate(MenuItem $item, $parentId = null, $order = null)
     {
         $data = $item->toArray();
-        $data['order'] = MenuItem::max('id') + 1;
         unset($data['id']);
         if ($parentId != null) $data['parent_id'] = $parentId;
+        if ($order != null) $data['order'] = $order;
         $newItem = MenuItem::create($data);
         $children = $item->children;
         foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
