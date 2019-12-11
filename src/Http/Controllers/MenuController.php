@@ -147,7 +147,7 @@ class MenuController extends Controller
 
         $this->shiftMenuItemsWithHigherOrder($menuItem);
         $this->recursivelyDuplicate($menuItem, $menuItem->parent_id, $menuItem->order + 1);
-        
+
         return response()->json(['success' => true], 200);
     }
 
@@ -161,15 +161,18 @@ class MenuController extends Controller
      *
      * @param MenuItem $menuItem
      */
-    private function shiftMenuItemsWithHigherOrder(MenuItem $menuItem) {
+    private function shiftMenuItemsWithHigherOrder(MenuItem $menuItem)
+    {
         $tableName = $menuItem->getTable();
-        $menuItemParent = $menuItem->parent_id ? "menuitem.parent_id=$menuItem->parent_id" : 'menuitem.parent_id IS NULL';
-        DB::statement(<<<SQL
-            UPDATE $tableName as menuitem 
-            SET menuitem.order = menuitem.order + 1 
-            WHERE menuitem.order > $menuItem->order 
-            AND menuitem.menu_id=$menuItem->menu_id 
-            AND $menuItemParent
+        $menuItemParentSql = $menuItem->parent_id ? "menuitem.parent_id = $menuItem->parent_id" : 'menuitem.parent_id IS NULL';
+
+        DB::statement(
+            <<<SQL
+                UPDATE $tableName AS menuItem
+                SET menuItem.order = menuItem.order + 1
+                WHERE menuItem.order > {$menuItem->order}
+                AND menuItem.menu_id = {$menuItem->menu_id}
+                AND {$menuItemParentSql}
 SQL
         );
     }
