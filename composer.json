@@ -23,7 +23,7 @@
   ],
   "require": {
     "php": ">=7.1.0",
-    "optimistdigital/nova-locale-field": "^1.1.1"
+    "optimistdigital/nova-locale-field": "^2.0.0"
   },
   "autoload": {
     "psr-4": {
