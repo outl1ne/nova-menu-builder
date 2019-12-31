@@ -164,7 +164,7 @@ class MenuController extends Controller
     private function shiftMenuItemsWithHigherOrder(MenuItem $menuItem)
     {
         $tableName = $menuItem->getTable();
-        $menuItemParentSql = $menuItem->parent_id ? "menuitem.parent_id = $menuItem->parent_id" : 'menuitem.parent_id IS NULL';
+        $menuItemParentSql = $menuItem->parent_id ? "menuItem.parent_id = $menuItem->parent_id" : 'menuItem.parent_id IS NULL';
 
         DB::statement(
             <<<SQL
