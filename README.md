@@ -163,9 +163,10 @@ public static function getOptions($locale): array {
  * Get the subtitle value shown in CMS menu items list.
  *
  * @param string $value
+ * @param array $parameters The JSON parameters added to the item.
  * @return string
  **/
-public static function getDisplayValue($value = null) {
+public static function getDisplayValue($value = null, array $parameters = null) {
     // Example usecase
     // return 'Page: ' . Page::find($value)->name;
     return $value;
