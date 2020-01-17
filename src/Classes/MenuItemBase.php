@@ -35,9 +35,10 @@ abstract class MenuItemBase
      * Get the subtitle value shown in CMS menu items list.
      *
      * @param string $value
+     * @param array $parameters The JSON parameters added to the item.
      * @return string
      **/
-    public static function getDisplayValue($value = null)
+    public static function getDisplayValue($value = null, array $parameters = null)
     {
         return $value;
     }
