@@ -33,7 +33,7 @@
             >
               <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
 
-              <option :value="type.class" v-for="(type, i) of linkTypes" :key="i">{{ type.name }}</option>
+              <option :value="type.class" v-for="(type, i) of linkTypes" :key="i">{{ __(type.name) }}</option>
             </select>
           </div>
         </div>

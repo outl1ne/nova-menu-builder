@@ -5,7 +5,7 @@
       <div class="flex w-full justify-end items-center"></div>
       <div class="ml-3"></div>
       <button
-        title="Add"
+        :title="__('Add')"
         class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
         @click="$emit('addNewMenuItem')"
       >
