@@ -11,7 +11,7 @@ class MenuItemStaticURL extends MenuLinkable
 
     public static function getName(): string
     {
-        return 'Static URL';
+        return __('Static URL');
     }
 
     public static function getType(): string

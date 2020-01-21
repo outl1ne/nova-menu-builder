@@ -11,7 +11,7 @@ abstract class MenuItemText extends MenuItemBase
 
     public static function getName(): string
     {
-        return 'Text';
+        return __('Text');
     }
 
     public static function getType(): string
