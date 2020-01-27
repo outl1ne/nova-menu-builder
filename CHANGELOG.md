@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2020-01-27
+
+### Changed
+
+- Improved localization (thanks to [@veezex](https://github.com/veezex))
+
 ## [2.2.0] - 2020-01-17
 
 ### Changed
@@ -246,6 +252,8 @@ public static function getValue($value = null, array $parameters = null)
 - Nesting and re-ordering of menu-items
 - Creation of custom link options (ie links to Laravel models)
 
+[2.2.1]: https://github.com/optimistdigital/nova-menu-builder/compare/2.2.0...2.2.1
+[2.2.0]: https://github.com/optimistdigital/nova-menu-builder/compare/2.1.5...2.2.0
 [2.1.5]: https://github.com/optimistdigital/nova-menu-builder/compare/2.1.4...2.1.5
 [2.1.4]: https://github.com/optimistdigital/nova-menu-builder/compare/2.1.3...2.1.4
 [2.1.3]: https://github.com/optimistdigital/nova-menu-builder/compare/2.1.2...2.1.3
