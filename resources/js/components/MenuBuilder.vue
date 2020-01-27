@@ -10,7 +10,7 @@
         <button
           v-if="hasChildren(item)"
           @click="toggleMenuChildrenCascade(item)"
-          title="Edit"
+          :title="__('Edit')"
           class="appearance-none cursor-pointer text-70 hover:text-primary flex pl-4 pr-4"
         >
           <menu-builder-arrow-icon :wrapperClass="`${isCascadeOpen(item) && 'btn-cascade-open'}`" />
@@ -25,7 +25,7 @@
       <div class="buttons w-1/3 flex justify-end content-center">
         <button
           @click="$emit('editMenu', item)"
-          title="Edit"
+          :title="__('Edit')"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
         >
           <menu-builder-edit-icon />
@@ -33,7 +33,7 @@
 
         <button
           @click="$emit('duplicateMenuItem', item)"
-          title="Duplicate"
+          :title="__('Duplicate')"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
         >
           <menu-builder-duplicate-icon />
@@ -41,7 +41,7 @@
 
         <button
           v-on:click="$emit('removeMenu', item)"
-          title="Delete"
+          :title="__('Delete')"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >
           <menu-builder-delete-icon />

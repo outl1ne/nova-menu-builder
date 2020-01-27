@@ -187,7 +187,7 @@ export default {
 
     async confirmItemCreate() {
       if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
-        this.$toasted.show('Invalid JSON in parameters field.', { type: 'error' });
+        this.$toasted.show(this.__('Invalid JSON in parameters field.'), { type: 'error' });
         return;
       }
 
@@ -204,7 +204,7 @@ export default {
 
     updateItem() {
       if (this.newItem.parameters && !this.isValidJSON(this.newItem.parameters)) {
-        this.$toasted.show('Invalid JSON in parameters field.', { type: 'error' });
+        this.$toasted.show(this.__('Invalid JSON in parameters field.'), { type: 'error' });
         return;
       }
 
