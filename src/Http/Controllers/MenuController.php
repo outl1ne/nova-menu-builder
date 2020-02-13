@@ -60,6 +60,10 @@ class MenuController extends Controller
     {
         $data = $request->all();
         $data['order'] = MenuItem::max('id') + 1;
+
+        // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
+        $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
+
         MenuItem::create($data);
         return response()->json(['success' => true], 200);
     }
