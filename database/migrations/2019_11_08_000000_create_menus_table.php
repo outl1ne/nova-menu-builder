@@ -20,7 +20,7 @@ class CreateMenusTable extends Migration
         // timestamps at the time of publishing. Since then, we've moved to fixed migration names.
         //
         // This code checks if there's an existing migration and deletes it from both the filesystem and the database
-        $existingMigration = DB::select('SELECT migration AS name FROM migrations WHERE migration LIKE "%create_menus_table"');
+        $existingMigration = DB::select("SELECT migration AS name FROM migrations WHERE migration LIKE '%create_menus_table'");
         if (count($existingMigration) > 0) {
             $migrationName = $existingMigration[0]->name;
             File::delete(database_path("migrations/$migrationName.php"));
