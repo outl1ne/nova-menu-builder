@@ -44,7 +44,7 @@
             </div>
             <div class="py-4 w-4/5">
               <input
-                v-model="newItem.value"
+                v-model="newItem.label"
                 id="url"
                 type="text"
                 :placeholder="__('URL')"
@@ -61,17 +61,13 @@
             </div>
 
             <div class="py-4 w-4/5">
-              <select
-                :value="newItem.value"
-                @input="e => $emit('onLinkModelUpdate', e.target.value)"
-                class="w-full form-control form-select"
-              >
-                <option value="" selected="selected" disabled="disabled">{{ __('Choose an option') }}</option>
-
-                <option :value="key" v-for="(key, i) of Object.keys(linkType.options)" :key="i">
-                  {{ linkType.options[key] }}
-                </option>
-              </select>
+              <multiselect
+                track-by="id"
+                label="label"
+                :value="options.find(option => option.id === newItem.value)"
+                :options="options"
+                @input="value => $emit('onLinkModelUpdate', value.id)"
+              />
             </div>
           </div>
         </template>
@@ -120,6 +116,7 @@
 <script>
 import Modal from './Modal';
 import { codemirror } from 'vue-codemirror';
+import Multiselect from 'vue-multiselect';
 
 import 'codemirror/addon/display/placeholder.js';
 import 'codemirror/lib/codemirror.css';
@@ -131,6 +128,7 @@ export default {
   components: {
     Modal,
     codemirror,
+    Multiselect,
   },
   data: () => ({
     toggleLabels: false,
@@ -152,6 +150,13 @@ export default {
   mounted() {
     this.toggleLabels = { checked: this.__('Enabled'), unchecked: this.__('Disabled') };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
+  },
+  computed: {
+    options() {
+      const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
+      options.unshift({ id: '', label: this.__('Choose an option') });
+      return options;
+    },
   },
 };
 </script>
