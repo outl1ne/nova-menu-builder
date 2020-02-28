@@ -14,12 +14,12 @@
   "devDependencies": {
     "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-vue": "^6.1.2",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-vue": "^6.2.1",
     "laravel-mix": "^5.0.1",
     "prettier": "^1.19.1",
     "resolve-url-loader": "^3.1.1",
-    "sass": "^1.25.0",
+    "sass": "^1.26.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
@@ -28,6 +28,7 @@
     "vue": "^2.6.11",
     "vue-codemirror": "^4.0.6",
     "vue-js-toggle-button": "^1.3.3",
-    "vue-nestable": "^2.5.0"
+    "vue-multiselect": "^2.1.6",
+    "vue-nestable": "^2.5.2"
   }
 }
