@@ -44,7 +44,7 @@
             </div>
             <div class="py-4 w-4/5">
               <input
-                v-model="newItem.label"
+                v-model="newItem.value"
                 id="url"
                 type="text"
                 :placeholder="__('URL')"
