@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2020-03-05
+
+### Added
+
+- Support Nova 3.0 in `composer.json` requirements
+
 ## [2.3.0] - 2020-02-28
 
 ### Changed
@@ -271,6 +277,7 @@ public static function getValue($value = null, array $parameters = null)
 - Nesting and re-ordering of menu-items
 - Creation of custom link options (ie links to Laravel models)
 
+[2.3.1]: https://github.com/optimistdigital/nova-menu-builder/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/optimistdigital/nova-menu-builder/compare/2.2.3...2.3.0
 [2.2.3]: https://github.com/optimistdigital/nova-menu-builder/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/optimistdigital/nova-menu-builder/compare/2.2.1...2.2.2
