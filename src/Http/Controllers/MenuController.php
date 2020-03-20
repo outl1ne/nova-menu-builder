@@ -58,6 +58,13 @@ class MenuController extends Controller
      **/
     public function createMenuItem(NewMenuItemRequest $request)
     {
+        $request->validate([
+            'class' => 'required',
+            'value' => 'present',
+            'enabled' => 'present',
+            'name' => 'required|min:1',
+        ]);
+
         $data = $request->all();
         $data['order'] = MenuItem::max('id') + 1;
 

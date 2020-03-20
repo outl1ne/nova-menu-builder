@@ -25,6 +25,9 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
+        if (empty($this->get('class'))) {
+            return ['class' => 'required'];
+        }
         return $this->get('class')::getRules();
     }
 }
