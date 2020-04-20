@@ -1,5 +1,5 @@
 /*!
- * vue-nestable v2.5.2
+ * vue-nestable v2.5.3
  * (c) Ralph Huwiler <ralph@huwiler.rocks>
  * Released under the MIT License.
  */
