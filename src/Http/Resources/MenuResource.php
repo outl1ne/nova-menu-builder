@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Resource;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\NovaLocaleField\LocaleField;
+use OptimistDigital\NovaLocaleField\Filters\LocaleFilter;
 
 class MenuResource extends Resource
 {
@@ -79,5 +80,12 @@ class MenuResource extends Resource
             $query->where(MenuBuilder::getMenusTableName() . '.locale', nova_lang_get_active_locale());
         }
         return $query;
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            LocaleFilter::make(),
+        ];
     }
 }
