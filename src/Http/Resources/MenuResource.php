@@ -39,7 +39,9 @@ class MenuResource extends Resource
         if (MenuBuilder::hasNovaLang()) {
             $fields[] = \OptimistDigital\NovaLang\NovaLangField\NovaLangField::make('Locale', 'locale', 'locale_parent_id')->onlyOnForms();
         } else {
-            $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')->locales($locales)->onlyOnForms();
+            $fields[] = LocaleField::make('Locale', 'locale', 'locale_parent_id')
+                ->locales($locales)
+                ->onlyOnForms();
         }
 
         if (count($locales) > 1) {
@@ -85,7 +87,8 @@ class MenuResource extends Resource
     public function filters(Request $request)
     {
         return [
-            LocaleFilter::make(),
+            LocaleFilter::make()
+                ->locales(MenuBuilder::getLocales()),
         ];
     }
 }
