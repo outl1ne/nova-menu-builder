@@ -14,13 +14,10 @@ if (!function_exists('nova_get_menus')) {
 }
 
 if (!function_exists('nova_get_menu')) {
-    function nova_get_menu($menuSlug)
+    function nova_get_menu($slug, $locale)
     {
-        if (empty($menuSlug)) return null;
-
-        $menu = Menu::whereSlug($menuSlug)->get()->first();
-        if (!isset($menu)) return null;
-
-        return $menu->formatForAPI();
+        if (empty($slug) || empty($locale)) return null;
+        $menu = Menu::where('slug', $slug)->where('locale', $locale)->get()->first();
+        return !empty($menu) ? $menu->formatForAPI() : null;
     }
 }
