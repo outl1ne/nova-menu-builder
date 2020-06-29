@@ -1,7 +1,7 @@
 <template>
   <vue-nestable
     :value="value"
-    @input="val => $emit('input', val)"
+    @input="(val) => $emit('input', val)"
     @change="$emit('onChangeMenu')"
     classProp="classProp"
   >
@@ -11,7 +11,7 @@
           v-if="hasChildren(item)"
           @click="toggleMenuChildrenCascade(item)"
           :title="__('Edit')"
-          class="appearance-none cursor-pointer text-70 hover:text-primary flex pl-4 pr-4"
+          class="appearance-none cursor-pointer text-70 hover:text-primary flex px-4 items-center"
         >
           <menu-builder-arrow-icon :wrapperClass="`${isCascadeOpen(item) && 'btn-cascade-open'}`" />
         </button>
@@ -76,7 +76,7 @@ export default {
     },
 
     toggleMenuChildrenCascade(item) {
-      if (item.classProp.find(className => className === 'hide-cascade')) {
+      if (item.classProp.find((className) => className === 'hide-cascade')) {
         item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
       } else {
         item.classProp.push('hide-cascade');
@@ -85,7 +85,7 @@ export default {
     },
 
     isCascadeOpen(item) {
-      return !item.classProp.find(className => className === 'hide-cascade');
+      return !item.classProp.find((className) => className === 'hide-cascade');
     },
   },
 };
