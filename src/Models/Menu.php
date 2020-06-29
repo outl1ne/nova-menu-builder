@@ -4,14 +4,38 @@ namespace OptimistDigital\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class Menu extends Model
 {
+    protected $fillable = ['locale_parent_id'];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->setTable(MenuBuilder::getMenusTableName());
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($menu) {
+            // Is a locale parent template
+            if ($menu->locale_parent_id === null) {
+                // Find child templates
+                $childMenu = $menu::where('locale_parent_id', '=', $menu->id)->get();
+                if (count($childMenu) === 0) return;
+
+                // Pick the first template randomly and let it become the parent
+                $childMenu[0]->update(['locale_parent_id' => null]);
+                $newLocaleParentId = $childMenu[0]->id;
+
+                // Update others
+                for ($i = 1; $i < count($childMenu); $i++) {
+                    $childMenu[$i]->update(['locale_parent_id' => $newLocaleParentId]);
+                }
+            }
+        });
     }
 
     public function rootMenuItems()
