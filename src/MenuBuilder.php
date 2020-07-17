@@ -4,6 +4,7 @@ namespace OptimistDigital\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class MenuBuilder extends Tool
 {
@@ -64,5 +65,10 @@ class MenuBuilder extends Tool
     public static function getMenuItemsTableName()
     {
         return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
+    }
+
+    public static function getMenuItemsModel()
+    {
+        return config('nova-menu.menu_item_model', MenuItem::class);
     }
 }

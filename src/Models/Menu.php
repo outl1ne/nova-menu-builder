@@ -41,7 +41,7 @@ class Menu extends Model
     public function rootMenuItems()
     {
         return $this
-            ->hasMany(MenuItem::class)
+            ->hasMany(MenuBuilder::getMenuItemsModel())
             ->where('parent_id', null)
             ->orderBy('parent_id')
             ->orderBy('order')
