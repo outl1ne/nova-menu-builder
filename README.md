@@ -168,7 +168,7 @@ public static function getOptions($locale): array {
  **/
 public static function getDisplayValue($value = null, array $parameters = null) {
     // Example usecase
-    // return 'Page: ' . Page::find($value)->name;
+    // return 'Page: ' . Page::select('name')->where('id', $value)->value('name');
     return $value;
 }
 
@@ -187,7 +187,7 @@ public static function getDisplayValue($value = null, array $parameters = null) 
  **/
 public static function getValue($value = null, array $parameters = null) {
     // Example usecase
-    // return Page::find($value);
+    // return Page::select('id', 'title', 'slug')->where('id', $value)->first();
     return $value;
 }
 ```
