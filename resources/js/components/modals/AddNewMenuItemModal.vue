@@ -71,6 +71,10 @@
             </div>
           </div>
         </template>
+
+        <!-- USERS CUSTOM IMPLEMENTATION OF LINK -->
+        <custom-menu-link :linkType="linkType"/>
+
         <div class="flex border-b border-40">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Parameters') }}</label>
