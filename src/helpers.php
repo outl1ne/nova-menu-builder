@@ -23,3 +23,16 @@ if (!function_exists('nova_get_menu')) {
         return !empty($menu) ? $menu->formatForAPI() : null;
     }
 }
+
+// ------------------------------
+// nova_menu_builder_sanitize_panel_name
+// ------------------------------
+
+if (!function_exists('nova_menu_builder_sanitize_panel_name')) {
+    function nova_menu_builder_sanitize_panel_name($name)
+    {
+        $removedSpecialChars = preg_replace("/[^A-Za-z0-9 ]/", '', $name);
+        $snakeCase = preg_replace("/\s+/", '_', $removedSpecialChars);
+        return strtolower($snakeCase);
+    }
+}

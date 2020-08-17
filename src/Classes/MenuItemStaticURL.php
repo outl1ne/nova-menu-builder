@@ -2,6 +2,9 @@
 
 namespace OptimistDigital\MenuBuilder\Classes;
 
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+
 class MenuItemStaticURL extends MenuLinkable
 {
     public static function getIdentifier(): string
@@ -17,5 +20,12 @@ class MenuItemStaticURL extends MenuLinkable
     public static function getType(): string
     {
         return 'static-url';
+    }
+
+    public function fields(Request $request): array
+    {
+        return [
+            Text::make('Url'),
+        ];
     }
 }

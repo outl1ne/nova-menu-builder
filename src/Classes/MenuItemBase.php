@@ -2,6 +2,7 @@
 
 namespace OptimistDigital\MenuBuilder\Classes;
 
+use Illuminate\Http\Request;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 
 abstract class MenuItemBase
@@ -73,4 +74,50 @@ abstract class MenuItemBase
             'value' => 'required'
         ];
     }
+
+
+    public static function getFields($linkClass): array
+    {
+        $templateFields = [];
+
+        $handleField = function (&$field) use (&$templateFields) {
+            if (!empty($field->attribute) && ($field->attribute !== 'ComputedField')) {
+                if (empty($field->panel)) {
+                    $field->attribute = 'data->' . $field->attribute;
+                } else {
+                    $sanitizedPanel = nova_menu_builder_sanitize_panel_name($field->panel);
+                    $field->attribute = 'data->' . $sanitizedPanel . '->' . $field->attribute;
+                }
+            }
+
+            return $field;
+        };
+
+        if (isset($linkClass)) {
+            $rawFields = $linkClass->fields(request());
+            foreach ($rawFields as $field) {
+                // Handle Panel
+                if ($field instanceof \Laravel\Nova\Panel) {
+                    array_map(function ($_field) use (&$handleField, $field, &$templateFields) {
+                        $templateFields[] = $handleField($_field);
+                    }, $field->data);
+                    continue;
+                }
+
+                // Handle Field
+                $templateFields[] = $handleField($field);
+            }
+        }
+
+        return $templateFields;
+    }
+
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    abstract function fields(Request $request): array;
 }

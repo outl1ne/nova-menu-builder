@@ -5,10 +5,10 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use OptimistDigital\MenuBuilder\Models\Menu;
-use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
+use OptimistDigital\MenuBuilder\Models\Menu;
+use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class MenuController extends Controller
 {
@@ -137,8 +137,10 @@ class MenuController extends Controller
             $data = [
                 'name' => $linkClass::getName(),
                 'type' => $linkClass::getType(),
+                'fields' => $linkClass::getFields(new $linkClass) ?? [],
                 'class' => $linkClass,
             ];
+
 
             if (method_exists($linkClass, 'getOptions')) {
                 $data['options'] = $linkClass::getOptions($locale);

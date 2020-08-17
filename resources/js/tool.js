@@ -21,7 +21,6 @@ Nova.booting((Vue, router) => {
   Vue.component('menu-builder-new-item-icon', require('./components/icons/NewMenuItemIcon').default);
 
   // Allow user to overwrite custom-menu-link
-  console.log(Vue.options.components['custom-menu-link']);
   if (!Vue.options.components['custom-menu-link']) {
     Vue.component(
       'custom-menu-link',

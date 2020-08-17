@@ -2,7 +2,11 @@
 
 namespace OptimistDigital\MenuBuilder\Classes;
 
-abstract class MenuItemText extends MenuItemBase
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Panel;
+
+class MenuItemText extends MenuLinkable
 {
     public static function getIdentifier(): string
     {
@@ -29,6 +33,11 @@ abstract class MenuItemText extends MenuItemBase
         return null;
     }
 
+    public static function getOptions($locale): array
+    {
+        return [];
+    }
+
     public static function getRules(): array
     {
         $rules = parent::getRules();
@@ -36,5 +45,10 @@ abstract class MenuItemText extends MenuItemBase
         $rules['value'] = '';
 
         return $rules;
+    }
+
+    public function fields(Request $request): array
+    {
+        return [];
     }
 }
