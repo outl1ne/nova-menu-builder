@@ -71,7 +71,6 @@ abstract class MenuItemBase
             'name' => 'required',
             'class' => 'required',
             'target' => 'required|in:_self,_blank',
-            'value' => 'required'
         ];
     }
 

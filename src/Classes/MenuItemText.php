@@ -38,15 +38,6 @@ class MenuItemText extends MenuLinkable
         return [];
     }
 
-    public static function getRules(): array
-    {
-        $rules = parent::getRules();
-
-        $rules['value'] = '';
-
-        return $rules;
-    }
-
     public static function fields(Request $request): array
     {
         return [];

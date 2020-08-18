@@ -31,7 +31,7 @@ class NewMenuItemRequest extends FormRequest
         return $this->get('class')::getRules();
     }
 
-    public function updateValues()
+    public function getValues()
     {
         $keys = ['name', 'enabled', 'parameters', 'target'];
         foreach ($this->all() as $key => $value) {

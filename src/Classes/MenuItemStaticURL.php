@@ -23,14 +23,17 @@ class MenuItemStaticURL extends MenuLinkable
         return 'static-url';
     }
 
+    public static function getRules(): array
+    {
+        $rules = parent::getRules();
+
+        $rules['value'] = 'required';
+
+        return $rules;
+    }
+
     public static function fields(Request $request): array
     {
-        return [
-            Text::make('Url'),
-            Text::make('Test'),
-            new Panel('Panel', [
-                Text::make('panel'),
-            ])
-        ];
+        return [];
     }
 }

@@ -38,19 +38,49 @@
           </div>
         </div>
 
+        <template v-if="linkType.type === 'static-url'">
+          <div class="flex border-b border-40">
+            <div class="w-1/5 py-4">
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('URL') }}</label>
+            </div>
+            <div class="py-4 w-4/5">
+              <input
+                :placeholder="__('URL')"
+                class="w-full form-control form-input form-input-bordered"
+                id="url"
+                type="text"
+                v-model="newItem.value"
+              />
+            </div>
+          </div>
+        </template>
+
+        <template v-if="linkType.type === 'select'">
+          <div class="flex border-b border-40">
+            <div class="w-1/5 py-4">
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('Model') }}</label>
+            </div>
+
+            <div class="py-4 w-4/5">
+              <multiselect
+                :options="options"
+                :value="options.find(option => option.id === newItem.value)"
+                @input="value => $emit('onLinkModelUpdate', value.id)"
+                label="label"
+                track-by="id"
+              />
+            </div>
+          </div>
+        </template>
 
         <card v-if="linkType.fields">
           <component
             :class="{  'remove-bottom-border': index === linkType.fields.length - 1,    }"
-            :errors="validationErrors"
             :field="field"
             :is="`form-${field.component}`"
             :key="index"
             :resource-id="resourceId"
             :resource-name="resourceName"
-            @file-deleted="$emit('update-last-retrieved-at-timestamp')"
-            @file-upload-finished="$emit('file-upload-finished')"
-            @file-upload-started="$emit('file-upload-started')"
             class="menu-item-component"
             v-for="(field, index) in fields"
           />
@@ -148,16 +178,16 @@ export default {
       return options;
     },
   },
+
   methods: {
     storeWithData(eventType) {
-      const fields = this.fields;
-      fields.forEach(field => {
+      this.fields.forEach(field => {
         const formData = new FormData();
         field.fill(formData);
         this.newItem[field.attribute] = formData.get(field.attribute);
       });
 
-      this.newItem.value = 'temporary_value';
+      delete this.newItem.classProp;
       this.$emit(eventType);
     },
   },

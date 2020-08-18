@@ -103,7 +103,7 @@ class MenuController extends Controller
     public function updateMenuItem(NewMenuItemRequest $request, MenuItem $menuItem)
     {
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
-        $data = $request->updateValues();
+        $data = $request->getValues();
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/47
         $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
