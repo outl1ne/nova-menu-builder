@@ -19,12 +19,4 @@ Nova.booting((Vue, router) => {
   Vue.component('menu-builder-duplicate-icon', require('./components/icons/DuplicateIcon').default);
   Vue.component('menu-builder-delete-icon', require('./components/icons/DeleteIcon').default);
   Vue.component('menu-builder-new-item-icon', require('./components/icons/NewMenuItemIcon').default);
-
-  // Allow user to overwrite custom-menu-link
-  if (!Vue.options.components['custom-menu-link']) {
-    Vue.component(
-      'custom-menu-link',
-      require('./components/modals/CustomMenuLink').default,
-    );
-  }
 });
