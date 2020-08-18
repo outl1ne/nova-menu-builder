@@ -87,11 +87,12 @@
           {{ __('Cancel') }}
         </button>
 
-        <button @click.prevent="$emit('confirmItemCreate')" class="btn btn-default btn-primary" v-if="update === false">
+        <button @click.prevent="storeWithData('confirmItemCreate')" class="btn btn-default btn-primary"
+                v-if="update === false">
           {{ __('Create menu item') }}
         </button>
 
-        <button @click.prevent="$emit('updateItem')" class="btn btn-default btn-primary" v-else>
+        <button @click.prevent="storeWithData('updateItem')" class="btn btn-default btn-primary" v-else>
           {{ __('Update menu item') }}
         </button>
       </div>
@@ -138,13 +139,26 @@ export default {
 
   computed: {
     fields() {
-      return this.linkType.fields;
+      return this.newItem.fields || this.linkType.fields;
     },
 
     options() {
       const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
       options.unshift({ id: '', label: this.__('Choose an option') });
       return options;
+    },
+  },
+  methods: {
+    storeWithData(eventType) {
+      const fields = this.fields;
+      fields.forEach(field => {
+        const formData = new FormData();
+        field.fill(formData);
+        this.newItem[field.attribute] = formData.get(field.attribute);
+      });
+
+      this.newItem.value = 'temporary_value';
+      this.$emit(eventType);
     },
   },
 };

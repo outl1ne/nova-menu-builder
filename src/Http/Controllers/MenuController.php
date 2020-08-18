@@ -70,8 +70,13 @@ class MenuController extends Controller
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
         $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
+        $model = new MenuItem();
 
-        MenuItem::create($data);
+        foreach ($data as $key => $value) {
+            $model->{$key} = $value;
+        }
+
+        $model->save();
         return response()->json(['success' => true], 200);
     }
 
@@ -98,12 +103,16 @@ class MenuController extends Controller
     public function updateMenuItem(NewMenuItemRequest $request, MenuItem $menuItem)
     {
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
-        $data = $request->all();
+        $data = $request->updateValues();
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/47
         $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
 
-        $menuItem->update($data);
+        foreach ($data as $key => $value) {
+            $menuItem->{$key} = $value;
+        }
+
+        $menuItem->save();
         return response()->json(['success' => true], 200);
     }
 
@@ -137,7 +146,7 @@ class MenuController extends Controller
             $data = [
                 'name' => $linkClass::getName(),
                 'type' => $linkClass::getType(),
-                'fields' => $linkClass::getFields(new $linkClass) ?? [],
+                'fields' => $linkClass::getFields($linkClass) ?? [],
                 'class' => $linkClass,
             ];
 

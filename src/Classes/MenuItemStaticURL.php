@@ -4,6 +4,7 @@ namespace OptimistDigital\MenuBuilder\Classes;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Panel;
 
 class MenuItemStaticURL extends MenuLinkable
 {
@@ -22,10 +23,14 @@ class MenuItemStaticURL extends MenuLinkable
         return 'static-url';
     }
 
-    public function fields(Request $request): array
+    public static function fields(Request $request): array
     {
         return [
             Text::make('Url'),
+            Text::make('Test'),
+            new Panel('Panel', [
+                Text::make('panel'),
+            ])
         ];
     }
 }

@@ -47,7 +47,7 @@ class MenuItemText extends MenuLinkable
         return $rules;
     }
 
-    public function fields(Request $request): array
+    public static function fields(Request $request): array
     {
         return [];
     }

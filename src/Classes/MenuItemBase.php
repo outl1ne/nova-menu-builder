@@ -94,7 +94,7 @@ abstract class MenuItemBase
         };
 
         if (isset($linkClass)) {
-            $rawFields = $linkClass->fields(request());
+            $rawFields = $linkClass::fields(request());
             foreach ($rawFields as $field) {
                 // Handle Panel
                 if ($field instanceof \Laravel\Nova\Panel) {
@@ -119,5 +119,5 @@ abstract class MenuItemBase
      * @param \Illuminate\Http\Request $request
      * @return array
      */
-    abstract function fields(Request $request): array;
+    abstract static function fields(Request $request): array;
 }

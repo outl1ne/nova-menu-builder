@@ -3,8 +3,8 @@
 namespace OptimistDigital\MenuBuilder\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Classes\MenuItemText;
 
 class NewMenuItemRequest extends FormRequest
 {
@@ -29,5 +29,15 @@ class NewMenuItemRequest extends FormRequest
             return ['class' => 'required'];
         }
         return $this->get('class')::getRules();
+    }
+
+    public function updateValues()
+    {
+        $keys = ['name', 'enabled', 'parameters', 'target'];
+        foreach ($this->all() as $key => $value) {
+            if (Str::startsWith($key, 'data->')) $keys[] = $key;
+        }
+
+        return $this->only($keys);
     }
 }

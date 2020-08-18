@@ -60,7 +60,6 @@ export default {
       value: '',
       target: '_self',
       parameters: '',
-      active: true,
       menu_id: null,
       enabled: true,
       classProp: [],

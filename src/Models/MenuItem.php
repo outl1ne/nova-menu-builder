@@ -4,20 +4,20 @@ namespace OptimistDigital\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Models\Menu;
 
 class MenuItem extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'value', 'class', 'parameters', 'target', 'parent_id', 'order', 'enabled'];
+    protected $fillable = ['menu_id', 'name', 'value', 'class', 'parameters', 'target', 'parent_id', 'order', 'enabled', 'data'];
 
     protected $with = ['children'];
 
     protected $casts = [
         'enabled' => 'boolean',
         'parameters' => 'array',
+        'data' => 'array',
     ];
 
-    protected $appends = ['enabledClass', 'displayValue'];
+    protected $appends = ['enabledClass', 'displayValue', 'fields'];
 
     public function __construct(array $attributes = [])
     {
@@ -77,5 +77,14 @@ class MenuItem extends Model
             return $this->class::getValue($this->value, $this->parameters);
         }
         return $this->value;
+    }
+
+    public function getFieldsAttribute()
+    {
+        $fields = $this->class::getFields($this->class);
+        foreach ($fields as $field) {
+            $field->resolve($this);
+        }
+        return $fields;
     }
 }
