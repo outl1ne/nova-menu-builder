@@ -17,6 +17,8 @@
       :update="update"
       :linkType="linkType"
       :linkTypes="linkTypes"
+      :resourceName="resourceName"
+      :resourceId="resourceId"
       @updateItem="updateItem"
       @confirmItemCreate="confirmItemCreate"
       @closeModal="closeModal"

@@ -39,7 +39,7 @@
         </div>
 
 
-        <card v-if="linkType">
+        <card v-if="linkType.fields">
           <component
             :class="{  'remove-bottom-border': index === linkType.fields.length - 1,    }"
             :errors="validationErrors"
@@ -48,10 +48,6 @@
             :key="index"
             :resource-id="resourceId"
             :resource-name="resourceName"
-            :shown-via-new-relation-modal="shownViaNewRelationModal"
-            :via-relationship="viaRelationship"
-            :via-resource="viaResource"
-            :via-resource-id="viaResourceId"
             @file-deleted="$emit('update-last-retrieved-at-timestamp')"
             @file-upload-finished="$emit('file-upload-finished')"
             @file-upload-started="$emit('file-upload-started')"
@@ -112,7 +108,7 @@ import 'codemirror/theme/dracula.css';
 import 'codemirror/mode/javascript/javascript';
 
 export default {
-  props: ['newItem', 'showModal', 'update', 'linkType', 'linkTypes'],
+  props: ['newItem', 'showModal', 'update', 'linkType', 'linkTypes', 'resourceName', 'resourceId'],
   components: {
     Modal,
     codemirror,
@@ -142,7 +138,6 @@ export default {
 
   computed: {
     fields() {
-      console.log('linktype', this.linkType);
       return this.linkType.fields;
     },
 
