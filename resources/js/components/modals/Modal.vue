@@ -5,7 +5,7 @@
         <div class="p-8"><slot name="container"></slot></div>
 
         <div class="bg-30 px-6 py-3 flex">
-          <div class="w-full " :class="align"><slot name="buttons"></slot></div>
+          <div class="w-full" :class="align"><slot name="buttons"></slot></div>
         </div>
       </div>
     </modal>

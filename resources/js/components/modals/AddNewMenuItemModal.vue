@@ -3,7 +3,7 @@
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
-        <toggle-button :color="switchColor" :labels="toggleLabels" :sync="true" :width="70" v-model="newItem.enabled"/>
+        <toggle-button :color="switchColor" :labels="toggleLabels" :sync="true" :width="70" v-model="newItem.enabled" />
       </div>
 
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
@@ -28,7 +28,7 @@
           <div class="py-4 w-4/5">
             <select
               :value="linkType.class"
-              @input="e => $emit('onLinkTypeUpdate', e.target.value)"
+              @input="(e) => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-select"
             >
               <option disabled="disabled" selected="selected" value="">{{ __('Choose an option') }}</option>
@@ -64,8 +64,8 @@
             <div class="py-4 w-4/5">
               <multiselect
                 :options="options"
-                :value="options.find(option => option.id === newItem.value)"
-                @input="value => $emit('onLinkModelUpdate', value.id)"
+                :value="options.find((option) => option.id === newItem.value)"
+                @input="(value) => $emit('onLinkModelUpdate', value.id)"
                 label="label"
                 track-by="id"
               />
@@ -75,7 +75,7 @@
 
         <card v-if="linkType.fields">
           <component
-            :class="{  'remove-bottom-border': index === linkType.fields.length - 1,    }"
+            :class="{ 'remove-bottom-border': index === linkType.fields.length - 1 }"
             :field="field"
             :is="`form-${field.component}`"
             :key="index"
@@ -117,8 +117,11 @@
           {{ __('Cancel') }}
         </button>
 
-        <button @click.prevent="storeWithData('confirmItemCreate')" class="btn btn-default btn-primary"
-                v-if="update === false">
+        <button
+          @click.prevent="storeWithData('confirmItemCreate')"
+          class="btn btn-default btn-primary"
+          v-if="update === false"
+        >
           {{ __('Create menu item') }}
         </button>
 
@@ -173,7 +176,7 @@ export default {
     },
 
     options() {
-      const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
+      const options = Object.keys(this.linkType.options).map((id) => ({ id, label: this.linkType.options[id] }));
       options.unshift({ id: '', label: this.__('Choose an option') });
       return options;
     },
@@ -181,7 +184,7 @@ export default {
 
   methods: {
     storeWithData(eventType) {
-      this.fields.forEach(field => {
+      this.fields.forEach((field) => {
         const formData = new FormData();
         field.fill(formData);
         this.newItem[field.attribute] = formData.get(field.attribute);
