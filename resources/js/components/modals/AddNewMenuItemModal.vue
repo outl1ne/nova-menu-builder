@@ -135,6 +135,7 @@
 <script>
 import Modal from './Modal';
 import { codemirror } from 'vue-codemirror';
+import Multiselect from 'vue-multiselect';
 
 import 'codemirror/addon/display/placeholder.js';
 import 'codemirror/lib/codemirror.css';
@@ -146,6 +147,7 @@ export default {
   components: {
     Modal,
     codemirror,
+    Multiselect,
   },
   data: () => ({
     toggleLabels: false,
@@ -217,7 +219,7 @@ export default {
     div:nth-child(2) {
       padding-left: 0;
       padding-right: 0;
-      width: 100%;
+      width: 80%;
     }
   }
 }
