@@ -23,7 +23,7 @@ class MenuItemText extends MenuLinkable
         return 'text';
     }
 
-    public static function getDisplayValue($value = null, array $parameters = null)
+    public static function getDisplayValue($value = null, array $parameters = null, array $data = null)
     {
         return '';
     }

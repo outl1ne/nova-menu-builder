@@ -71,6 +71,7 @@ class Menu extends Model
             'target' => $menuItem->target,
             'parameters' => $menuItem->parameters,
             'enabled' => $menuItem->enabled,
+            'data' => $menuItem->customData,
             'children' => empty($menuItem->children) ? [] : $menuItem->children->map(function ($item) {
                 return $this->formatMenuItem($item);
             }),

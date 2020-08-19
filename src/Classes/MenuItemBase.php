@@ -35,11 +35,12 @@ abstract class MenuItemBase
     /**
      * Get the subtitle value shown in CMS menu items list.
      *
-     * @param string $value
-     * @param array $parameters The JSON parameters added to the item.
+     * @param null $value
+     * @param array|null $parameters The JSON parameters added to the item.
+     * @param array|null $data
      * @return string
-     **/
-    public static function getDisplayValue($value = null, array $parameters = null)
+     */
+    public static function getDisplayValue($value = null, array $parameters = null, array $data = null)
     {
         return $value;
     }
@@ -53,13 +54,31 @@ abstract class MenuItemBase
      * and nova_get_menus() helpers or when you call formatForAPI()
      * on the Menu model.
      *
-     * @param string $value The key from options list that was selected.
-     * @param array $parameters The JSON parameters added to the item.
+     * @param null $value The key from options list that was selected.
+     * @param array|null $parameters The JSON parameters added to the item.
      * @return any
-     **/
+     */
     public static function getValue($value = null, array $parameters = null)
     {
         return $value;
+    }
+
+    /**
+     * Get data of the link visible to the front-end.
+     *
+     * Can be anything. It is up to you how you will handle parsing it.
+     *
+     * This will only be called when using the nova_get_menu()
+     * and nova_get_menus() helpers or when you call formatForAPI()
+     * on the Menu model.
+     *
+     * @param null $data Field values
+     * @param array|null $parameters The JSON parameters added to the item.
+     * @return any
+     */
+    public static function getData($data = null, array $parameters = null)
+    {
+        return $data;
     }
 
     public static function getRules(): array

@@ -65,7 +65,7 @@ class MenuController extends Controller
             'name' => 'required|min:1',
         ]);
 
-        $data = $request->all();
+        $data = $request->getValues();
         $data['order'] = MenuItem::max('id') + 1;
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
