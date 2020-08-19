@@ -192,7 +192,6 @@ export default {
         this.newItem[field.attribute] = formData.get(field.attribute);
       });
 
-      delete this.newItem.classProp;
       this.$emit(eventType);
     },
   },
