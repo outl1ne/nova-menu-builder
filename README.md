@@ -13,6 +13,7 @@ Continuation of [Infinety/Nova-Menu-Builder](https://github.com/InfinetyEs/Nova-
 - Nesting and re-ordering of menu-items
 - Menu items collapse and duplicate options in the UI
 - Creation of custom link options (ie links to models such as Page or Product)
+- Custom fields on menu items
 - Support for different languages
 - Optional `nova-lang` support
 
@@ -189,6 +190,45 @@ public static function getValue($value = null, array $parameters = null) {
     // Example usecase
     // return Page::find($value);
     return $value;
+}
+
+/**
+ * Get the fields displayed by the resource.
+ *
+ * @return array An array of fields.
+ */
+public static function getFields(): array
+{
+    return [];
+}
+
+/**
+ * Get the rules for the resource.
+ *
+ * @return array A key-value map of attributes and rules.
+ */
+
+public static function getRules(): array
+{
+    return [];
+}
+
+/**
+ * Get data of the link visible to the front-end.
+ *
+ * Can be anything. It is up to you how you will handle parsing it.
+ *
+ * This will only be called when using the nova_get_menu()
+ * and nova_get_menus() helpers or when you call formatForAPI()
+ * on the Menu model.
+ *
+ * @param null $data Field values
+ * @param array|null $parameters The JSON parameters added to the item.
+ * @return any
+ */
+public static function getData($data = null, array $parameters = null)
+{
+    return $data;
 }
 ```
 
