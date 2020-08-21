@@ -2,7 +2,9 @@
 
 namespace OptimistDigital\MenuBuilder\Classes;
 
-abstract class MenuItemText extends MenuItemBase
+use Illuminate\Http\Request;
+
+class MenuItemText extends MenuLinkable
 {
     public static function getIdentifier(): string
     {
@@ -19,7 +21,7 @@ abstract class MenuItemText extends MenuItemBase
         return 'text';
     }
 
-    public static function getDisplayValue($value = null, array $parameters = null)
+    public static function getDisplayValue($value = null, array $parameters = null, array $data = null)
     {
         return '';
     }
@@ -29,12 +31,8 @@ abstract class MenuItemText extends MenuItemBase
         return null;
     }
 
-    public static function getRules(): array
+    public static function getOptions($locale): array
     {
-        $rules = parent::getRules();
-
-        $rules['value'] = '';
-
-        return $rules;
+        return [];
     }
 }

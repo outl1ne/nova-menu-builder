@@ -3,8 +3,8 @@
 namespace OptimistDigital\MenuBuilder\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Classes\MenuItemText;
 
 class NewMenuItemRequest extends FormRequest
 {
@@ -25,9 +25,18 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
-        if (empty($this->get('class'))) {
-            return ['class' => 'required'];
+        $menuLinkableClass = $this->get('class');
+        if (empty($menuLinkableClass)) return ['class' => 'required'];
+        return MenuBuilder::getRulesFromMenuLinkable($menuLinkableClass);
+    }
+
+    public function getValues()
+    {
+        $keys = ['name', 'enabled', 'parameters', 'target', 'class', 'value', 'menu_id'];
+        foreach ($this->all() as $key => $value) {
+            if (Str::startsWith($key, 'data->')) $keys[] = $key;
         }
-        return $this->get('class')::getRules();
+
+        return $this->only($keys);
     }
 }

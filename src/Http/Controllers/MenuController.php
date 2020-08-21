@@ -5,10 +5,10 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use OptimistDigital\MenuBuilder\Models\Menu;
-use OptimistDigital\MenuBuilder\Models\MenuItem;
 use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
+use OptimistDigital\MenuBuilder\Models\Menu;
+use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class MenuController extends Controller
 {
@@ -65,13 +65,18 @@ class MenuController extends Controller
             'name' => 'required|min:1',
         ]);
 
-        $data = $request->all();
+        $data = $request->getValues();
         $data['order'] = MenuItem::max('id') + 1;
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
         $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
+        $model = new MenuItem();
 
-        MenuItem::create($data);
+        foreach ($data as $key => $value) {
+            $model->{$key} = $value;
+        }
+
+        $model->save();
         return response()->json(['success' => true], 200);
     }
 
@@ -98,12 +103,16 @@ class MenuController extends Controller
     public function updateMenuItem(NewMenuItemRequest $request, MenuItem $menuItem)
     {
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
-        $data = $request->all();
+        $data = $request->getValues();
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/47
         $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
 
-        $menuItem->update($data);
+        foreach ($data as $key => $value) {
+            $menuItem->{$key} = $value;
+        }
+
+        $menuItem->save();
         return response()->json(['success' => true], 200);
     }
 
@@ -137,8 +146,10 @@ class MenuController extends Controller
             $data = [
                 'name' => $linkClass::getName(),
                 'type' => $linkClass::getType(),
+                'fields' => MenuBuilder::getFieldsFromMenuLinkable($linkClass) ?? [],
                 'class' => $linkClass,
             ];
+
 
             if (method_exists($linkClass, 'getOptions')) {
                 $data['options'] = $linkClass::getOptions($locale);

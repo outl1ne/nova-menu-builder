@@ -2,30 +2,32 @@
   <div class="py-3">
     <menu-builder-header @addNewMenuItem="addNewMenuItem" />
     <menu-builder
-      v-model="menuItems"
       @duplicateMenuItem="duplicateMenuItem"
-      @saveMenuLocalState="saveMenuLocalState"
       @editMenu="editMenu"
-      @removeMenu="removeMenu"
       @onChangeMenu="change"
+      @removeMenu="removeMenu"
+      @saveMenuLocalState="saveMenuLocalState"
       v-if="menuItems.length > 0"
+      v-model="menuItems"
     />
     <empty-menu-builder-placeholder @addNewMenuItem="addNewMenuItem" v-else />
     <add-new-menu-item-modal
-      :newItem="newItem"
-      :showModal="modalItem !== false"
-      :update="update"
       :linkType="linkType"
       :linkTypes="linkTypes"
-      @updateItem="updateItem"
-      @confirmItemCreate="confirmItemCreate"
+      :newItem="newItem"
+      :resourceId="resourceId"
+      :resourceName="resourceName"
+      :showModal="modalItem !== false"
+      :update="update"
       @closeModal="closeModal"
-      @onLinkTypeUpdate="updateLinkType"
+      @confirmItemCreate="confirmItemCreate"
       @onLinkModelUpdate="updateLinkModel"
+      @onLinkTypeUpdate="updateLinkType"
+      @updateItem="updateItem"
     />
     <delete-menu-item-confirmation-modal
-      :modalConfirm="modalConfirm"
       :itemToDelete="itemToDelete"
+      :modalConfirm="modalConfirm"
       @closeModal="closeModal"
       @confirmItemDelete="confirmItemDelete"
     />
@@ -58,7 +60,6 @@ export default {
       value: '',
       target: '_self',
       parameters: '',
-      active: true,
       menu_id: null,
       enabled: true,
       classProp: [],
@@ -278,26 +279,32 @@ export default {
 .nestable {
   position: relative;
 }
+
 .nestable .nestable-list {
   margin: 0;
   padding: 0 0 0 40px;
   list-style-type: none;
 }
+
 .nestable > .nestable-list {
   padding: 0;
 }
+
 .nestable-item,
 .nestable-item-copy {
   margin: 10px 0 0;
 }
+
 .nestable-item:first-child,
 .nestable-item-copy:first-child {
   margin-top: 0;
 }
+
 .nestable-item .nestable-list,
 .nestable-item-copy .nestable-list {
   margin-top: 10px;
 }
+
 .nestable-item {
   position: relative;
 }
@@ -322,10 +329,12 @@ export default {
 .nestable-item.is-dragging .nestable-list {
   pointer-events: none;
 }
+
 .nestable-item.is-dragging * {
   opacity: 0;
   filter: alpha(opacity=0);
 }
+
 .nestable-item.is-dragging:before {
   content: ' ';
   position: absolute;
@@ -338,6 +347,7 @@ export default {
   -webkit-border-radius: 5px;
   border-radius: 5px;
 }
+
 .nestable-drag-layer {
   position: fixed;
   top: 0;
@@ -345,6 +355,7 @@ export default {
   z-index: 100;
   pointer-events: none;
 }
+
 .nestable-drag-layer > .nestable-list {
   position: absolute;
   top: 0;
@@ -352,16 +363,20 @@ export default {
   padding: 0;
   background-color: rgba(106, 127, 233, 0.274);
 }
+
 .nestable [draggable='true'] {
   cursor: move;
 }
+
 .disabled {
   opacity: 0.5;
 }
+
 .btn-cascade-open {
   transform: rotate(180deg);
   transform-origin: center center;
 }
+
 .hide-cascade > ol {
   display: none;
 }

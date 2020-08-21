@@ -1,7 +1,7 @@
 <template>
   <vue-nestable
     :value="value"
-    @input="(val) => $emit('input', val)"
+    @input="val => $emit('input', val)"
     @change="$emit('onChangeMenu')"
     classProp="classProp"
   >
@@ -76,7 +76,7 @@ export default {
     },
 
     toggleMenuChildrenCascade(item) {
-      if (item.classProp.find((className) => className === 'hide-cascade')) {
+      if (item.classProp.find(className => className === 'hide-cascade')) {
         item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
       } else {
         item.classProp.push('hide-cascade');
@@ -85,7 +85,7 @@ export default {
     },
 
     isCascadeOpen(item) {
-      return !item.classProp.find((className) => className === 'hide-cascade');
+      return !item.classProp.find(className => className === 'hide-cascade');
     },
   },
 };
