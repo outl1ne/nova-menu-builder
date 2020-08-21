@@ -11,6 +11,16 @@ return [
 
     'resource' => OptimistDigital\MenuBuilder\Http\Resources\MenuResource::class,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Menu Item Model
+    |--------------------------------------------------------------------------
+    |
+    | Optionally override the original Menu Item model.
+    */
+
+    'menu_item_model' => OptimistDigital\MenuBuilder\Models\MenuItem::class,
+
 
     /*
     |--------------------------------------------------------------------------

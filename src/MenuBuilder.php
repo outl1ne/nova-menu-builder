@@ -4,6 +4,7 @@ namespace OptimistDigital\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class MenuBuilder extends Tool
 {
@@ -113,5 +114,10 @@ class MenuBuilder extends Tool
             'class' => 'required',
             'target' => 'required|in:_self,_blank',
         ], $menuLinkableClass::getRules());
+    }
+
+    public static function getMenuItemsModel()
+    {
+        return config('nova-menu.menu_item_model', MenuItem::class);
     }
 }
