@@ -116,7 +116,7 @@ class MenuBuilder extends Tool
         ], $menuLinkableClass::getRules());
     }
 
-    public static function getMenuItemsModel()
+    public static function getMenuItemClass()
     {
         return config('nova-menu.menu_item_model', MenuItem::class);
     }

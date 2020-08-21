@@ -58,6 +58,8 @@ class MenuController extends Controller
      **/
     public function createMenuItem(NewMenuItemRequest $request)
     {
+        $menuItemModel = MenuBuilder::getMenuItemClass();
+
         $request->validate([
             'class' => 'required',
             'value' => 'present',
@@ -66,17 +68,17 @@ class MenuController extends Controller
         ]);
 
         $data = $request->getValues();
-        $data['order'] = MenuBuilder::getMenuItemsModel()::max('id') + 1;
+        $data['order'] = $menuItemModel::max('id') + 1;
 
         // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
         $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
-        
-        $model = new MenuBuilder::getMenuItemsModel();
+
+        $model = new $menuItemModel;
         foreach ($data as $key => $value) {
             $model->{$key} = $value;
         }
         $model->save();
-        
+
         return response()->json(['success' => true], 200);
     }
 
@@ -100,8 +102,10 @@ class MenuController extends Controller
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function updateMenuItem(NewMenuItemRequest $request, $menuItem)
+    public function updateMenuItem(NewMenuItemRequest $request, $menuItemId)
     {
+        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+
         /** @var MenuItem $menuItem */
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
         $data = $request->getValues();
@@ -123,9 +127,11 @@ class MenuController extends Controller
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function deleteMenuItem($menuItem)
+    public function deleteMenuItem($menuItemId)
     {
         /** @var MenuItem $menuItem */
+        $menuItem = MenuBuilder::getMenuItemClass()::findOrFail($menuItemId);
+
         $menuItem->children()->delete();
         $menuItem->delete();
         return response()->json(['success' => true], 200);
@@ -169,9 +175,11 @@ class MenuController extends Controller
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function duplicateMenuItem($menuItem)
+    public function duplicateMenuItem($menuItemId)
     {
         /** @var MenuItem $menuItem */
+        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+
         if (empty($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
 
         $this->shiftMenuItemsWithHigherOrder($menuItem);
@@ -188,11 +196,10 @@ class MenuController extends Controller
     /**
      * Increase order number of every menu item that has higher order number than ours by one
      *
-     * @param $menuItem
+     * @param MenuItem $menuItem
      */
     private function shiftMenuItemsWithHigherOrder($menuItem)
     {
-        /** @var MenuItem $menuItem */
         $tableName = $menuItem->getTable();
         $menuItemParentSql = $menuItem->parent_id ? "menuItem.parent_id = $menuItem->parent_id" : 'menuItem.parent_id IS NULL';
 
@@ -218,7 +225,7 @@ SQL
 
     private function saveMenuItemWithNewOrder($orderNr, $item, $parentId = null)
     {
-        $menuItem = MenuBuilder::getMenuItemsModel()::find($item['id']);
+        $menuItem = MenuBuilder::getMenuItemClass()::find($item['id']);
         $menuItem->order = $orderNr;
         $menuItem->parent_id = $parentId;
         $menuItem->save();
@@ -239,7 +246,7 @@ SQL
         unset($data['id']);
         if ($parentId != null) $data['parent_id'] = $parentId;
         if ($order != null) $data['order'] = $order;
-        $newItem = MenuBuilder::getMenuItemsModel()::create($data);
+        $newItem = MenuBuilder::getMenuItemClass()::create($data);
         $children = $item->children;
         foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
     }
