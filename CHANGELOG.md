@@ -11,7 +11,7 @@ Major release due to breaking changes!
 
 ### Added
 
-- Ability to add custom fields to MenuLinkable class (via `getFields(): array`) function
+- Ability to add custom fields to MenuLinkable class (via `getFields(): array`) function (thanks to [@KasparRosin](https://github.com/KasparRosin))
 - Ability to customize rules for menu items (via `getRules(): array`) function
 - Added new `data` column to menu items table (`php artisan migrate` required)
 - Added ability to provide custom `MenuItem` model
