@@ -101,15 +101,14 @@ export default {
     getCascadeState(menuItem) {
       return {
         id: menuItem.id,
-        cascade: menuItem.classProp ? !menuItem.classProp.find((className) => className === 'hide-cascade') : true,
-        children:
-          Array.isArray(menuItem.children) && menuItem.children.map((item) => item && this.getCascadeState(item)),
+        cascade: menuItem.classProp ? !menuItem.classProp.find(className => className === 'hide-cascade') : true,
+        children: Array.isArray(menuItem.children) && menuItem.children.map(item => item && this.getCascadeState(item)),
       };
     },
 
     saveMenuLocalState() {
       if (!Array.isArray(this.menuItems) || this.menuItems.length === 0) return;
-      const menuItemsState = this.menuItems.map((item) => item && this.getCascadeState(item));
+      const menuItemsState = this.menuItems.map(item => item && this.getCascadeState(item));
       const data = localStorage.getItem('menuManagerItemsState');
       let menuStorage = (data && JSON.parse(data)) || {};
       menuStorage[`resource-${this.resourceId}`] = menuItemsState;
@@ -129,9 +128,9 @@ export default {
     },
 
     setMenuItemProperties(menuItems, localItemsState = null) {
-      return menuItems.map((item) => {
+      return menuItems.map(item => {
         const localItemState = Array.isArray(localItemsState)
-          ? localItemsState.find((localItem) => +localItem.id === +item.id)
+          ? localItemsState.find(localItem => +localItem.id === +item.id)
           : false;
 
         return {
@@ -152,7 +151,7 @@ export default {
       this.update = menuItem.id;
       this.newItem = menuItem;
       this.modalItem = true;
-      this.linkType = this.linkTypes.find((lt) => lt.class === this.newItem.class);
+      this.linkType = this.linkTypes.find(lt => lt.class === this.newItem.class);
     },
 
     removeMenu(item) {
@@ -169,7 +168,7 @@ export default {
           this.itemToDelete = null;
           this.modalConfirm = false;
         })
-        .catch((request) => {
+        .catch(request => {
           this.handleErrors(request);
         });
     },
@@ -218,7 +217,7 @@ export default {
           this.resetNewItem();
           this.$toasted.show(this.__('Item updated!'), { type: 'success' });
         })
-        .catch((request) => {
+        .catch(request => {
           this.handleErrors(request);
         });
     },
@@ -237,7 +236,7 @@ export default {
     handleErrors(request) {
       let errors = request.response.data.errors;
       if (errors) {
-        _.map(errors, (error) => this.$toasted.show(error, { type: 'error' }));
+        _.map(errors, error => this.$toasted.show(error, { type: 'error' }));
       }
     },
 
@@ -249,7 +248,7 @@ export default {
           this.resetNewItem();
           this.$toasted.show(this.__('Item duplicated!'), { type: 'success' });
         })
-        .catch((request) => {
+        .catch(request => {
           this.handleErrors(request);
         });
     },
@@ -260,7 +259,7 @@ export default {
     },
 
     updateLinkType(linkType) {
-      this.linkType = this.linkTypes.find((type) => type.class === linkType);
+      this.linkType = this.linkTypes.find(type => type.class === linkType);
     },
   },
   mounted() {

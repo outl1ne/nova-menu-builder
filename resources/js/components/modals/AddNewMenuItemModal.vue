@@ -28,7 +28,7 @@
           <div class="py-4 w-4/5">
             <select
               :value="linkType.class"
-              @input="(e) => $emit('onLinkTypeUpdate', e.target.value)"
+              @input="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-select"
             >
               <option disabled="disabled" selected="selected" value="">{{ __('Choose an option') }}</option>
@@ -64,8 +64,8 @@
             <div class="py-4 w-4/5">
               <multiselect
                 :options="options"
-                :value="options.find((option) => option.id === newItem.value)"
-                @input="(value) => $emit('onLinkModelUpdate', value.id)"
+                :value="options.find(option => option.id === newItem.value)"
+                @input="value => $emit('onLinkModelUpdate', value.id)"
                 label="label"
                 track-by="id"
               />
@@ -178,7 +178,7 @@ export default {
     },
 
     options() {
-      const options = Object.keys(this.linkType.options).map((id) => ({ id, label: this.linkType.options[id] }));
+      const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
       options.unshift({ id: '', label: this.__('Choose an option') });
       return options;
     },
@@ -186,7 +186,7 @@ export default {
 
   methods: {
     storeWithData(eventType) {
-      this.fields.forEach((field) => {
+      this.fields.forEach(field => {
         const formData = new FormData();
         field.fill(formData);
         this.newItem[field.attribute] = formData.get(field.attribute);
