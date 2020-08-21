@@ -13,7 +13,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Menu Item Model
+    | MenuItem Model
     |--------------------------------------------------------------------------
     |
     | Optionally override the original Menu Item model.
@@ -61,4 +61,14 @@ return [
     */
 
     'linkable_models' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto-load migrations
+    |--------------------------------------------------------------------------
+    |
+    | Allow auto-loading of migrations (without the need to publish them)
+    */
+
+    'auto_load_migrations' => true,
 ];
