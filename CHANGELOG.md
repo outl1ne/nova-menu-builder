@@ -15,6 +15,8 @@ Major release due to breaking changes!
 - Ability to customize rules for menu items (via `getRules(): array`) function
 - Added new `data` column to menu items table (`php artisan migrate` required)
 - Added a fourth parameter `$data` to `getDisplayValue()`
+- Added ability to provide custom `MenuItem` model
+- Added ability to disable auto-loading of migrations
 
 ```
 public static function getDisplayValue($value = null, array $parameters = null, array $data = null)
