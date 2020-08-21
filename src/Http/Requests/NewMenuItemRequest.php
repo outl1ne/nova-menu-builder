@@ -25,10 +25,9 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
-        if (empty($this->get('class'))) {
-            return ['class' => 'required'];
-        }
-        return $this->get('class')::getRules();
+        $menuLinkableClass = $this->get('class');
+        if (empty($menuLinkableClass)) return ['class' => 'required'];
+        return MenuBuilder::getRulesFromMenuLinkable($menuLinkableClass);
     }
 
     public function getValues()

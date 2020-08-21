@@ -166,7 +166,7 @@ public static function getOptions($locale): array {
  * @param array $parameters The JSON parameters added to the item.
  * @return string
  **/
-public static function getDisplayValue($value = null, array $parameters = null) {
+public static function getDisplayValue($value = null, array $parameters = null, array $data = null) {
     // Example usecase
     // return 'Page: ' . Page::find($value)->name;
     return $value;

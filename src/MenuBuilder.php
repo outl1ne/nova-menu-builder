@@ -65,4 +65,53 @@ class MenuBuilder extends Tool
     {
         return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
     }
+
+    public static function getFieldsFromMenuLinkable(string $menuLinkableClass): array
+    {
+        $templateFields = [];
+
+        $handleField = function (&$field) {
+            if (!empty($field->attribute) && ($field->attribute !== 'ComputedField')) {
+                if (empty($field->panel)) {
+                    $field->attribute = 'data->' . $field->attribute;
+                } else {
+                    $sanitizedPanel = nova_menu_builder_sanitize_panel_name($field->panel);
+                    $field->attribute = 'data->' . $sanitizedPanel . '->' . $field->attribute;
+                }
+            }
+
+            return $field;
+        };
+
+        if (isset($menuLinkableClass)) {
+            $rawFields = $menuLinkableClass::getFields();
+            foreach ($rawFields as $field) {
+                // Handle Panel
+                if ($field instanceof \Laravel\Nova\Panel) {
+                    array_map(
+                        fn ($_field) => ($templateFields[] = $handleField($_field)),
+                        $field->data
+                    );
+                    continue;
+                }
+
+                // Handle Field
+                $templateFields[] = $handleField($field);
+            }
+        }
+
+        return $templateFields;
+    }
+
+    public static function getRulesFromMenuLinkable(string $menuLinkableClass)
+    {
+        $menusTableName = MenuBuilder::getMenusTableName();
+
+        return array_merge([
+            'menu_id' => "required|exists:$menusTableName,id",
+            'name' => 'required',
+            'class' => 'required',
+            'target' => 'required|in:_self,_blank',
+        ], $menuLinkableClass::getRules());
+    }
 }

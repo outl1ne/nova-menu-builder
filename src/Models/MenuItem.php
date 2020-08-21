@@ -89,7 +89,7 @@ class MenuItem extends Model
 
     public function getFieldsAttribute()
     {
-        $fields = $this->class::getFields($this->class);
+        $fields = MenuBuilder::getFieldsFromMenuLinkable($this->class);
         foreach ($fields as $field) {
             $field->resolve($this);
         }

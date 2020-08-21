@@ -3,8 +3,6 @@
 namespace OptimistDigital\MenuBuilder\Classes;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Panel;
 
 class MenuItemText extends MenuLinkable
 {
@@ -34,11 +32,6 @@ class MenuItemText extends MenuLinkable
     }
 
     public static function getOptions($locale): array
-    {
-        return [];
-    }
-
-    public static function fields(Request $request): array
     {
         return [];
     }

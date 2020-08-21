@@ -81,61 +81,24 @@ abstract class MenuItemBase
         return $data;
     }
 
+    /**
+     * Get the rules for the resource.
+     *
+     * @return array A key-value map of attributes and rules.
+     */
+
     public static function getRules(): array
     {
-        $menusTableName = MenuBuilder::getMenusTableName();
-
-        return [
-            'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required',
-            'class' => 'required',
-            'target' => 'required|in:_self,_blank',
-        ];
+        return [];
     }
-
-
-    public static function getFields($linkClass): array
-    {
-        $templateFields = [];
-
-        $handleField = function (&$field) use (&$templateFields) {
-            if (!empty($field->attribute) && ($field->attribute !== 'ComputedField')) {
-                if (empty($field->panel)) {
-                    $field->attribute = 'data->' . $field->attribute;
-                } else {
-                    $sanitizedPanel = nova_menu_builder_sanitize_panel_name($field->panel);
-                    $field->attribute = 'data->' . $sanitizedPanel . '->' . $field->attribute;
-                }
-            }
-
-            return $field;
-        };
-
-        if (isset($linkClass)) {
-            $rawFields = $linkClass::fields(request());
-            foreach ($rawFields as $field) {
-                // Handle Panel
-                if ($field instanceof \Laravel\Nova\Panel) {
-                    array_map(function ($_field) use (&$handleField, $field, &$templateFields) {
-                        $templateFields[] = $handleField($_field);
-                    }, $field->data);
-                    continue;
-                }
-
-                // Handle Field
-                $templateFields[] = $handleField($field);
-            }
-        }
-
-        return $templateFields;
-    }
-
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array
+     * @return array An array of fields.
      */
-    abstract static function fields(Request $request): array;
+    public static function getFields(): array
+    {
+        return [];
+    }
 }

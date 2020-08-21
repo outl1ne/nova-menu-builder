@@ -146,7 +146,7 @@ class MenuController extends Controller
             $data = [
                 'name' => $linkClass::getName(),
                 'type' => $linkClass::getType(),
-                'fields' => $linkClass::getFields($linkClass) ?? [],
+                'fields' => MenuBuilder::getFieldsFromMenuLinkable($linkClass) ?? [],
                 'class' => $linkClass,
             ];
 

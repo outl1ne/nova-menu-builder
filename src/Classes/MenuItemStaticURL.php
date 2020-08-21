@@ -25,15 +25,8 @@ class MenuItemStaticURL extends MenuLinkable
 
     public static function getRules(): array
     {
-        $rules = parent::getRules();
-
-        $rules['value'] = 'required';
-
-        return $rules;
-    }
-
-    public static function fields(Request $request): array
-    {
-        return [];
+        return [
+            'value' => 'required',
+        ];
     }
 }
