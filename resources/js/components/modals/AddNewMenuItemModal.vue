@@ -73,16 +73,16 @@
           </div>
         </template>
 
-        <card v-if="linkType.fields">
+        <card v-if="getFields()">
           <component
-            :class="{ 'remove-bottom-border': index === linkType.fields.length - 1 }"
+            :class="{ 'remove-bottom-border': index === getFields().length - 1 }"
             :field="field"
             :is="`form-${field.component}`"
             :key="index"
             :resource-id="resourceId"
             :resource-name="resourceName"
             class="menu-item-component"
-            v-for="(field, index) in fields"
+            v-for="(field, index) in getFields()"
           />
         </card>
 
@@ -173,10 +173,6 @@ export default {
   },
 
   computed: {
-    fields() {
-      return this.newItem.fields || this.linkType.fields;
-    },
-
     options() {
       const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
       options.unshift({ id: '', label: this.__('Choose an option') });
@@ -185,8 +181,16 @@ export default {
   },
 
   methods: {
+    getFields() {
+      return this.newItem.fields === undefined
+        ? this.linkType.fields
+        : this.newItem.fields.length <= 0
+        ? this.linkType.fields
+        : this.newItem.fields;
+    },
+
     storeWithData(eventType) {
-      this.fields.forEach(field => {
+      this.getFields().forEach(field => {
         const formData = new FormData();
         field.fill(formData);
         this.newItem[field.attribute] = formData.get(field.attribute);
