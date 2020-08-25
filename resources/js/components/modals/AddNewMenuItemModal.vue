@@ -215,11 +215,11 @@ export default {
   }
 
   .menu-item-component {
-    div:nth-child(1) {
+    > div:nth-child(1) {
       padding-left: 0;
     }
 
-    div:nth-child(2) {
+    > div:nth-child(2) {
       padding-left: 0;
       padding-right: 0;
       width: 80%;
