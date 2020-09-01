@@ -73,7 +73,7 @@
           </div>
         </template>
 
-        <card v-if="getFields()">
+        <div v-if="linkType.fields">
           <component
             :class="{ 'remove-bottom-border': index === getFields().length - 1 }"
             :field="field"
@@ -84,7 +84,7 @@
             class="menu-item-component"
             v-for="(field, index) in getFields()"
           />
-        </card>
+        </div>
 
         <div class="flex border-b border-40">
           <div class="w-1/5 py-4">
@@ -193,7 +193,11 @@ export default {
       this.getFields().forEach(field => {
         const formData = new FormData();
         field.fill(formData);
-        this.newItem[field.attribute] = formData.get(field.attribute);
+
+        const values = Array.from(formData.values());
+        if (values.length === 0) this.newItem[field.attribute] = void 0;
+        if (values.length === 1) this.newItem[field.attribute] = values[0];
+        if (values.length > 1) this.newItem[field.attribute] = values;
       });
 
       this.$emit(eventType);
