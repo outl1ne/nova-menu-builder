@@ -186,7 +186,9 @@ export default {
         ? this.linkType.fields
         : this.newItem.fields.length <= 0
         ? this.linkType.fields
-        : this.newItem.fields;
+        : this.update === false
+        ? this.newItem.fields
+        : this.linkType.fields;
     },
 
     storeWithData(eventType) {
