@@ -182,13 +182,9 @@ export default {
 
   methods: {
     getFields() {
-      return this.newItem.fields === undefined
-        ? this.linkType.fields
-        : this.newItem.fields.length <= 0
-        ? this.linkType.fields
-        : this.update === false
-        ? this.newItem.fields
-        : this.linkType.fields;
+      if (this.newItem.fields === undefined || this.newItem.length <= 0) return this.linkType.fields;
+      if (this.update === false) return this.newItem.fields;
+      return this.linkType.fields;
     },
 
     storeWithData(eventType) {

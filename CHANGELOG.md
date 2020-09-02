@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fixed PHP 7.4 `fn` usage
+- Fixed showing incorrect fields in update modal when changing menu item type
 
 ## [3.0.2] - 2020-09-01
 
