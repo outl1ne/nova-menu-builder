@@ -90,7 +90,9 @@ class MenuBuilder extends Tool
                 // Handle Panel
                 if ($field instanceof \Laravel\Nova\Panel) {
                     array_map(
-                        fn ($_field) => ($templateFields[] = $handleField($_field)),
+                        function ($_field) use ($handleField, &$templateFields) {
+                            $templateFields[] = $handleField($_field);
+                        },
                         $field->data
                     );
                     continue;
