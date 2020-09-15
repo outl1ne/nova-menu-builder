@@ -5,7 +5,7 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
+use OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
@@ -53,10 +53,10 @@ class MenuController extends Controller
     /**
      * Creates new MenuItem.
      *
-     * @param OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest $request
+     * @param OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @return Illuminate\Http\Response
      **/
-    public function createMenuItem(NewMenuItemRequest $request)
+    public function createMenuItem(MenuItemFormRequest $request)
     {
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
@@ -98,11 +98,11 @@ class MenuController extends Controller
     /**
      * Updates a MenuItem.
      *
-     * @param OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest $request
+     * @param OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function updateMenuItem(NewMenuItemRequest $request, $menuItemId)
+    public function updateMenuItem(MenuItemFormRequest $request, $menuItemId)
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
@@ -146,21 +146,21 @@ class MenuController extends Controller
     public function getLinkTypes($locale)
     {
         $linkTypes = [];
-        $models = MenuBuilder::getModels();
+        $menuItemTypes = MenuBuilder::getMenuItemTypes();
 
-        foreach ($models as $linkClass) {
-            if (!class_exists($linkClass)) continue;
+        foreach ($menuItemTypes as $typeClass) {
+            if (!class_exists($typeClass)) continue;
 
             $data = [
-                'name' => $linkClass::getName(),
-                'type' => $linkClass::getType(),
-                'fields' => MenuBuilder::getFieldsFromMenuLinkable($linkClass) ?? [],
-                'class' => $linkClass,
+                'name' => $typeClass::getName(),
+                'type' => $typeClass::getType(),
+                'fields' => MenuBuilder::getFieldsFromMenuLinkable($typeClass) ?? [],
+                'class' => $typeClass,
             ];
 
 
-            if (method_exists($linkClass, 'getOptions')) {
-                $data['options'] = $linkClass::getOptions($locale);
+            if (method_exists($typeClass, 'getOptions')) {
+                $data['options'] = $typeClass::getOptions($locale);
             }
 
             $linkTypes[] = $data;

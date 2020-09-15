@@ -62,6 +62,8 @@ export default {
   },
 
   data: () => ({
+    selectedLocale: void 0,
+
     modalConfirm: false,
     modalItem: false,
     itemToDelete: null,
@@ -79,22 +81,27 @@ export default {
     linkTypes: void 0,
   }),
 
-  mounted() {
+  async mounted() {
     // Fix classes on Detail view
     this.$parent.$el.classList.remove('py-3', 'px-6');
 
+    // Set starting locale
+    this.selectedLocale = Object.keys(this.field.locales)[0];
+
     this.newItem.menu_id = this.resourceId;
-    this.getData();
+    this.refreshData();
   },
 
   computed: {
     newItemData() {
-      return {
-        ...this.newItem,
-        class: this.linkType.class,
-      };
+      return { ...this.newItem, class: this.linkType.class };
+    },
+
+    locales() {
+      return this.field.locales;
     },
   },
+
   methods: {
     isValidJSON(data) {
       if (!data || data[0] !== '{') return false;
@@ -140,10 +147,12 @@ export default {
       return menuStorage[`resource-${this.resourceId}`];
     },
 
-    async getData() {
+    async refreshData() {
       const menuItems = (await api.getItems(this.resourceId)).data;
-      this.menuItems = this.setMenuItemProperties(_.values(menuItems), this.getMenuLocalState());
-      this.linkTypes = _.values((await api.getLinkTypes(this.$attrs.panel.fields[0].locale)).data);
+      this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
+
+      const linkTypes = (await api.getLinkTypes(this.selectedLocale)).data;
+      this.linkTypes = Object.values(linkTypes);
     },
 
     setMenuItemProperties(menuItems, localItemsState = null) {
@@ -179,7 +188,7 @@ export default {
       api
         .destroy(this.itemToDelete.id)
         .then(() => {
-          this.getData();
+          this.refreshData();
           this.$toasted.show(this.__('Item removed successfully!'), { type: 'success' });
           this.itemToDelete = null;
           this.modalConfirm = false;
@@ -204,7 +213,7 @@ export default {
     async confirmItemCreate() {
       try {
         await api.create(this.newItemData);
-        this.getData();
+        this.refreshData();
         this.modalItem = false;
         this.resetNewItem();
         this.$toasted.show(this.__('Item created!'), { type: 'success' });
@@ -217,7 +226,7 @@ export default {
       api
         .update(this.update, this.newItemData)
         .then(() => {
-          this.getData();
+          this.refreshData();
           this.modalItem = false;
           this.resetNewItem();
           this.$toasted.show(this.__('Item updated!'), { type: 'success' });
@@ -249,7 +258,7 @@ export default {
       api
         .duplicate(item.id)
         .then(() => {
-          this.getData();
+          this.refreshData();
           this.resetNewItem();
           this.$toasted.show(this.__('Item duplicated!'), { type: 'success' });
         })

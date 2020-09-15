@@ -1,15 +1,12 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Classes;
+namespace OptimistDigital\MenuBuilder\MenuItemTypes;
 
-use Illuminate\Http\Request;
-use OptimistDigital\MenuBuilder\MenuBuilder;
-
-abstract class MenuItemBase
+abstract class BaseMenuItemType
 {
     /**
      * Get the menu link identifier that can be used to tell different custom
-     * links apart (ie 'page' or 'product').
+     * links apart (ie 'page-link' or 'image-link').
      *
      * @return string
      **/
@@ -17,7 +14,7 @@ abstract class MenuItemBase
 
     /**
      * Get menu link name shown in CMS when selecting link type.
-     * ie ('Product Link').
+     * ie ('Product Link' or 'Image Link').
      *
      * @return string
      **/
@@ -26,9 +23,9 @@ abstract class MenuItemBase
     /**
      * Get menu link type.
      *
-     * Only 'select' is supported for custom MenuLinkables.
+     * Choose 'custom' if you only want to render custom fields.
      *
-     * @return string select|static-url|text
+     * @return string text|select|static-url|custom
      **/
     abstract public static function getType(): string;
 
@@ -36,11 +33,10 @@ abstract class MenuItemBase
      * Get the subtitle value shown in CMS menu items list.
      *
      * @param null $value
-     * @param array|null $parameters The JSON parameters added to the item.
-     * @param array|null $data
+     * @param array|null $data The data from item fields.
      * @return string
      */
-    public static function getDisplayValue($value = null, array $parameters = null, array $data = null)
+    public static function getDisplayValue($value = null, array $data = null)
     {
         return $value;
     }
@@ -55,10 +51,10 @@ abstract class MenuItemBase
      * on the Menu model.
      *
      * @param null $value The key from options list that was selected.
-     * @param array|null $parameters The JSON parameters added to the item.
+     * @param array|null $data The data from item fields.
      * @return any
      */
-    public static function getValue($value = null, array $parameters = null)
+    public static function getValue($value = null, array $data = null)
     {
         return $value;
     }

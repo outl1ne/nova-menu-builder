@@ -1,8 +1,8 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Classes;
+namespace OptimistDigital\MenuBuilder\MenuItemTypes;
 
-abstract class MenuLinkable extends MenuItemBase
+abstract class MenuItemSelectType extends BaseMenuItemType
 {
     public static function getType(): string
     {

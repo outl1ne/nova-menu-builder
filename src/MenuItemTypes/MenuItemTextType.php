@@ -1,10 +1,8 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Classes;
+namespace OptimistDigital\MenuBuilder\MenuItemTypes;
 
-use Illuminate\Http\Request;
-
-class MenuItemText extends MenuLinkable
+class MenuItemTextType extends BaseMenuItemType
 {
     public static function getIdentifier(): string
     {
@@ -23,12 +21,12 @@ class MenuItemText extends MenuLinkable
 
     public static function getDisplayValue($value = null, array $parameters = null, array $data = null)
     {
-        return '';
+        return $value;
     }
 
     public static function getValue($value = null, array $parameters = null)
     {
-        return null;
+        return $value;
     }
 
     public static function getOptions($locale): array

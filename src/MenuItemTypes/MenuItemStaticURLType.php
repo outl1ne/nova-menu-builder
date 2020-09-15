@@ -1,12 +1,8 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Classes;
+namespace OptimistDigital\MenuBuilder\MenuItemTypes;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Panel;
-
-class MenuItemStaticURL extends MenuLinkable
+class MenuItemStaticURLType extends BaseMenuItemType
 {
     public static function getIdentifier(): string
     {

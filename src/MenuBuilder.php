@@ -4,13 +4,12 @@ namespace OptimistDigital\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class MenuBuilder extends Tool
 {
-    protected static $defaultLinkableModels = [
-        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class,
-        \OptimistDigital\MenuBuilder\Classes\MenuItemText::class,
+    protected static $defaultMenuItemTypes = [
+        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
     ];
 
     /**
@@ -40,16 +39,6 @@ class MenuBuilder extends Tool
         if (is_callable($localesConfig)) return call_user_func($localesConfig);
         if (is_array($localesConfig)) return $localesConfig;
         return ['en' => 'English'];
-    }
-
-
-    public static function getModels()
-    {
-        $configuredLinkableModels = config('nova-menu.linkable_models', []);
-        return array_merge(
-            static::$defaultLinkableModels,
-            $configuredLinkableModels
-        );
     }
 
     public static function getFieldsFromMenuLinkable(string $menuLinkableClass): array
@@ -103,11 +92,6 @@ class MenuBuilder extends Tool
         ], $menuLinkableClass::getRules());
     }
 
-    public static function getMenuItemClass()
-    {
-        return config('nova-menu.menu_item_model', MenuItem::class);
-    }
-
 
 
     // In-package helpers
@@ -124,5 +108,18 @@ class MenuBuilder extends Tool
     public static function getMenuItemsTableName()
     {
         return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
+    }
+
+    public static function getMenuItemClass()
+    {
+        return config('nova-menu.menu_item_model', \OptimistDigital\MenuBuilder\Models\MenuItem::class);
+    }
+
+    public static function getMenuItemTypes()
+    {
+        return array_merge(
+            static::$defaultMenuItemTypes,
+            config('nova-menu.menu_item_types', []),
+        );
     }
 }
