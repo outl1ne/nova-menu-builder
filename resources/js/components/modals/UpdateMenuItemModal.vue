@@ -132,10 +132,7 @@ import Multiselect from 'vue-multiselect';
 
 export default {
   props: ['newItem', 'showModal', 'update', 'linkType', 'menuItemTypes', 'resourceName', 'resourceId'],
-  components: {
-    Modal,
-    Multiselect,
-  },
+  components: { Modal, Multiselect },
   data: () => ({
     toggleLabels: false,
     switchColor: {},

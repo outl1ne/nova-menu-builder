@@ -1,10 +1,10 @@
 <template>
-  <div class="relative py-3">
+  <div id="menu-builder-field" class="relative py-3">
     <menu-builder-header
       @addMenuItem="openAddModal"
-      @changeLocale="changeLocale"
+      @changeLocale="setSelectedLocale"
       :activeLocale="selectedLocale"
-      :locales="locales"
+      :locales="field.locales"
     />
 
     <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!menuItems.length" />
@@ -25,7 +25,7 @@
       :newItem="newItem"
       :resourceId="resourceId"
       :resourceName="resourceName"
-      :showModal="modalItem !== false"
+      :showModal="showAddModal"
       :update="update"
       @closeModal="closeModal"
       @confirmItemCreate="confirmItemCreate"
@@ -34,7 +34,7 @@
       @updateItem="updateItem"
     />
 
-    <delete-menu-item-confirmation-modal
+    <delete-menu-item-modal
       :itemToDelete="itemToDelete"
       :modalConfirm="modalConfirm"
       @closeModal="closeModal"
@@ -48,26 +48,27 @@ import api from '../api';
 import { FormField } from 'laravel-nova';
 import MenuBuilderHeader from './core/MenuBuilderHeader';
 import UpdateMenuItemModal from './modals/UpdateMenuItemModal';
-import DeleteMenuItemConfirmationModal from './modals/DeleteMenuItemConfirmationModal';
+import DeleteMenuItemModal from './modals/DeleteMenuItemModal';
 import NoMenuItemsPlaceholder from './core/NoMenuItemsPlaceholder';
+import HandlesCollapsibleState from '../mixins/HandlesCollapsibleState';
 
 export default {
-  mixins: [FormField],
+  mixins: [FormField, HandlesCollapsibleState],
 
   props: ['resourceName', 'resourceId', 'field'],
 
   components: {
     MenuBuilderHeader,
     NoMenuItemsPlaceholder,
+    DeleteMenuItemModal,
     UpdateMenuItemModal,
-    'delete-menu-item-confirmation-modal': DeleteMenuItemConfirmationModal,
   },
 
   data: () => ({
     selectedLocale: void 0,
 
     modalConfirm: false,
-    modalItem: false,
+    showAddModal: false,
     itemToDelete: null,
     update: false,
     linkType: '',
@@ -90,68 +91,35 @@ export default {
     // Set starting locale
     this.selectedLocale = Object.keys(this.field.locales)[0];
 
-    this.newItem.menu_id = this.resourceId;
     this.refreshData();
   },
 
   computed: {
     newItemData() {
-      return { ...this.newItem, locale: this.selectedLocale, class: this.linkType.class };
-    },
-
-    locales() {
-      return this.field.locales;
+      return {
+        ...this.newItem,
+        locale: this.selectedLocale,
+        class: this.linkType.class,
+        menu_id: this.resourceId,
+      };
     },
   },
 
   methods: {
-    isValidJSON(data) {
-      if (!data || data[0] !== '{') return false;
-      try {
-        JSON.parse(data);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    },
-
-    changeLocale(locale) {
+    setSelectedLocale(locale) {
       this.selectedLocale = locale;
       this.refreshData();
     },
 
     openAddModal() {
       this.update = false;
-      this.modalItem = true;
+      this.showAddModal = true;
     },
 
     closeModal() {
-      this.modalItem = false;
+      this.showAddModal = false;
       this.modalConfirm = false;
       this.resetNewItem();
-    },
-
-    getCascadeState(menuItem) {
-      return {
-        id: menuItem.id,
-        cascade: menuItem.classProp ? !menuItem.classProp.find(className => className === 'hide-cascade') : true,
-        children: Array.isArray(menuItem.children) && menuItem.children.map(item => item && this.getCascadeState(item)),
-      };
-    },
-
-    saveMenuLocalState() {
-      if (!Array.isArray(this.menuItems) || this.menuItems.length === 0) return;
-      const menuItemsState = this.menuItems.map(item => item && this.getCascadeState(item));
-      const data = localStorage.getItem('menuManagerItemsState');
-      let menuStorage = (data && JSON.parse(data)) || {};
-      menuStorage[`resource-${this.resourceId}`] = menuItemsState;
-      localStorage.setItem('menuManagerItemsState', JSON.stringify(menuStorage));
-    },
-
-    getMenuLocalState() {
-      const menuStorage = JSON.parse(localStorage.getItem('menuManagerItemsState'));
-      if (!menuStorage || !menuStorage[`resource-${this.resourceId}`]) return null;
-      return menuStorage[`resource-${this.resourceId}`];
     },
 
     async refreshData() {
@@ -162,27 +130,11 @@ export default {
       this.menuItemTypes = Object.values(menuItemTypes);
     },
 
-    setMenuItemProperties(menuItems, localItemsState = null) {
-      return menuItems.map(item => {
-        const localItemState = Array.isArray(localItemsState)
-          ? localItemsState.find(localItem => +localItem.id === +item.id)
-          : false;
-
-        return {
-          ...item,
-          classProp: [localItemState && !localItemState.cascade ? 'hide-cascade' : ''],
-          children: Array.isArray(item.children)
-            ? this.setMenuItemProperties(item.children, localItemState && localItemState.children)
-            : item.children,
-        };
-      });
-    },
-
     async editMenu(item) {
       const menuItem = (await api.getMenuItem(item.id)).data;
       this.update = menuItem.id;
       this.newItem = menuItem;
-      this.modalItem = true;
+      this.showAddModal = true;
       this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
     },
 
@@ -191,18 +143,16 @@ export default {
       this.modalConfirm = true;
     },
 
-    confirmItemDelete() {
-      api
-        .destroy(this.itemToDelete.id)
-        .then(() => {
-          this.refreshData();
-          this.$toasted.show(this.__('Item removed successfully!'), { type: 'success' });
-          this.itemToDelete = null;
-          this.modalConfirm = false;
-        })
-        .catch(request => {
-          this.handleErrors(request);
-        });
+    async confirmItemDelete() {
+      try {
+        await api.destroy(this.itemToDelete.id);
+        await this.refreshData();
+        this.$toasted.show(this.__('Item removed successfully!'), { type: 'success' });
+        this.itemToDelete = null;
+        this.modalConfirm = false;
+      } catch (e) {
+        this.handleErrors(e);
+      }
     },
 
     resetNewItem() {
@@ -221,7 +171,7 @@ export default {
       try {
         await api.create(this.newItemData);
         this.refreshData();
-        this.modalItem = false;
+        this.showAddModal = false;
         this.resetNewItem();
         this.$toasted.show(this.__('Item created!'), { type: 'success' });
       } catch (e) {
@@ -229,18 +179,16 @@ export default {
       }
     },
 
-    updateItem() {
-      api
-        .update(this.update, this.newItemData)
-        .then(() => {
-          this.refreshData();
-          this.modalItem = false;
-          this.resetNewItem();
-          this.$toasted.show(this.__('Item updated!'), { type: 'success' });
-        })
-        .catch(request => {
-          this.handleErrors(request);
-        });
+    async updateItem() {
+      try {
+        await api.update(this.update, this.newItemData);
+        await this.refreshData();
+        this.showAddModal = false;
+        this.resetNewItem();
+        this.$toasted.show(this.__('Item updated!'), { type: 'success' });
+      } catch (e) {
+        this.handleErrors(e);
+      }
     },
 
     async updateMenu() {
@@ -257,17 +205,15 @@ export default {
       if (errors) Array.from(errors).map(error => this.$toasted.show(error, { type: 'error' }));
     },
 
-    duplicateMenuItem(item) {
-      api
-        .duplicate(item.id)
-        .then(() => {
-          this.refreshData();
-          this.resetNewItem();
-          this.$toasted.show(this.__('Item duplicated!'), { type: 'success' });
-        })
-        .catch(request => {
-          this.handleErrors(request);
-        });
+    async duplicateMenuItem(item) {
+      try {
+        await api.duplicate(item.id);
+        await this.refreshData();
+        this.resetNewItem();
+        this.$toasted.show(this.__('Item duplicated!'), { type: 'success' });
+      } catch (e) {
+        this.handleErrors(e);
+      }
     },
 
     updateLinkModel(modelId) {
@@ -281,105 +227,107 @@ export default {
 };
 </script>
 
-<style scope>
-.menu-button {
-  position: absolute;
-  right: -12px;
-  margin-top: -72px;
-}
+<style lang="scss">
+#menu-builder-field {
+  .menu-button {
+    position: absolute;
+    right: -12px;
+    margin-top: -72px;
+  }
 
-.nestable {
-  position: relative;
-}
+  .nestable {
+    position: relative;
 
-.nestable .nestable-list {
-  margin: 0;
-  padding: 0 0 0 40px;
-  list-style-type: none;
-}
+    .nestable-list {
+      margin: 0;
+      padding: 0 0 0 40px;
+      list-style-type: none;
+    }
 
-.nestable > .nestable-list {
-  padding: 0;
-}
+    > .nestable-list {
+      padding: 0;
+    }
 
-.nestable-item,
-.nestable-item-copy {
-  margin: 10px 0 0;
-}
+    .nestable-item,
+    .nestable-item-copy {
+      margin: 10px 0 0;
+    }
 
-.nestable-item:first-child,
-.nestable-item-copy:first-child {
-  margin-top: 0;
-}
+    .nestable-item:first-child,
+    .nestable-item-copy:first-child {
+      margin-top: 0;
+    }
 
-.nestable-item .nestable-list,
-.nestable-item-copy .nestable-list {
-  margin-top: 10px;
-}
+    .nestable-item .nestable-list,
+    .nestable-item-copy .nestable-list {
+      margin-top: 10px;
+    }
 
-.nestable-item {
-  position: relative;
-}
+    .nestable-item {
+      position: relative;
+    }
+  }
 
-.handle {
-  width: 100%;
-  padding: 0 10px 0 0;
-  height: 45px;
-  line-height: 45px;
-}
+  .handle {
+    width: 100%;
+    padding: 0 10px 0 0;
+    height: 45px;
+    line-height: 45px;
+  }
 
-.nestable-item.is-dragging .nestable-list {
-  pointer-events: none;
-}
+  .nestable-item.is-dragging .nestable-list {
+    pointer-events: none;
+  }
 
-.nestable-item.is-dragging * {
-  opacity: 0;
-  filter: alpha(opacity=0);
-}
+  .nestable-item.is-dragging * {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
 
-.nestable-item.is-dragging:before {
-  content: ' ';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(106, 127, 233, 0.274);
-  border: 1px dashed rgb(73, 100, 241);
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-}
+  .nestable-item.is-dragging:before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(106, 127, 233, 0.274);
+    border: 1px dashed rgb(73, 100, 241);
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+  }
 
-.nestable-drag-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  pointer-events: none;
-}
+  .nestable-drag-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
 
-.nestable-drag-layer > .nestable-list {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  background-color: rgba(106, 127, 233, 0.274);
-}
+  .nestable-drag-layer > .nestable-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    background-color: rgba(106, 127, 233, 0.274);
+  }
 
-.nestable [draggable='true'] {
-  cursor: move;
-}
+  .nestable [draggable='true'] {
+    cursor: move;
+  }
 
-.disabled {
-  opacity: 0.5;
-}
+  .disabled {
+    opacity: 0.5;
+  }
 
-.btn-cascade-open {
-  transform: rotate(180deg);
-  transform-origin: center center;
-}
+  .btn-cascade-open {
+    transform: rotate(180deg);
+    transform-origin: center center;
+  }
 
-.hide-cascade > ol {
-  display: none;
+  .hide-cascade > ol {
+    display: none;
+  }
 }
 </style>
