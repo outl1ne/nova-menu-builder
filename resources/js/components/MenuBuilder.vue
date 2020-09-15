@@ -3,7 +3,7 @@
     :value="value"
     @input="val => $emit('input', val)"
     @change="$emit('onMenuChange')"
-    class="px-3"
+    class="px-3 menu-builder"
     classProp="classProp"
   >
     <vue-nestable-handle
@@ -29,21 +29,35 @@
       </div>
 
       <div class="buttons w-1/3 flex justify-end content-center">
-        <button
-          :title="__('Edit')"
-          @click="$emit('editMenu', item)"
-          class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-        >
-          <edit-icon />
-        </button>
+        <!-- Edit icon -->
+        <tooltip>
+          <button
+            :title="__('novaMenuBuilder.edit')"
+            @click="$emit('editMenu', item)"
+            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+          >
+            <edit-icon />
+          </button>
 
-        <button
-          :title="__('Duplicate')"
-          @click="$emit('duplicateMenuItem', item)"
-          class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-        >
-          <duplicate-icon />
-        </button>
+          <tooltip-content slot="content">
+            {{ __('novaMenuBuilder.edit') }}
+          </tooltip-content>
+        </tooltip>
+
+        <!-- Duplicate icon -->
+        <tooltip>
+          <button
+            :title="__('novaMenuBuilder.duplicate')"
+            @click="$emit('duplicateMenuItem', item)"
+            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+          >
+            <duplicate-icon />
+          </button>
+
+          <tooltip-content slot="content">
+            {{ __('novaMenuBuilder.duplicate') }}
+          </tooltip-content>
+        </tooltip>
 
         <button
           :title="__('Delete')"
@@ -105,3 +119,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.menu-builder {
+  .v-popover,
+  .v-popover > * > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>

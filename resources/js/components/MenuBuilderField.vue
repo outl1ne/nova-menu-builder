@@ -28,6 +28,7 @@
       @onLinkTypeUpdate="updateLinkType"
       @updateItem="updateItem"
     />
+
     <delete-menu-item-confirmation-modal
       :itemToDelete="itemToDelete"
       :modalConfirm="modalConfirm"
