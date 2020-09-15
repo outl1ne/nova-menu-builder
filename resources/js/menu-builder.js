@@ -3,7 +3,13 @@ import MenuIndexView from './views/MenuIndexView';
 import MenuBuilderField from './components/MenuBuilderField';
 
 Nova.booting((Vue, router) => {
-  router.addRoutes([{ name: 'menus', path: '/menus', component: MenuIndexView }]);
+  router.addRoutes([
+    {
+      name: 'menus',
+      path: '/resources/nova-menus',
+      component: MenuIndexView,
+    },
+  ]);
 
   Vue.component('form-menu-builder-field', MenuBuilderField);
   Vue.component('detail-menu-builder-field', MenuBuilderField);
