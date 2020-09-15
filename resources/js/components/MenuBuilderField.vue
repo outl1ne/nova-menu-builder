@@ -2,16 +2,18 @@
   <div class="relative py-3">
     <add-new-menu-item-button @click.native="addNewMenuItem" />
 
+    <no-menu-items-placeholder @onAddClick="addNewMenuItem" v-if="!menuItems.length" />
+
     <menu-builder
+      v-else
       @duplicateMenuItem="duplicateMenuItem"
       @editMenu="editMenu"
       @onChangeMenu="change"
       @removeMenu="removeMenu"
       @saveMenuLocalState="saveMenuLocalState"
-      v-if="menuItems.length > 0"
       v-model="menuItems"
     />
-    <empty-menu-builder-placeholder @addNewMenuItem="addNewMenuItem" v-else />
+
     <add-new-menu-item-modal
       :linkType="linkType"
       :linkTypes="linkTypes"
@@ -37,7 +39,7 @@
 
 <script>
 import { FormField } from 'laravel-nova';
-import AddNewMenuItemButton from './AddNewMenuItemButton';
+import AddNewMenuItemButton from './core/AddNewMenuItemButton';
 
 import _ from 'lodash';
 
@@ -45,6 +47,7 @@ import api from '../api';
 
 import AddNewMenuItemModal from './modals/AddNewMenuItemModal';
 import DeleteMenuItemConfirmationModal from './modals/DeleteMenuItemConfirmationModal';
+import NoMenuItemsPlaceholder from './core/NoMenuItemsPlaceholder';
 
 export default {
   mixins: [FormField],
@@ -53,6 +56,7 @@ export default {
 
   components: {
     AddNewMenuItemButton,
+    NoMenuItemsPlaceholder,
     'add-new-menu-item-modal': AddNewMenuItemModal,
     'delete-menu-item-confirmation-modal': DeleteMenuItemConfirmationModal,
   },

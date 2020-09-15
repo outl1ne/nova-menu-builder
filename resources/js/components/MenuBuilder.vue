@@ -58,7 +58,6 @@ import ArrowIcon from './icons/ArrowIcon';
 import DeleteIcon from './icons/DeleteIcon';
 import DuplicateIcon from './icons/DuplicateIcon';
 import EditIcon from './icons/EditIcon';
-import NewMenuItemIcon from './icons/NewMenuItemIcon';
 
 export default {
   props: {

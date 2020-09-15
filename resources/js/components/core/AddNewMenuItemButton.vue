@@ -5,7 +5,7 @@
     class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
     @click="e => e.preventDefault()"
   >
-    {{ __('Add item') }}
+    {{ __('novaMenuBuilder.addMenuItem') }}
   </button>
 </template>
 

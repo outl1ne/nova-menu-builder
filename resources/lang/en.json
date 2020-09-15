@@ -1,3 +1,5 @@
 {
-  "novaMenuBuilder.sidebarTitle": "Menus"
+  "novaMenuBuilder.sidebarTitle": "Menus",
+  "novaMenuBuilder.noMenuItemsPlaceholder": "No menu items",
+  "novaMenuBuilder.addMenuItem": "Add menu item"
 }
