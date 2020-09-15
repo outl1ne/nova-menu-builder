@@ -21,11 +21,17 @@ class MenuController extends Controller
      **/
     public function getMenuItems(Request $request, Menu $menu)
     {
+        $locale = $request->get('locale');
         if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
+        if (empty($locale)) return response()->json(['menu' => 'locale_required_but_missing'], 400);
 
-        $menuItems = $menu->rootMenuItems->filter(function ($item) {
-            return class_exists($item->class);
-        });
+        $menuItems = $menu
+            ->rootMenuItems()
+            ->where('locale', $locale)
+            ->get()
+            ->filter(function ($item) {
+                return class_exists($item->class);
+            });
 
         return response()->json($menuItems, 200);
     }
@@ -65,13 +71,11 @@ class MenuController extends Controller
             'value' => 'present',
             'enabled' => 'present',
             'name' => 'required|min:1',
+            'locale' => 'required',
         ]);
 
         $data = $request->getValues();
         $data['order'] = $menuItemModel::max('id') + 1;
-
-        // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
-        $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {

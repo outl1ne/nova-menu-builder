@@ -1,8 +1,13 @@
 <template>
   <div class="relative py-3">
-    <add-new-menu-item-button @click.native="addNewMenuItem" />
+    <menu-builder-header
+      @addMenuItem="openAddModal"
+      @changeLocale="changeLocale"
+      :activeLocale="selectedLocale"
+      :locales="locales"
+    />
 
-    <no-menu-items-placeholder @onAddClick="addNewMenuItem" v-if="!menuItems.length" />
+    <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!menuItems.length" />
 
     <menu-builder
       v-else
@@ -39,13 +44,9 @@
 </template>
 
 <script>
-import { FormField } from 'laravel-nova';
-import AddNewMenuItemButton from './core/AddNewMenuItemButton';
-
-import _ from 'lodash';
-
 import api from '../api';
-
+import { FormField } from 'laravel-nova';
+import MenuBuilderHeader from './core/MenuBuilderHeader';
 import UpdateMenuItemModal from './modals/UpdateMenuItemModal';
 import DeleteMenuItemConfirmationModal from './modals/DeleteMenuItemConfirmationModal';
 import NoMenuItemsPlaceholder from './core/NoMenuItemsPlaceholder';
@@ -56,7 +57,7 @@ export default {
   props: ['resourceName', 'resourceId', 'field'],
 
   components: {
-    AddNewMenuItemButton,
+    MenuBuilderHeader,
     NoMenuItemsPlaceholder,
     UpdateMenuItemModal,
     'delete-menu-item-confirmation-modal': DeleteMenuItemConfirmationModal,
@@ -95,7 +96,7 @@ export default {
 
   computed: {
     newItemData() {
-      return { ...this.newItem, class: this.linkType.class };
+      return { ...this.newItem, locale: this.selectedLocale, class: this.linkType.class };
     },
 
     locales() {
@@ -114,7 +115,12 @@ export default {
       }
     },
 
-    addNewMenuItem() {
+    changeLocale(locale) {
+      this.selectedLocale = locale;
+      this.refreshData();
+    },
+
+    openAddModal() {
       this.update = false;
       this.modalItem = true;
     },
@@ -149,7 +155,7 @@ export default {
     },
 
     async refreshData() {
-      const menuItems = (await api.getItems(this.resourceId)).data;
+      const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
       this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
 
       const menuItemTypes = (await api.getMenuItemTypes(this.selectedLocale)).data;
@@ -248,9 +254,7 @@ export default {
 
     handleErrors(request) {
       let errors = request.response.data.errors;
-      if (errors) {
-        _.map(errors, error => this.$toasted.show(error, { type: 'error' }));
-      }
+      if (errors) Array.from(errors).map(error => this.$toasted.show(error, { type: 'error' }));
     },
 
     duplicateMenuItem(item) {

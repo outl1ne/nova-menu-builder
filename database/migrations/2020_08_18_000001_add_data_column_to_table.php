@@ -21,7 +21,7 @@ class AddDataColumnToTable extends Migration
     public function down()
     {
         Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
-           $table->dropColumn('data');
+            $table->dropColumn('data');
         });
     }
 }
