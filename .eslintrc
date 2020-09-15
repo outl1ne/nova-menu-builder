@@ -8,6 +8,7 @@
     "node": true
   },
   "rules": {
-    "vue/html-indent": ["error", 2]
+    "vue/html-indent": ["error", 2],
+    "vue/custom-event-name-casing": "off"
   }
 }

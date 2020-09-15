@@ -6,6 +6,7 @@ use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
+use OptimistDigital\NovaTranslationsLoader\NovaTranslationsLoader;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
@@ -28,9 +29,12 @@ class MenuBuilderServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        $this->publishMigrations();
-        $this->publishViews();
-        $this->publishConfig();
+        // Publish data
+        $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'nova-menu-builder-migrations');
+        $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
+
+        // Load translations
+        NovaTranslationsLoader::loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
 
         // Register resource
         Nova::resources([
@@ -58,9 +62,6 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     private function publishMigrations()
     {
-        $this->publishes([
-            __DIR__ . '/../database/migrations' => database_path('migrations'),
-        ], 'nova-menu-builder-migrations');
     }
 
     /**
@@ -68,9 +69,6 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     private function publishViews()
     {
-        $this->publishes([
-            __DIR__ . '/../resources/views/' => resource_path('views/vendor/nova-menu'),
-        ], 'nova-menu-builder-views');
     }
 
     /**
@@ -78,42 +76,5 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     private function publishConfig()
     {
-        $this->publishes([
-            __DIR__ . '/../config/' => config_path(),
-        ], 'nova-menu-builder-config');
-    }
-
-
-    // ------------------------------
-    // -- Translations
-    // ------------------------------
-    protected function attemptToLoadTranslations($locale, $from)
-    {
-        $filePath = $from === 'local'
-            ? __DIR__ . '/../resources/lang/' . $locale . '.json'
-            : resource_path('lang/vendor/nova-sortable') . '/' . $locale . '.json';
-
-        $localeFileExists = File::exists($filePath);
-        if ($localeFileExists) {
-            Nova::translations($filePath);
-            return true;
-        }
-        return false;
-    }
-
-    protected function translations()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/nova-sortable')], 'translations');
-        } else if (method_exists('Nova', 'translations')) {
-            $locale = app()->getLocale();
-            $fallbackLocale = config('app.fallback_locale');
-
-            if ($this->attemptToLoadTranslations($locale, 'project')) return;
-            if ($this->attemptToLoadTranslations($locale, 'local')) return;
-            if ($this->attemptToLoadTranslations($fallbackLocale, 'project')) return;
-            if ($this->attemptToLoadTranslations($fallbackLocale, 'local')) return;
-            $this->attemptToLoadTranslations('en', 'local');
-        }
     }
 }

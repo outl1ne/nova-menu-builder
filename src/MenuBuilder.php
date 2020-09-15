@@ -20,8 +20,8 @@ class MenuBuilder extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-menu', __DIR__ . '/../dist/js/tool.js');
-        Nova::style('nova-menu', __DIR__ . '/../dist/css/tool.css');
+        Nova::script('nova-menu', __DIR__ . '/../dist/js/menu-builder.js');
+        Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
     }
 
     /**

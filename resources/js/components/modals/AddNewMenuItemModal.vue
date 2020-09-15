@@ -86,14 +86,6 @@
           />
         </div>
 
-        <div class="flex border-b border-40">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('Parameters') }}</label>
-          </div>
-          <div class="py-4 w-4/5">
-            <codemirror :options="cmOptions" :placeholder="cmPlaceholder" v-model="newItem.parameters"></codemirror>
-          </div>
-        </div>
         <div class="flex border-b border-40" v-if="linkType.type && linkType.type !== 'text'">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
@@ -134,19 +126,12 @@
 </template>
 <script>
 import Modal from './Modal';
-import { codemirror } from 'vue-codemirror';
 import Multiselect from 'vue-multiselect';
-
-import 'codemirror/addon/display/placeholder.js';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/dracula.css';
-import 'codemirror/mode/javascript/javascript';
 
 export default {
   props: ['newItem', 'showModal', 'update', 'linkType', 'linkTypes', 'resourceName', 'resourceId'],
   components: {
     Modal,
-    codemirror,
     Multiselect,
   },
   data: () => ({
@@ -206,16 +191,6 @@ export default {
 
 <style lang="scss">
 .add-new-menu-item-modal {
-  .CodeMirror {
-    height: 100px;
-    border-radius: 0.5rem;
-    padding: 5px;
-
-    .CodeMirror-placeholder {
-      color: rgba(#6272a4, 0.7);
-    }
-  }
-
   .menu-item-component {
     > div:nth-child(1) {
       padding-left: 0;

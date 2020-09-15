@@ -36,7 +36,6 @@
 
 <script>
 import _ from 'lodash';
-import beautify from 'js-beautify';
 
 import api from '../api';
 

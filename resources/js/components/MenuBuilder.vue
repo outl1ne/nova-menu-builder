@@ -2,18 +2,19 @@
   <vue-nestable
     :value="value"
     @input="val => $emit('input', val)"
-    @change="$emit('onChangeMenu')"
+    @change="$emit('onMenuChange')"
     classProp="classProp"
   >
     <vue-nestable-handle slot-scope="{ item }" :item="item" class="handle flex flex-wrap">
-      <div :class="`item-data w-2/3 flex ${!hasChildren(item) && 'pl-3'}`">
+      <div :class="`item-data w-2/3 flex ${!hasChildren(item) ? 'pl-3' : ''}`">
+        <!-- Collapse icon -->
         <button
           v-if="hasChildren(item)"
-          @click="toggleMenuChildrenCascade(item)"
           :title="__('Edit')"
+          @click="toggleMenuChildrenCascade(item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary flex px-4 items-center"
         >
-          <menu-builder-arrow-icon :wrapperClass="`${isCascadeOpen(item) && 'btn-cascade-open'}`" />
+          <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
         </button>
 
         <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">{{ item.name }}</div>
@@ -24,34 +25,40 @@
 
       <div class="buttons w-1/3 flex justify-end content-center">
         <button
-          @click="$emit('editMenu', item)"
           :title="__('Edit')"
+          @click="$emit('editMenu', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
         >
-          <menu-builder-edit-icon />
+          <edit-icon />
         </button>
 
         <button
-          @click="$emit('duplicateMenuItem', item)"
           :title="__('Duplicate')"
+          @click="$emit('duplicateMenuItem', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
         >
-          <menu-builder-duplicate-icon />
+          <duplicate-icon />
         </button>
 
         <button
-          v-on:click="$emit('removeMenu', item)"
           :title="__('Delete')"
+          v-on:click="$emit('removeMenu', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >
-          <menu-builder-delete-icon />
+          <delete-icon />
         </button>
       </div>
     </vue-nestable-handle>
   </vue-nestable>
 </template>
+
 <script>
 import { VueNestable, VueNestableHandle } from 'vue-nestable';
+import ArrowIcon from './icons/ArrowIcon';
+import DeleteIcon from './icons/DeleteIcon';
+import DuplicateIcon from './icons/DuplicateIcon';
+import EditIcon from './icons/EditIcon';
+import NewMenuItemIcon from './icons/NewMenuItemIcon';
 
 export default {
   props: {
@@ -64,6 +71,10 @@ export default {
   components: {
     VueNestable,
     VueNestableHandle,
+    ArrowIcon,
+    DeleteIcon,
+    DuplicateIcon,
+    EditIcon,
   },
 
   data: () => ({

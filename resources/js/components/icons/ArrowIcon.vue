@@ -4,7 +4,8 @@
     width="10"
     height="6"
     viewBox="0 0 10 6"
-    :class="`fill-current ${wrapperClass || ''}`"
+    class="fill-current"
+    :class="wrapperClass"
   >
     <path
       fill="var(--90)"
