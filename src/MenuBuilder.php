@@ -52,21 +52,6 @@ class MenuBuilder extends Tool
         );
     }
 
-    public static function hasNovaLang()
-    {
-        return class_exists('\OptimistDigital\NovaLang\NovaLang');
-    }
-
-    public static function getMenusTableName()
-    {
-        return config('nova-menu.menus_table_name', 'nova_menu_menus');
-    }
-
-    public static function getMenuItemsTableName()
-    {
-        return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
-    }
-
     public static function getFieldsFromMenuLinkable(string $menuLinkableClass): array
     {
         $templateFields = [];
@@ -121,5 +106,23 @@ class MenuBuilder extends Tool
     public static function getMenuItemClass()
     {
         return config('nova-menu.menu_item_model', MenuItem::class);
+    }
+
+
+
+    // In-package helpers
+    public static function getMenuResource()
+    {
+        return config('nova-menu.resource', \OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class);
+    }
+
+    public static function getMenusTableName()
+    {
+        return config('nova-menu.menus_table_name', 'nova_menu_menus');
+    }
+
+    public static function getMenuItemsTableName()
+    {
+        return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
     }
 }

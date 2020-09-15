@@ -1,6 +1,6 @@
 {
   "name": "optimistdigital/nova-menu-builder",
-  "description": "Menu Builder Tool for Laravel Nova.",
+  "description": "This Laravel Nova package allows you to create and manage menus and menu items.",
   "keywords": [
     "laravel",
     "nova",
@@ -23,8 +23,8 @@
   ],
   "require": {
     "php": ">=7.1.0",
-    "optimistdigital/nova-locale-field": "^2.0.0",
-    "laravel/nova": "^2.0.11 || ^3.0"
+    "laravel/nova": "^3.0",
+    "optimistdigital/nova-translations-loader": "^1.0.0"
   },
   "autoload": {
     "psr-4": {

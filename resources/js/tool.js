@@ -1,13 +1,10 @@
 import ToggleButton from 'vue-js-toggle-button';
+import MenuIndexView from './views/MenuIndexView';
+import MenuBuilderField from './components/MenuBuilderField';
 
 Nova.booting((Vue, router) => {
-  router.addRoutes([
-    {
-      name: 'nova-menu',
-      path: '/nova-menu',
-      component: require('./components/Tool').default,
-    },
-  ]);
+  router.addRoutes([{ name: 'menus', path: '/menus', component: MenuIndexView }]);
+  Vue.component('form-menu-builder-field', MenuBuilderField);
 
   Vue.use(ToggleButton);
   Vue.component('nova-menu', require('./components/NovaMenu').default);

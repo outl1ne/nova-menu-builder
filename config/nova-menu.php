@@ -9,7 +9,7 @@ return [
     | Optionally override the original Menu resource.
     */
 
-    'resource' => OptimistDigital\MenuBuilder\Http\Resources\MenuResource::class,
+    'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
 
     /*
     |--------------------------------------------------------------------------
