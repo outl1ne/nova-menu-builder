@@ -3,9 +3,14 @@
     :value="value"
     @input="val => $emit('input', val)"
     @change="$emit('onMenuChange')"
+    class="px-3"
     classProp="classProp"
   >
-    <vue-nestable-handle slot-scope="{ item }" :item="item" class="handle flex flex-wrap">
+    <vue-nestable-handle
+      slot-scope="{ item }"
+      :item="item"
+      class="handle flex flex-wrap bg-gray-100 shadow-sm border border-60 rounded-md"
+    >
       <div :class="`item-data w-2/3 flex ${!hasChildren(item) ? 'pl-3' : ''}`">
         <!-- Collapse icon -->
         <button

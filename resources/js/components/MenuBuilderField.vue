@@ -8,15 +8,15 @@
       v-else
       @duplicateMenuItem="duplicateMenuItem"
       @editMenu="editMenu"
-      @onChangeMenu="change"
+      @onMenuChange="updateMenu"
       @removeMenu="removeMenu"
       @saveMenuLocalState="saveMenuLocalState"
       v-model="menuItems"
     />
 
-    <add-new-menu-item-modal
+    <update-menu-item-modal
       :linkType="linkType"
-      :linkTypes="linkTypes"
+      :menuItemTypes="menuItemTypes"
       :newItem="newItem"
       :resourceId="resourceId"
       :resourceName="resourceName"
@@ -45,7 +45,7 @@ import _ from 'lodash';
 
 import api from '../api';
 
-import AddNewMenuItemModal from './modals/AddNewMenuItemModal';
+import UpdateMenuItemModal from './modals/UpdateMenuItemModal';
 import DeleteMenuItemConfirmationModal from './modals/DeleteMenuItemConfirmationModal';
 import NoMenuItemsPlaceholder from './core/NoMenuItemsPlaceholder';
 
@@ -57,7 +57,7 @@ export default {
   components: {
     AddNewMenuItemButton,
     NoMenuItemsPlaceholder,
-    'add-new-menu-item-modal': AddNewMenuItemModal,
+    UpdateMenuItemModal,
     'delete-menu-item-confirmation-modal': DeleteMenuItemConfirmationModal,
   },
 
@@ -78,7 +78,7 @@ export default {
       classProp: [],
     },
     menuItems: [],
-    linkTypes: void 0,
+    menuItemTypes: void 0,
   }),
 
   async mounted() {
@@ -151,8 +151,8 @@ export default {
       const menuItems = (await api.getItems(this.resourceId)).data;
       this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
 
-      const linkTypes = (await api.getLinkTypes(this.selectedLocale)).data;
-      this.linkTypes = Object.values(linkTypes);
+      const menuItemTypes = (await api.getMenuItemTypes(this.selectedLocale)).data;
+      this.menuItemTypes = Object.values(menuItemTypes);
     },
 
     setMenuItemProperties(menuItems, localItemsState = null) {
@@ -176,7 +176,7 @@ export default {
       this.update = menuItem.id;
       this.newItem = menuItem;
       this.modalItem = true;
-      this.linkType = this.linkTypes.find(lt => lt.class === this.newItem.class);
+      this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
     },
 
     removeMenu(item) {
@@ -236,15 +236,13 @@ export default {
         });
     },
 
-    change() {
-      api
-        .saveItems(this.resourceId, this.menuItems)
-        .then(() => {
-          this.$toasted.show(this.__('Menu reordered!'), { type: 'success' });
-        })
-        .catch(() => {
-          this.$toasted.show(this.__('Error on server!'), { type: 'error' });
-        });
+    async updateMenu() {
+      try {
+        await api.saveItems(this.resourceId, this.menuItems);
+        this.$toasted.show(this.__('Menu reordered!'), { type: 'success' });
+      } catch (e) {
+        this.$toasted.show(this.__('Error on server!'), { type: 'error' });
+      }
     },
 
     handleErrors(request) {
@@ -272,7 +270,7 @@ export default {
     },
 
     updateLinkType(linkType) {
-      this.linkType = this.linkTypes.find(type => type.class === linkType);
+      this.linkType = this.menuItemTypes.find(type => type.class === linkType);
     },
   },
 };
@@ -316,16 +314,6 @@ export default {
 
 .nestable-item {
   position: relative;
-}
-
-.nestable-item-content {
-  /*padding: 10px;*/
-  border: 1px solid #fff;
-  background: #fff;
-  -webkit-border-radius: 3px;
-  border-radius: 0.5rem;
-  box-sizing: border-box;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
 
 .handle {

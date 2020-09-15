@@ -1,5 +1,5 @@
 <template>
-  <modal :align="'flex justify-end'" :show="showModal" class="add-new-menu-item-modal">
+  <modal align="flex justify-end" :show="showModal" class="add-new-menu-item-modal">
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
@@ -33,7 +33,7 @@
             >
               <option disabled="disabled" selected="selected" value="">{{ __('Choose an option') }}</option>
 
-              <option :key="i" :value="type.class" v-for="(type, i) of linkTypes">{{ __(type.name) }}</option>
+              <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">{{ __(type.name) }}</option>
             </select>
           </div>
         </div>
@@ -99,6 +99,7 @@
         </div>
       </form>
     </div>
+
     <div slot="buttons">
       <div class="ml-auto">
         <button
@@ -124,12 +125,13 @@
     </div>
   </modal>
 </template>
+
 <script>
 import Modal from './Modal';
 import Multiselect from 'vue-multiselect';
 
 export default {
-  props: ['newItem', 'showModal', 'update', 'linkType', 'linkTypes', 'resourceName', 'resourceId'],
+  props: ['newItem', 'showModal', 'update', 'linkType', 'menuItemTypes', 'resourceName', 'resourceId'],
   components: {
     Modal,
     Multiselect,

@@ -143,12 +143,12 @@ class MenuController extends Controller
      * @param string $locale
      * @return Illuminate\Http\Response
      **/
-    public function getLinkTypes($locale)
+    public function getMenuItemTypes($locale)
     {
-        $linkTypes = [];
-        $menuItemTypes = MenuBuilder::getMenuItemTypes();
+        $menuItemTypes = [];
+        $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
 
-        foreach ($menuItemTypes as $typeClass) {
+        foreach ($menuItemTypesRaw as $typeClass) {
             if (!class_exists($typeClass)) continue;
 
             $data = [
@@ -163,10 +163,10 @@ class MenuController extends Controller
                 $data['options'] = $typeClass::getOptions($locale);
             }
 
-            $linkTypes[] = $data;
+            $menuItemTypes[] = $data;
         }
 
-        return response()->json($linkTypes, 200);
+        return response()->json($menuItemTypes, 200);
     }
 
     /**
