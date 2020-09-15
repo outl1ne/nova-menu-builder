@@ -2,18 +2,21 @@
   <modal align="flex justify-end" :show="showModal" class="add-new-menu-item-modal">
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
-        <h2 class="text-90 font-normal text-xl">{{ __('Add Menu item') }}</h2>
+        <h2 class="text-90 font-normal text-xl">
+          {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
+        </h2>
         <toggle-button :color="switchColor" :labels="toggleLabels" :sync="true" :width="70" v-model="newItem.enabled" />
       </div>
 
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <div class="flex border-b border-40">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('Name') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuName') }}</label>
           </div>
+
           <div class="py-4 w-4/5">
             <input
-              :placeholder="this.__('Name')"
+              :placeholder="__('novaMenuBuilder.menuName')"
               class="w-full form-control form-input form-input-bordered"
               id="name"
               type="text"
@@ -21,9 +24,10 @@
             />
           </div>
         </div>
+
         <div class="flex border-b border-40">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('Type') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuType') }}</label>
           </div>
           <div class="py-4 w-4/5">
             <select
@@ -32,7 +36,6 @@
               class="w-full form-control form-select"
             >
               <option disabled="disabled" selected="selected" value="">{{ __('Choose an option') }}</option>
-
               <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">{{ __(type.name) }}</option>
             </select>
           </div>
@@ -107,19 +110,14 @@
           class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
           type="button"
         >
-          {{ __('Cancel') }}
+          {{ __('novaMenuBuilder.closeModalTitle') }}
         </button>
 
         <button
-          @click.prevent="storeWithData('confirmItemCreate')"
+          @click.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
           class="btn btn-default btn-primary"
-          v-if="update === false"
         >
-          {{ __('Create menu item') }}
-        </button>
-
-        <button @click.prevent="storeWithData('updateItem')" class="btn btn-default btn-primary" v-else>
-          {{ __('Update menu item') }}
+          {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
         </button>
       </div>
     </div>

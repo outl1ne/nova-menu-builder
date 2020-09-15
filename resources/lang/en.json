@@ -3,5 +3,12 @@
   "novaMenuBuilder.noMenuItemsPlaceholder": "No menu items",
   "novaMenuBuilder.addMenuItem": "Add menu item",
   "novaMenuBuilder.duplicate": "Duplicate",
-  "novaMenuBuilder.edit": "Edit"
+  "novaMenuBuilder.edit": "Edit",
+  "novaMenuBuilder.updateModalTitle": "Update menu item",
+  "novaMenuBuilder.createModalTitle": "Create menu item",
+  "novaMenuBuilder.menuName": "Menu name",
+  "novaMenuBuilder.menuType": "Menu type",
+  "novaMenuBuilder.updatebuttonTitle": "Update menu item",
+  "novaMenuBuilder.createButtonTitle": "Create menu item",
+  "novaMenuBuilder.closeModalTitle": "Cancel"
 }
