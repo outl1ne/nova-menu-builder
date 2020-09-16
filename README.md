@@ -17,7 +17,7 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 - Menu items management
   - Simple drag-and-drop nesting and re-ordering
 - Custom menu item types support
-  - Ability to customize fields
+  - Ability to add custom fields
 
 ## Screenshots
 
@@ -29,17 +29,18 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 
 ## Installation
 
-Install the package in a Laravel Nova project via Composer, run migrations and edit the config file:
+Install the package in a Laravel Nova project via Composer, edit the configuration file and run migrations.
 
 ```bash
 # Install the package
 composer require optimistdigital/nova-menu-builder
 
+# Publish the configuration file and edit it to your preference
+# NB! If you want custom table names, configure them before running the migrations.
+php artisan vendor:publish --tag=nova-menu-builder-config
+
 # Run automatically loaded migrations
 php artisan migrate
-
-# Publish the configuration file and edit it to your preference
-php artisan vendor:publish --tag=nova-menu-builder-config
 ```
 
 Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
@@ -56,23 +57,20 @@ public function tools()
 }
 ```
 
-### Optionally publish views/migrations
+### Optionally publish migrations
 
-This is only useful if you want to overwrite either the views or migrations. If you wish to use the menu builder as it comes out of the box, you don't need these.
+This is only useful if you want to overwrite migrations and models. If you wish to use the menu builder as it comes out of the box, you don't need them.
 
 ```bash
-# Publish views (optional)
-php artisan vendor:publish --tag=nova-menu-builder-views
-
 # Publish migrations to overwrite them (optional)
 php artisan vendor:publish --tag=nova-menu-builder-migrations
 ```
 
 ## Usage
 
-### Menu locale options
+### Locales configuration
 
-You can define the locales for the menus in the config file.
+You can define the locales for the menus in the config file, as shown below.
 
 ```php
 // in config/nova-menu.php
@@ -84,7 +82,7 @@ return [
     'et_EE' => 'Estonian',
   ],
 
-  // or using a closure:
+  // or using a closure (not cacheable):
 
   'locales' => function() {
     return nova_lang_get_locales();
@@ -101,19 +99,19 @@ return [
 ];
 ```
 
-### Custom `MenuLinkable` classes
+### Custom menu item types
 
-Nova menu builder allows you to create a select field for custom models (ie Pages or Products).
+Menu builder allows you create custom menu item types with custom fields.
 
-Create a class that extends the `OptimistDigital\MenuBuilder\Classes\MenuLinkable` class and register it in the config file.
+Create a class that extends the `OptimistDigital\MenuBuilder\OptimistDigital\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
 
 ```php
 // in config/nova-menu.php
 
 return [
   // ...
-  'linkable_models' => [
-    \App\Classes\CustomMenuLinkable::class,
+  'menu_item_types' => [
+    \App\MenuItemTypes\CustomMenuItemType::class,
   ],
   // ...
 ];
@@ -134,7 +132,6 @@ public static function getIdentifier(): string {
     return '';
 }
 
-
 /**
  * Get menu link name shown in  a dropdown in CMS when selecting link type
  * ie ('Product Link').
@@ -146,7 +143,6 @@ public static function getName(): string {
     // return 'Page Link';
     return '';
 }
-
 
 /**
  * Get list of options shown in a select dropdown.
@@ -209,7 +205,6 @@ public static function getFields(): array
  *
  * @return array A key-value map of attributes and rules.
  */
-
 public static function getRules(): array
 {
     return [];
@@ -232,34 +227,6 @@ public static function getData($data = null, array $parameters = null)
 {
     return $data;
 }
-```
-
-### Custom menu resource
-
-You can customize the resource controller through the config file.
-
-To avoid controller double-loading [nova-issues #1928](https://github.com/laravel/nova-issues/issues/1928) create it outside of `App\Nova` directory:
-
-```php
-// Create app/Menus/MenuResource.php:
-
-namespace App\Menus;
-
-use OptimistDigital\MenuBuilder\Http\Resources\MenuResource as BaseMenuResource;
-
-class MenuResource extends BaseMenuResource {
-  //
-}
-
-// in config/nova-menu.php:
-
-use App\Menus\MenuResource;
-
-return [
-    // ...
-    'resource' => MenuResource::class,
-    // ...
-];
 ```
 
 ### Returning the menus in a JSON API
