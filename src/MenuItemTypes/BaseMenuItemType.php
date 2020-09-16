@@ -72,7 +72,7 @@ abstract class BaseMenuItemType
      * @param array|null $parameters The JSON parameters added to the item.
      * @return any
      */
-    public static function getData($data = null, array $parameters = null)
+    public static function getData($data = null)
     {
         return $data;
     }
