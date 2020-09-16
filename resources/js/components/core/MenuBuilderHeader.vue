@@ -29,10 +29,6 @@
 <script>
 export default {
   props: ['locales', 'activeLocale'],
-
-  mounted() {
-    console.log('haha');
-  },
 };
 </script>
 
