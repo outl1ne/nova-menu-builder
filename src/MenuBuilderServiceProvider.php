@@ -5,6 +5,7 @@ namespace OptimistDigital\MenuBuilder;
 use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use OptimistDigital\MenuBuilder\Commands\CreateMenuItemType;
 use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
 use OptimistDigital\NovaTranslationsLoader\NovaTranslationsLoader;
 
@@ -26,6 +27,13 @@ class MenuBuilderServiceProvider extends ServiceProvider
         // Publish data
         $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'nova-menu-builder-migrations');
         $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
+
+        // Register commands
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CreateMenuItemType::class
+            ]);
+        }
 
         // Register resource
         Nova::resources([
