@@ -1,6 +1,6 @@
 <template>
   <div id="menu-builder-header">
-    <div class="locale-selection px-6 mr-6 bg-white rounded-md">
+    <div class="locale-selection px-6 mr-6 bg-white rounded-md" v-if="!!Object.keys(locales).length">
       <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
@@ -11,9 +11,7 @@
           'text-80 border-white': activeLocale !== locale,
         }"
       >
-        <span>
-          {{ locales[locale] }}
-        </span>
+        <span> {{ locales[locale] }} ({{ locale }}) </span>
       </div>
     </div>
 
