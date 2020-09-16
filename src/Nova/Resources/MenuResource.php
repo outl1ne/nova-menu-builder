@@ -6,6 +6,7 @@ use Laravel\Nova\Panel;
 use Laravel\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Nova\Fields\MenuBuilderField;
@@ -39,16 +40,33 @@ class MenuResource extends Resource
     public function fields(Request $request)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
+        $menuOptions = collect(MenuBuilder::getMenus())
+            ->mapWithKeys(fn ($menu, $key) => [$key => $menu['name']])
+            ->toArray();
 
         return [
             Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make(__('Slug'), 'slug')
-                ->sortable()
+            Select::make(__('Slug'), 'slug')
+                ->options($menuOptions)
+                ->onlyOnForms()
                 ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id")
                 ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id"),
+
+            Text::make(__('Slug'), 'slug', function ($key) {
+                $menu = MenuBuilder::getMenus()[$key] ?? null;
+                return ($menu === null) ? "<s>{$key}</s>" : $menu['name'];
+            })
+                ->hideWhenCreating()
+                ->hideWhenUpdating()
+                ->asHtml(),
+
+            // Text::make(__('Slug'), 'slug')
+            //     ->sortable()
+            //     ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id")
+            //     ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id"),
 
             Panel::make('Menu items', [
                 MenuBuilderField::make('Menu items', 'menu_items')

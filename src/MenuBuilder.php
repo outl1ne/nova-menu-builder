@@ -122,4 +122,9 @@ class MenuBuilder extends Tool
             config('nova-menu.menu_item_types', []),
         );
     }
+
+    public static function getMenus()
+    {
+        return config('nova-menu.menus', []);
+    }
 }
