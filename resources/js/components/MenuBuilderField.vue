@@ -201,7 +201,7 @@ export default {
     },
 
     handleErrors(res) {
-      console.warn(res);
+      console.error(res);
       let errors = res.response && res.response.data && res.response.errors;
       if (errors) Array.from(errors).map(error => this.$toasted.show(error, { type: 'error' }));
     },

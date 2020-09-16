@@ -79,14 +79,13 @@
 
         <div v-if="linkType.fields">
           <component
-            :class="{ 'remove-bottom-border': index === getFields().length - 1 }"
-            :field="field"
+            v-for="(field, i) in fields"
             :is="`form-${field.component}`"
-            :key="index"
+            :key="i"
+            :field="field"
             :resource-id="resourceId"
             :resource-name="resourceName"
-            class="menu-item-component"
-            v-for="(field, index) in getFields()"
+            class="menu-item-component border-t border-40 remove-bottom-border"
           />
         </div>
 
@@ -134,20 +133,6 @@ export default {
   components: { Modal, Multiselect },
   data: () => ({
     toggleLabels: false,
-    switchColor: {},
-    cmOptions: {
-      tabSize: 2,
-      theme: 'dracula',
-      lineNumbers: false,
-      lineWrapping: true,
-      foldGutter: true,
-      line: true,
-      mode: {
-        name: 'javascript',
-        json: true,
-      },
-    },
-    cmPlaceholder: '{\n  "exampleValue": 5\n}',
   }),
 
   mounted() {
@@ -161,17 +146,17 @@ export default {
       options.unshift({ id: '', label: this.__('Choose an option') });
       return options;
     },
+
+    fields() {
+      if (!this.newItem.fields) return this.linkType.fields;
+      if (this.update) return this.newItem.fields;
+      return this.linkType.fields;
+    },
   },
 
   methods: {
-    getFields() {
-      if (this.newItem.fields === undefined || this.newItem.length <= 0) return this.linkType.fields;
-      if (this.update === false) return this.newItem.fields;
-      return this.linkType.fields;
-    },
-
     storeWithData(eventType) {
-      this.getFields().forEach(field => {
+      this.fields.forEach(field => {
         const formData = new FormData();
         field.fill(formData);
 
