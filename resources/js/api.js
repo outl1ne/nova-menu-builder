@@ -27,7 +27,7 @@ export default {
     return Nova.request().post(`/nova-vendor/nova-menu/items/${menuItemId}/duplicate`);
   },
 
-  async getMenuItemTypes(locale) {
-    return Nova.request().get(`/nova-vendor/nova-menu/menu-item-types/${locale}`);
+  async getMenuItemTypes(menuId, locale) {
+    return Nova.request().get(`/nova-vendor/nova-menu/menu-item-types/${menuId}`, { params: { locale } });
   },
 };

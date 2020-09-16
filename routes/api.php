@@ -22,4 +22,4 @@ Route::post('/items/{menuItem}', 'MenuController@updateMenuItem');
 Route::delete('/items/{menuItem}', 'MenuController@deleteMenuItem');
 Route::post('/items/{menuItem}/duplicate', 'MenuController@duplicateMenuItem');
 
-Route::get('/menu-item-types/{locale}', 'MenuController@getMenuItemTypes');
+Route::get('/menu-item-types/{menu}', 'MenuController@getMenuItemTypes');

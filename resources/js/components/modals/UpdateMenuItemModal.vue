@@ -36,7 +36,9 @@
               class="w-full form-control form-select"
             >
               <option disabled="disabled" selected="selected" value="">{{ __('Choose an option') }}</option>
-              <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">{{ __(type.name) }}</option>
+              <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">
+                {{ __(type.name) }}
+              </option>
             </select>
           </div>
         </div>

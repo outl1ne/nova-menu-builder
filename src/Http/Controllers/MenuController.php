@@ -147,13 +147,17 @@ class MenuController extends Controller
      * @param string $locale
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItemTypes($locale)
+    public function getMenuItemTypes(Request $request, Menu $menu)
     {
+        if ($menu === null) return response()->json(['error' => 'menu_not_found'], 404);
+        $locale = $request->get('locale');
+        if ($locale === null) return response()->json(['error' => 'locale_required'], 400);
+
         $menuItemTypes = [];
         $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
 
-        foreach ($menuItemTypesRaw as $typeClass) {
-            if (!class_exists($typeClass)) continue;
+        $formatAndAppendMenuItemType = function ($typeClass) use (&$menuItemTypes, $locale) {
+            if (!class_exists($typeClass)) return;
 
             $data = [
                 'name' => $typeClass::getName(),
@@ -168,6 +172,18 @@ class MenuController extends Controller
             }
 
             $menuItemTypes[] = $data;
+        };
+
+        foreach ($menuItemTypesRaw as $typeClass) {
+            $formatAndAppendMenuItemType($typeClass);
+        }
+
+        $menu = MenuBuilder::getMenus()[$menu->slug] ?? null;
+        if ($menu !== null) {
+            $menuTypeClasses = $menu['menu_item_types'] ?? [];
+            foreach ($menuTypeClasses as $menuTypeClass) {
+                $formatAndAppendMenuItemType($menuTypeClass);
+            }
         }
 
         return response()->json($menuItemTypes, 200);

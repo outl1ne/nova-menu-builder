@@ -126,7 +126,7 @@ export default {
       const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
       this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
 
-      const menuItemTypes = (await api.getMenuItemTypes(this.selectedLocale)).data;
+      const menuItemTypes = (await api.getMenuItemTypes(this.resourceId, this.selectedLocale)).data;
       this.menuItemTypes = Object.values(menuItemTypes);
     },
 
