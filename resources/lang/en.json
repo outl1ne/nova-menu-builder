@@ -6,8 +6,9 @@
   "novaMenuBuilder.edit": "Edit",
   "novaMenuBuilder.updateModalTitle": "Update menu item",
   "novaMenuBuilder.createModalTitle": "Create menu item",
-  "novaMenuBuilder.menuName": "Menu name",
-  "novaMenuBuilder.menuType": "Menu type",
+  "novaMenuBuilder.menuItemName": "Name",
+  "novaMenuBuilder.menuItemType": "Type",
+  "novaMenuBuilder.menuItemValue": "Value",
   "novaMenuBuilder.updatebuttonTitle": "Update menu item",
   "novaMenuBuilder.createButtonTitle": "Create menu item",
   "novaMenuBuilder.closeModalTitle": "Cancel"

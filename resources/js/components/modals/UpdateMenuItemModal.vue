@@ -9,14 +9,14 @@
       </div>
 
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
-        <div class="flex border-b border-40">
+        <div class="flex">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuName') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemName') }}</label>
           </div>
 
           <div class="py-4 w-4/5">
             <input
-              :placeholder="__('novaMenuBuilder.menuName')"
+              :placeholder="__('novaMenuBuilder.menuItemName')"
               class="w-full form-control form-input form-input-bordered"
               id="name"
               type="text"
@@ -25,9 +25,9 @@
           </div>
         </div>
 
-        <div class="flex border-b border-40">
+        <div class="flex border-t border-40">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuType') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemType') }}</label>
           </div>
           <div class="py-4 w-4/5">
             <select
@@ -42,7 +42,7 @@
         </div>
 
         <template v-if="linkType.type === 'static-url'">
-          <div class="flex border-b border-40">
+          <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
               <label class="inline-block text-80 pt-2 leading-tight">{{ __('URL') }}</label>
             </div>
@@ -58,10 +58,11 @@
           </div>
         </template>
 
+        <!-- Select -->
         <template v-if="linkType.type === 'select'">
-          <div class="flex border-b border-40">
+          <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('Model') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemValue') }}</label>
             </div>
 
             <div class="py-4 w-4/5">
@@ -89,7 +90,7 @@
           />
         </div>
 
-        <div class="flex border-b border-40" v-if="linkType.type && linkType.type !== 'text'">
+        <div class="flex border-t border-40" v-if="linkType.type && linkType.type !== 'text'">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
           </div>
