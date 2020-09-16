@@ -131,8 +131,8 @@ export default {
     },
 
     async editMenu(item) {
+      this.update = true;
       const menuItem = (await api.getMenuItem(item.id)).data;
-      this.update = menuItem.id;
       this.newItem = menuItem;
       this.showAddModal = true;
       this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
@@ -181,7 +181,7 @@ export default {
 
     async updateItem() {
       try {
-        await api.update(this.update, this.newItemData);
+        await api.update(this.newItem.id, this.newItemData);
         await this.refreshData();
         this.showAddModal = false;
         this.resetNewItem();
@@ -200,8 +200,9 @@ export default {
       }
     },
 
-    handleErrors(request) {
-      let errors = request.response.data.errors;
+    handleErrors(res) {
+      console.warn(res);
+      let errors = res.response && res.response.data && res.response.errors;
       if (errors) Array.from(errors).map(error => this.$toasted.show(error, { type: 'error' }));
     },
 
