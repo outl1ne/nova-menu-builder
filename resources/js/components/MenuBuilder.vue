@@ -9,7 +9,7 @@
     <vue-nestable-handle
       slot-scope="{ item }"
       :item="item"
-      class="handle flex flex-wrap bg-gray-100 shadow-sm border rounded-md"
+      class="handle flex flex-wrap bg-gray-100 shadow-sm border rounded-md outline-none"
       :class="{ 'border-40': !item.enabled, 'border-60': item.enabled }"
     >
       <div :class="`item-data w-2/3 flex ${!hasChildren(item) ? 'pl-3' : ''}`">
@@ -17,7 +17,7 @@
         <button
           v-if="hasChildren(item)"
           @click="toggleMenuChildrenCascade(item)"
-          class="appearance-none cursor-pointer text-70 hover:text-primary flex px-4 items-center"
+          class="appearance-none cursor-pointer fill-current hover:text-primary flex px-4 items-center focus:outline-none"
         >
           <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
         </button>

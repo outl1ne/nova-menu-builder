@@ -1,15 +1,20 @@
 <template>
   <div id="menu-builder-header">
     <div class="locale-selection px-6 mr-6 bg-white rounded-md">
-      <a
+      <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
         @click="() => $emit('changeLocale', locale)"
-        class="mx-2 cursor-pointer font-bold"
-        :class="{ 'text-primary underline': activeLocale === locale, 'text-80': activeLocale !== locale }"
+        class="mx-2 cursor-pointer font-bold border-b-2 px-2 h-full flex items-center box-border"
+        :class="{
+          'text-primary border-primary': activeLocale === locale,
+          'text-80 border-white': activeLocale !== locale,
+        }"
       >
-        {{ locales[locale] }}
-      </a>
+        <span>
+          {{ locales[locale] }}
+        </span>
+      </div>
     </div>
 
     <button
