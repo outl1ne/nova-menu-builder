@@ -242,7 +242,7 @@ public function getMenus(Request $request) {
 }
 ```
 
-#### nova_get_menu(\$menuSlug, \$locale = null)
+#### nova_get_menu_by_slug(\$menuSlug, \$locale = null)
 
 To get a single menu, you can use the helper function `nova_get_menu('slug', 'en')`. Returns null if no menu with the slug is found or returns the menu if it is found. If no locale is passed, the helper will automatically choose the first configured locale.
 
