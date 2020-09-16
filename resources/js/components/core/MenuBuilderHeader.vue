@@ -1,6 +1,6 @@
 <template>
   <div id="menu-builder-header">
-    <div class="locale-selection px-6 mr-6 bg-white rounded-md" v-if="!!Object.keys(locales).length">
+    <div class="locale-selection px-6 mr-6 bg-white rounded-md" v-if="Object.keys(locales).length > 1">
       <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
