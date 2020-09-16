@@ -25,7 +25,7 @@ abstract class BaseMenuItemType
      *
      * Choose 'custom' if you only want to render custom fields.
      *
-     * @return string text|select|static-url|custom
+     * @return string text|select|static-url
      **/
     abstract public static function getType(): string;
 

@@ -63,11 +63,6 @@ class MenuResource extends Resource
                 ->hideWhenUpdating()
                 ->asHtml(),
 
-            // Text::make(__('Slug'), 'slug')
-            //     ->sortable()
-            //     ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id")
-            //     ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id"),
-
             Panel::make('Menu items', [
                 MenuBuilderField::make('Menu items', 'menu_items')
                     ->hideWhenCreating()
