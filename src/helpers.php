@@ -4,23 +4,23 @@ use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
 
 if (!function_exists('nova_get_menus')) {
-    function nova_get_menus()
+    function nova_get_menus($locale = null)
     {
         return Menu::all()
             ->load('rootMenuItems')
-            ->map(function ($menu) {
-                return $menu->formatForAPI();
+            ->map(function ($menu) use ($locale) {
+                return $menu->formatForAPI($locale);
             });
     }
 }
 
-if (!function_exists('nova_get_menu')) {
-    function nova_get_menu($slug, $locale = null)
+if (!function_exists('nova_get_menu_by_slug')) {
+    function nova_get_menu_by_slug($slug, $locale = null)
     {
         if (empty($slug)) return null;
         if (empty($locale)) $locale = array_keys(MenuBuilder::getLocales())[0] ?? null;
-        $menu = Menu::where('slug', $slug)->where('locale', $locale)->get()->first();
-        return !empty($menu) ? $menu->formatForAPI() : null;
+        $menu = Menu::where('slug', $slug)->get()->first();
+        return !empty($menu) ? $menu->formatForAPI($locale) : null;
     }
 }
 

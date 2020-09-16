@@ -48,16 +48,19 @@ class Menu extends Model
             ->orderBy('name');
     }
 
-    public function formatForAPI()
+    public function formatForAPI($locale)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'locale' => $this->locale,
-            'menuItems' => collect($this->rootMenuItems)->map(function ($item) {
-                return $this->formatMenuItem($item);
-            }),
+            'locale' => $locale,
+            'menuItems' => $this->rootMenuItems()
+                ->where('locale', $locale)
+                ->get()
+                ->map(function ($menuItem) {
+                    return $this->formatMenuItem($menuItem);
+                }),
         ];
     }
 

@@ -248,8 +248,9 @@ SQL
     {
         $data = $item->toArray();
         unset($data['id']);
-        if ($parentId != null) $data['parent_id'] = $parentId;
-        if ($order != null) $data['order'] = $order;
+        if ($parentId !== null) $data['parent_id'] = $parentId;
+        if ($order !== null) $data['order'] = $order;
+        $data['locale'] = $item->locale;
         $newItem = MenuBuilder::getMenuItemClass()::create($data);
         $children = $item->children;
         foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);

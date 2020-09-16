@@ -7,7 +7,7 @@ use OptimistDigital\MenuBuilder\MenuBuilder;
 
 class MenuItem extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'value', 'class', 'parameters', 'target', 'parent_id', 'order', 'enabled', 'data'];
+    protected $fillable = ['menu_id', 'name', 'value', 'class', 'parameters', 'target', 'parent_id', 'order', 'enabled', 'data', 'locale'];
 
     protected $with = ['children'];
 
