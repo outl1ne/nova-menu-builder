@@ -16,11 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `MenuLinkables` have been replaced with menu types
 - Locale logic has been reworked - each locale is no longer a separate menu model
-- UI has been reworked (lots of small visual fixes)
+- UI has been reworked (lots of visual fixes and improvements)
 - JSON parameters field has been removed
 - Menu items can now be managed in both Detail and Edit views
 - Fixed the error where the "Menus" sidebar item would become inactive when opening the detail or edit view of a menu
 - `nova_get_menu` has been renamed to `nova_get_menu_by_slug`
+- Improved fields validation
 
 ## [3.0.3] - 2020-09-02
 
