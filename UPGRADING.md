@@ -6,9 +6,13 @@ The locale system has been reworked.
 
 The Menu models table no longer has `locale` and `locale_parent_id` columns. Instead, the menu items table has a `locale` column.
 
-The migration `2020_09_15_000000_rework_locale_handling` will take care of migrating to the new structure with no expected data loss (except for the `parameters` column).
+The Menu Item models table no longer has a `parameters` column.
 
-Just run `php artisan migrate` and you're set.
+The migration `2020_09_15_000000_rework_locale_handling` will take care of migrating to the new structure with no expected data loss (except for the `parameters` column, which will be copied into `data`).
+
+NB! If you are currently using both `data` (for fields) and `parameters`, **you will lose data**!
+
+If you've read the above and have confirmed you're fine with losing `parameters`, just run `php artisan migrate` and you're set.
 
 ## Menus definition
 
