@@ -12,6 +12,7 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 - Custom fields support instead of JSON parameters
 - `menubuilder:type` command that greatly simplifies custom menu types creation
 - Greatly improved UI (the menu editor is no longer just on the "Detail" view)
+- All texts are now customizable and translatable
 
 ## Features
 
