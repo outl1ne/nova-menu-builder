@@ -8,8 +8,10 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 ## 4.0 Major Release
 
 - Reworked locale system
+- Reworked menu types system (previously `MenuLinkable`)
 - Custom fields support instead of JSON parameters
-- Reworked menu types system
+- `menubuilder:type` command that greatly simplifies custom menu types creation
+- Greatly improved UI (the menu editor is no longer just on the "Detail" view)
 
 ## Features
 
@@ -17,6 +19,7 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 - Menu items management
   - Simple drag-and-drop nesting and re-ordering
 - Custom menu item types support
+  - Ability to easily add select types
   - Ability to add custom fields
 
 ## Screenshots
@@ -78,8 +81,8 @@ You can define the locales for the menus in the config file, as shown below.
 return [
   // ...
   'locales' => [
-    'en_US' => 'English',
-    'et_EE' => 'Estonian',
+    'en' => 'English',
+    'et' => 'Estonian',
   ],
 
   // or using a closure (not cacheable):
