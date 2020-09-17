@@ -95,6 +95,10 @@
                 label="label"
                 track-by="id"
               />
+
+              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                {{ getError('value') }}
+              </help-text>
             </div>
           </div>
         </template>
