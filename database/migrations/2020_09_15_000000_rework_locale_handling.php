@@ -20,16 +20,18 @@ class ReworkLocaleHandling extends Migration
             $table->string('locale')->nullable(true);
         });
 
-        // Add `locale` value to all menu items
+        // Add `locale` value to all menu items, move `parameters` to `data`
         $menuItems = MenuItem::all();
         $menuItems->each(function (MenuItem $menuItem) {
             $menuItem->locale = $menuItem->menu->locale;
+            $menuItem->data = $menuItem->parameters;
             $menuItem->save();
         });
 
-        // Make the `locale` column non-nullable
+        // Make the `locale` column non-nullable and drop parameters
         Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
             $table->string('locale')->nullable(false)->change();
+            $table->dropColumn('parameters');
         });
 
         // De-dupe menus
@@ -47,6 +49,8 @@ class ReworkLocaleHandling extends Migration
         });
 
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+            $table->dropForeign('menus_locale_parent_id_foreign');
+            $table->dropUnique('menus_locale_parent_id_foreign');
             $table->dropColumn('locale');
             $table->dropColumn('locale_parent_id');
         });
@@ -55,21 +59,16 @@ class ReworkLocaleHandling extends Migration
     public function down()
     {
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->string('locale')->nullable(true);
-        });
+            $table->string('locale');
+            $table->bigInteger('locale_parent_id')->nullable()->unsigned();
 
-        $menus = Menu::all();
-        $menus->each(function (Menu $menu) {
-            $menu->locale = $menu->rootMenuItems->first()->locale;
-            $menu->save();
-        });
-
-        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->string('locale')->nullable(false)->change();
+            $table->foreign('locale_parent_id', 'menus_locale_parent_id_foreign')->references('id')->on(MenuBuilder::getMenusTableName());
+            $table->unique(['locale_parent_id', 'locale'], 'menus_locale_parent_id_locale_unique');
         });
 
         Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
             $table->dropColumn('locale');
+            $table->json('parameters')->nullable();
         });
     }
 }
