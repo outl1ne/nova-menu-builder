@@ -16,7 +16,7 @@
         <!-- Collapse icon -->
         <button
           v-if="hasChildren(item)"
-          @click="toggleMenuChildrenCascade(item)"
+          @click.prevent="toggleMenuChildrenCascade(item)"
           class="appearance-none cursor-pointer fill-current hover:text-primary flex px-4 items-center focus:outline-none"
         >
           <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
@@ -33,7 +33,7 @@
         <tooltip>
           <button
             :title="__('novaMenuBuilder.edit')"
-            @click="$emit('editMenu', item)"
+            @click.prevent="$emit('editMenu', item)"
             class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
           >
             <edit-icon />
@@ -48,7 +48,7 @@
         <tooltip>
           <button
             :title="__('novaMenuBuilder.duplicate')"
-            @click="$emit('duplicateMenuItem', item)"
+            @click.prevent="$emit('duplicateMenuItem', item)"
             class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
           >
             <duplicate-icon />
@@ -61,7 +61,7 @@
 
         <button
           :title="__('novaMenuBuilder.delete')"
-          v-on:click="$emit('removeMenu', item)"
+          @click.prevent="$emit('removeMenu', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >
           <delete-icon />

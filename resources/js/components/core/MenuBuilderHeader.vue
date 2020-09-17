@@ -4,7 +4,7 @@
       <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
-        @click="() => $emit('changeLocale', locale)"
+        @click.prevent="$emit('changeLocale', locale)"
         class="mx-2 cursor-pointer font-bold border-b-2 px-2 h-full flex items-center box-border"
         :class="{
           'text-primary border-primary': activeLocale === locale,
