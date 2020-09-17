@@ -90,6 +90,7 @@
             <div class="py-4 w-4/5">
               <multiselect
                 :options="options"
+                :placeholder="__('novaMenuBuilder.chooseOption')"
                 :value="options.find(option => option.id === newItem.value)"
                 @input="value => $emit('onLinkModelUpdate', value.id)"
                 label="label"
@@ -172,7 +173,7 @@ export default {
   computed: {
     options() {
       const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
-      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseMenuItemType') });
+      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
       return options;
     },
 

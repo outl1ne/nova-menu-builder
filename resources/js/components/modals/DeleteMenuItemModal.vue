@@ -22,7 +22,7 @@
           @click.prevent="$emit('confirmItemDelete')"
           class="btn btn-default btn-danger"
         >
-          {{ __('novaMenuBuilder.delConfirmModalCancel') }}
+          {{ __('novaMenuBuilder.delConfirmModalConfirm') }}
         </button>
       </div>
     </div>
