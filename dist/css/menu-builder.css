@@ -1,0 +1,105 @@
+.menu-builder .v-popover,
+.menu-builder .v-popover > * > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}.add-new-menu-item-modal .menu-item-component > div:nth-child(1) {
+  padding-left: 0;
+}
+.add-new-menu-item-modal .menu-item-component > div:nth-child(2) {
+  padding-left: 0;
+  padding-right: 0;
+  width: 80%;
+}#menu-builder-header {
+  position: absolute;
+  right: 0;
+  top: -46px;
+  display: flex;
+}
+#menu-builder-header .locale-selection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}#menu-builder-field .menu-button {
+  position: absolute;
+  right: -12px;
+  margin-top: -72px;
+}
+#menu-builder-field .nestable {
+  position: relative;
+}
+#menu-builder-field .nestable .nestable-list {
+  margin: 0;
+  padding: 0 0 0 40px;
+  list-style-type: none;
+}
+#menu-builder-field .nestable > .nestable-list {
+  padding: 0;
+}
+#menu-builder-field .nestable .nestable-item,
+#menu-builder-field .nestable .nestable-item-copy {
+  margin: 10px 0 0;
+}
+#menu-builder-field .nestable .nestable-item:first-child,
+#menu-builder-field .nestable .nestable-item-copy:first-child {
+  margin-top: 0;
+}
+#menu-builder-field .nestable .nestable-item .nestable-list,
+#menu-builder-field .nestable .nestable-item-copy .nestable-list {
+  margin-top: 10px;
+}
+#menu-builder-field .nestable .nestable-item {
+  position: relative;
+}
+#menu-builder-field .handle {
+  width: 100%;
+  padding: 0 10px 0 0;
+  height: 45px;
+  line-height: 45px;
+}
+#menu-builder-field .nestable-item.is-dragging .nestable-list {
+  pointer-events: none;
+}
+#menu-builder-field .nestable-item.is-dragging * {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+#menu-builder-field .nestable-item.is-dragging:before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(106, 127, 233, 0.274);
+  border: 1px dashed #4964f1;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+#menu-builder-field .nestable-drag-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+#menu-builder-field .nestable-drag-layer > .nestable-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  background-color: rgba(106, 127, 233, 0.274);
+}
+#menu-builder-field .nestable [draggable=true] {
+  cursor: move;
+}
+#menu-builder-field .disabled {
+  opacity: 0.5;
+}
+#menu-builder-field .btn-cascade-open {
+  transform: rotate(180deg);
+  transform-origin: center center;
+}
+#menu-builder-field .hide-cascade > ol {
+  display: none;
+}
