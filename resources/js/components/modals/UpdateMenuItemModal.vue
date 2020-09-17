@@ -18,11 +18,16 @@
           <div class="py-4 w-4/5">
             <input
               :placeholder="__('novaMenuBuilder.menuItemName')"
+              :class="{ 'border-danger': getError('name') }"
               class="w-full form-control form-input form-input-bordered"
               id="name"
               type="text"
               v-model="newItem.name"
             />
+
+            <help-text class="error-text mt-2 text-danger" v-if="getError('name')">
+              {{ getError('name') }}
+            </help-text>
           </div>
         </div>
 
@@ -35,6 +40,7 @@
               :value="linkType.class"
               @input="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-select"
+              :class="{ 'border-danger': getError('class') }"
             >
               <option disabled="disabled" selected="selected" value="">
                 {{ __('novaMenuBuilder.chooseMenuItemType') }}
@@ -43,6 +49,10 @@
                 {{ __(type.name) }}
               </option>
             </select>
+
+            <help-text class="error-text mt-2 text-danger" v-if="getError('class')">
+              {{ __('novaMenuBuilder.menuTypeRequired') }}
+            </help-text>
           </div>
         </div>
 
@@ -136,7 +146,7 @@ import Modal from './Modal';
 import Multiselect from 'vue-multiselect';
 
 export default {
-  props: ['newItem', 'showModal', 'update', 'linkType', 'menuItemTypes', 'resourceName', 'resourceId'],
+  props: ['newItem', 'showModal', 'update', 'linkType', 'menuItemTypes', 'resourceName', 'resourceId', 'errors'],
   components: { Modal, Multiselect },
   data: () => ({
     toggleLabels: false,
@@ -158,9 +168,9 @@ export default {
     },
 
     fields() {
-      if (!this.newItem.fields) return this.linkType.fields;
-      if (this.update) return this.newItem.fields;
-      return this.linkType.fields;
+      if (!this.newItem.fields) return this.linkType.fields || [];
+      if (this.update) return this.newItem.fields || [];
+      return this.linkType.fields || [];
     },
   },
 
@@ -177,6 +187,10 @@ export default {
       });
 
       this.$emit(eventType);
+    },
+
+    getError(key) {
+      return (this.errors && this.errors[key] && this.errors[key][0]) || void 0;
     },
   },
 };

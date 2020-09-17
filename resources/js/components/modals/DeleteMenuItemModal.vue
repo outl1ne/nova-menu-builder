@@ -1,5 +1,5 @@
 <template>
-  <modal :show="modalConfirm" :name="'modalConfirm'" :align="'flex justify-end'" :width="400">
+  <modal :show="showModal" align="flex justify-end" :width="400">
     <div slot="container">
       <h2 class="mb-6 text-90 font-normal text-xl">{{ __('novaMenuBuilder.delConfirmModalTitle') }}</h2>
       <p v-if="itemToDelete && itemToDelete.children.length > 0" class="text-80 leading-normal mb-4">
@@ -22,7 +22,7 @@
           @click.prevent="$emit('confirmItemDelete')"
           class="btn btn-default btn-danger"
         >
-          {{ __('novaMenuBuilder.delConfirmModalConfirm') }}
+          {{ __('novaMenuBuilder.delConfirmModalCancel') }}
         </button>
       </div>
     </div>
@@ -33,7 +33,7 @@
 import Modal from './Modal';
 
 export default {
-  props: ['modalConfirm', 'itemToDelete'],
+  props: ['showModal', 'itemToDelete'],
   components: { Modal },
 };
 </script>

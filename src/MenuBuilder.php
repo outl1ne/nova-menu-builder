@@ -80,16 +80,18 @@ class MenuBuilder extends Tool
         return $templateFields;
     }
 
-    public static function getRulesFromMenuLinkable(string $menuLinkableClass)
+    public static function getRulesFromMenuLinkable(?string $menuLinkableClass)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
 
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required',
+            'name' => 'required|min:1',
+            'locale' => 'required',
+            'value' => 'present',
             'class' => 'required',
             'target' => 'required|in:_self,_blank',
-        ], $menuLinkableClass::getRules());
+        ], $menuLinkableClass ? $menuLinkableClass::getRules() : []);
     }
 
 

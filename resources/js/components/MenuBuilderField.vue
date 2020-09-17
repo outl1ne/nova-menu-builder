@@ -27,6 +27,7 @@
       :resourceName="resourceName"
       :showModal="showAddModal"
       :update="update"
+      :errors="errors"
       @closeModal="closeModal"
       @confirmItemCreate="confirmItemCreate"
       @onLinkModelUpdate="updateLinkModel"
@@ -36,7 +37,7 @@
 
     <delete-menu-item-modal
       :itemToDelete="itemToDelete"
-      :modalConfirm="modalConfirm"
+      :showModal="showDeleteModal"
       @closeModal="closeModal"
       @confirmItemDelete="confirmItemDelete"
     />
@@ -66,12 +67,12 @@ export default {
 
   data: () => ({
     selectedLocale: void 0,
-
-    modalConfirm: false,
+    showDeleteModal: false,
     showAddModal: false,
     itemToDelete: null,
     update: false,
     linkType: '',
+    errors: {},
     newItem: {
       name: null,
       value: '',
@@ -118,7 +119,7 @@ export default {
 
     closeModal() {
       this.showAddModal = false;
-      this.modalConfirm = false;
+      this.showDeleteModal = false;
       this.resetNewItem();
     },
 
@@ -140,7 +141,7 @@ export default {
 
     removeMenu(item) {
       this.itemToDelete = item;
-      this.modalConfirm = true;
+      this.showDeleteModal = true;
     },
 
     async confirmItemDelete() {
@@ -149,7 +150,7 @@ export default {
         await this.refreshData();
         this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSucces'), { type: 'success' });
         this.itemToDelete = null;
-        this.modalConfirm = false;
+        this.showDeleteModal = false;
       } catch (e) {
         this.handleErrors(e);
       }
@@ -175,6 +176,7 @@ export default {
         this.resetNewItem();
         this.$toasted.show(this.__('novaMenuBuilder.toastCreateSuccess'), { type: 'success' });
       } catch (e) {
+        console.error(e);
         this.handleErrors(e);
       }
     },
@@ -201,9 +203,11 @@ export default {
     },
 
     handleErrors(res) {
-      console.error(res);
-      let errors = res.response && res.response.data && res.response.errors;
-      if (errors) Array.from(errors).map(error => this.$toasted.show(error, { type: 'error' }));
+      let errors = res.response && res.response.data && res.response.data.errors;
+      if (errors) {
+        this.errors = errors;
+        Object.values(errors).map(error => this.$toasted.show(error, { type: 'error' }));
+      }
     },
 
     async duplicateMenuItem(item) {

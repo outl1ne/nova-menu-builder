@@ -35,5 +35,6 @@
   "novaMenuBuilder.toastUpdateSuccess": "Menu item updated",
   "novaMenuBuilder.toastReorderSuccess": "Menu reordered",
   "novaMenuBuilder.toastDuplicateSuccess": "Menu item duplicated",
-  "novaMenuBuilder.serverError": "Server error, please try again."
+  "novaMenuBuilder.serverError": "Server error, please try again.",
+  "novaMenuBuilder.menuTypeRequired": "Menu type is required."
 }

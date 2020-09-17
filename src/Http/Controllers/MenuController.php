@@ -67,10 +67,10 @@ class MenuController extends Controller
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
         $request->validate([
+            'name' => 'required|min:1',
             'class' => 'required',
             'value' => 'present',
             'enabled' => 'present',
-            'name' => 'required|min:1',
             'locale' => 'required',
         ]);
 
