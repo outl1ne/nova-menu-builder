@@ -15,18 +15,35 @@ class ReworkLocaleHandling extends Migration
      */
     public function up()
     {
+        // Add `locale` column to menu items
         Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
             $table->string('locale')->nullable(true);
         });
 
+        // Add `locale` value to all menu items
         $menuItems = MenuItem::all();
         $menuItems->each(function (MenuItem $menuItem) {
             $menuItem->locale = $menuItem->menu->locale;
             $menuItem->save();
         });
 
+        // Make the `locale` column non-nullable
         Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
             $table->string('locale')->nullable(false)->change();
+        });
+
+        // De-dupe menus
+        $rootMenus = Menu::where('locale_parent_id', null)->get();
+        $rootMenus->forEach(function (Menu $rootMenu) {
+            $subMenus = Menu::where('locale_parent_id', $rootMenu->id)->get();
+            $subMenus->forEach(function (Menu $subMenu) use ($rootMenu) {
+                // Move all menu items to root menu
+                MenuItem::where('menu_id', $subMenu->id)
+                    ->update(['menu_id' => $rootMenu->id]);
+
+                // Delete sub menu
+                $subMenu->forceDelete();
+            });
         });
 
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
