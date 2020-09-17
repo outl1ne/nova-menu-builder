@@ -47,7 +47,6 @@ class Menu extends Model
             'type' => $menuItem->type,
             'value' => $menuItem->customValue,
             'target' => $menuItem->target,
-            'parameters' => $menuItem->parameters,
             'enabled' => $menuItem->enabled,
             'data' => $menuItem->customData,
             'children' => empty($menuItem->children) ? [] : $menuItem->children->map(function ($item) {

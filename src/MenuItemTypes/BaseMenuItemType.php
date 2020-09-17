@@ -69,7 +69,6 @@ abstract class BaseMenuItemType
      * on the Menu model.
      *
      * @param null $data Field values
-     * @param array|null $parameters The JSON parameters added to the item.
      * @return any
      */
     public static function getData($data = null)
