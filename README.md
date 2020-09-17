@@ -24,9 +24,7 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 
 ## Screenshots
 
-![Menu List](docs/menu-list.png)
-
-![View Menu](docs/view-menu.png)
+![Menu Detail View](docs/menu-detail.png)
 
 ![Menu Item Edit](docs/menu-item-edit.png)
 
