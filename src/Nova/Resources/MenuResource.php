@@ -19,12 +19,12 @@ class MenuResource extends Resource
 
     public static function label()
     {
-        return 'Menus';
+        return __('novaMenuBuilder.menuResourceLabel');
     }
 
     public static function singularLabel()
     {
-        return 'Menu';
+        return __('novaMenuBuilder.menuResourceSingularLabel');
     }
 
     public static function uriKey()
@@ -45,17 +45,17 @@ class MenuResource extends Resource
             ->toArray();
 
         return [
-            Text::make(__('Name'), 'name')
+            Text::make(__('novaMenuBuilder.menuNameFieldName'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Select::make(__('Slug'), 'slug')
+            Select::make(__('novaMenuBuilder.menuSlugFieldName'), 'slug')
                 ->options($menuOptions)
                 ->onlyOnForms()
                 ->creationRules('required', 'max:255', "unique:$menusTableName,slug,NULL,id")
                 ->updateRules('required', 'max:255', "unique:$menusTableName,slug,{{resourceId}},id"),
 
-            Text::make(__('Slug'), 'slug', function ($key) {
+            Text::make(__('novaMenuBuilder.menuSlugFieldName'), 'slug', function ($key) {
                 $menu = MenuBuilder::getMenus()[$key] ?? null;
                 return ($menu === null) ? "<s>{$key}</s>" : $menu['name'];
             })
@@ -63,8 +63,8 @@ class MenuResource extends Resource
                 ->hideWhenUpdating()
                 ->asHtml(),
 
-            Panel::make('Menu items', [
-                MenuBuilderField::make('Menu items', 'menu_items')
+            Panel::make(__('novaMenuBuilder.menuItemsPanelName'), [
+                MenuBuilderField::make('', 'menu_items')
                     ->hideWhenCreating()
                     ->readonly(),
             ]),

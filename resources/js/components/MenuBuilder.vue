@@ -60,7 +60,7 @@
         </tooltip>
 
         <button
-          :title="__('Delete')"
+          :title="__('novaMenuBuilder.delete')"
           v-on:click="$emit('removeMenu', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >

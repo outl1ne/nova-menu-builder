@@ -35,7 +35,9 @@
               @input="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-select"
             >
-              <option disabled="disabled" selected="selected" value="">{{ __('Choose an option') }}</option>
+              <option disabled="disabled" selected="selected" value="">
+                {{ __('novaMenuBuilder.chooseMenuItemType') }}
+              </option>
               <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">
                 {{ __(type.name) }}
               </option>
@@ -46,15 +48,17 @@
         <template v-if="linkType.type === 'static-url'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('URL') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{
+                __('novaMenuBuilder.menuItemUrlFieldName')
+              }}</label>
             </div>
             <div class="py-4 w-4/5">
               <input
-                :placeholder="__('URL')"
-                class="w-full form-control form-input form-input-bordered"
                 id="url"
                 type="text"
                 v-model="newItem.value"
+                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
+                class="w-full form-control form-input form-input-bordered"
               />
             </div>
           </div>
@@ -97,8 +101,8 @@
           </div>
           <div class="py-4 w-4/5">
             <select class="w-full form-control form-select" v-model="newItem.target">
-              <option value="_self">{{ __('Same window') }}</option>
-              <option value="_blank">{{ __('New window') }}</option>
+              <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
+              <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
             </select>
           </div>
         </div>
@@ -138,14 +142,17 @@ export default {
   }),
 
   mounted() {
-    this.toggleLabels = { checked: this.__('Enabled'), unchecked: this.__('Disabled') };
+    this.toggleLabels = {
+      checked: this.__('novaMenuBuilder.menuItemActive'),
+      unchecked: this.__('novaMenuBuilder.menuItemDisabled'),
+    };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
   },
 
   computed: {
     options() {
       const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
-      options.unshift({ id: '', label: this.__('Choose an option') });
+      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseMenuItemType') });
       return options;
     },
 

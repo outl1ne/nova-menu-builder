@@ -147,7 +147,7 @@ export default {
       try {
         await api.destroy(this.itemToDelete.id);
         await this.refreshData();
-        this.$toasted.show(this.__('Item removed successfully!'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSucces'), { type: 'success' });
         this.itemToDelete = null;
         this.modalConfirm = false;
       } catch (e) {
@@ -173,7 +173,7 @@ export default {
         this.refreshData();
         this.showAddModal = false;
         this.resetNewItem();
-        this.$toasted.show(this.__('Item created!'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastCreateSuccess'), { type: 'success' });
       } catch (e) {
         this.handleErrors(e);
       }
@@ -185,7 +185,7 @@ export default {
         await this.refreshData();
         this.showAddModal = false;
         this.resetNewItem();
-        this.$toasted.show(this.__('Item updated!'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastUpdateSuccess'), { type: 'success' });
       } catch (e) {
         this.handleErrors(e);
       }
@@ -194,9 +194,9 @@ export default {
     async updateMenu() {
       try {
         await api.saveItems(this.resourceId, this.menuItems);
-        this.$toasted.show(this.__('Menu reordered!'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastReorderSuccess'), { type: 'success' });
       } catch (e) {
-        this.$toasted.show(this.__('Error on server!'), { type: 'error' });
+        this.$toasted.show(this.__('novaMenuBuilder.serverError'), { type: 'error' });
       }
     },
 
@@ -211,7 +211,7 @@ export default {
         await api.duplicate(item.id);
         await this.refreshData();
         this.resetNewItem();
-        this.$toasted.show(this.__('Item duplicated!'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastDuplicateSuccess'), { type: 'success' });
       } catch (e) {
         this.handleErrors(e);
       }

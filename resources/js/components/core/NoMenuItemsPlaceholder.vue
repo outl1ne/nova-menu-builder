@@ -4,7 +4,7 @@
       <create-icon />
       <h3 class="text-base text-80 font-normal mb-6">{{ __('novaMenuBuilder.noMenuItemsPlaceholder') }}</h3>
       <div>
-        <button class="btn btn-sm btn-outline" @click="onAddClick">
+        <button class="btn btn-sm btn-outline" @click.prevent="$emit('onAddClick')">
           {{ __('novaMenuBuilder.addMenuItem') }}
         </button>
       </div>
@@ -17,12 +17,5 @@ import CreateIcon from '../icons/CreateIcon';
 
 export default {
   components: { CreateIcon },
-
-  methods: {
-    onAddClick(e) {
-      e.preventDefault();
-      this.$emit('onAddClick');
-    },
-  },
 };
 </script>

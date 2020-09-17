@@ -19,7 +19,7 @@
       id="add-new-menu-item-btn"
       :title="__('novaMenuBuilder.addMenuItem')"
       class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
-      @click="addMenuItem"
+      @click.prevent="$emit('addMenuItem')"
     >
       {{ __('novaMenuBuilder.addMenuItem') }}
     </button>
@@ -29,12 +29,6 @@
 <script>
 export default {
   props: ['locales', 'activeLocale'],
-  methods: {
-    addMenuItem(e) {
-      e.preventDefault();
-      this.$emit('addMenuItem');
-    },
-  },
 };
 </script>
 
