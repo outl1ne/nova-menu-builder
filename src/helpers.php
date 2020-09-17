@@ -6,13 +6,19 @@ use OptimistDigital\MenuBuilder\Models\Menu;
 if (!function_exists('nova_get_menus')) {
     function nova_get_menus($locale = null)
     {
-        if (empty($locale)) $locale = array_keys(MenuBuilder::getLocales())[0] ?? null;
-
-        return Menu::all()
-            ->load('rootMenuItems')
-            ->map(function ($menu) use ($locale) {
+        if ($locale !== null) {
+            return Menu::all()->map(function ($menu) use ($locale) {
                 return $menu->formatForAPI($locale);
             });
+        }
+
+        $locales = array_keys(MenuBuilder::getLocales());
+
+        return Menu::all()->map(function (Menu $menu) use ($locales) {
+            return array_map(function ($locale) use ($menu) {
+                return $menu->formatForAPI($locale);
+            }, $locales);
+        })->flatten(1)->toArray();
     }
 }
 
