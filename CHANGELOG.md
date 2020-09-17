@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Menu items can now be managed in both Detail and Edit views
 - Fixed the error where the "Menus" sidebar item would become inactive when opening the detail or edit view of a menu
 - `nova_get_menu` has been renamed to `nova_get_menu_by_slug`
-- Improved fields validation
+- Hugely improved fields validation
 
 ## [3.0.3] - 2020-09-02
 

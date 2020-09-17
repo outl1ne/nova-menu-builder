@@ -68,9 +68,14 @@
                 id="url"
                 type="text"
                 v-model="newItem.value"
+                :class="{ 'border-danger': getError('value') }"
                 :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
                 class="w-full form-control form-input form-input-bordered"
               />
+
+              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                {{ getError('value') }}
+              </help-text>
             </div>
           </div>
         </template>

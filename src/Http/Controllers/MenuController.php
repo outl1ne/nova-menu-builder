@@ -66,14 +66,6 @@ class MenuController extends Controller
     {
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
-        $request->validate([
-            'name' => 'required|min:1',
-            'class' => 'required',
-            'value' => 'present',
-            'enabled' => 'present',
-            'locale' => 'required',
-        ]);
-
         $data = $request->getValues();
         $data['order'] = $menuItemModel::max('id') + 1;
 

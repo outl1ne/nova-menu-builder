@@ -157,6 +157,8 @@ export default {
     },
 
     resetNewItem() {
+      this.errors = {};
+
       this.newItem = {
         name: null,
         value: '',
@@ -170,6 +172,7 @@ export default {
 
     async confirmItemCreate() {
       try {
+        this.errors = {};
         await api.create(this.newItemData);
         this.refreshData();
         this.showAddModal = false;
@@ -183,6 +186,7 @@ export default {
 
     async updateItem() {
       try {
+        this.errors = {};
         await api.update(this.newItem.id, this.newItemData);
         await this.refreshData();
         this.showAddModal = false;
