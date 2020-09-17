@@ -64,4 +64,17 @@ class :className extends MenuItemSelectType
     {
         return $value;
     }
+
+    /**
+     * Get the rules for the resource.
+     *
+     * @return array A key-value map of attributes and rules.
+     */
+
+    public static function getRules(): array
+    {
+        return [
+            'value' => 'required',
+        ];
+    }
 }
