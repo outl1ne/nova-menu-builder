@@ -5,7 +5,8 @@
         <h2 class="text-90 font-normal text-xl">
           {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
         </h2>
-        <toggle-button :color="switchColor" :labels="toggleLabels" :sync="true" :width="70" v-model="newItem.enabled" />
+
+        <toggle-button v-model="newItem.enabled" :color="switchColor" :labels="toggleLabels" :sync="true" :width="78" />
       </div>
 
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
@@ -48,9 +49,9 @@
         <template v-if="linkType.type === 'static-url'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{
-                __('novaMenuBuilder.menuItemUrlFieldName')
-              }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">
+                {{ __('novaMenuBuilder.menuItemUrlFieldName') }}
+              </label>
             </div>
             <div class="py-4 w-4/5">
               <input
