@@ -7,10 +7,14 @@
       :locales="field.locales"
     />
 
-    <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!menuItems.length" />
+    <div class="py-6" v-if="loadingMenuItems">
+      <loader class="text-60" />
+    </div>
+
+    <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length" />
 
     <menu-builder
-      v-else
+      v-if="!loadingMenuItems && menuItems.length"
       @duplicateMenuItem="duplicateMenuItem"
       @editMenu="editMenu"
       @onMenuChange="updateMenu"
@@ -28,6 +32,7 @@
       :showModal="showAddModal"
       :update="update"
       :errors="errors"
+      :isMenuItemUpdating="isMenuItemUpdating"
       @closeModal="closeModal"
       @confirmItemCreate="confirmItemCreate"
       @onLinkModelUpdate="updateLinkModel"
@@ -66,6 +71,8 @@ export default {
   },
 
   data: () => ({
+    loadingMenuItems: false,
+    isMenuItemUpdating: false,
     selectedLocale: void 0,
     showDeleteModal: false,
     showAddModal: false,
@@ -124,11 +131,15 @@ export default {
     },
 
     async refreshData() {
+      this.loadingMenuItems = true;
+
       const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
       this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
 
       const menuItemTypes = (await api.getMenuItemTypes(this.resourceId, this.selectedLocale)).data;
       this.menuItemTypes = Object.values(menuItemTypes);
+
+      this.loadingMenuItems = false;
     },
 
     async editMenu(item) {
@@ -186,13 +197,16 @@ export default {
 
     async updateItem() {
       try {
+        this.isMenuItemUpdating = true;
         this.errors = {};
         await api.update(this.newItem.id, this.newItemData);
-        await this.refreshData();
+        this.isMenuItemUpdating = false;
         this.showAddModal = false;
-        this.resetNewItem();
         this.$toasted.show(this.__('novaMenuBuilder.toastUpdateSuccess'), { type: 'success' });
+        this.resetNewItem();
+        await this.refreshData();
       } catch (e) {
+        this.isMenuItemUpdating = false;
         this.handleErrors(e);
       }
     },

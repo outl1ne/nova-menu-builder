@@ -140,12 +140,13 @@
           {{ __('novaMenuBuilder.closeModalTitle') }}
         </button>
 
-        <button
-          @click.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
-          class="btn btn-default btn-primary"
+        <progress-button
+          @click.native.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
+          :disabled="isMenuItemUpdating"
+          :processing="isMenuItemUpdating"
         >
           {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
-        </button>
+        </progress-button>
       </div>
     </div>
   </modal>
@@ -156,7 +157,17 @@ import Modal from './Modal';
 import Multiselect from 'vue-multiselect';
 
 export default {
-  props: ['newItem', 'showModal', 'update', 'linkType', 'menuItemTypes', 'resourceName', 'resourceId', 'errors'],
+  props: [
+    'newItem',
+    'showModal',
+    'update',
+    'linkType',
+    'menuItemTypes',
+    'resourceName',
+    'resourceId',
+    'errors',
+    'isMenuItemUpdating',
+  ],
   components: { Modal, Multiselect },
   data: () => ({
     toggleLabels: false,
@@ -210,12 +221,11 @@ export default {
 .add-new-menu-item-modal {
   .menu-item-component > div > div {
     > div:nth-child(1) {
-      padding-left: 0;
+      padding: 1rem 2rem 1rem 0;
     }
 
     > div:nth-child(2) {
-      padding-left: 0;
-      padding-right: 0;
+      padding: 1rem 0 1rem 0;
       width: 80%;
     }
   }
