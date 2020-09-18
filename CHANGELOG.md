@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.0.0] - 2020-09-18
 
+If you want to upgrade from version 2.0 or 3.0, please consult [UPGRADING.md](UPGRADING.md) for instructions.
+
 ### Added
 
 - The UI texts are now all translatable and customizable
