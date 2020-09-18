@@ -34,7 +34,6 @@ class MenuItemFormRequest extends FormRequest
         foreach ($this->all() as $key => $value) {
             if (Str::startsWith($key, 'data->')) $keys[] = $key;
         }
-
         return $this->only($keys);
     }
 }

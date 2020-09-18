@@ -208,7 +208,7 @@ export default {
 
 <style lang="scss">
 .add-new-menu-item-modal {
-  .menu-item-component {
+  .menu-item-component > div > div {
     > div:nth-child(1) {
       padding-left: 0;
     }

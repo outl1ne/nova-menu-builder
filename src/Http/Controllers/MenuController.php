@@ -106,6 +106,7 @@ class MenuController extends Controller
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
         $data = $request->getValues();
 
+        $menuItem->data = [];
         foreach ($data as $key => $value) {
             $menuItem->{$key} = $value;
         }
