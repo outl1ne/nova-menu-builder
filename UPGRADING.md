@@ -1,4 +1,4 @@
-# Upgrading from Nova Menu Builder 3.0 to 4.0
+# Upgrading from Nova Menu Builder 2.0/3.0 to 4.0
 
 ## Database changes
 
@@ -43,6 +43,18 @@ As such:
 ],
 ```
 
+## Misc configuration changes
+
+The default `resource` has changed its namespace. You should change the `resource` option in the config:
+
+```php
+// From:
+'resource' => OptimistDigital\MenuBuilder\Http\Resources\MenuResource::class,
+
+// To:
+'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
+```
+
 ## MenuLinkables are now MenuItemTypes
 
 While the contents of MenuLinkables have remained largely the same, they have now been renamed to `MenuItemType`s.
@@ -54,6 +66,52 @@ If you want to display a Select field with options, use `MenuItemSelectType`. If
 In the config, the key `linkable_models` has become `menu_item_types`, but it works just the same.
 
 The `parameters` parameter is now gone.
+
+So, do the following changes to your `MenuLinkable` classes:
+
+```php
+// Before:
+use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
+
+class MenuItemProductLink extends MenuLinkable
+{
+  // ...
+
+    public static function getDisplayValue($value = null, array $parameters = null)
+    {
+        $product = Product::find($value);
+        return empty($product) ? 'No product linked' : static::getName() . ': ' . $product->name;
+    }
+
+    public static function getValue($value = null, $parameters = null)
+    {
+        return Product::find($value);
+    }
+}
+
+// After:
+use OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemSelectType;
+
+class MenuItemProductLink extends MenuItemSelectType
+{
+    // ...
+
+    // If you were using 2.0: $parameters is now $data
+    // If you were using 3.0: $parameters argument is removed!
+    public static function getDisplayValue($value = null, $data = null)
+    {
+        $product = Product::find($value);
+        return empty($product) ? 'No product linked' : static::getName() . ': ' . $product->name;
+    }
+
+    // If you were using 2.0: $parameters is now $data
+    // If you were using 3.0: $parameters argument is removed!
+    public static function getValue($value = null, $data = null) // $parameters is now $data!
+    {
+        return Product::find($value);
+    }
+}
+```
 
 ## Renamed helper(s)
 
