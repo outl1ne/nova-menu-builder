@@ -20,11 +20,27 @@ class ReworkLocaleHandling extends Migration
             $table->string('locale')->nullable(true);
         });
 
-        // Add `locale` value to all menu items, move `parameters` to `data`
+        // Add `locale` value to all menu items, move `parameters` to `data`, update `class`
         $menuItems = MenuItem::all();
         $menuItems->each(function (MenuItem $menuItem) {
+            try {
+                $parameters = json_decode($menuItem->parameters, true);
+            } catch (Exception $e) {
+                $parameters = $menuItem->parameters;
+            }
+
             $menuItem->locale = $menuItem->menu->locale;
-            $menuItem->data = $menuItem->parameters;
+            $menuItem->data = $parameters;
+
+            // Update class
+            if ($menuItem->class === 'OptimistDigital\MenuBuilder\Classes\MenuItemText') {
+                $menuItem->class = 'OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType';
+            }
+
+            if ($menuItem->class === 'OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL') {
+                $menuItem->class = 'OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType';
+            }
+
             $menuItem->save();
         });
 
@@ -36,9 +52,9 @@ class ReworkLocaleHandling extends Migration
 
         // De-dupe menus
         $rootMenus = Menu::where('locale_parent_id', null)->get();
-        $rootMenus->forEach(function (Menu $rootMenu) {
+        $rootMenus->each(function (Menu $rootMenu) {
             $subMenus = Menu::where('locale_parent_id', $rootMenu->id)->get();
-            $subMenus->forEach(function (Menu $subMenu) use ($rootMenu) {
+            $subMenus->each(function (Menu $subMenu) use ($rootMenu) {
                 // Move all menu items to root menu
                 MenuItem::where('menu_id', $subMenu->id)
                     ->update(['menu_id' => $rootMenu->id]);
@@ -48,9 +64,20 @@ class ReworkLocaleHandling extends Migration
             });
         });
 
+        try {
+            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+                // Named
+                $table->dropForeign('menus_locale_parent_id_foreign');
+                $table->dropUnique('menus_locale_parent_id_foreign');
+
+                // Legacy
+                $table->dropForeign('menus_slug_locale_unique');
+                $table->dropUnique('menus_locale_parent_id_locale_unique');
+            });
+        } catch (Exception $e) {
+        }
+
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->dropForeign('menus_locale_parent_id_foreign');
-            $table->dropUnique('menus_locale_parent_id_foreign');
             $table->dropColumn('locale');
             $table->dropColumn('locale_parent_id');
         });
