@@ -1,5 +1,12 @@
 /*!
- * vue-nestable v2.5.3
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * vue-nestable v2.6.0
  * (c) Ralph Huwiler <ralph@huwiler.rocks>
  * Released under the MIT License.
  */

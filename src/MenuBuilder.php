@@ -4,13 +4,12 @@ namespace OptimistDigital\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class MenuBuilder extends Tool
 {
-    protected static $defaultLinkableModels = [
-        \OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL::class,
-        \OptimistDigital\MenuBuilder\Classes\MenuItemText::class,
+    protected static $defaultMenuItemTypes = [
+        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
     ];
 
     /**
@@ -20,8 +19,8 @@ class MenuBuilder extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-menu', __DIR__ . '/../dist/js/tool.js');
-        Nova::style('nova-menu', __DIR__ . '/../dist/css/tool.css');
+        Nova::script('nova-menu', __DIR__ . '/../dist/js/menu-builder.js');
+        Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
     }
 
     /**
@@ -42,32 +41,7 @@ class MenuBuilder extends Tool
         return ['en' => 'English'];
     }
 
-
-    public static function getModels()
-    {
-        $configuredLinkableModels = config('nova-menu.linkable_models', []);
-        return array_merge(
-            static::$defaultLinkableModels,
-            $configuredLinkableModels
-        );
-    }
-
-    public static function hasNovaLang()
-    {
-        return class_exists('\OptimistDigital\NovaLang\NovaLang');
-    }
-
-    public static function getMenusTableName()
-    {
-        return config('nova-menu.menus_table_name', 'nova_menu_menus');
-    }
-
-    public static function getMenuItemsTableName()
-    {
-        return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
-    }
-
-    public static function getFieldsFromMenuLinkable(string $menuLinkableClass): array
+    public static function getFieldsFromMenuItemTypeClass(string $menuItemTypeClass): array
     {
         $templateFields = [];
 
@@ -84,8 +58,8 @@ class MenuBuilder extends Tool
             return $field;
         };
 
-        if (isset($menuLinkableClass)) {
-            $rawFields = $menuLinkableClass::getFields();
+        if (isset($menuItemTypeClass) && method_exists($menuItemTypeClass, 'getFields')) {
+            $rawFields = $menuItemTypeClass::getFields();
             foreach ($rawFields as $field) {
                 // Handle Panel
                 if ($field instanceof \Laravel\Nova\Panel) {
@@ -106,20 +80,53 @@ class MenuBuilder extends Tool
         return $templateFields;
     }
 
-    public static function getRulesFromMenuLinkable(string $menuLinkableClass)
+    public static function getRulesFromMenuLinkable(?string $menuLinkableClass)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
 
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required',
+            'name' => 'required|min:1',
+            'locale' => 'required',
+            'value' => 'present',
             'class' => 'required',
             'target' => 'required|in:_self,_blank',
-        ], $menuLinkableClass::getRules());
+        ], $menuLinkableClass ? $menuLinkableClass::getRules() : []);
+    }
+
+
+
+    // In-package helpers
+    public static function getMenuResource()
+    {
+        return config('nova-menu.resource', \OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class);
+    }
+
+    public static function getMenusTableName()
+    {
+        return config('nova-menu.menus_table_name', 'nova_menu_menus');
+    }
+
+    public static function getMenuItemsTableName()
+    {
+        return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
     }
 
     public static function getMenuItemClass()
     {
-        return config('nova-menu.menu_item_model', MenuItem::class);
+        return config('nova-menu.menu_item_model', \OptimistDigital\MenuBuilder\Models\MenuItem::class);
+    }
+
+    public static function getMenuItemTypes()
+    {
+        return array_merge(
+            static::$defaultMenuItemTypes,
+            config('nova-menu.menu_item_types', []),
+        );
+    }
+
+    public static function getMenus()
+    {
+        return config('nova-menu.menus', []);
     }
 }

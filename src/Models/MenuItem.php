@@ -7,13 +7,12 @@ use OptimistDigital\MenuBuilder\MenuBuilder;
 
 class MenuItem extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'value', 'class', 'parameters', 'target', 'parent_id', 'order', 'enabled', 'data'];
+    protected $fillable = ['menu_id', 'name', 'value', 'class', 'target', 'parent_id', 'order', 'enabled', 'data', 'locale'];
 
     protected $with = ['children'];
 
     protected $casts = [
         'enabled' => 'boolean',
-        'parameters' => 'array',
         'data' => 'array',
     ];
 
@@ -58,7 +57,7 @@ class MenuItem extends Model
     public function getDisplayValueAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getDisplayValue($this->value, $this->parameters, $this->data);
+            return $this->class::getDisplayValue($this->value, $this->data);
         }
         return $this->value;
     }
@@ -66,7 +65,7 @@ class MenuItem extends Model
     public function getTypeAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getIdentifier($this->value, $this->parameters);
+            return $this->class::getIdentifier($this->value);
         }
         return null;
     }
@@ -74,7 +73,7 @@ class MenuItem extends Model
     public function getCustomValueAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getValue($this->value, $this->parameters);
+            return $this->class::getValue($this->value);
         }
         return $this->value;
     }
@@ -82,14 +81,14 @@ class MenuItem extends Model
     public function getCustomDataAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getData($this->data, $this->parameters);
+            return $this->class::getData($this->data);
         }
         return $this->data;
     }
 
     public function getFieldsAttribute()
     {
-        $fields = MenuBuilder::getFieldsFromMenuLinkable($this->class);
+        $fields = MenuBuilder::getFieldsFromMenuItemTypeClass($this->class);
         foreach ($fields as $field) {
             $field->resolve($this);
         }

@@ -2,18 +2,24 @@
   <vue-nestable
     :value="value"
     @input="val => $emit('input', val)"
-    @change="$emit('onChangeMenu')"
+    @change="$emit('onMenuChange')"
+    class="px-3 menu-builder"
     classProp="classProp"
   >
-    <vue-nestable-handle slot-scope="{ item }" :item="item" class="handle flex flex-wrap">
-      <div :class="`item-data w-2/3 flex ${!hasChildren(item) && 'pl-3'}`">
+    <vue-nestable-handle
+      slot-scope="{ item }"
+      :item="item"
+      class="handle flex flex-wrap bg-gray-100 shadow-sm border rounded-md outline-none"
+      :class="{ 'border-40': !item.enabled, 'border-60': item.enabled }"
+    >
+      <div :class="`item-data w-2/3 flex ${!hasChildren(item) ? 'pl-3' : ''}`">
+        <!-- Collapse icon -->
         <button
           v-if="hasChildren(item)"
-          @click="toggleMenuChildrenCascade(item)"
-          :title="__('Edit')"
-          class="appearance-none cursor-pointer text-70 hover:text-primary flex px-4 items-center"
+          @click.prevent="toggleMenuChildrenCascade(item)"
+          class="appearance-none cursor-pointer fill-current hover:text-primary flex px-4 items-center focus:outline-none"
         >
-          <menu-builder-arrow-icon :wrapperClass="`${isCascadeOpen(item) && 'btn-cascade-open'}`" />
+          <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
         </button>
 
         <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">{{ item.name }}</div>
@@ -23,35 +29,54 @@
       </div>
 
       <div class="buttons w-1/3 flex justify-end content-center">
-        <button
-          @click="$emit('editMenu', item)"
-          :title="__('Edit')"
-          class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-        >
-          <menu-builder-edit-icon />
-        </button>
+        <!-- Edit icon -->
+        <tooltip>
+          <button
+            :title="__('novaMenuBuilder.edit')"
+            @click.prevent="$emit('editMenu', item)"
+            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+          >
+            <edit-icon />
+          </button>
+
+          <tooltip-content slot="content">
+            {{ __('novaMenuBuilder.edit') }}
+          </tooltip-content>
+        </tooltip>
+
+        <!-- Duplicate icon -->
+        <tooltip>
+          <button
+            :title="__('novaMenuBuilder.duplicate')"
+            @click.prevent="$emit('duplicateMenuItem', item)"
+            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+          >
+            <duplicate-icon />
+          </button>
+
+          <tooltip-content slot="content">
+            {{ __('novaMenuBuilder.duplicate') }}
+          </tooltip-content>
+        </tooltip>
 
         <button
-          @click="$emit('duplicateMenuItem', item)"
-          :title="__('Duplicate')"
-          class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-        >
-          <menu-builder-duplicate-icon />
-        </button>
-
-        <button
-          v-on:click="$emit('removeMenu', item)"
-          :title="__('Delete')"
+          :title="__('novaMenuBuilder.delete')"
+          @click.prevent="$emit('removeMenu', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >
-          <menu-builder-delete-icon />
+          <delete-icon />
         </button>
       </div>
     </vue-nestable-handle>
   </vue-nestable>
 </template>
+
 <script>
 import { VueNestable, VueNestableHandle } from 'vue-nestable';
+import ArrowIcon from './icons/ArrowIcon';
+import DeleteIcon from './icons/DeleteIcon';
+import DuplicateIcon from './icons/DuplicateIcon';
+import EditIcon from './icons/EditIcon';
 
 export default {
   props: {
@@ -64,6 +89,10 @@ export default {
   components: {
     VueNestable,
     VueNestableHandle,
+    ArrowIcon,
+    DeleteIcon,
+    DuplicateIcon,
+    EditIcon,
   },
 
   data: () => ({
@@ -90,3 +119,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.menu-builder {
+  .v-popover,
+  .v-popover > * > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>

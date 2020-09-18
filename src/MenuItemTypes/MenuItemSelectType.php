@@ -1,8 +1,8 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Classes;
+namespace OptimistDigital\MenuBuilder\MenuItemTypes;
 
-abstract class MenuLinkable extends MenuItemBase
+abstract class MenuItemSelectType extends BaseMenuItemType
 {
     public static function getType(): string
     {
@@ -20,5 +20,18 @@ abstract class MenuLinkable extends MenuItemBase
     public static function getOptions($locale): array
     {
         return [];
+    }
+
+    /**
+     * Get the rules for the resource.
+     *
+     * @return array A key-value map of attributes and rules.
+     */
+
+    public static function getRules(): array
+    {
+        return [
+            'value' => 'required',
+        ];
     }
 }

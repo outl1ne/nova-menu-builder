@@ -1,59 +1,132 @@
-# Upgrading from Nova Menu Builder 1.0 to 2.0
+# Upgrading from Nova Menu Builder 2.0/3.0 to 4.0
 
-## Configuration
+## Database changes
 
-The configuration passed into the `MenuBuilder` tool constructor is no longer accepted. All configuration now lives in `config/nova-menu.php`.
+The locale system has been reworked.
 
-Publish the new configuration file and move all your configuration options from the constructor to the config file.
+The Menu models table no longer has `locale` and `locale_parent_id` columns. Instead, the menu items table has a `locale` column.
 
-```bash
-# Publish the configuration file and edit it to your preference
-# Optionally add --force if you want to overwrite the existing file
-php artisan vendor:publish --tag=nova-menu-builder-config
-```
+The Menu Item models table no longer has a `parameters` column.
 
-How the new configuration looks like:
+The migration `2020_09_15_000000_rework_locale_handling` will take care of migrating to the new structure with no expected data loss (except for the `parameters` column, which will be copied into `data`).
+
+NB! If you are currently using both `data` (for fields) and `parameters`, **you will lose data**!
+
+**Backup your database before running the migration!**
+
+If you've read the above and have confirmed you're fine with losing `parameters`, just run `php artisan migrate` and you're set.
+
+## Menus definition
+
+There's some config changes. One of the main ones is the definition of `menus`.
+
+When previously the menu `slug` was a plain-text field, it has now become a Select type of field. The developer must define the possible menu options in the config file, under the `menus` key.
+
+As such:
 
 ```php
-// New locales
-'locales' => [
-  'en_US' => 'English',
+/*
+|--------------------------------------------------------------------------
+| Menus
+|--------------------------------------------------------------------------
+|
+| Set all the possible menus in a keyed array of arrays with the options
+| 'name' and optionally 'menu_item_types'.
+|
+| For example: ['header' => ['name' => 'Header', 'menu_item_types' => []]]
+|
+*/
+
+'menus' => [
+    'header' => [
+        'name' => 'Header',
+        'menu_item_types' => [] // Here you can define menu-specific types
+    ]
 ],
+```
 
-// or using a closure:
+## Misc configuration changes
 
-'locales' => function() {
-  return nova_lang_get_locales();
+The default `resource` has changed its namespace. You should change the `resource` option in the config:
+
+```php
+// From:
+'resource' => OptimistDigital\MenuBuilder\Http\Resources\MenuResource::class,
+
+// To:
+'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
+```
+
+## MenuLinkables are now MenuItemTypes
+
+While the contents of MenuLinkables have remained largely the same, they have now been renamed to `MenuItemType`s. Instead of extending `MenuLinkable`, the class must now extend `MenuItemSelectType` or `MenuItemTextType` (depending on the use-case).
+
+If you want to display a Select field with options, use `MenuItemSelectType`. If you want to display some custom fields with only a name field, use `MenuItemTextType`.
+
+In the config, the key `linkable_models` has become `menu_item_types`, but it works just the same.
+
+```php
+// Before:
+'menu_linkables' => [],
+
+// After:
+'menu_item_types' => [],
+```
+
+**NB!** The `parameters` column is now gone.
+
+So, do the following changes to your `MenuLinkable` classes:
+
+```php
+// Before:
+use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
+
+class MenuItemProductLink extends MenuLinkable
+{
+  // ...
+
+    public static function getDisplayValue($value = null, array $parameters = null)
+    {
+        $product = Product::find($value);
+        return empty($product) ? 'No product linked' : static::getName() . ': ' . $product->name;
+    }
+
+    public static function getValue($value = null, $parameters = null)
+    {
+        return Product::find($value);
+    }
 }
 
-// or if you want to use a function, but still be able to cache it:
+// After:
+use OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemSelectType;
 
-'locales' => '\App\Configuration\NovaMenuConfiguration@getLocales',
-'locales' => 'nova_lang_get_locales',
+class MenuItemProductLink extends MenuItemSelectType
+{
+    // ...
 
-// New linkable models:
-'linkable_models' => [
-  // ...
-],
+    // If you were using 2.0: $parameters is now $data
+    // If you were using 3.0: $parameters argument is removed!
+    public static function getDisplayValue($value = null, $data = null)
+    {
+        $product = Product::find($value);
+        return empty($product) ? 'No product linked' : static::getName() . ': ' . $product->name;
+    }
+
+    // If you were using 2.0: $parameters is now $data
+    // If you were using 3.0: $parameters argument is removed!
+    public static function getValue($value = null, $data = null) // $parameters is now $data!
+    {
+        return Product::find($value);
+    }
+}
 ```
 
-## Table names
+## Renamed helper(s)
 
-The table names are now configurable through the configuration file.
+The helper `nova_get_menu()` has been renamed to `nova_get_menu_by_slug()`.
 
-The new defaults are `nova_menu_menus` and `nova_menu_menu_items`. If you wish to continue using the old names, please edit the configuration file to use `menus` and `menu_items` table names intead.
+## Good luck
 
-**NB! Keep in mind that the configuration must be changed before running the migrations as the migration take the configured names for tables.**
+This should be it! You're good to go!
 
-```php
-'menus_table_name' => 'menus',
-'menu_items_table_name' => 'menu_items',
-```
-
-## Migrations
-
-Migrations are now loaded automatically. This aims to reduce the number of migration files inside the end project's folder and keep them more relevant.
-
-The migration names are no longer dynamic and running `php artisan migrate` **will actually delete the original migration from your project source automatically**, so don't be alarmed to see a missing migration in your Git changelog.
-
-Run `php artisan migrate` to run one new migration and automatically delete the old migration file.
+Should you have any problems, do open an issue and I'll try my best to help.

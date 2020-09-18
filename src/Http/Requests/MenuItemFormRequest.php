@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 
-class NewMenuItemRequest extends FormRequest
+class MenuItemFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +25,15 @@ class NewMenuItemRequest extends FormRequest
      */
     public function rules()
     {
-        $menuLinkableClass = $this->get('class');
-        if (empty($menuLinkableClass)) return ['class' => 'required'];
-        return MenuBuilder::getRulesFromMenuLinkable($menuLinkableClass);
+        return MenuBuilder::getRulesFromMenuLinkable($this->get('class'));
     }
 
     public function getValues()
     {
-        $keys = ['name', 'enabled', 'parameters', 'target', 'class', 'value', 'menu_id'];
+        $keys = ['name', 'enabled', 'target', 'class', 'value', 'menu_id', 'locale'];
         foreach ($this->all() as $key => $value) {
             if (Str::startsWith($key, 'data->')) $keys[] = $key;
         }
-
         return $this->only($keys);
     }
 }

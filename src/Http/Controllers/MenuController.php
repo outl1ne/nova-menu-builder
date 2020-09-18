@@ -5,7 +5,7 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest;
+use OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
@@ -21,11 +21,17 @@ class MenuController extends Controller
      **/
     public function getMenuItems(Request $request, Menu $menu)
     {
+        $locale = $request->get('locale');
         if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
+        if (empty($locale)) return response()->json(['menu' => 'locale_required_but_missing'], 400);
 
-        $menuItems = $menu->rootMenuItems->filter(function ($item) {
-            return class_exists($item->class);
-        });
+        $menuItems = $menu
+            ->rootMenuItems()
+            ->where('locale', $locale)
+            ->get()
+            ->filter(function ($item) {
+                return class_exists($item->class);
+            });
 
         return response()->json($menuItems, 200);
     }
@@ -53,25 +59,15 @@ class MenuController extends Controller
     /**
      * Creates new MenuItem.
      *
-     * @param OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest $request
+     * @param OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @return Illuminate\Http\Response
      **/
-    public function createMenuItem(NewMenuItemRequest $request)
+    public function createMenuItem(MenuItemFormRequest $request)
     {
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
-        $request->validate([
-            'class' => 'required',
-            'value' => 'present',
-            'enabled' => 'present',
-            'name' => 'required|min:1',
-        ]);
-
         $data = $request->getValues();
         $data['order'] = $menuItemModel::max('id') + 1;
-
-        // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/41
-        $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {
@@ -98,11 +94,11 @@ class MenuController extends Controller
     /**
      * Updates a MenuItem.
      *
-     * @param OptimistDigital\MenuBuilder\Http\Requests\NewMenuItemRequest $request
+     * @param OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function updateMenuItem(NewMenuItemRequest $request, $menuItemId)
+    public function updateMenuItem(MenuItemFormRequest $request, $menuItemId)
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
@@ -110,9 +106,7 @@ class MenuController extends Controller
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
         $data = $request->getValues();
 
-        // Add fail-safe due to https://github.com/optimistdigital/nova-menu-builder/issues/47
-        $data['parameters'] = empty($data['parameters']) ? null : $data['parameters'];
-
+        $menuItem->data = [];
         foreach ($data as $key => $value) {
             $menuItem->{$key} = $value;
         }
@@ -143,30 +137,46 @@ class MenuController extends Controller
      * @param string $locale
      * @return Illuminate\Http\Response
      **/
-    public function getLinkTypes($locale)
+    public function getMenuItemTypes(Request $request, Menu $menu)
     {
-        $linkTypes = [];
-        $models = MenuBuilder::getModels();
+        if ($menu === null) return response()->json(['error' => 'menu_not_found'], 404);
+        $locale = $request->get('locale');
+        if ($locale === null) return response()->json(['error' => 'locale_required'], 400);
 
-        foreach ($models as $linkClass) {
-            if (!class_exists($linkClass)) continue;
+        $menuItemTypes = [];
+        $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
+
+        $formatAndAppendMenuItemType = function ($typeClass) use (&$menuItemTypes, $locale) {
+            if (!class_exists($typeClass)) return;
 
             $data = [
-                'name' => $linkClass::getName(),
-                'type' => $linkClass::getType(),
-                'fields' => MenuBuilder::getFieldsFromMenuLinkable($linkClass) ?? [],
-                'class' => $linkClass,
+                'name' => $typeClass::getName(),
+                'type' => $typeClass::getType(),
+                'fields' => MenuBuilder::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
+                'class' => $typeClass,
             ];
 
 
-            if (method_exists($linkClass, 'getOptions')) {
-                $data['options'] = $linkClass::getOptions($locale);
+            if (method_exists($typeClass, 'getOptions')) {
+                $data['options'] = $typeClass::getOptions($locale);
             }
 
-            $linkTypes[] = $data;
+            $menuItemTypes[] = $data;
+        };
+
+        foreach ($menuItemTypesRaw as $typeClass) {
+            $formatAndAppendMenuItemType($typeClass);
         }
 
-        return response()->json($linkTypes, 200);
+        $menu = MenuBuilder::getMenus()[$menu->slug] ?? null;
+        if ($menu !== null) {
+            $menuTypeClasses = $menu['menu_item_types'] ?? [];
+            foreach ($menuTypeClasses as $menuTypeClass) {
+                $formatAndAppendMenuItemType($menuTypeClass);
+            }
+        }
+
+        return response()->json($menuItemTypes, 200);
     }
 
     /**
@@ -244,8 +254,9 @@ SQL
     {
         $data = $item->toArray();
         unset($data['id']);
-        if ($parentId != null) $data['parent_id'] = $parentId;
-        if ($order != null) $data['order'] = $order;
+        if ($parentId !== null) $data['parent_id'] = $parentId;
+        if ($order !== null) $data['order'] = $order;
+        $data['locale'] = $item->locale;
         $newItem = MenuBuilder::getMenuItemClass()::create($data);
         $children = $item->children;
         foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
