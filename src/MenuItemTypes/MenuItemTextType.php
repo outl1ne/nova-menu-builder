@@ -18,19 +18,4 @@ class MenuItemTextType extends BaseMenuItemType
     {
         return 'text';
     }
-
-    public static function getDisplayValue($value = null)
-    {
-        return $value;
-    }
-
-    public static function getValue($value = null)
-    {
-        return $value;
-    }
-
-    public static function getOptions($locale): array
-    {
-        return [];
-    }
 }

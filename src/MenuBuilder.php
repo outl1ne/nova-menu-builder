@@ -41,7 +41,7 @@ class MenuBuilder extends Tool
         return ['en' => 'English'];
     }
 
-    public static function getFieldsFromMenuLinkable(string $menuLinkableClass): array
+    public static function getFieldsFromMenuItemTypeClass(string $menuItemTypeClass): array
     {
         $templateFields = [];
 
@@ -58,8 +58,8 @@ class MenuBuilder extends Tool
             return $field;
         };
 
-        if (isset($menuLinkableClass)) {
-            $rawFields = $menuLinkableClass::getFields();
+        if (isset($menuItemTypeClass) && method_exists($menuItemTypeClass, 'getFields')) {
+            $rawFields = $menuItemTypeClass::getFields();
             foreach ($rawFields as $field) {
                 // Handle Panel
                 if ($field instanceof \Laravel\Nova\Panel) {
