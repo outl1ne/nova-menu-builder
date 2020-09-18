@@ -12,6 +12,8 @@ The migration `2020_09_15_000000_rework_locale_handling` will take care of migra
 
 NB! If you are currently using both `data` (for fields) and `parameters`, **you will lose data**!
 
+**Backup your database before running the migration!**
+
 If you've read the above and have confirmed you're fine with losing `parameters`, just run `php artisan migrate` and you're set.
 
 ## Menus definition
@@ -57,15 +59,21 @@ The default `resource` has changed its namespace. You should change the `resourc
 
 ## MenuLinkables are now MenuItemTypes
 
-While the contents of MenuLinkables have remained largely the same, they have now been renamed to `MenuItemType`s.
-
-Instead of extending `MenuLinkable`, the class must now extend `MenuItemSelectType` or `MenuItemTextType` (depending on the use-case).
+While the contents of MenuLinkables have remained largely the same, they have now been renamed to `MenuItemType`s. Instead of extending `MenuLinkable`, the class must now extend `MenuItemSelectType` or `MenuItemTextType` (depending on the use-case).
 
 If you want to display a Select field with options, use `MenuItemSelectType`. If you want to display some custom fields with only a name field, use `MenuItemTextType`.
 
 In the config, the key `linkable_models` has become `menu_item_types`, but it works just the same.
 
-The `parameters` parameter is now gone.
+```php
+// Before:
+'menu_linkables' => [],
+
+// After:
+'menu_item_types' => [],
+```
+
+**NB!** The `parameters` column is now gone.
 
 So, do the following changes to your `MenuLinkable` classes:
 
@@ -120,3 +128,5 @@ The helper `nova_get_menu()` has been renamed to `nova_get_menu_by_slug()`.
 ## Good luck
 
 This should be it! You're good to go!
+
+Should you have any problems, do open an issue and I'll try my best to help.
