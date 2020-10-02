@@ -35,7 +35,7 @@ class CreateMenusTable extends Migration
             $table->string('locale');
             $table->timestamps();
 
-            $table->unique(['slug', 'locale']);
+            $table->unique(['slug', 'locale'], 'nova_menu_menus_slug_locale_unique');
         });
 
         Schema::create(MenuBuilder::getMenuItemsTableName(), function (Blueprint $table) {

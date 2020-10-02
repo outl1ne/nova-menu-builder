@@ -78,6 +78,8 @@ class ReworkLocaleHandling extends Migration
         }
 
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+            $table->dropUnique('nova_menu_menus_slug_locale_unique');
+            $table->dropUnique('menus_locale_parent_id_locale_unique');
             $table->dropColumn('locale');
             $table->dropColumn('locale_parent_id');
         });
