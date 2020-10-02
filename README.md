@@ -29,7 +29,9 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 
 ![Menu Item Edit](docs/menu-item-edit.png)
 
-## Installation
+## Installation and Setup
+
+### Installing the package
 
 Install the package in a Laravel Nova project via Composer, edit the configuration file and run migrations.
 
@@ -40,9 +42,6 @@ composer require optimistdigital/nova-menu-builder
 # Publish the configuration file and edit it to your preference
 # NB! If you want custom table names, configure them before running the migrations.
 php artisan vendor:publish --tag=nova-menu-builder-config
-
-# Run automatically loaded migrations
-php artisan migrate
 ```
 
 Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
@@ -57,6 +56,41 @@ public function tools()
         new \OptimistDigital\MenuBuilder\MenuBuilder,
     ];
 }
+```
+
+### Setting up
+
+After publishing the configuration file, you have to make some required changes in the config:
+
+```php
+# Choose table names of your liking by editing the two key/values:
+'menus_table_name' => 'nova_menu_menus',
+'menu_items_table_name' => 'nova_menu_menu_items',
+
+# Define the locales for your project:
+# If your project doesn't have localization, you can just leave it as it is.
+# When there's just one locale, anything related to localization isn't displayed.
+'locales' => ['en_US' => 'English'],
+
+# Define the list of possible menus (ie 'footer', 'header', 'main-menu'):
+'menus' => [
+    // 'header' => [
+    //     'name' => 'Header',
+    //     'menu_item_types' => []
+    // ]
+],
+
+# If you're just setting up, this is probably of no importance to you,
+# but later on, when you want custom menu item types with custom fields
+# , you can register them here:
+'menu_item_types' => [],
+```
+
+Next, just run the migrations and you're set.
+
+```php
+# Run the automatically loaded migrations
+php artisan migrate
 ```
 
 ### Optionally publish migrations
