@@ -41,7 +41,9 @@ class MenuResource extends Resource
     {
         $menusTableName = MenuBuilder::getMenusTableName();
         $menuOptions = collect(MenuBuilder::getMenus())
-            ->mapWithKeys(fn ($menu, $key) => [$key => $menu['name']])
+            ->mapWithKeys(function ($menu, $key) {
+                return [$key => $menu['name']];
+            })
             ->toArray();
 
         return [
