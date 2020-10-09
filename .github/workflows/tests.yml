@@ -64,5 +64,4 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
-        env:
-          CI: ${{ secrets.CI }}
+        working-directory: app
