@@ -25,7 +25,9 @@ jobs:
             path: nova-menu-builder
 
       - name: Setup Laravel
-        run: laravel new app
+        run: |
+            composer global require laravel/installer
+            laravel new app
 
       - name: Install Nova
         working-directory: app
