@@ -24,6 +24,12 @@ jobs:
         with:
             path: nova-menu-builder
 
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+            path: ~/.composer/cache/files
+            key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
       - name: Setup Laravel
         run: |
             composer global require laravel/installer
@@ -32,7 +38,7 @@ jobs:
       - name: Install Nova
         working-directory: app
         run: |
-            composer config -a -g nova.laravel.com $NOVA_USERNAME $NOVA_PASSWORD
+            composer config -a -g http-basic.nova.laravel.com $NOVA_USERNAME $NOVA_PASSWORD
             composer config repositories.0 composer https://nova.laravel.com
             composer require laravel/nova
 
@@ -42,12 +48,6 @@ jobs:
             pwd
             composer config repositories.1 path ../nova-menu-builder
             composer require "optimistdigital/nova-menu-builder @dev"
-
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -61,7 +61,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: app
-        run: omposer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
