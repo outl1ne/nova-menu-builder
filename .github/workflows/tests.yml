@@ -25,7 +25,7 @@ jobs:
             path: nova-menu-builder
 
       - name: Composer setup
-        run: echo "$HOME/.composer/vendor/bin" >> $PATH
+        run: echo "/home/runner/.composer/vendor/bin" >> $PATH
 
       - name: Setup Laravel
         run: |
