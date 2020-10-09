@@ -1,0 +1,67 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  tests:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4]
+        stability: [prefer-lowest, prefer-stable]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+            path: nova-menu-builder
+
+      - name: Setup Laravel
+        run: laravel new app
+
+      - name: Install Nova
+        working-directory: app
+        run: |
+            pwd
+            composer config repositories.0 composer https://nova.laravel.com
+            composer require laravel/nova
+
+      - name: Install package
+        working-directory: app
+        run: |
+            pwd
+            composer config repositories.1 path ../nova-menu-builder
+            composer require "optimistdigital/nova-menu-builder @dev"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: none
+
+      - name: Setup Memcached
+        uses: niden/actions-memcached@v7
+
+      - name: Install dependencies
+        working-directory: app
+        run: omposer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose
+        env:
+          CI: ${{ secrets.CI }}
