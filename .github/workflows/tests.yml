@@ -23,6 +23,12 @@ jobs:
         with:
           path: nova-menu-builder
 
+      - name: Nova access setup
+        working-directory: app
+        run: |
+          export COMPOSER_AUTH="{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${{ secrets.NOVA_USERNAME }}\",\"password\":\"${{ secrets.NOVA_PASSWORD }}\"}}}"
+          composer config repositories.0 composer https://nova.laravel.com
+
       - name: Cache dependencies
         uses: actions/cache@v1
         with:
@@ -44,8 +50,6 @@ jobs:
       - name: Install Nova
         working-directory: app
         run: |
-          export COMPOSER_AUTH="{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${{ secrets.NOVA_USERNAME }}\",\"password\":\"${{ secrets.NOVA_PASSWORD }}\"}}}"
-          composer config repositories.0 composer https://nova.laravel.com
           composer require laravel/nova
 
       - name: Install package
