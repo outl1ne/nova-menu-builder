@@ -8,7 +8,6 @@ on:
 
 jobs:
   tests:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -22,32 +21,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-            path: nova-menu-builder
+          path: nova-menu-builder
 
       - name: Cache dependencies
         uses: actions/cache@v1
         with:
-            path: ~/.composer/cache/files
-            key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
-      - name: Setup Laravel
-        run: |
-            composer global require laravel/installer
-            ~/.composer/vendor/bin/laravel new app
-
-      - name: Install Nova
-        working-directory: app
-        run: |
-            composer config -a -g http-basic.nova.laravel.com $NOVA_USERNAME $NOVA_PASSWORD
-            composer config repositories.0 composer https://nova.laravel.com
-            composer require laravel/nova
-
-      - name: Install package
-        working-directory: app
-        run: |
-            pwd
-            composer config repositories.1 path ../nova-menu-builder
-            composer require "optimistdigital/nova-menu-builder @dev"
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -55,6 +35,25 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           coverage: none
+
+      - name: Setup Laravel
+        run: |
+          composer global require laravel/installer
+          ~/.composer/vendor/bin/laravel new app
+
+      - name: Install Nova
+        working-directory: app
+        run: |
+          COMPOSER_AUTH="$NOVA_USERNAME:$NOVA_PASSWORD"
+          composer config repositories.0 composer https://nova.laravel.com
+          composer require laravel/nova
+
+      - name: Install package
+        working-directory: app
+        run: |
+          pwd
+          composer config repositories.1 path ../nova-menu-builder
+          composer require "optimistdigital/nova-menu-builder @dev"
 
       - name: Setup Memcached
         uses: niden/actions-memcached@v7
