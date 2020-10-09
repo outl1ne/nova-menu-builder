@@ -65,5 +65,5 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
 
       - name: Execute tests
-        run: vendor/bin/phpunit --verbose
         working-directory: app
+        run: vendor/bin/phpunit --verbose
