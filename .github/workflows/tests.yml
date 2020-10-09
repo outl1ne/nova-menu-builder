@@ -24,13 +24,10 @@ jobs:
         with:
             path: nova-menu-builder
 
-      - name: Composer setup
-        run: echo "/home/runner/.composer/vendor/bin" >> $PATH
-
       - name: Setup Laravel
         run: |
             composer global require laravel/installer
-            laravel new app
+            ~/.composer/vendor/bin/laravel new app
 
       - name: Install Nova
         working-directory: app
