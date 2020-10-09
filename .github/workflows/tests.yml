@@ -44,10 +44,7 @@ jobs:
       - name: Install Nova
         working-directory: app
         run: |
-          export TEST_NOVA_USERNAME="foo"
-          export TEST_NOVA_USERNAME="bar"
-          export COMPOSER_AUTH="{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"$TEST_NOVA_USERNAME\",\"password\":\"$TEST_NOVA_PASSWORD\"}}}"
-          echo $COMPOSER_AUTH
+          export COMPOSER_AUTH="{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${{ secrets.NOVA_USERNAME }}\",\"password\":\"${{ secrets.NOVA_PASSWORD }}\"}}}"
           composer config repositories.0 composer https://nova.laravel.com
           composer require laravel/nova
 
