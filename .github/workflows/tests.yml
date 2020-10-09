@@ -32,7 +32,7 @@ jobs:
       - name: Install Nova
         working-directory: app
         run: |
-            pwd
+            composer config -a -g nova.laravel.com $NOVA_USERNAME $NOVA_PASSWORD
             composer config repositories.0 composer https://nova.laravel.com
             composer require laravel/nova
 
