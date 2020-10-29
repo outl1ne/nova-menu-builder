@@ -13,14 +13,14 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "eslint": "^7.10.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-plugin-vue": "^7.0.1",
-    "laravel-mix": "^5.0.5",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-vue": "^7.1.0",
+    "laravel-mix": "^5.0.7",
     "prettier": "^2.1.2",
-    "resolve-url-loader": "^3.1.1",
-    "sass": "^1.26.12",
-    "sass-loader": "^10.0.2",
+    "resolve-url-loader": "^3.1.2",
+    "sass": "^1.27.1",
+    "sass-loader": "^10.0.4",
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
