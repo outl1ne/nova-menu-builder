@@ -95,6 +95,11 @@
                 @input="value => $emit('onLinkModelUpdate', value.id)"
                 label="label"
                 track-by="id"
+                selectLabel=""
+                selectGroupLabel=""
+                selectedLabel=""
+                deselectLabel=""
+                deselectGroupLabel=""
               />
 
               <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
