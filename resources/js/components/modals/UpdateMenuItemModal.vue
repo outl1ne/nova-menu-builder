@@ -226,14 +226,16 @@ export default {
 @import '~vue-multiselect/dist/vue-multiselect.min.css';
 
 .add-new-menu-item-modal {
-  .menu-item-component > div > div {
-    > div:nth-child(1) {
-      padding: 1rem 2rem 1rem 0;
-    }
+  .menu-item-component {
+    div.py-6.px-8 {
+      &:nth-child(1) {
+        padding: 1rem 2rem 1rem 0;
+      }
 
-    > div:nth-child(2) {
-      padding: 1rem 0 1rem 0;
-      width: 80%;
+      &:nth-child(2) {
+        padding: 1rem 0 1rem 0;
+        width: 80%;
+      }
     }
   }
 
