@@ -223,6 +223,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
+
 .add-new-menu-item-modal {
   .menu-item-component > div > div {
     > div:nth-child(1) {
@@ -232,6 +234,14 @@ export default {
     > div:nth-child(2) {
       padding: 1rem 0 1rem 0;
       width: 80%;
+    }
+  }
+
+  .multiselect {
+    > .multiselect__tags {
+      border-color: var(\-\-60);
+      border-radius: 0.5rem;
+      box-shadow: none;
     }
   }
 }
