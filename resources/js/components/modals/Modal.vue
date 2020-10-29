@@ -1,12 +1,12 @@
 <template>
   <transition name="fade">
     <modal v-if="show">
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden" :style="style">
+      <div class="bg-white rounded-lg shadow-lg" :style="style">
         <div class="p-8">
           <slot name="container" />
         </div>
 
-        <div class="bg-30 px-6 py-3 flex">
+        <div class="bg-30 px-6 py-3 flex overflow-hidden rounded-b-lg">
           <div class="w-full" :class="align">
             <slot name="buttons" />
           </div>
