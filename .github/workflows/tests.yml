@@ -36,11 +36,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Cache dependencies
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ~/.composer/cache/files
-      #     key: dependencies-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-${{ hashFiles('composer.json') }}
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -52,9 +52,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          ls -al
-          cat composer.json
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+          composer install --${{ matrix.dependency-version }} --prefer-dist --no-interaction
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
