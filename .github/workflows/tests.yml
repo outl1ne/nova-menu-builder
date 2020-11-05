@@ -12,22 +12,35 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 7.3]
-        stability: [prefer-stable, prefer-lowest]
+        php: [7.4]
+        stability: [prefer-stable]
+      include:
+        - laravel: 8.*
+          testbench: 6.*
+        # - laravel: 7.*
+        #   testbench: 5.*
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.laravel }} - ${{ matrix.stability }}
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: database
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          path: nova-menu-builder
 
       - name: Cache dependencies
         uses: actions/cache@v1
         with:
           path: ~/.composer/cache/files
-          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          key: dependencies-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -36,34 +49,12 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           coverage: none
 
-      - name: Setup Laravel
-        run: |
-          composer global require laravel/installer
-          ~/.composer/vendor/bin/laravel new app
-
-      - name: Install Nova
-        working-directory: app
-        run: |
-          export COMPOSER_AUTH="{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${{ secrets.NOVA_USERNAME }}\",\"password\":\"${{ secrets.NOVA_PASSWORD }}\"}}}"
-          composer config repositories.0 composer https://nova.laravel.com
-          composer require laravel/nova
-
-      - name: Install package
-        working-directory: app
-        run: |
-          pwd
-          composer config repositories.1 path ../nova-menu-builder
-          composer require "optimistdigital/nova-menu-builder @dev"
-
-      - name: Setup Memcached
-        uses: niden/actions-memcached@v7
-
       - name: Install dependencies
-        working-directory: app
         run: |
-          export COMPOSER_AUTH="{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${{ secrets.NOVA_USERNAME }}\",\"password\":\"${{ secrets.NOVA_PASSWORD }}\"}}}"
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Execute tests
-        working-directory: app
         run: vendor/bin/phpunit --verbose
