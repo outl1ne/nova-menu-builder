@@ -12,14 +12,17 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4]
+        php: [7.4, 7.3]
         laravel: [8.*]
         stability: [prefer-stable]
         include:
           - laravel: 8.*
             testbench: 6.*
-          # - laravel: 7.*
-          #   testbench: 5.*
+          - laravel: 7.*
+            testbench: 5.*
+        exclude:
+          - php: 7.3
+            laravel: 7.*
 
     name: PHP ${{ matrix.php }} - ${{ matrix.laravel }} - ${{ matrix.stability }}
 
