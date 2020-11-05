@@ -8,6 +8,12 @@
     "builder",
     "optimistdigital"
   ],
+  "repositories": [
+    {
+        "type": "composer",
+        "url": "https://nova.laravel.com"
+    }
+  ],
   "license": "MIT",
   "authors": [
     {
