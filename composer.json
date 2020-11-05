@@ -29,7 +29,8 @@
     "optimistdigital/nova-tailwind": "^1.0.2"
   },
   "require-dev": {
-    "orchestra/testbench": "^5.0|^6.0"
+    "orchestra/testbench": "^5.0|^6.0",
+    "phpunit/phpunit": "^8.0|^9.0"
   },
   "autoload": {
     "psr-4": {
@@ -38,6 +39,11 @@
     "files": [
       "src/helpers.php"
     ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+        "OptimistDigital\\MenuBuilder\\Tests\\": "tests"
+    }
   },
   "extra": {
     "laravel": {
