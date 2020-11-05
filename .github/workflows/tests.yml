@@ -18,11 +18,8 @@ jobs:
         include:
           - laravel: 8.*
             testbench: 6.*
-          - laravel: 7.*
-            testbench: 5.*
-        # exclude:
-        #   - php: 7.3
-        #     laravel: 7.*
+          # - laravel: 7.*
+          #   testbench: 5.*
 
     name: PHP ${{ matrix.php }} - ${{ matrix.laravel }} - ${{ matrix.stability }}
 
