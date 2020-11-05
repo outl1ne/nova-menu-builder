@@ -13,6 +13,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [7.4]
+        laravel: [8.*]
         stability: [prefer-stable]
         include:
           - laravel: 8.*
