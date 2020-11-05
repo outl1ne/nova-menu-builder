@@ -95,6 +95,11 @@
                 @input="value => $emit('onLinkModelUpdate', value.id)"
                 label="label"
                 track-by="id"
+                selectLabel=""
+                selectGroupLabel=""
+                selectedLabel=""
+                deselectLabel=""
+                deselectGroupLabel=""
               />
 
               <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
@@ -218,15 +223,27 @@ export default {
 </script>
 
 <style lang="scss">
-.add-new-menu-item-modal {
-  .menu-item-component > div > div {
-    > div:nth-child(1) {
-      padding: 1rem 2rem 1rem 0;
-    }
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
 
-    > div:nth-child(2) {
-      padding: 1rem 0 1rem 0;
-      width: 80%;
+.add-new-menu-item-modal {
+  .menu-item-component {
+    div.py-6.px-8 {
+      &:nth-child(1) {
+        padding: 1rem 2rem 1rem 0;
+      }
+
+      &:nth-child(2) {
+        padding: 1rem 0 1rem 0;
+        width: 80%;
+      }
+    }
+  }
+
+  .multiselect {
+    > .multiselect__tags {
+      border-color: var(\-\-60);
+      border-radius: 0.5rem;
+      box-shadow: none;
     }
   }
 }

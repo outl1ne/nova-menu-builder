@@ -7,17 +7,19 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use OptimistDigital\MenuBuilder\Commands\CreateMenuItemType;
 use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
-use OptimistDigital\NovaTranslationsLoader\NovaTranslationsLoader;
+use OptimistDigital\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
+    use LoadsNovaTranslations;
+
     public function boot()
     {
         // Load views
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu');
 
         // Load translations
-        NovaTranslationsLoader::loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
+        $this->loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
 
         // Load migrations
         if (config('nova-menu.auto_load_migrations', true)) {
