@@ -13,16 +13,18 @@ jobs:
       fail-fast: true
       matrix:
         php: [7.4, 7.3]
-        laravel: [8.*, 7.*]
-        stability: [prefer-stable]
+        laravel: [8.*, 7.*, 6.*]
+        stability: [prefer-stable, prefer-lowest]
         include:
           - laravel: 8.*
             testbench: 6.*
           - laravel: 7.*
             testbench: 5.*
+          - laravel: 6.*
+            testbench: 4.*
         exclude:
           - php: 7.3
-            laravel: 7.*
+            laravel: [7.*, 6.*]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.laravel }} - ${{ matrix.stability }}
 
