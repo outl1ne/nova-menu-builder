@@ -14,13 +14,13 @@ abstract class TestCase extends Orchestra
 
         Route::middlewareGroup('nova', []);
 
-        $this->setUpDatabase($this->app);
+        // $this->setUpDatabase($this->app);
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            MenuBuilderServiceProvider::class,
+            // MenuBuilderServiceProvider::class,
         ];
     }
 
