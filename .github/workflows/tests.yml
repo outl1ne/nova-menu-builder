@@ -23,8 +23,6 @@ jobs:
         exclude:
           - php: 7.3
             laravel: 7.*
-          - php: 7.3
-            stability: prefer-lowest
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }}
 
