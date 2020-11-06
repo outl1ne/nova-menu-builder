@@ -21,6 +21,9 @@ jobs:
             testbench: 6.*
           - laravel: 7.*
             testbench: 5.*
+        exclude:
+          - laravel: 8.*
+            nova: 3.0
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }}
 
