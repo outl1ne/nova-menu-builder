@@ -24,6 +24,8 @@ jobs:
         exclude:
           - laravel: 8.*
             nova: 3.0.*
+          - php: 7.3
+            nova: 3.0.*
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Nova ${{ matrix.nova }} - ${{ matrix.stability }}
 
