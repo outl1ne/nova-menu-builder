@@ -37,9 +37,10 @@ class :className extends MenuItemTextType
      *
      * @param null $value
      * @param array|null $data The data from item fields.
+     * @param $locale
      * @return string
      */
-    public static function getDisplayValue($value = null, array $data = null)
+    public static function getDisplayValue($value = null, array $data = null, $locale)
     {
         return $value;
     }
@@ -55,9 +56,10 @@ class :className extends MenuItemTextType
      *
      * @param null $value The key from options list that was selected.
      * @param array|null $data The data from item fields.
+     * @param $locale
      * @return any
      */
-    public static function getValue($value = null, array $data = null)
+    public static function getValue($value = null, array $data = null, $locale)
     {
         return $value;
     }
