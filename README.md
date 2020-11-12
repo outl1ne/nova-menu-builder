@@ -198,10 +198,9 @@ public static function getOptions($locale): array {
  * Get the subtitle value shown in CMS menu items list.
  *
  * @param string $value
- * @param array $parameters The JSON parameters added to the item.
  * @return string
  **/
-public static function getDisplayValue($value = null, array $parameters = null, array $data = null) {
+public static function getDisplayValue($value = null, array $data = null) {
     // Example usecase
     // return 'Page: ' . Page::find($value)->name;
     return $value;
@@ -216,13 +215,12 @@ public static function getDisplayValue($value = null, array $parameters = null, 
  * and nova_get_menus() helpers or when you call formatForAPI()
  * on the Menu model.
  *
- * @param string $value The key from options list that was selected.
- * @param array $parameters The JSON parameters added to the item.
+ * @param null $value The key from options list that was selected.
+ * @param array|null $data The data from item fields.
  * @return any
- **/
-public static function getValue($value = null, array $parameters = null) {
-    // Example usecase
-    // return Page::find($value);
+ */
+public static function getValue($value = null, array $data = null)
+{
     return $value;
 }
 
@@ -256,10 +254,9 @@ public static function getRules(): array
  * on the Menu model.
  *
  * @param null $data Field values
- * @param array|null $parameters The JSON parameters added to the item.
  * @return any
  */
-public static function getData($data = null, array $parameters = null)
+public static function getData($data = null)
 {
     return $data;
 }
