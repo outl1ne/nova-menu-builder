@@ -121,7 +121,7 @@ class MenuBuilder extends Tool
     {
         return array_merge(
             static::$defaultMenuItemTypes,
-            config('nova-menu.menu_item_types', []),
+            config('nova-menu.menu_item_types', [])
         );
     }
 
