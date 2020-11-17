@@ -39,7 +39,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
         // Register resource
         Nova::resources([
-            MenuBuilder::getMenuResource(),
+            MenuBuilder::getMenuResource()
         ]);
 
         // Register routes

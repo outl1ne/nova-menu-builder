@@ -90,7 +90,7 @@ class MenuBuilder extends Tool
             'locale' => 'required',
             'value' => 'present',
             'class' => 'required',
-            'target' => 'required|in:_self,_blank',
+            'target' => 'required|in:_self,_blank'
         ], $menuLinkableClass ? $menuLinkableClass::getRules() : []);
     }
 
@@ -121,7 +121,7 @@ class MenuBuilder extends Tool
     {
         return array_merge(
             static::$defaultMenuItemTypes,
-            config('nova-menu.menu_item_types', []),
+            config('nova-menu.menu_item_types', [])
         );
     }
 

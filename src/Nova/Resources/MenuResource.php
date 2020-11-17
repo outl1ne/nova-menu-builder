@@ -69,7 +69,7 @@ class MenuResource extends Resource
                 MenuBuilderField::make('', 'menu_items')
                     ->hideWhenCreating()
                     ->readonly(),
-            ]),
+            ])
         ];
     }
 }

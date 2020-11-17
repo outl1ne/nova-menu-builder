@@ -13,7 +13,7 @@ class MenuItem extends Model
 
     protected $casts = [
         'enabled' => 'boolean',
-        'data' => 'array',
+        'data' => 'array'
     ];
 
     protected $appends = ['enabledClass', 'displayValue', 'fields'];
