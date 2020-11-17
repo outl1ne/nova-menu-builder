@@ -90,7 +90,7 @@ class MenuBuilder extends Tool
             'locale' => 'required',
             'value' => 'present',
             'class' => 'required',
-            'target' => 'required|in:_self,_blank',
+            'target' => 'required|in:_self,_blank'
         ], $menuLinkableClass ? $menuLinkableClass::getRules() : []);
     }
 
