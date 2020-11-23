@@ -1,18 +1,9 @@
-# Nova Menu Builder 4.0
+# Nova Menu Builder
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/optimistdigital/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/optimistdigital/nova-menu-builder)
 [![Total Downloads](https://img.shields.io/packagist/dt/optimistdigital/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/optimistdigital/nova-menu-builder)
 
 This [Laravel Nova](https://nova.laravel.com/) package allows you to create and manage menus and menu items.
-
-## 4.0 Major Release
-
-- Reworked locale system
-- Reworked menu types system (previously `MenuLinkable`)
-- Custom fields support instead of JSON parameters
-- `menubuilder:type` command that greatly simplifies custom menu types creation
-- Greatly improved UI (the menu editor is no longer just on the "Detail" view)
-- All texts are now customizable and translatable
 
 ## Features
 
@@ -22,6 +13,8 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 - Custom menu item types support
   - Ability to easily add select types
   - Ability to add custom fields
+  - Use `menubuilder:type` command to easily create new types
+- Fully localizable
 
 ## Screenshots
 

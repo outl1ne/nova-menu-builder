@@ -1,4 +1,4 @@
-# Upgrading from Nova Menu Builder 2.0/3.0 to 4.0
+# Upgrading from Nova Menu Builder 2.0/3.0 to 4.0/5.0
 
 ## Database changes
 
