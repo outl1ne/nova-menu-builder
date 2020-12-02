@@ -5,6 +5,11 @@
 
 This [Laravel Nova](https://nova.laravel.com/) package allows you to create and manage menus and menu items.
 
+## Requirements
+
+- `php: >=7.2`
+- `laravel/nova: ^3.0`
+
 ## Features
 
 - Menu management
