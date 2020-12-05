@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
-use Illuminate\Database\Migrations\Migration;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class ReworkLocaleHandling extends Migration
@@ -65,7 +66,7 @@ class ReworkLocaleHandling extends Migration
         });
 
         try {
-            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+            Schema::table(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
                 // Named
                 $table->dropForeign('menus_locale_parent_id_foreign');
                 $table->dropUnique('menus_locale_parent_id_foreign');
@@ -74,30 +75,39 @@ class ReworkLocaleHandling extends Migration
                 $table->dropForeign('menus_slug_locale_unique');
                 $table->dropUnique('menus_locale_parent_id_locale_unique');
             });
+
+
+            Schema::table(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
+                $table->dropUnique('nova_menu_menus_slug_locale_unique');
+                $table->dropUnique('menus_locale_parent_id_locale_unique');
+                $table->dropColumn('locale');
+            });
+
+            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+                $table->dropColumn('locale_parent_id');
+            });
         } catch (Exception $e) {
         }
-
-        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->dropUnique('nova_menu_menus_slug_locale_unique');
-            $table->dropUnique('menus_locale_parent_id_locale_unique');
-            $table->dropColumn('locale');
-            $table->dropColumn('locale_parent_id');
-        });
     }
 
     public function down()
     {
-        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->string('locale');
-            $table->bigInteger('locale_parent_id')->nullable()->unsigned();
+        try {
 
-            $table->foreign('locale_parent_id', 'menus_locale_parent_id_foreign')->references('id')->on(MenuBuilder::getMenusTableName());
-            $table->unique(['locale_parent_id', 'locale'], 'menus_locale_parent_id_locale_unique');
-        });
+            Schema::table(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
+                $table->string('locale');
+                $table->bigInteger('locale_parent_id')->nullable()->unsigned();
 
-        Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
-            $table->dropColumn('locale');
-            $table->json('parameters')->nullable();
-        });
+                $table->foreign('locale_parent_id', 'menus_locale_parent_id_foreign')->references('id')->on(MenuBuilder::getMenusTableName());
+                $table->unique(['locale_parent_id', 'locale']);
+            });
+
+            Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
+                $table->dropColumn('locale');
+                $table->json('parameters')->nullable();
+            });
+
+        } catch (Exception $e) {
+        }
     }
 }
