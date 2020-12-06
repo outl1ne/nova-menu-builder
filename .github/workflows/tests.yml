@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 7.3]
+        php: [7.4, 7.3, 8.0]
         laravel: [8.*, 7.*]
         nova: [3.*, 3.0.*]
         stability: [prefer-stable]
