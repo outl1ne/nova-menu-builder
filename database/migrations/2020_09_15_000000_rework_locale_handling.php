@@ -75,19 +75,23 @@ class ReworkLocaleHandling extends Migration
                 $table->dropForeign('menus_slug_locale_unique');
                 $table->dropUnique('menus_locale_parent_id_locale_unique');
             });
-
-
+        } catch (Exception $e) {
+        }
+        try {
             Schema::table(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
                 $table->dropUnique('nova_menu_menus_slug_locale_unique');
                 $table->dropUnique('menus_locale_parent_id_locale_unique');
-                $table->dropColumn('locale');
-            });
 
-            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-                $table->dropColumn('locale_parent_id');
             });
         } catch (Exception $e) {
         }
+        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+            $table->dropColumn('locale');
+        });
+        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+            $table->dropColumn('locale_parent_id');
+        });
+
     }
 
     public function down()
