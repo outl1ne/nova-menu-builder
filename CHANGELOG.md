@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fixed issue with fields not updating as expected when changing link type
+- Fixed issue with fields that return an array
 - Update packages
 
 ## [5.0.0] - 2020-11-23
