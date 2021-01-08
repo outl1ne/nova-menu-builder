@@ -1,5 +1,6 @@
 import ToggleButton from 'vue-js-toggle-button';
 import MenuIndexView from './views/MenuIndexView';
+import MenuBuilder from './components/MenuBuilder';
 import MenuBuilderField from './components/MenuBuilderField';
 
 Nova.booting((Vue, router) => {
@@ -11,10 +12,9 @@ Nova.booting((Vue, router) => {
     },
   ]);
 
-  Vue.component('form-menu-builder-field', MenuBuilderField);
-  Vue.component('detail-menu-builder-field', MenuBuilderField);
-
   Vue.use(ToggleButton);
 
-  Vue.component('menu-builder', require('./components/MenuBuilder').default);
+  Vue.component('menu-builder', MenuBuilder);
+  Vue.component('form-menu-builder-field', MenuBuilderField);
+  Vue.component('detail-menu-builder-field', MenuBuilderField);
 });
