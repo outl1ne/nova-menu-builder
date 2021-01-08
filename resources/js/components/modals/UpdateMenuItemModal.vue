@@ -109,7 +109,7 @@
           </div>
         </template>
 
-        <div v-if="linkType.fields">
+        <div v-if="fields && fields.length">
           <component
             v-for="(field, i) in fields"
             :is="`form-${field.component}`"
@@ -194,8 +194,9 @@ export default {
     },
 
     fields() {
-      if (!this.newItem.fields) return this.linkType.fields || [];
-      if (this.update) return this.newItem.fields || [];
+      if (this.update) {
+        return this.linkType.class === this.newItem.class ? this.newItem.fields : this.linkType.fields;
+      }
       return this.linkType.fields || [];
     },
   },
@@ -207,9 +208,15 @@ export default {
         field.fill(formData);
 
         const values = Array.from(formData.values());
-        if (values.length === 0) this.newItem[field.attribute] = void 0;
-        if (values.length === 1) this.newItem[field.attribute] = values[0];
-        if (values.length > 1) this.newItem[field.attribute] = values;
+        // Is array
+        const firstKey = Array.from(formData.keys())[0];
+        if (firstKey && firstKey.endsWith(']')) {
+          this.newItem[field.attribute] = values || [];
+        } else {
+          if (values.length === 0) this.newItem[field.attribute] = void 0;
+          if (values.length === 1) this.newItem[field.attribute] = values[0];
+          if (values.length > 1) this.newItem[field.attribute] = values;
+        }
       });
 
       this.$emit(eventType);
