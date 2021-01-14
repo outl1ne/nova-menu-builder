@@ -37,7 +37,7 @@ abstract class BaseMenuItemType
      * @param $locale
      * @return string
      */
-    public static function getDisplayValue($value = null, array $data = null, $locale)
+    public static function getDisplayValue($locale, $value = null, array $data = null)
     {
         return $value;
     }
@@ -56,7 +56,7 @@ abstract class BaseMenuItemType
      * @param $locale
      * @return any
      */
-    public static function getValue($value = null, array $data = null, $locale)
+    public static function getValue($locale, $value = null, array $data = null)
     {
         return $value;
     }
