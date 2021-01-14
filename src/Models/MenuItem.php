@@ -57,7 +57,7 @@ class MenuItem extends Model
     public function getDisplayValueAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getDisplayValue($this->value, $this->data, $this->locale);
+            return $this->class::getDisplayValue($this->locale, $this->value, $this->data);
         }
         return $this->value;
     }
