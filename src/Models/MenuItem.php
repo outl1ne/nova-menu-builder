@@ -73,7 +73,7 @@ class MenuItem extends Model
     public function getCustomValueAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getValue($this->value, $this->data, $this->locale);
+            return $this->class::getValue($this->locale, $this->value, $this->data);
         }
         return $this->value;
     }
