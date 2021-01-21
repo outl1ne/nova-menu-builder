@@ -79,6 +79,8 @@ class ReworkLocaleHandling extends Migration
 
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
             $table->dropUnique('nova_menu_menus_slug_locale_unique');
+        });
+        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
             $table->dropColumn('locale');
         });
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
