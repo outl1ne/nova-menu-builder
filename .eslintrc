@@ -9,6 +9,7 @@
   },
   "rules": {
     "vue/html-indent": ["error", 2],
-    "vue/custom-event-name-casing": "off"
+    "vue/custom-event-name-casing": "off",
+    "vue/no-mutating-props": "off"
   }
 }
