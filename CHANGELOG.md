@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.0.2] - 2021-01-21
 
+### Added
+
+- Added Dutch translations (thanks to [@harmenjanssen](https://github.com/harmenjanssen))
+
 ### Changed
 
+- Fixed migrations for SQLite (thanks to [@bambamboole](https://github.com/bambamboole) and [@harmenjanssen](https://github.com/harmenjanssen))
 - Fixed issue with Trix field not saving value
 - Fixed compatibility with PHP 8 (`getValue` and `getDisplay` functions have new signatures, but this should not cause any problems)
 - Update packages
