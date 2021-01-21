@@ -43,7 +43,7 @@ class :className extends MenuItemSelectType
      * @param $locale
      * @return string
      */
-    public static function getDisplayValue($value = null, array $data = null, $locale)
+    public static function getDisplayValue($value, ?array $data, $locale)
     {
         return $value;
     }
@@ -62,7 +62,7 @@ class :className extends MenuItemSelectType
      * @param $locale
      * @return any
      */
-    public static function getValue($value = null, array $data = null, $locale)
+    public static function getValue($value, ?array $data, $locale)
     {
         return $value;
     }

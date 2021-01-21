@@ -35,12 +35,12 @@ class :className extends MenuItemTextType
     /**
      * Get the subtitle value shown in CMS menu items list.
      *
-     * @param null $value
-     * @param array|null $data The data from item fields.
+     * @param $value
+     * @param $data The data from item fields.
      * @param $locale
      * @return string
      */
-    public static function getDisplayValue($value = null, array $data = null, $locale)
+    public static function getDisplayValue($value, ?array $data, $locale)
     {
         return $value;
     }
@@ -59,7 +59,7 @@ class :className extends MenuItemTextType
      * @param $locale
      * @return any
      */
-    public static function getValue($value = null, array $data = null, $locale)
+    public static function getValue($value, ?array $data, $locale)
     {
         return $value;
     }
