@@ -23,10 +23,14 @@ class AddLocaleParentIdToTable extends Migration
 
     public function down()
     {
-        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->dropForeign('menus_locale_parent_id_foreign');
-            $table->dropUnique('menus_locale_parent_id_locale_unique');
-            $table->dropColumn('locale_parent_id');
-        });
+        // Add try-catch for SQLite
+        try {
+            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+                $table->dropForeign('menus_locale_parent_id_foreign');
+                $table->dropUnique('menus_locale_parent_id_locale_unique');
+                $table->dropColumn('locale_parent_id');
+            });
+        } catch (Exception $e) {
+        }
     }
 }

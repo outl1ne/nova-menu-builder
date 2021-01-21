@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +17,7 @@ class ReworkLocaleHandling extends Migration
     public function up()
     {
         // Add `locale` column to menu items
-        Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
+        Schema::table(MenuBuilder::getMenuItemsTableName(), function (Blueprint $table) {
             $table->string('locale')->nullable(true);
         });
 
@@ -45,7 +46,7 @@ class ReworkLocaleHandling extends Migration
         });
 
         // Make the `locale` column non-nullable and drop parameters
-        Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
+        Schema::table(MenuBuilder::getMenuItemsTableName(), function (Blueprint $table) {
             $table->string('locale')->nullable(false)->change();
             $table->dropColumn('parameters');
         });
@@ -64,11 +65,13 @@ class ReworkLocaleHandling extends Migration
             });
         });
 
+        // Add try-catch due to legacy keys and SQLite support
         try {
-            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+            Schema::table(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
                 // Named
                 $table->dropForeign('menus_locale_parent_id_foreign');
                 $table->dropUnique('menus_locale_parent_id_foreign');
+                $table->dropUnique('nova_menu_menus_slug_locale_unique');
 
                 // Legacy
                 $table->dropForeign('menus_slug_locale_unique');
@@ -77,27 +80,33 @@ class ReworkLocaleHandling extends Migration
         } catch (Exception $e) {
         }
 
+        // Use separate blocks for SQLite support
         Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->dropUnique('nova_menu_menus_slug_locale_unique');
-            $table->dropUnique('menus_locale_parent_id_locale_unique');
             $table->dropColumn('locale');
+        });
+
+        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
             $table->dropColumn('locale_parent_id');
         });
     }
 
     public function down()
     {
-        Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
-            $table->string('locale');
-            $table->bigInteger('locale_parent_id')->nullable()->unsigned();
+        // Add try-catch for SQLite support
+        try {
+            Schema::table(MenuBuilder::getMenusTableName(), function ($table) {
+                $table->string('locale');
+                $table->bigInteger('locale_parent_id')->nullable()->unsigned();
 
-            $table->foreign('locale_parent_id', 'menus_locale_parent_id_foreign')->references('id')->on(MenuBuilder::getMenusTableName());
-            $table->unique(['locale_parent_id', 'locale'], 'menus_locale_parent_id_locale_unique');
-        });
+                $table->foreign('locale_parent_id', 'menus_locale_parent_id_foreign')->references('id')->on(MenuBuilder::getMenusTableName());
+                $table->unique(['locale_parent_id', 'locale'], 'menus_locale_parent_id_locale_unique');
+            });
 
-        Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
-            $table->dropColumn('locale');
-            $table->json('parameters')->nullable();
-        });
+            Schema::table(MenuBuilder::getMenuItemsTableName(), function ($table) {
+                $table->dropColumn('locale');
+                $table->json('parameters')->nullable();
+            });
+        } catch (Exception $e) {
+        }
     }
 }
