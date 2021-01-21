@@ -208,6 +208,12 @@ export default {
         field.fill(formData);
 
         const values = Array.from(formData.values());
+
+        if (field.component === 'trix-field') {
+          this.newItem[field.attribute] = values[0];
+          return;
+        }
+
         // Is array
         const firstKey = Array.from(formData.keys())[0];
         if (firstKey && firstKey.endsWith(']')) {
