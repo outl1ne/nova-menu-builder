@@ -88,7 +88,7 @@ class MenuController extends Controller
     {
         return isset($menuItem)
             ? response()->json($menuItem, 200)
-            : resonse()->json(['error' => 'item_not_found'], 400);
+            : response()->json(['error' => 'item_not_found'], 400);
     }
 
     /**
