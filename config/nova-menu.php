@@ -30,6 +30,7 @@ return [
 
     'locales' => ['en_US' => 'English'],
 
+
     /*
     |--------------------------------------------------------------------------
     | Menus
@@ -62,10 +63,6 @@ return [
     'menu_item_types' => [],
 
 
-
-
-
-
     /*
     |--------------------------------|
     | Optional configuration options |
@@ -83,6 +80,7 @@ return [
     */
 
     'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
+
 
     /*
     |--------------------------------------------------------------------------
