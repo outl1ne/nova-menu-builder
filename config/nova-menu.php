@@ -30,21 +30,24 @@ return [
 
     'locales' => ['en_US' => 'English'],
 
+
     /*
     |--------------------------------------------------------------------------
     | Menus
     |--------------------------------------------------------------------------
     |
     | Set all the possible menus in a keyed array of arrays with the options
-    | 'name' and optionally 'menu_item_types'.
+    | 'name' and optionally 'menu_item_types' and unique.
+    /  Unique is true by default
     |
-    | For example: ['header' => ['name' => 'Header', 'menu_item_types' => []]]
+    | For example: ['header' => ['name' => 'Header', 'unique' => true, 'menu_item_types' => []]]
     |
     */
 
     'menus' => [
         // 'header' => [
         //     'name' => 'Header',
+        //     'unique' => true,
         //     'menu_item_types' => []
         // ]
     ],
@@ -60,10 +63,6 @@ return [
     */
 
     'menu_item_types' => [],
-
-
-
-
 
 
     /*
@@ -83,6 +82,7 @@ return [
     */
 
     'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
+
 
     /*
     |--------------------------------------------------------------------------

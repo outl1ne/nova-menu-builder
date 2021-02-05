@@ -74,6 +74,7 @@ After publishing the configuration file, you have to make some required changes 
 'menus' => [
     // 'header' => [
     //     'name' => 'Header',
+    //     'unique' => true,
     //     'menu_item_types' => []
     // ]
 ],
