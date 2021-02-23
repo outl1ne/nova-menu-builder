@@ -81,11 +81,13 @@ class MenuController extends Controller
     /**
      * Returns the menu item as JSON.
      *
-     * @param OptimistDigital\MenuBuilder\Models\MenuItem $menuItem
+     * @param $menuItemId
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItem(MenuItem $menuItem)
+    public function getMenuItem($menuItemId)
     {
+        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+        
         return isset($menuItem)
             ? response()->json($menuItem, 200)
             : response()->json(['error' => 'item_not_found'], 400);
