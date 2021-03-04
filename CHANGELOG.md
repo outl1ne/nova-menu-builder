@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.1] - 2021-03-04
+
+### Added
+
+- Added ability to customize Menu model via config (thanks to [@Landish](https://github.com/Landish))
+
+### Changed
+
+- Fixed case where default MenuItem model was used instead of the configured one (thanks to [@rdaitan-cp](https://github.com/rdaitan-cp))
+- Fixed unique menu slug validator not working on Update
+- Fixed some more cases where wrong model was used
+- Updated packages
+
 ## [5.2.0] - 2021-02-04
 
 ### Changed
@@ -12,13 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Requires `php artisan migrate` for these changes to work`**
 
 - Added optional `unique` attribute to menus.
-    ```php
-        'header' => [
-             'name' => 'Header',
-             'unique' => false, // Defaults to true
-             'menu_item_types' => []
-        ],
-    ```
+  ```php
+      'header' => [
+           'name' => 'Header',
+           'unique' => false, // Defaults to true
+           'menu_item_types' => []
+      ],
+  ```
 - Fixed `ReworkLocale` migration exception
 - Updated Navigation icon (thanks to [@harmenjanssen](https://github.com/harmenjanssen))
 
