@@ -26,7 +26,7 @@ if (!function_exists('nova_get_menu_by_slug')) {
     {
         if (empty($slug)) return null;
         if (empty($locale)) $locale = array_keys(MenuBuilder::getLocales())[0] ?? null;
-        $menu = MenuBuilder::getMenuClass()::where('slug', $slug)->get()->first();
+        $menu = MenuBuilder::getMenuClass()::where('slug', $slug)->first();
         return !empty($menu) ? $menu->formatForAPI($locale) : null;
     }
 }
