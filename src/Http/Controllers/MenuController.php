@@ -208,11 +208,13 @@ class MenuController extends Controller
      */
     private function shiftMenuItemsWithHigherOrder($menuItem)
     {
+        $menuItemTable = MenuBuilder::getMenuItemsTableName();
+
         MenuBuilder::getMenuItemClass()
             ::where('order', '>', $menuItem->order)
             ->where('menu_id', $menuItem->menu_id)
             ->where('parent_id', $menuItem->parent_id)
-            ->update(['order' => DB::raw('"order" + 1')]);
+            ->update(['order' => DB::raw("$menuItemTable.order + 1")]);
     }
 
     private function recursivelyOrderChildren($menuItem)
