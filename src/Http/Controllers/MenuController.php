@@ -230,15 +230,7 @@ class MenuController extends Controller
         $menuItem->order = $orderNr;
         $menuItem->parent_id = $parentId;
         $menuItem->save();
-
-        // Check children
-        if (count($menuItemData['children']) > 0) {
-            foreach ($menuItemData['children'] as $i => $child) {
-                $this->saveMenuItemWithNewOrder($i + 1, $child, $menuItemData['id']);
-            }
-        }
-
-        $this->recursivelyOrderChildren($menuItem);
+        $this->recursivelyOrderChildren($menuItemData);
     }
 
     protected function recursivelyDuplicate($menuItem, $parentId = null, $order = null)
