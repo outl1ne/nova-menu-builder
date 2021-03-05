@@ -231,17 +231,17 @@ SQL
         }
     }
 
-    private function saveMenuItemWithNewOrder($orderNr, $menuItem, $parentId = null)
+    private function saveMenuItemWithNewOrder($orderNr, $menuItemData, $parentId = null)
     {
-        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItem['id']);
+        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemData['id']);
         $menuItem->order = $orderNr;
         $menuItem->parent_id = $parentId;
         $menuItem->save();
 
         // Check children
-        if (count($menuItem['children']) > 0) {
-            foreach ($menuItem['children'] as $i => $child) {
-                $this->saveMenuItemWithNewOrder($i + 1, $child, $menuItem['id']);
+        if (count($menuItemData['children']) > 0) {
+            foreach ($menuItemData['children'] as $i => $child) {
+                $this->saveMenuItemWithNewOrder($i + 1, $child, $menuItemData['id']);
             }
         }
 
