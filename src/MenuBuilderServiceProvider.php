@@ -2,25 +2,28 @@
 
 namespace OptimistDigital\MenuBuilder;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Translation\Loader;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
 use OptimistDigital\MenuBuilder\Commands\CreateMenuItemType;
 use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
-use OptimistDigital\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
-    use LoadsNovaTranslations;
-
     public function boot()
     {
         // Load views
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu');
 
         // Load translations
-        $this->loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nova-menu-builder');
+        $this->loadNovaTranslation();
 
         // Load migrations
         if (config('nova-menu.auto_load_migrations', true)) {
@@ -28,6 +31,10 @@ class MenuBuilderServiceProvider extends ServiceProvider
         }
 
         // Publish data
+        $this->publishes(
+            [__DIR__.'/../resources/lang' => App::resourcePath('lang/vendor/nova-menu-builder')],
+            ['nova-menu-builder', 'lang', 'nova-menu-builder-lang']
+        );
         $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'nova-menu-builder-migrations');
         $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
 
@@ -56,6 +63,22 @@ class MenuBuilderServiceProvider extends ServiceProvider
                 ? Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])->validate()
                 : true;
         }, '');
+    }
+
+    protected function loadNovaTranslation()
+    {
+        Nova::serving(function () {
+            /** @var Loader $loader */
+            $loader = Container::getInstance()->make('translation.loader');
+            Nova::translations(
+                array_merge(
+                    Arr::dot($loader->load('en', 'nova', 'nova-menu-builder'), 'nova-menu-builder::'),
+                    Arr::dot($loader->load(Config::get('app.fallback_locale'), 'nova', 'nova-menu-builder'),
+                        'nova-menu-builder::'),
+                    Arr::dot($loader->load(App::getLocale(), 'nova', 'nova-menu-builder'), 'nova-menu-builder::')
+                )
+            );
+        });
     }
 
     protected function routes()

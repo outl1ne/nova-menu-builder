@@ -11,7 +11,7 @@ class MenuItemTextType extends BaseMenuItemType
 
     public static function getName(): string
     {
-        return 'Text';
+        return trans('nova-menu-builder::menu_item_types.text');
     }
 
     public static function getType(): string

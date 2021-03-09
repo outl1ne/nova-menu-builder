@@ -3,7 +3,7 @@
     <div slot="container">
       <div class="flex flex-wrap justify-between mb-6">
         <h2 class="text-90 font-normal text-xl">
-          {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
+          {{ __(update ? 'nova-menu-builder::update_modal_title' : 'nova-menu-builder::create_modal_title') }}
         </h2>
 
         <toggle-button v-model="newItem.enabled" :color="switchColor" :labels="toggleLabels" :sync="true" :width="78" />
@@ -12,12 +12,12 @@
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <div class="flex">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemName') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('nova-menu-builder::menu_item_name') }}</label>
           </div>
 
           <div class="py-4 w-4/5">
             <input
-              :placeholder="__('novaMenuBuilder.menuItemName')"
+              :placeholder="__('nova-menu-builder::menu_item_name')"
               :class="{ 'border-danger': getError('name') }"
               class="w-full form-control form-input form-input-bordered"
               id="name"
@@ -33,7 +33,7 @@
 
         <div class="flex border-t border-40">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemType') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('nova-menu-builder::menu_item_type') }}</label>
           </div>
           <div class="py-4 w-4/5">
             <select
@@ -43,15 +43,15 @@
               :class="{ 'border-danger': getError('class') }"
             >
               <option disabled="disabled" selected="selected" value="">
-                {{ __('novaMenuBuilder.chooseMenuItemType') }}
+                {{ __('nova-menu-builder::menu_item_type') }}
               </option>
               <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">
-                {{ __(type.name) }}
+                {{ type.name }}
               </option>
             </select>
 
             <help-text class="error-text mt-2 text-danger" v-if="getError('class')">
-              {{ __('novaMenuBuilder.menuTypeRequired') }}
+              {{ __('nova-menu-builder::menu_type_required') }}
             </help-text>
           </div>
         </div>
@@ -60,7 +60,7 @@
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
               <label class="inline-block text-80 pt-2 leading-tight">
-                {{ __('novaMenuBuilder.menuItemUrlFieldName') }}
+                {{ __('nova-menu-builder::menu_item_url_field_name') }}
               </label>
             </div>
             <div class="py-4 w-4/5">
@@ -69,7 +69,7 @@
                 type="text"
                 v-model="newItem.value"
                 :class="{ 'border-danger': getError('value') }"
-                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
+                :placeholder="__('nova-menu-builder::menu_item_url_field_name')"
                 class="w-full form-control form-input form-input-bordered"
               />
 
@@ -84,13 +84,13 @@
         <template v-if="linkType.type === 'select'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemValue') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('nova-menu-builder::menu_item_value') }}</label>
             </div>
 
             <div class="py-4 w-4/5">
               <multiselect
                 :options="options"
-                :placeholder="__('novaMenuBuilder.chooseOption')"
+                :placeholder="__('nova-menu-builder::choose_option')"
                 :value="options.find(option => option.id === newItem.value)"
                 @input="value => $emit('onLinkModelUpdate', value.id)"
                 label="label"
@@ -127,8 +127,8 @@
           </div>
           <div class="py-4 w-4/5">
             <select class="w-full form-control form-select" v-model="newItem.target">
-              <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
-              <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
+              <option value="_self">{{ __('nova-menu-builder::menu_item_target_same_window') }}</option>
+              <option value="_blank">{{ __('nova-menu-builder::menu_item_target_new_window') }}</option>
             </select>
           </div>
         </div>
@@ -142,7 +142,7 @@
           class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
           type="button"
         >
-          {{ __('novaMenuBuilder.closeModalTitle') }}
+          {{ __('Cancel') }}
         </button>
 
         <progress-button
@@ -150,7 +150,7 @@
           :disabled="isMenuItemUpdating"
           :processing="isMenuItemUpdating"
         >
-          {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
+          {{ __(update ? 'nova-menu-builder::update_button_title' : 'nova-menu-builder::create_button_title') }}
         </progress-button>
       </div>
     </div>
@@ -180,8 +180,8 @@ export default {
 
   mounted() {
     this.toggleLabels = {
-      checked: this.__('novaMenuBuilder.menuItemActive'),
-      unchecked: this.__('novaMenuBuilder.menuItemDisabled'),
+      checked: this.__('nova-menu-builder::menu_item_active'),
+      unchecked: this.__('nova-menu-builder::menu_item_disabled'),
     };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
   },
@@ -189,7 +189,7 @@ export default {
   computed: {
     options() {
       const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
-      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
+      options.unshift({ id: '', label: this.__('nova-menu-builder::choose_option') });
       return options;
     },
 

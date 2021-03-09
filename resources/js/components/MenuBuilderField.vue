@@ -159,7 +159,7 @@ export default {
       try {
         await api.destroy(this.itemToDelete.id);
         await this.refreshData();
-        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSucces'), { type: 'success' });
+        this.$toasted.show(this.__('nova-menu-builder::toast_delete_success'), { type: 'success' });
         this.itemToDelete = null;
         this.showDeleteModal = false;
       } catch (e) {
@@ -188,7 +188,7 @@ export default {
         this.refreshData();
         this.showAddModal = false;
         this.resetNewItem();
-        this.$toasted.show(this.__('novaMenuBuilder.toastCreateSuccess'), { type: 'success' });
+        this.$toasted.show(this.__('nova-menu-builder::toast_create_success'), { type: 'success' });
       } catch (e) {
         console.error(e);
         this.handleErrors(e);
@@ -202,7 +202,7 @@ export default {
         await api.update(this.newItem.id, this.newItemData);
         this.isMenuItemUpdating = false;
         this.showAddModal = false;
-        this.$toasted.show(this.__('novaMenuBuilder.toastUpdateSuccess'), { type: 'success' });
+        this.$toasted.show(this.__('nova-menu-builder::toast_update_success'), { type: 'success' });
         this.resetNewItem();
         await this.refreshData();
       } catch (e) {
@@ -214,9 +214,9 @@ export default {
     async updateMenu() {
       try {
         await api.saveItems(this.resourceId, this.menuItems);
-        this.$toasted.show(this.__('novaMenuBuilder.toastReorderSuccess'), { type: 'success' });
+        this.$toasted.show(this.__('nova-menu-builder::toast_reorder_success'), { type: 'success' });
       } catch (e) {
-        this.$toasted.show(this.__('novaMenuBuilder.serverError'), { type: 'error' });
+        this.$toasted.show(this.__('nova-menu-builder::server_error'), { type: 'error' });
       }
     },
 
@@ -233,7 +233,7 @@ export default {
         await api.duplicate(item.id);
         await this.refreshData();
         this.resetNewItem();
-        this.$toasted.show(this.__('novaMenuBuilder.toastDuplicateSuccess'), { type: 'success' });
+        this.$toasted.show(this.__('nova-menu-builder::toast_duplicate_success'), { type: 'success' });
       } catch (e) {
         this.handleErrors(e);
       }

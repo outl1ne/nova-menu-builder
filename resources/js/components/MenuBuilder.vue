@@ -32,7 +32,7 @@
         <!-- Edit icon -->
         <tooltip>
           <button
-            :title="__('novaMenuBuilder.edit')"
+            :title="__('Edit')"
             @click.prevent="$emit('editMenu', item)"
             class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
           >
@@ -40,14 +40,14 @@
           </button>
 
           <tooltip-content slot="content">
-            {{ __('novaMenuBuilder.edit') }}
+            {{ __('Edit') }}
           </tooltip-content>
         </tooltip>
 
         <!-- Duplicate icon -->
         <tooltip>
           <button
-            :title="__('novaMenuBuilder.duplicate')"
+            :title="__('nova-menu-builder::duplicate')"
             @click.prevent="$emit('duplicateMenuItem', item)"
             class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
           >
@@ -55,12 +55,12 @@
           </button>
 
           <tooltip-content slot="content">
-            {{ __('novaMenuBuilder.duplicate') }}
+            {{ __('nova-menu-builder::duplicate') }}
           </tooltip-content>
         </tooltip>
 
         <button
-          :title="__('novaMenuBuilder.delete')"
+          :title="__('Delete')"
           @click.prevent="$emit('removeMenu', item)"
           class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
         >

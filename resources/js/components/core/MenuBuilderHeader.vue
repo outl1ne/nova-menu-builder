@@ -17,11 +17,11 @@
 
     <button
       id="add-new-menu-item-btn"
-      :title="__('novaMenuBuilder.addMenuItem')"
+      :title="__('nova-menu-builder::add_menu_item')"
       class="btn btn-default btn-icon bg-primary text-white flex-no-shrink"
       @click.prevent="$emit('addMenuItem')"
     >
-      {{ __('novaMenuBuilder.addMenuItem') }}
+      {{ __('nova-menu-builder::add_menu_item') }}
     </button>
   </div>
 </template>

@@ -32,7 +32,6 @@
     "laravel/framework": "^7.0 || ^8.0",
     "doctrine/dbal": ">=2.0.0",
     "laravel/nova": "^3.0",
-    "optimistdigital/nova-translations-loader": "^3.0",
     "optimistdigital/nova-tailwind": "^1.0.2"
   },
   "require-dev": {
