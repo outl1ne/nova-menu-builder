@@ -2,6 +2,8 @@
 
 namespace OptimistDigital\MenuBuilder;
 
+use Illuminate\Container\Container;
+use Illuminate\Support\Str;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
@@ -33,11 +35,20 @@ class MenuBuilder extends Tool
         return view('nova-menu::navigation');
     }
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     public static function getLocales(): array
     {
-        $localesConfig = config('nova-menu.locales', ['en' => 'English']);
-        if (is_callable($localesConfig)) return call_user_func($localesConfig);
-        if (is_array($localesConfig)) return $localesConfig;
+        $localesConfig = config('nova-menu.locales');
+
+        if (is_array($localesConfig)) {
+            return $localesConfig;
+        } elseif (is_callable($localesConfig)) {
+            return call_user_func($localesConfig);
+        } elseif (Str::contains($localesConfig, '@')) {
+            [$class, $method] = Str::parseCallback($localesConfig);
+            return Container::getInstance()->make($class)->{$method}();
+        }
+
         return ['en' => 'English'];
     }
 
