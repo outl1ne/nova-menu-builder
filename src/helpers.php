@@ -1,20 +1,19 @@
 <?php
 
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Models\Menu;
 
 if (!function_exists('nova_get_menus')) {
     function nova_get_menus($locale = null)
     {
         if ($locale !== null) {
-            return Menu::all()->map(function ($menu) use ($locale) {
+            return MenuBuilder::getMenuClass()::all()->map(function ($menu) use ($locale) {
                 return $menu->formatForAPI($locale);
             });
         }
 
         $locales = array_keys(MenuBuilder::getLocales());
 
-        return Menu::all()->map(function (Menu $menu) use ($locales) {
+        return MenuBuilder::getMenuClass()::all()->map(function ($menu) use ($locales) {
             return array_map(function ($locale) use ($menu) {
                 return $menu->formatForAPI($locale);
             }, $locales);
@@ -27,7 +26,7 @@ if (!function_exists('nova_get_menu_by_slug')) {
     {
         if (empty($slug)) return null;
         if (empty($locale)) $locale = array_keys(MenuBuilder::getLocales())[0] ?? null;
-        $menu = Menu::where('slug', $slug)->get()->first();
+        $menu = MenuBuilder::getMenuClass()::where('slug', $slug)->first();
         return !empty($menu) ? $menu->formatForAPI($locale) : null;
     }
 }

@@ -5,10 +5,8 @@ namespace OptimistDigital\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest;
 use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Models\Menu;
-use OptimistDigital\MenuBuilder\Models\MenuItem;
+use OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest;
 
 class MenuController extends Controller
 {
@@ -16,12 +14,13 @@ class MenuController extends Controller
      * Return root menu items for one menu.
      *
      * @param Illuminate\Http\Request $request
-     * @param OptimistDigital\MenuBuilder\Models\Menu $menu
+     * @param $menuId
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItems(Request $request, Menu $menu)
+    public function getMenuItems(Request $request, $menuId)
     {
         $locale = $request->get('locale');
+        $menu = MenuBuilder::getMenuClass()::find($menuId);
         if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
         if (empty($locale)) return response()->json(['menu' => 'locale_required_but_missing'], 400);
 
@@ -40,10 +39,10 @@ class MenuController extends Controller
      * Save menu items.
      *
      * @param Illuminate\Http\Request $request
-     * @param OptimistDigital\MenuBuilder\Models\Menu $menu
+     * @param $menuId
      * @return Illuminate\Http\Response
      **/
-    public function saveMenuItems(Request $request, Menu $menu)
+    public function saveMenuItems(Request $request, $menuId)
     {
         $items = $request->get('menuItems');
 
@@ -81,11 +80,13 @@ class MenuController extends Controller
     /**
      * Returns the menu item as JSON.
      *
-     * @param OptimistDigital\MenuBuilder\Models\MenuItem $menuItem
+     * @param $menuItemId
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItem(MenuItem $menuItem)
+    public function getMenuItem($menuItemId)
     {
+        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+
         return isset($menuItem)
             ? response()->json($menuItem, 200)
             : response()->json(['error' => 'item_not_found'], 400);
@@ -102,7 +103,6 @@ class MenuController extends Controller
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
-        /** @var MenuItem $menuItem */
         if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
         $data = $request->getValues();
 
@@ -123,9 +123,7 @@ class MenuController extends Controller
      **/
     public function deleteMenuItem($menuItemId)
     {
-        /** @var MenuItem $menuItem */
         $menuItem = MenuBuilder::getMenuItemClass()::findOrFail($menuItemId);
-
         $menuItem->children()->delete();
         $menuItem->delete();
         return response()->json(['success' => true], 200);
@@ -137,8 +135,9 @@ class MenuController extends Controller
      * @param string $locale
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItemTypes(Request $request, Menu $menu)
+    public function getMenuItemTypes(Request $request, $menuId)
     {
+        $menu = MenuBuilder::getMenuClass()::find($menuId);
         if ($menu === null) return response()->json(['error' => 'menu_not_found'], 404);
         $locale = $request->get('locale');
         if ($locale === null) return response()->json(['error' => 'locale_required'], 400);
@@ -187,7 +186,6 @@ class MenuController extends Controller
      **/
     public function duplicateMenuItem($menuItemId)
     {
-        /** @var MenuItem $menuItem */
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
         if (empty($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
@@ -206,59 +204,46 @@ class MenuController extends Controller
     /**
      * Increase order number of every menu item that has higher order number than ours by one
      *
-     * @param MenuItem $menuItem
+     * @param $menuItem
      */
     private function shiftMenuItemsWithHigherOrder($menuItem)
     {
-        $tableName = $menuItem->getTable();
-        $menuItemParentSql = $menuItem->parent_id ? "menuItem.parent_id = $menuItem->parent_id" : 'menuItem.parent_id IS NULL';
+        $menuItemTable = MenuBuilder::getMenuItemsTableName();
 
-        DB::statement(
-            <<<SQL
-                UPDATE $tableName AS menuItem
-                SET menuItem.order = menuItem.order + 1
-                WHERE menuItem.order > {$menuItem->order}
-                AND menuItem.menu_id = {$menuItem->menu_id}
-                AND {$menuItemParentSql}
-SQL
-        );
+        MenuBuilder::getMenuItemClass()
+            ::where('order', '>', $menuItem->order)
+            ->where('menu_id', $menuItem->menu_id)
+            ->where('parent_id', $menuItem->parent_id)
+            ->update(['order' => DB::raw("$menuItemTable.order + 1")]);
     }
 
-    private function recursivelyOrderChildren($item)
+    private function recursivelyOrderChildren($menuItem)
     {
-        if (count($item['children']) > 0) {
-            foreach ($item['children'] as $i => $child) {
-                $this->saveMenuItemWithNewOrder($i + 1, $child, $item['id']);
+        if (count($menuItem['children']) > 0) {
+            foreach ($menuItem['children'] as $i => $child) {
+                $this->saveMenuItemWithNewOrder($i + 1, $child, $menuItem['id']);
             }
         }
     }
 
-    private function saveMenuItemWithNewOrder($orderNr, $item, $parentId = null)
+    private function saveMenuItemWithNewOrder($orderNr, $menuItemData, $parentId = null)
     {
-        $menuItem = MenuBuilder::getMenuItemClass()::find($item['id']);
+        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemData['id']);
         $menuItem->order = $orderNr;
         $menuItem->parent_id = $parentId;
         $menuItem->save();
-
-        // Check children
-        if (count($item['children']) > 0) {
-            foreach ($item['children'] as $i => $child) {
-                $this->saveMenuItemWithNewOrder($i + 1, $child, $item['id']);
-            }
-        }
-
-        $this->recursivelyOrderChildren($item);
+        $this->recursivelyOrderChildren($menuItemData);
     }
 
-    protected function recursivelyDuplicate(MenuItem $item, $parentId = null, $order = null)
+    protected function recursivelyDuplicate($menuItem, $parentId = null, $order = null)
     {
-        $data = $item->toArray();
+        $data = $menuItem->toArray();
         unset($data['id']);
         if ($parentId !== null) $data['parent_id'] = $parentId;
         if ($order !== null) $data['order'] = $order;
-        $data['locale'] = $item->locale;
-        $newItem = MenuBuilder::getMenuItemClass()::create($data);
-        $children = $item->children;
-        foreach ($children as $child) $this->recursivelyDuplicate($child, $newItem->id);
+        $data['locale'] = $menuItem->locale;
+        $newMenuItem = MenuBuilder::getMenuItemClass()::create($data);
+        $children = $menuItem->children;
+        foreach ($children as $child) $this->recursivelyDuplicate($child, $newMenuItem->id);
     }
 }

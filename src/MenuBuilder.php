@@ -112,6 +112,11 @@ class MenuBuilder extends Tool
         return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
     }
 
+    public static function getMenuClass()
+    {
+        return config('nova-menu.menu_model', \OptimistDigital\MenuBuilder\Models\Menu::class);
+    }
+
     public static function getMenuItemClass()
     {
         return config('nova-menu.menu_item_model', \OptimistDigital\MenuBuilder\Models\MenuItem::class);

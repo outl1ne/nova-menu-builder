@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
-use Illuminate\Database\Migrations\Migration;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 
 class ReworkLocaleHandling extends Migration
@@ -65,17 +65,12 @@ class ReworkLocaleHandling extends Migration
             });
         });
 
-        // Add try-catch due to legacy keys and SQLite support
+        // Add try-catch due to SQLite support
         try {
             Schema::table(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
                 // Named
                 $table->dropForeign('menus_locale_parent_id_foreign');
-                $table->dropUnique('menus_locale_parent_id_foreign');
                 $table->dropUnique('nova_menu_menus_slug_locale_unique');
-
-                // Legacy
-                $table->dropForeign('menus_slug_locale_unique');
-                $table->dropUnique('menus_locale_parent_id_locale_unique');
             });
         } catch (Exception $e) {
         }

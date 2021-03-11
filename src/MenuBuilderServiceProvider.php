@@ -2,9 +2,10 @@
 
 namespace OptimistDigital\MenuBuilder;
 
-use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Nova;
 use OptimistDigital\MenuBuilder\Commands\CreateMenuItemType;
 use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
 use OptimistDigital\NovaTranslationsLoader\LoadsNovaTranslations;
@@ -46,6 +47,15 @@ class MenuBuilderServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $this->routes();
         });
+
+        Validator::extend('unique_menu', function ($attribute, $value, $parameters, $validator) {
+            // Check if menu has unique attribute defined.
+            $uniqueParams = join(',', $parameters);
+            return (MenuBuilder::getMenus()[$value]['unique'] ?? true)
+                // If unique attribute is true or not defined, call unique validator
+                ? Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])->validate()
+                : true;
+        }, '');
     }
 
     protected function routes()
