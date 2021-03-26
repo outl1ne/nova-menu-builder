@@ -2,10 +2,9 @@
 
 namespace OptimistDigital\MenuBuilder;
 
-use Illuminate\Container\Container;
-use Illuminate\Support\Str;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use Illuminate\Support\Str;
 
 class MenuBuilder extends Tool
 {
@@ -46,7 +45,7 @@ class MenuBuilder extends Tool
             return call_user_func($localesConfig);
         } elseif (Str::contains($localesConfig, '@')) {
             [$class, $method] = Str::parseCallback($localesConfig);
-            return Container::getInstance()->make($class)->{$method}();
+            return app()->make($class)->{$method}();
         }
 
         return ['en' => 'English'];
