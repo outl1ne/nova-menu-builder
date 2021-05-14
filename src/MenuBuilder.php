@@ -22,6 +22,11 @@ class MenuBuilder extends Tool
     {
         Nova::script('nova-menu', __DIR__ . '/../dist/js/menu-builder.js');
         Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
+
+        $menuBuilderUriKey = static::getMenuResource()::uriKey();
+        Nova::provideToScript([
+            'menuBuilderUriKey' => $menuBuilderUriKey,
+        ]);
     }
 
     /**

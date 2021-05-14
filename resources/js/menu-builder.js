@@ -7,7 +7,7 @@ Nova.booting((Vue, router) => {
   router.addRoutes([
     {
       name: 'menus',
-      path: '/resources/nova-menus',
+      path: `/resources/${Nova.config.menuBuilderUriKey}`,
       component: MenuIndexView,
     },
   ]);
