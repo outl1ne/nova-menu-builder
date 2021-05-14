@@ -20,6 +20,7 @@
       @onMenuChange="updateMenu"
       @removeMenu="removeMenu"
       @saveMenuLocalState="saveMenuLocalState"
+      :max-depth="field.maxDepth"
       v-model="menuItems"
     />
 

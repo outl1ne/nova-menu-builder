@@ -1,6 +1,7 @@
 <template>
   <vue-nestable
     :value="value"
+    :max-depth="maxDepth"
     @input="val => $emit('input', val)"
     @change="$emit('onMenuChange')"
     class="px-3 menu-builder"
@@ -83,6 +84,11 @@ export default {
     value: {
       type: Array,
       required: true,
+    },
+    maxDepth: {
+      type: Number,
+      required: false,
+      default: 10,
     },
   },
 

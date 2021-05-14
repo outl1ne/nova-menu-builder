@@ -51,6 +51,9 @@ class MenuResource extends Resource
             })
             ->toArray();
 
+        $maxDepth = 10;
+        if ($this->slug) $maxDepth = MenuBuilder::getMenuConfig($this->slug)['max_depth'] ?? 10;
+
         return [
             Text::make(__('novaMenuBuilder.nameFieldName'), 'name')
                 ->sortable()
@@ -73,6 +76,7 @@ class MenuResource extends Resource
             Panel::make(__('novaMenuBuilder.menuItemsPanelName'), [
                 MenuBuilderField::make('', 'menu_items')
                     ->hideWhenCreating()
+                    ->maxDepth($maxDepth)
                     ->readonly(),
             ])
         ];

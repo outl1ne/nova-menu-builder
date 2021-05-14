@@ -149,4 +149,9 @@ class MenuBuilder extends Tool
     {
         return config('nova-menu.menus', []);
     }
+
+    public static function getMenuConfig($slug)
+    {
+        return config("nova-menu.menus.{$slug}", []);
+    }
 }

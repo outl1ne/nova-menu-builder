@@ -48,6 +48,7 @@ return [
         // 'header' => [
         //     'name' => 'Header',
         //     'unique' => true,
+        //     'max_depth' => 10,
         //     'menu_item_types' => []
         // ]
     ],
