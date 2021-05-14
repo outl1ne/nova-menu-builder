@@ -39,10 +39,10 @@ class MenuBuilder extends Tool
     {
         $localesConfig = config('nova-menu.locales');
 
-        if (is_array($localesConfig)) {
-            return $localesConfig;
-        } elseif (is_callable($localesConfig)) {
+        if (is_callable($localesConfig)) {
             return call_user_func($localesConfig);
+        } elseif (is_array($localesConfig)) {
+            return $localesConfig;
         } elseif (Str::contains($localesConfig, '@')) {
             [$class, $method] = Str::parseCallback($localesConfig);
             return app()->make($class)->{$method}();
