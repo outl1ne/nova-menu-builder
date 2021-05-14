@@ -54,7 +54,7 @@ abstract class BaseMenuItemType
      * @param $value The key from options list that was selected.
      * @param $data The data from item fields.
      * @param $locale
-     * @return any
+     * @return mixed
      */
     public static function getValue($value, ?array $data, $locale)
     {
@@ -71,7 +71,7 @@ abstract class BaseMenuItemType
      * on the Menu model.
      *
      * @param null $data Field values
-     * @return any
+     * @return mixed
      */
     public static function getData($data = null)
     {
