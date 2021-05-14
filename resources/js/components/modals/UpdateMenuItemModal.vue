@@ -188,7 +188,7 @@ export default {
 
   computed: {
     options() {
-      const options = Object.keys(this.linkType.options).map(id => ({ id, label: this.linkType.options[id] }));
+      const options = [...this.linkType.options];
       options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
       return options;
     },

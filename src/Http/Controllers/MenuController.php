@@ -2,6 +2,7 @@
 
 namespace OptimistDigital\MenuBuilder\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -155,9 +156,11 @@ class MenuController extends Controller
                 'class' => $typeClass
             ];
 
-
             if (method_exists($typeClass, 'getOptions')) {
-                $data['options'] = $typeClass::getOptions($locale);
+                $options = $typeClass::getOptions($locale) ?? [];
+                $data['options'] = array_map(function ($value, $key) {
+                    return ['id' => $key, 'label' => $value];
+                }, array_values($options), array_keys($options));
             }
 
             $menuItemTypes[] = $data;
