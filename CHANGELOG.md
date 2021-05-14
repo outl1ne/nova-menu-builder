@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.1] - 2021-05-14
+
+### Added
+
+- Added Vietnamese translations (thanks to [@ttungbmt](https://github.com/ttungbmt))
+- Added ability to customize `uriKey` in overridden resource using the core `static uriKey()` function
+
+### Changed
+
+- Fixed locales callbacks, so `[SomeClass::class, 'getLocales']` should now work as expected (thanks to [@raraworks](https://github.com/raraworks))
+- Fixed Arabic language translation files (thanks to [@omarhen](https://github.com/omarhen))
+- Fixed BaseMenuItemType type definition (thanks to [@mgralikowski](https://github.com/mgralikowski))
+- Updated packages
+
 ## [5.3.0] - 2021-03-26
 
 ### Added
