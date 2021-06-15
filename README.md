@@ -138,7 +138,7 @@ return [
 
 Menu builder allows you create custom menu item types with custom fields.
 
-Create a class that extends the `OptimistDigital\MenuBuilder\OptimistDigital\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
+Create a class that extends the `OptimistDigital\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
 
 ```php
 // in config/nova-menu.php
