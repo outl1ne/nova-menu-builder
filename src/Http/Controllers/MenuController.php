@@ -159,7 +159,7 @@ class MenuController extends Controller
             if (method_exists($typeClass, 'getOptions')) {
                 $options = $typeClass::getOptions($locale) ?? [];
                 $data['options'] = array_map(function ($value, $key) {
-                    return ['id' => $key, 'label' => $value];
+                    return ['id' => (string) $key, 'label' => $value];
                 }, array_values($options), array_keys($options));
             }
 
