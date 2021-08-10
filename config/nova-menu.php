@@ -53,18 +53,19 @@ return [
         // ]
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | Menu item types
     |--------------------------------------------------------------------------
     |
-    | Set all the custom menu item types in an array.
+    | Set all the custom default menu item types in an array. Optionally override the existing menu items.
     |
     */
 
-    'menu_item_types' => [],
-
+    'menu_item_types' => [
+        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
+    ],
 
     /*
     |--------------------------------|

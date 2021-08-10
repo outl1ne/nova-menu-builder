@@ -8,10 +8,6 @@ use Illuminate\Support\Str;
 
 class MenuBuilder extends Tool
 {
-    protected static $defaultMenuItemTypes = [
-        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
-        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
-    ];
 
     /**
      * Perform any tasks that need to happen when the tool is booted.
@@ -139,10 +135,7 @@ class MenuBuilder extends Tool
 
     public static function getMenuItemTypes()
     {
-        return array_merge(
-            static::$defaultMenuItemTypes,
-            config('nova-menu.menu_item_types', [])
-        );
+        return config('nova-menu.menu_item_types', []);
     }
 
     public static function getMenus()
