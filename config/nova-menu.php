@@ -58,7 +58,7 @@ return [
     | Menu item types
     |--------------------------------------------------------------------------
     |
-    | Set all the custom default menu item types in an array. Optionally override the existing menu items.
+    | Set all the available menu item types as an array.
     |
     */
 
