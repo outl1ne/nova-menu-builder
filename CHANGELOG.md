@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0] - 2021-08-10
+
+### Changed
+
+- Moved default menu item types into config (thanks to [@elerioja](https://github.com/elerioja))
+- Updated packages
+
+### Breaking change
+
+When migrating from 5.X to 6.X, you have to add the default menu item types to your config file if you wish to continue to use them.
+
+The config would look like this:
+
+```php
+'menu_item_types' => [
+  \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+  \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
+  // ...
+],
+```
+
 ## [5.3.3] - 2021-06-18
 
 ### Changed
