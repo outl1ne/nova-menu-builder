@@ -5,6 +5,7 @@ namespace OptimistDigital\MenuBuilder;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class MenuBuilder extends Tool
 {
@@ -95,6 +96,13 @@ class MenuBuilder extends Tool
     {
         $menusTableName = MenuBuilder::getMenusTableName();
 
+        $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
+        $dataRules = [];
+        foreach ($menuItemRules as $key => $rule) {
+            if (!Str::startsWith($key, 'data->')) $key = "data->{$key}";
+            $dataRules[$key] = $rule;
+        }
+
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
             'name' => 'required|min:1',
@@ -102,7 +110,7 @@ class MenuBuilder extends Tool
             'value' => 'present',
             'class' => 'required',
             'target' => 'required|in:_self,_blank'
-        ], $menuLinkableClass ? $menuLinkableClass::getRules() : []);
+        ], $dataRules);
     }
 
 
