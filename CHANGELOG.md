@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.2] - 2021-10-01
+
+### Changed
+
+- Fixed create/update menu item modal not triggering field updates after validation (thanks to [@HeJiaNong](https://github.com/HeJiaNong))
+- Fixed MenuItem using invalid class binding for HasMany relationship definition (thanks to [@ExileofAranei](https://github.com/ExileofAranei))
+- Fixed fields not correctly re-rendering after menu item type change (thanks to [@ExileofAranei](https://github.com/ExileofAranei))
+- Improved validation error displaying logic
+- Updated packages
+
 ## [6.0.1] - 2021-09-02
 
 ### Changed
