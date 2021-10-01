@@ -31,7 +31,7 @@ class MenuItem extends Model
 
     public function children()
     {
-        return $this->hasMany(self::class, 'parent_id')->with('children')->orderBy('order');
+        return $this->hasMany(static::class, 'parent_id')->with('children')->orderBy('order');
     }
 
     public function itemsChildren($parentId)
