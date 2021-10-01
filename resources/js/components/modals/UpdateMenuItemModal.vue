@@ -113,7 +113,7 @@
           <component
             v-for="(field, i) in fields"
             :is="`form-${field.component}`"
-            :key="i"
+            :key="`${linkType.class}_${i}`"
             :field="field"
             :resource-id="resourceId"
             :resource-name="resourceName"
