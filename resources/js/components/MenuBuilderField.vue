@@ -246,6 +246,7 @@ export default {
 
     updateLinkType(linkType) {
       this.linkType = this.menuItemTypes.find(type => type.class === linkType);
+      this.newItem.value = '';
     },
   },
 };
