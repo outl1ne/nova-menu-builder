@@ -8,7 +8,7 @@ use OptimistDigital\MenuBuilder\MenuBuilder;
 class Menu extends Model
 {
     protected $fillable = ['name', 'slug'];
-    
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

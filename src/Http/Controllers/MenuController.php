@@ -211,13 +211,17 @@ class MenuController extends Controller
      */
     private function shiftMenuItemsWithHigherOrder($menuItem)
     {
-        $menuItemTable = MenuBuilder::getMenuItemsTableName();
-
-        MenuBuilder::getMenuItemClass()
+        $menuItems = MenuBuilder::getMenuItemClass()
             ::where('order', '>', $menuItem->order)
             ->where('menu_id', $menuItem->menu_id)
             ->where('parent_id', $menuItem->parent_id)
-            ->update(['order' => DB::raw("$menuItemTable.order + 1")]);
+            ->get();
+
+        // Do individual updates to trigger observer(s)
+        foreach ($menuItems as $menuItem) {
+            $menuItem->order = $menuItem->order + 1;
+            $menuItem->save();
+        }
     }
 
     private function recursivelyOrderChildren($menuItem)
@@ -245,7 +249,13 @@ class MenuController extends Controller
         if ($parentId !== null) $data['parent_id'] = $parentId;
         if ($order !== null) $data['order'] = $order;
         $data['locale'] = $menuItem->locale;
-        $newMenuItem = MenuBuilder::getMenuItemClass()::create($data);
+
+        // Save the long way instead of ::create() to trigger observer(s)
+        $menuItemClass = MenuBuilder::getMenuItemClass();
+        $newMenuItem = new $menuItemClass;
+        $newMenuItem->fill($data);
+        $newMenuItem->save();
+
         $children = $menuItem->children;
         foreach ($children as $child) $this->recursivelyDuplicate($child, $newMenuItem->id);
     }
