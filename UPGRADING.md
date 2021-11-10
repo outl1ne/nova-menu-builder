@@ -51,10 +51,10 @@ The default `resource` has changed its namespace. You should change the `resourc
 
 ```php
 // From:
-'resource' => OptimistDigital\MenuBuilder\Http\Resources\MenuResource::class,
+'resource' => Workup\MenuBuilder\Http\Resources\MenuResource::class,
 
 // To:
-'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
+'resource' => Workup\MenuBuilder\Nova\Resources\MenuResource::class,
 ```
 
 ## MenuLinkables are now MenuItemTypes
@@ -79,7 +79,7 @@ So, do the following changes to your `MenuLinkable` classes:
 
 ```php
 // Before:
-use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
+use Workup\MenuBuilder\Classes\MenuLinkable;
 
 class MenuItemProductLink extends MenuLinkable
 {
@@ -98,7 +98,7 @@ class MenuItemProductLink extends MenuLinkable
 }
 
 // After:
-use OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemSelectType;
+use Workup\MenuBuilder\MenuItemTypes\MenuItemSelectType;
 
 class MenuItemProductLink extends MenuItemSelectType
 {

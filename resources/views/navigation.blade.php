@@ -1,4 +1,4 @@
-@if (OptimistDigital\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request()))
+@if (Workup\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request()))
     <router-link tag="a" :to="{ name: 'menus' }"
         class="cursor-pointer flex items-center font-normal dim text-white mb-6 text-base no-underline">
         <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">

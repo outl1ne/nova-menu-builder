@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\MenuItemTypes;
+namespace Workup\MenuBuilder\MenuItemTypes;
 
 abstract class BaseMenuItemType
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Nova\Fields;
+namespace Workup\MenuBuilder\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
-use OptimistDigital\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilder;
 
 class MenuBuilderField extends Field
 {

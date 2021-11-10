@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\MenuItemTypes;
+namespace Workup\MenuBuilder\MenuItemTypes;
 
 class MenuItemStaticURLType extends BaseMenuItemType
 {
