@@ -179,6 +179,11 @@ public static function getName(): string {
     return '';
 }
 
+public static function getType(): string {
+    // To use Relationships use "select"
+    return '';
+}
+
 /**
  * Get list of options shown in a select dropdown.
  *
