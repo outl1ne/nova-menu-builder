@@ -1,39 +1,21 @@
 {
-  "name": "optimistdigital/nova-menu-builder",
+  "name": "workup/nova-menu-builder",
   "description": "This Laravel Nova package allows you to create and manage menus and menu items.",
   "keywords": [
     "laravel",
     "nova",
     "menu",
     "builder",
-    "optimistdigital"
-  ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://nova.laravel.com"
-    }
+    "workup"
   ],
   "license": "MIT",
-  "authors": [
-    {
-      "name": "Tarvo Reinpalu",
-      "email": "tarvoreinpalu@gmail.com",
-      "role": "Developer"
-    },
-    {
-      "name": "Optimist Digital",
-      "email": "info@optimistdigital.com",
-      "role": "Maintainer"
-    }
-  ],
   "require": {
     "php": ">=8.0",
-    "laravel/framework": "^8.0",
+    "laravel/framework": "^8.0 || ^9.0",
     "doctrine/dbal": ">=2.0.0",
     "workup/nova": "^3.0",
-    "optimistdigital/nova-translations-loader": "^3.0",
-    "optimistdigital/nova-tailwind": "^1.0.2"
+    "workup/nova-translations-loader": "^3.0",
+    "workup/nova-tailwind": "^1.0.2"
   },
   "require-dev": {
     "orchestra/testbench": "^6.0",
@@ -41,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "OptimistDigital\\MenuBuilder\\": "src/"
+      "Workup\\MenuBuilder\\": "src/"
     },
     "files": [
       "src/helpers.php"
@@ -49,13 +31,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "OptimistDigital\\MenuBuilder\\Tests\\": "tests"
+      "Workup\\MenuBuilder\\Tests\\": "tests"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "OptimistDigital\\MenuBuilder\\MenuBuilderServiceProvider"
+        "Workup\\MenuBuilder\\MenuBuilderServiceProvider"
       ]
     }
   },
