@@ -1,13 +1,13 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Http\Controllers;
+namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest;
+use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\Http\Requests\MenuItemFormRequest;
 
 class MenuController extends Controller
 {
@@ -59,7 +59,7 @@ class MenuController extends Controller
     /**
      * Creates new MenuItem.
      *
-     * @param OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest $request
+     * @param Workup\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @return Illuminate\Http\Response
      **/
     public function createMenuItem(MenuItemFormRequest $request)
@@ -96,7 +96,7 @@ class MenuController extends Controller
     /**
      * Updates a MenuItem.
      *
-     * @param OptimistDigital\MenuBuilder\Http\Requests\MenuItemFormRequest $request
+     * @param Workup\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/

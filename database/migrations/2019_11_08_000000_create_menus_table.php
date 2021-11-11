@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use OptimistDigital\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilder;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateMenusTable extends Migration

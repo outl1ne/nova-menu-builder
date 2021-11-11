@@ -1,10 +1,10 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Tests;
+namespace Workup\MenuBuilder\Tests;
 
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
-use OptimistDigital\MenuBuilder\MenuBuilderServiceProvider;
+use Workup\MenuBuilder\MenuBuilderServiceProvider;
 
 abstract class TestCase extends Orchestra
 {

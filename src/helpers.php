@@ -1,6 +1,6 @@
 <?php
 
-use OptimistDigital\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilder;
 
 if (!function_exists('nova_get_menus')) {
     function nova_get_menus($locale = null)

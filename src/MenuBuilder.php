@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder;
+namespace Workup\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -118,7 +118,7 @@ class MenuBuilder extends Tool
     // In-package helpers
     public static function getMenuResource()
     {
-        return config('nova-menu.resource', \OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class);
+        return config('nova-menu.resource', \Workup\MenuBuilder\Nova\Resources\MenuResource::class);
     }
 
     public static function getMenusTableName()
@@ -133,12 +133,12 @@ class MenuBuilder extends Tool
 
     public static function getMenuClass()
     {
-        return config('nova-menu.menu_model', \OptimistDigital\MenuBuilder\Models\Menu::class);
+        return config('nova-menu.menu_model', \Workup\MenuBuilder\Models\Menu::class);
     }
 
     public static function getMenuItemClass()
     {
-        return config('nova-menu.menu_item_model', \OptimistDigital\MenuBuilder\Models\MenuItem::class);
+        return config('nova-menu.menu_item_model', \Workup\MenuBuilder\Models\MenuItem::class);
     }
 
     public static function getMenuItemTypes()

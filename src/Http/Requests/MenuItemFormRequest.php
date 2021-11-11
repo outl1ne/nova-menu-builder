@@ -1,10 +1,10 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Http\Requests;
+namespace Workup\MenuBuilder\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
-use OptimistDigital\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilder;
 
 class MenuItemFormRequest extends FormRequest
 {
