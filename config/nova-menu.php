@@ -24,7 +24,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Set all the available locales as either [key => name] pairs, a closure
-    | or a callable (ie 'locales' => 'nova_get_locales').
+    | or a callable (ie 'locales' => 'nova_get_locales' or
+    | 'locales' => '\App\Nova\MenuBuilder\Configuration@getLocales')
     |
     */
 
@@ -36,11 +37,14 @@ return [
     | Menus
     |--------------------------------------------------------------------------
     |
-    | Set all the possible menus in a keyed array of arrays with the options
-    | 'name' and optionally 'menu_item_types' and unique.
+    | Set all the possible menus in a keyed array of arrays, a closure
+    | or a callable (ie 'menus' => 'nova_get_menus' or
+    | 'menus' => '\App\Nova\MenuBuilder\Configuration@getMenuTypes') with the
+    | option 'name' and optionally 'menu_item_types' and unique.
     /  Unique is true by default
     |
     | For example: ['header' => ['name' => 'Header', 'unique' => true, 'menu_item_types' => []]]
+
     |
     */
 
