@@ -160,9 +160,9 @@ class MenuBuilder extends Tool
         }
 
         return [
-            'header' => [
-                'name' => 'Header',
-                'unique' => true,
+            'default' => [
+                'name' => 'Default',
+                'unique' => false,
                 'max_depth' => 10,
                 'menu_item_types' => [],
             ],
