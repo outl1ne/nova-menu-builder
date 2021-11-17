@@ -56,8 +56,8 @@ The config would look like this:
 
 ```php
 'menu_item_types' => [
-  \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
-  \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
+  \Workup\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+  \Workup\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
   // ...
 ],
 ```
@@ -497,7 +497,7 @@ NB! This release contains breaking changes. See [UPGRADING.md](UPGRADING.md) for
 
 ### Added
 
-- Added support for [nova-lang](https://github.com/optimistdigital/nova-lang/)
+- Added support for [nova-lang](https://github.com/Workup/nova-lang/)
 
 ### Changed
 
