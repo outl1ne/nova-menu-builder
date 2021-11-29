@@ -7,16 +7,37 @@ use Workup\MenuBuilder\MenuBuilder;
 
 class MenuItem extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'value', 'class', 'target', 'parent_id', 'order', 'enabled', 'data', 'locale'];
+    protected $fillable = [
+        'menu_id',
+        'parent_id',
+        'item_type',
+        'entity_id',
+        'entity_item_id',
+        'name',
+        'locale',
+        'slug',
+        'value',
+        'class',
+        'data',
+        'target',
+        'order',
+        'is_active',
+    ];
 
-    protected $with = ['children'];
+    protected $with = [
+        'children'
+    ];
 
     protected $casts = [
-        'enabled' => 'boolean',
+        'is_active' => 'boolean',
         'data' => 'array'
     ];
 
-    protected $appends = ['enabledClass', 'displayValue', 'fields'];
+    protected $appends = [
+        'enabledClass',
+        'displayValue',
+        'fields',
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -41,7 +62,7 @@ class MenuItem extends Model
 
     public function getEnabledClassAttribute()
     {
-        return ($this->enabled) ? 'enabled' : 'disabled';
+        return ($this->is_active) ? 'enabled' : 'disabled';
     }
 
     public function scopeRoot($query)
@@ -49,15 +70,15 @@ class MenuItem extends Model
         return $query->whereNull('parent_id');
     }
 
-    public function scopeEnabled($query)
+    public function scopeActive($query)
     {
-        return $query->where('enabled', 1);
+        return $query->where('is_active', 1);
     }
 
     public function getDisplayValueAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getDisplayValue($this->value, $this->data, $this->locale);
+            return $this->class::getDisplayValue($this, $this->locale);
         }
         return $this->value;
     }

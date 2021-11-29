@@ -12,29 +12,53 @@
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <div class="flex">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemName') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemLabel') }}</label>
           </div>
 
           <div class="py-4 w-4/5">
             <input
-              :placeholder="__('novaMenuBuilder.menuItemName')"
-              :class="{ 'border-danger': getError('name') }"
+              :placeholder="__('novaMenuBuilder.menuItemLabel')"
+              :class="{ 'border-danger': getError('label') }"
               class="w-full form-control form-input form-input-bordered"
-              id="name"
+              id="label"
               type="text"
-              v-model="newItem.name"
+              v-model="newItem.label"
             />
 
-            <help-text class="error-text mt-2 text-danger" v-if="getError('name')">
-              {{ getError('name') }}
+            <help-text class="error-text mt-2 text-danger" v-if="getError('label')">
+              {{ getError('label') }}
             </help-text>
           </div>
         </div>
+
+        <div class="flex">
+          <div class="w-1/5 py-4">
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemSlug') }}</label>
+          </div>
+
+          <div class="py-4 w-4/5">
+            <input
+              :placeholder="__('novaMenuBuilder.menuItemSlug')"
+              :class="{ 'border-danger': getError('slug') }"
+              class="w-full form-control form-input form-input-bordered"
+              id="slug"
+              type="text"
+              v-model="newItem.slug"
+            />
+
+            <help-text class="error-text mt-2 text-danger" v-if="getError('slug')">
+              {{ getError('slug') }}
+            </help-text>
+          </div>
+        </div>
+
+        {{newItem}}
 
         <div class="flex border-t border-40">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemType') }}</label>
           </div>
+
           <div class="py-4 w-4/5">
             <select
               :value="linkType.class"
@@ -56,6 +80,7 @@
           </div>
         </div>
 
+        <!-- Static URL -->
         <template v-if="linkType.type === 'static-url'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
@@ -65,16 +90,16 @@
             </div>
             <div class="py-4 w-4/5">
               <input
+                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
+                :class="{ 'border-danger': getError('url') }"
+                class="w-full form-control form-input form-input-bordered"
                 id="url"
                 type="text"
-                v-model="newItem.value"
-                :class="{ 'border-danger': getError('value') }"
-                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
-                class="w-full form-control form-input form-input-bordered"
+                v-model="newItem.url"
               />
 
-              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
-                {{ getError('value') }}
+              <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
+                {{ getError('url') }}
               </help-text>
             </div>
           </div>
@@ -91,8 +116,9 @@
               <multiselect
                 :options="options"
                 :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="options.find(option => option.id === newItem.value)"
-                @input="value => $emit('onLinkModelUpdate', value.id)"
+                :value="options.find(option => option.id === newItem.url)"
+                v-model="newItem.url"
+                @input="url => $emit('onLinkModelUpdate', url.id)"
                 label="label"
                 track-by="id"
                 selectLabel=""
@@ -100,6 +126,65 @@
                 selectedLabel=""
                 deselectLabel=""
                 deselectGroupLabel=""
+              />
+
+              <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
+                {{ getError('url') }}
+              </help-text>
+            </div>
+          </div>
+        </template>
+
+        <!-- Entity Select -->
+        <template v-if="linkType.type === 'entity-select'">
+          <div class="flex border-t border-40">
+            <div class="w-1/5 py-4">
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemEntity') }}</label>
+            </div>
+
+            <div class="py-4 w-4/5">
+              <multiselect
+                :options="options"
+                :placeholder="__('novaMenuBuilder.chooseOption')"
+                :value="options.find(option => option.id === newItem.entity_id)"
+                @input="value => $emit('onLinkEntityIdUpdate', value.id)"
+                label="label"
+                track-by="id"
+                selectLabel=""
+                selectGroupLabel=""
+                selectedLabel=""
+                deselectLabel=""
+                deselectGroupLabel=""
+              />
+
+              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                {{ getError('value') }}
+              </help-text>
+            </div>
+          </div>
+
+          Item: {{newItem}}<br>
+          Slug: {{this.entitySlug}}
+          <div class="flex border-t border-40">
+            <div class="w-1/5 py-4">
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemEntityValue') }}</label>
+            </div>
+
+                <!--@input="value => $emit('onLinkEntityItemIdUpdate', value.id)"-->
+            <div class="py-4 w-4/5">
+              <multiselect
+                :options="entityOptions"
+                :placeholder="__('novaMenuBuilder.chooseEntityOption')"
+                :value="entityOptions.find(entityOption => entityOption.id === newItem.entity_item_id)"
+                @input="selectEntitySlug"
+                label="label"
+                track-by="id"
+                selectLabel=""
+                selectGroupLabel=""
+                selectedLabel=""
+                deselectLabel=""
+                deselectGroupLabel=""
+                @search-change="asyncFindEntityOption"
               />
 
               <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
@@ -135,6 +220,7 @@
           </div>
         </div>
       </form>
+
     </div>
 
     <div slot="buttons">
@@ -180,6 +266,8 @@ export default {
   components: { Modal, Multiselect },
   data: () => ({
     toggleLabels: false,
+    entityOptions: [],
+    entitySlug: '',
   }),
 
   mounted() {
@@ -214,13 +302,18 @@ export default {
   },
 
   methods: {
+    selectEntitySlug (value) {
+      console.log(value);
+      this.$emit('onLinkEntityItemIdUpdate', value.id);
+      this.entitySlug = value.label;
+    },
+
     storeWithData(eventType) {
       this.fields.forEach(field => {
         const formData = new FormData();
         field.fill(formData);
 
         const values = Array.from(formData.values());
-
         if (field.component === 'trix-field') {
           this.$set(this.newItem, field.attribute, values[0]);
           return;
@@ -238,6 +331,20 @@ export default {
       });
 
       this.$emit(eventType);
+    },
+
+    asyncFindEntityOption (query) {
+      this.isLoading = true
+      let resource = this.newItem.entity_id;
+      Nova.request().get(`/nova-api/${resource}?search=${query}`).then(response => {
+          this.isLoading = false;
+          this.entityOptions = response.data.resources.map(item => {
+            return {
+              id: item.id.value,
+              label: item.title,
+            };
+          });
+        })
     },
 
     getError(key) {

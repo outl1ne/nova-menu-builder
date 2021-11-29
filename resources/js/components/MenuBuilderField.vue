@@ -38,6 +38,8 @@
       @confirmItemCreate="confirmItemCreate"
       @onLinkModelUpdate="updateLinkModel"
       @onLinkTypeUpdate="updateLinkType"
+      @onLinkEntityIdUpdate="updateEntityId"
+      @onLinkEntityItemIdUpdate="updateEntityItemId"
       @updateItem="updateItem"
     />
 
@@ -82,11 +84,14 @@ export default {
     linkType: '',
     errors: {},
     newItem: {
-      name: null,
-      value: '',
+      label: null,
+      url: '',
       target: '_self',
       menu_id: null,
       enabled: true,
+      item_type: '',
+      entity_id: null,
+      entity_item_id: null,
       classProp: [],
     },
     menuItems: [],
@@ -160,7 +165,7 @@ export default {
       try {
         await api.destroy(this.itemToDelete.id);
         await this.refreshData();
-        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSucces'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSuccess'), { type: 'success' });
         this.itemToDelete = null;
         this.showDeleteModal = false;
       } catch (e) {
@@ -172,11 +177,14 @@ export default {
       this.errors = {};
 
       this.newItem = {
-        name: null,
-        value: '',
+        label: null,
+        url: '',
         target: '_self',
         enabled: true,
         menu_id: this.resourceId,
+        item_type: '',
+        entity_id: null,
+        entity_item_id: null,
       };
 
       this.linkType = '';
@@ -241,12 +249,21 @@ export default {
     },
 
     updateLinkModel(modelId) {
-      this.newItem.value = modelId;
+      this.newItem.url = modelId;
+    },
+
+    updateEntityId(entityId) {
+      this.newItem.entity_id = entityId;
+    },
+
+    updateEntityItemId(itemId) {
+      this.newItem.entity_item_id = itemId;
     },
 
     updateLinkType(linkType) {
+      this.newItem.item_type = linkType;
       this.linkType = this.menuItemTypes.find(type => type.class === linkType);
-      this.newItem.value = '';
+      this.newItem.url = '';
     },
   },
 };

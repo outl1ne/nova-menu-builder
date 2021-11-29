@@ -31,13 +31,6 @@ class MenuBuilderServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'nova-menu-builder-migrations');
         $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
 
-        // Register commands
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                CreateMenuItemType::class
-            ]);
-        }
-
         // Register resource
         Nova::resources([
             MenuBuilder::getMenuResource()
@@ -56,6 +49,18 @@ class MenuBuilderServiceProvider extends ServiceProvider
                 ? Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])->validate()
                 : true;
         }, '');
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/nova-menu.php', 'nova-menu'
+        );
     }
 
     protected function routes()
