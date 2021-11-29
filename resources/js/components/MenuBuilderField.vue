@@ -92,6 +92,7 @@ export default {
       item_type: '',
       entity_id: null,
       entity_item_id: null,
+      is_index: false,
       classProp: [],
     },
     menuItems: [],
@@ -185,6 +186,7 @@ export default {
         item_type: '',
         entity_id: null,
         entity_item_id: null,
+        is_index: false,
       };
 
       this.linkType = '';
@@ -258,6 +260,9 @@ export default {
 
     updateEntityItemId(itemId) {
       this.newItem.entity_item_id = itemId;
+      this.newItem.is_index = itemId === '0';
+
+      return itemId;
     },
 
     updateLinkType(linkType) {

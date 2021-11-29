@@ -28,6 +28,7 @@
   "novaMenuBuilder.delConfirmModalConfirm": "Delete",
   "novaMenuBuilder.chooseMenuItemType": "Choose menu item type",
   "novaMenuBuilder.chooseOption": "Choose option",
+  "novaMenuBuilder.indexOption": "Go to index page",
   "novaMenuBuilder.menuItemUrlFieldName": "URL",
   "novaMenuBuilder.menuItemTargetFieldName": "Open in",
   "novaMenuBuilder.menuItemTargetSameWindow": "Same window/tab",

@@ -13,6 +13,7 @@ class MenuItem extends Model
         'item_type',
         'entity_id',
         'entity_item_id',
+        'is_index',
         'name',
         'locale',
         'slug',
@@ -30,6 +31,7 @@ class MenuItem extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_index' => 'boolean',
         'data' => 'array'
     ];
 

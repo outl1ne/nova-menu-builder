@@ -17,6 +17,7 @@ class CreateMenuItemsTable extends Migration
             $table->string('item_type');
             $table->unsignedBigInteger('entity_id')->nullable();
             $table->unsignedBigInteger('entity_item_id')->nullable();
+            $table->boolean('is_index')->default(false);
 
             $table->string('label');
             $table->string('locale');

@@ -2427,6 +2427,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         item_type: '',
         entity_id: null,
         entity_item_id: null,
+        is_index: false,
         classProp: []
       },
       menuItems: [],
@@ -2595,7 +2596,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         menu_id: this.resourceId,
         item_type: '',
         entity_id: null,
-        entity_item_id: null
+        entity_item_id: null,
+        is_index: false
       };
       this.linkType = '';
     },
@@ -2785,6 +2787,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     updateEntityItemId: function updateEntityItemId(itemId) {
       this.newItem.entity_item_id = itemId;
+      this.newItem.is_index = itemId === '0';
+      return itemId;
     },
     updateLinkType: function updateLinkType(linkType) {
       this.newItem.item_type = linkType;
@@ -3400,10 +3404,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -3435,7 +3435,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   computed: {
     options: function options() {
-      var options = _toConsumableArray(this.linkType.options);
+      var options = [];
+
+      if (this.linkType.options[0].label.includes('||')) {
+        this.linkType.options.forEach(function (option) {
+          var value = option.label.split('||');
+          options.push({
+            id: option.id,
+            label: value[0],
+            slug: value[1]
+          });
+        });
+      } else {
+        options = _toConsumableArray(this.linkType.options);
+      }
 
       options.unshift({
         id: '',
@@ -3459,10 +3472,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   methods: {
-    selectEntitySlug: function selectEntitySlug(value) {
-      console.log(value);
-      this.$emit('onLinkEntityItemIdUpdate', value.id);
-      this.entitySlug = value.label;
+    selectEntity: function selectEntity(value) {
+      this.entitySlug = value.slug;
+      this.$emit('onLinkEntityIdUpdate', value.id);
+      this.asyncFindEntityOption('');
+      return value.id;
     },
     storeWithData: function storeWithData(eventType) {
       var _this = this;
@@ -3495,7 +3509,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this2 = this;
 
       this.isLoading = true;
-      var resource = this.newItem.entity_id;
+      var resource = this.entitySlug;
       Nova.request().get("/nova-api/".concat(resource, "?search=").concat(query)).then(function (response) {
         _this2.isLoading = false;
         _this2.entityOptions = response.data.resources.map(function (item) {
@@ -3503,6 +3517,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             id: item.id.value,
             label: item.title
           };
+        });
+
+        _this2.entityOptions.unshift({
+          id: '0',
+          label: _this2.__('novaMenuBuilder.indexOption')
         });
       });
     },
@@ -35169,6 +35188,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
 var render = function() {
+  var this$1 = this
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -35348,7 +35368,7 @@ var render = function() {
                 1
               )
             ]),
-            _vm._v("\n\n      " + _vm._s(_vm.newItem) + "\n\n      "),
+            _vm._v(" "),
             _c("div", { staticClass: "flex border-t border-40" }, [
               _c("div", { staticClass: "w-1/5 py-4" }, [
                 _c(
@@ -35613,11 +35633,7 @@ var render = function() {
                             deselectLabel: "",
                             deselectGroupLabel: ""
                           },
-                          on: {
-                            input: function(value) {
-                              return _vm.$emit("onLinkEntityIdUpdate", value.id)
-                            }
-                          }
+                          on: { input: _vm.selectEntity }
                         }),
                         _vm._v(" "),
                         _vm.getError("value")
@@ -35637,10 +35653,10 @@ var render = function() {
                       1
                     )
                   ]),
-                  _vm._v("\n\n        Item: " + _vm._s(_vm.newItem)),
-                  _c("br"),
                   _vm._v(
-                    "\n        Slug: " + _vm._s(this.entitySlug) + "\n        "
+                    "\n\n        Slug: " +
+                      _vm._s(this.entitySlug) +
+                      "\n        "
                   ),
                   _c("div", { staticClass: "flex border-t border-40" }, [
                     _c("div", { staticClass: "w-1/5 py-4" }, [
@@ -35685,7 +35701,12 @@ var render = function() {
                             deselectGroupLabel: ""
                           },
                           on: {
-                            input: _vm.selectEntitySlug,
+                            input: function(value) {
+                              return this$1.$emit(
+                                "onLinkEntityItemIdUpdate",
+                                value.id
+                              )
+                            },
                             "search-change": _vm.asyncFindEntityOption
                           }
                         }),

@@ -28,6 +28,7 @@
   "novaMenuBuilder.delConfirmModalConfirm": "Elimina",
   "novaMenuBuilder.chooseMenuItemType": "Scegliere il tipo di voce di menu",
   "novaMenuBuilder.chooseOption": "Scegli l'opzione",
+  "novaMenuBuilder.indexOption": "Vai all'indice",
   "novaMenuBuilder.menuItemUrlFieldName": "URL",
   "novaMenuBuilder.menuItemTargetFieldName": "Apri in",
   "novaMenuBuilder.menuItemTargetSameWindow": "Stessa finestra/tab",

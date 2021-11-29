@@ -45,12 +45,9 @@ class MenuItemEntityType extends MenuItemSelectType
     public static function getOptions($locale): array
     {
         return MenuBuilder::getEntityModel()::get()
-            ->pluck('id', 'slug')
-            ->mapWithKeys(function ($id, $slug) {
-                return [
-                    $id => \Illuminate\Support\Str::plural($slug)
-                ];
-            })
+            ->mapWithKeys(fn ($item, $key) =>
+                [$item->id => $item->name .'||'. \Illuminate\Support\Str::plural($item->slug)]
+            )
             ->toArray();
     }
 
@@ -59,7 +56,10 @@ class MenuItemEntityType extends MenuItemSelectType
      **/
     public static function getDisplayValue(MenuItem $model, $locale): string
     {
-        return $model->value . ' ' . $model->data . ' ' . $locale;
+        $entity =  MenuBuilder::getEntityModel()::find($model->entity_id)->name;
+        $is_index = $model->is_index ? "Yes" : "No";
+
+        return "Entity: $entity - Index: $is_index";
     }
 
     /**

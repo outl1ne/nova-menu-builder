@@ -52,8 +52,6 @@
           </div>
         </div>
 
-        {{newItem}}
-
         <div class="flex border-t border-40">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemType') }}</label>
@@ -147,7 +145,7 @@
                 :options="options"
                 :placeholder="__('novaMenuBuilder.chooseOption')"
                 :value="options.find(option => option.id === newItem.entity_id)"
-                @input="value => $emit('onLinkEntityIdUpdate', value.id)"
+                @input="selectEntity"
                 label="label"
                 track-by="id"
                 selectLabel=""
@@ -163,20 +161,18 @@
             </div>
           </div>
 
-          Item: {{newItem}}<br>
           Slug: {{this.entitySlug}}
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
               <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemEntityValue') }}</label>
             </div>
 
-                <!--@input="value => $emit('onLinkEntityItemIdUpdate', value.id)"-->
             <div class="py-4 w-4/5">
               <multiselect
                 :options="entityOptions"
                 :placeholder="__('novaMenuBuilder.chooseEntityOption')"
                 :value="entityOptions.find(entityOption => entityOption.id === newItem.entity_item_id)"
-                @input="selectEntitySlug"
+                @input="value => this.$emit('onLinkEntityItemIdUpdate', value.id)"
                 label="label"
                 track-by="id"
                 selectLabel=""
@@ -280,7 +276,19 @@ export default {
 
   computed: {
     options() {
-      const options = [...this.linkType.options];
+      let options = [];
+      if (this.linkType.options[0].label.includes('||')) {
+        this.linkType.options.forEach(option => {
+          let value = option.label.split('||');
+          options.push({
+            id: option.id,
+            label: value[0],
+            slug: value[1],
+          });
+        });
+      } else {
+        options = [...this.linkType.options];
+      }
       options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
       return options;
     },
@@ -302,10 +310,12 @@ export default {
   },
 
   methods: {
-    selectEntitySlug (value) {
-      console.log(value);
-      this.$emit('onLinkEntityItemIdUpdate', value.id);
-      this.entitySlug = value.label;
+    selectEntity(value) {
+      this.entitySlug = value.slug;
+      this.$emit('onLinkEntityIdUpdate', value.id);
+      this.asyncFindEntityOption('');
+
+      return value.id;
     },
 
     storeWithData(eventType) {
@@ -335,7 +345,7 @@ export default {
 
     asyncFindEntityOption (query) {
       this.isLoading = true
-      let resource = this.newItem.entity_id;
+      let resource = this.entitySlug;
       Nova.request().get(`/nova-api/${resource}?search=${query}`).then(response => {
           this.isLoading = false;
           this.entityOptions = response.data.resources.map(item => {
@@ -344,6 +354,7 @@ export default {
               label: item.title,
             };
           });
+          this.entityOptions.unshift({ id: '0', label: this.__('novaMenuBuilder.indexOption') });
         })
     },
 
