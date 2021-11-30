@@ -11,7 +11,7 @@
       slot-scope="{ item }"
       :item="item"
       class="handle flex flex-wrap bg-gray-100 shadow-sm border rounded-md outline-none"
-      :class="{ 'border-40': !item.enabled, 'border-60': item.enabled }"
+      :class="{ 'border-40': !item.is_active, 'border-60': item.is_active }"
     >
       <div :class="`item-data w-2/3 flex ${!hasChildren(item) ? 'pl-3' : ''}`">
         <!-- Collapse icon -->
@@ -23,8 +23,8 @@
           <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
         </button>
 
-        <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">{{ item.name }}</div>
-        <div :class="`font-lighter text-80 ml-4 text-sm ${!item.enabled ? 'opacity-25' : ''}`">
+        <div :class="`text-90 ${!item.is_active ? 'opacity-25' : ''}`">{{ item.label }}</div>
+        <div :class="`font-lighter text-80 ml-4 text-sm ${!item.is_active ? 'opacity-25' : ''}`">
           {{ item.displayValue }}
         </div>
       </div>

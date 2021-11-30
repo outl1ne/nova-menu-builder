@@ -105,9 +105,8 @@ class MenuBuilder extends Tool
 
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required|min:1',
+            'label' => 'required|min:1',
             'locale' => 'required',
-            'value' => 'present',
             'class' => 'required',
             'target' => 'required|in:_self,_blank'
         ], $dataRules);
@@ -172,5 +171,10 @@ class MenuBuilder extends Tool
     public static function getMenuConfig($slug)
     {
         return config("nova-menu.menus.{$slug}", []);
+    }
+
+    public static function getEntityModel()
+    {
+        return config('nova-menu.menu_item_entity_model', \Workup\Larastub\Models\Entity::class);
     }
 }

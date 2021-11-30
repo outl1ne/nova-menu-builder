@@ -31,15 +31,10 @@ abstract class BaseMenuItemType
 
     /**
      * Get the subtitle value shown in CMS menu items list.
-     *
-     * @param $value
-     * @param $data The data from item fields.
-     * @param $locale
-     * @return string
      */
-    public static function getDisplayValue($value, ?array $data, $locale)
+    public static function getDisplayValue(\Workup\MenuBuilder\Models\MenuItem $model, $locale): ?string
     {
-        return $value;
+        return $model->value;
     }
 
     /**
