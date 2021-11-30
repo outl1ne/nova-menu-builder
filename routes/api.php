@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Workup\MenuBuilder\Http\Controllers\ItemController;
+use Workup\MenuBuilder\Http\Controllers\MenuController;
+use Workup\MenuBuilder\Http\Controllers\EntityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,13 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/menu/{menu}', 'MenuController@getMenuItems');
-Route::post('/menu/{menu}', 'MenuController@saveMenuItems');
+Route::get('/menu/{menu}', [MenuController::class, 'getMenuItems']);
+Route::post('/menu/{menu}', [MenuController::class, 'saveMenuItems']);
 
-Route::post('/items', 'MenuController@createMenuItem');
-Route::get('/items/{menuItem}', 'MenuController@getMenuItem');
-Route::post('/items/{menuItem}', 'MenuController@updateMenuItem');
-Route::delete('/items/{menuItem}', 'MenuController@deleteMenuItem');
-Route::post('/items/{menuItem}/duplicate', 'MenuController@duplicateMenuItem');
+Route::get('/entity/{entity}', [EntityController::class, 'getTable']);
 
-Route::get('/menu-item-types/{menu}', 'MenuController@getMenuItemTypes');
+Route::post('/items', [ItemController::class, 'createMenuItem']);
+Route::get('/items/{menuItem}', [ItemController::class, 'getMenuItem']);
+Route::post('/items/{menuItem}', [ItemController::class, 'updateMenuItem']);
+Route::delete('/items/{menuItem}', [ItemController::class, 'deleteMenuItem']);
+Route::post('/items/{menuItem}/duplicate', [ItemController::class, 'duplicateMenuItem']);
+
+Route::get('/menu-item-types/{menu}', [ItemController::class, 'getMenuItemTypes']);

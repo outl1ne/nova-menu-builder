@@ -15,6 +15,10 @@ export default {
     return Nova.request().get(`/nova-vendor/nova-menu/items/${menuItemId}`);
   },
 
+  async getEntityTable(entityId) {
+    return Nova.request().get(`/nova-vendor/nova-menu/entity/${entityId}`);
+  },
+
   async update(menuItemId, menuItem) {
     return Nova.request().post(`/nova-vendor/nova-menu/items/${menuItemId}`, menuItem);
   },

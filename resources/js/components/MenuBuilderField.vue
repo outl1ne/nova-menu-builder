@@ -25,6 +25,7 @@
     />
 
     <update-menu-item-modal
+      ref="UpdateMenuItemModal"
       :linkType="linkType"
       :menuItemTypes="menuItemTypes"
       :newItem="newItem"
@@ -153,6 +154,11 @@ export default {
       this.update = true;
       const menuItem = (await api.getMenuItem(item.id)).data;
       this.newItem = menuItem;
+
+      if (this.newItem.entity_item_id) {
+        this.$refs.UpdateMenuItemModal.setSlug((await api.getEntityTable(this.newItem.entity_id)).data);
+      }
+
       this.showAddModal = true;
       this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
     },

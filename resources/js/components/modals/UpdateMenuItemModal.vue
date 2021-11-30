@@ -6,7 +6,7 @@
           {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
         </h2>
 
-        <toggle-button v-model="newItem.enabled" :color="switchColor" :labels="toggleLabels" :sync="true" :width="78" />
+        <toggle-button v-model="newItem.is_active" :color="switchColor" :labels="toggleLabels" :sync="true" :width="78" />
       </div>
 
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
@@ -144,7 +144,7 @@
               <multiselect
                 :options="options"
                 :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="options.find(option => option.id === newItem.entity_id)"
+                :value="options.find(option => option.id == newItem.entity_id)"
                 @input="selectEntity"
                 label="label"
                 track-by="id"
@@ -161,7 +161,6 @@
             </div>
           </div>
 
-          Slug: {{this.entitySlug}}
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
               <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemEntityValue') }}</label>
@@ -171,7 +170,7 @@
               <multiselect
                 :options="entityOptions"
                 :placeholder="__('novaMenuBuilder.chooseEntityOption')"
-                :value="entityOptions.find(entityOption => entityOption.id === newItem.entity_item_id)"
+                :value="entityOptions.find(entityOption => entityOption.id == newItem.entity_item_id)"
                 @input="value => this.$emit('onLinkEntityItemIdUpdate', value.id)"
                 label="label"
                 track-by="id"
@@ -246,6 +245,7 @@ import Modal from './Modal';
 import Multiselect from 'vue-multiselect';
 import { HandlesValidationErrors } from 'laravel-nova';
 import { Errors } from 'form-backend-validation';
+import api from "../../api";
 
 export default {
   mixins: [HandlesValidationErrors],
@@ -310,10 +310,14 @@ export default {
   },
 
   methods: {
-    selectEntity(value) {
-      this.entitySlug = value.slug;
-      this.$emit('onLinkEntityIdUpdate', value.id);
+    setSlug(slug) {
+      this.entitySlug = slug;
       this.asyncFindEntityOption('');
+    },
+
+    selectEntity(value) {
+      this.setSlug(value.slug);
+      this.$emit('onLinkEntityIdUpdate', value.id);
 
       return value.id;
     },

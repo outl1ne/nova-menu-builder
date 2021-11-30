@@ -14,7 +14,7 @@ class MenuItem extends Model
         'entity_id',
         'entity_item_id',
         'is_index',
-        'name',
+        'label',
         'locale',
         'slug',
         'value',
