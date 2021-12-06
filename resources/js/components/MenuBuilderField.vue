@@ -258,6 +258,7 @@ export default {
 
     updateLinkModel(modelId) {
       this.newItem.url = modelId;
+      return modelId;
     },
 
     updateEntityId(entityId) {

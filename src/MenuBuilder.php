@@ -177,4 +177,9 @@ class MenuBuilder extends Tool
     {
         return config('nova-menu.menu_item_entity_model', \Workup\Larastub\Models\Entity::class);
     }
+
+    public static function getRouteModel()
+    {
+        return config('nova-menu.menu_item_route_model', \App\Models\Route::class);
+    }
 }

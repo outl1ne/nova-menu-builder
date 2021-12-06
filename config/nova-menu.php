@@ -69,6 +69,7 @@ return [
     'menu_item_types' => [
         \Workup\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
         \Workup\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
+        \Workup\MenuBuilder\MenuItemTypes\MenuItemRouteType::class,
         \Workup\MenuBuilder\MenuItemTypes\MenuItemEntityType::class,
     ],
 
