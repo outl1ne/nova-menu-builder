@@ -48,14 +48,6 @@ class MenuItemController extends Controller
             $formatAndAppendMenuItemType($typeClass);
         }
 
-//        $menu = MenuBuilder::getMenus()[$menu->slug] ?? null;
-//        if ($menu !== null) {
-//            $menuTypeClasses = $menu['menu_item_types'] ?? [];
-//            foreach ($menuTypeClasses as $menuTypeClass) {
-//                $formatAndAppendMenuItemType($menuTypeClass);
-//            }
-//        }
-
         return response()->json($menuItemTypes, 200);
     }
 }

@@ -145,29 +145,6 @@ class MenuBuilder extends Tool
         return config('nova-menu.menu_item_types', []);
     }
 
-//    public static function getMenus()
-//    {
-//        $menuConfig = config('nova-menu.menus', []);
-//
-//        if (is_callable($menuConfig)) {
-//            return call_user_func($menuConfig);
-//        } elseif (is_array($menuConfig)) {
-//            return $menuConfig;
-//        } elseif (Str::contains($menuConfig, '@')) {
-//            [$class, $method] = Str::parseCallback($menuConfig);
-//            return app()->make($class)->{$method}();
-//        }
-//
-//        return [
-//            'default' => [
-//                'name' => 'Default',
-//                'unique' => false,
-//                'max_depth' => 10,
-//                'menu_item_types' => [],
-//            ],
-//        ];
-//    }
-
     public static function getMenuConfig($slug)
     {
         return config("nova-menu.menus.{$slug}", []);
