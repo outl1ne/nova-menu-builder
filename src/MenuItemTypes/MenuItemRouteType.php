@@ -52,10 +52,10 @@ class MenuItemRouteType extends MenuItemSelectType
     /**
      * Get the subtitle value shown in CMS menu items list.
      **/
-//    public static function getDisplayValue(MenuItem $model, $locale): string
-//    {
-//        return "Route";
-//    }
+    public static function getDisplayValue(MenuItem $model, $locale): string
+    {
+        return "Route";
+    }
 
     /**
      * Get the rules for the resource.
@@ -65,7 +65,7 @@ class MenuItemRouteType extends MenuItemSelectType
     public static function getRules(): array
     {
         return [
-            'value' => 'required',
+//            'value' => 'required',
         ];
     }
 }
