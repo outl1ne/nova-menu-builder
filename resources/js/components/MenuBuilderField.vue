@@ -156,7 +156,7 @@ export default {
       this.newItem = menuItem;
 
       if (this.newItem.entity_item_id) {
-        this.$refs.UpdateMenuItemModal.setSlug((await api.getEntityTable(this.newItem.entity_id)).data);
+        this.$refs.UpdateMenuItemModal.setPath((await api.getEntityTable(this.newItem.entity_id)).data);
       }
 
       this.showAddModal = true;

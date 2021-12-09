@@ -9,6 +9,7 @@ class MenuItem extends Model
 {
     protected $fillable = [
         'menu_id',
+        'slug',
         'parent_id',
         'item_type',
         'entity_id',
@@ -16,7 +17,7 @@ class MenuItem extends Model
         'is_index',
         'label',
         'locale',
-        'slug',
+        'path',
         'value',
         'class',
         'data',

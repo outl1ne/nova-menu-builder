@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="flex" v-if="linkType.type !== 'route-select'">
+        <div class="flex">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemSlug') }}</label>
           </div>
@@ -74,6 +74,27 @@
 
             <help-text class="error-text mt-2 text-danger" v-if="getError('class')">
               {{ __('novaMenuBuilder.menuTypeRequired') }}
+            </help-text>
+          </div>
+        </div>
+
+        <div class="flex" v-if="showSlug()">
+          <div class="w-1/5 py-4">
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemPath') }}</label>
+          </div>
+
+          <div class="py-4 w-4/5">
+            <input
+              :placeholder="__('novaMenuBuilder.menuItemPath')"
+              :class="{ 'border-danger': getError('path') }"
+              class="w-full form-control form-input form-input-bordered"
+              id="path"
+              type="text"
+              v-model="newItem.path"
+            />
+
+            <help-text class="error-text mt-2 text-danger" v-if="getError('path')">
+              {{ getError('path') }}
             </help-text>
           </div>
         </div>
@@ -291,7 +312,7 @@ export default {
   data: () => ({
     toggleLabels: false,
     entityOptions: [],
-    entitySlug: '',
+    entityPath: '',
   }),
 
   mounted() {
@@ -317,7 +338,7 @@ export default {
           options.push({
             id: option.id,
             label: value[0],
-            slug: value[1],
+            path: value[1],
           });
         });
       } else {
@@ -344,13 +365,25 @@ export default {
   },
 
   methods: {
-    setSlug(slug) {
-      this.entitySlug = slug;
+    showSlug() {
+      if (
+        this.linkType.type === 'static-url' ||
+        this.linkType.type === 'select' ||
+        this.linkType.type === 'text'
+      )  {
+        return true;
+      }
+
+      return false;
+    },
+
+    setPath(path) {
+      this.entityPath = path;
       this.asyncFindEntityOption('');
     },
 
     selectEntity(value) {
-      this.setSlug(value.slug);
+      this.setPath(value.path);
       this.$emit('onLinkEntityIdUpdate', value.id);
 
       return value.id;
@@ -383,7 +416,7 @@ export default {
 
     asyncFindEntityOption (query) {
       this.isLoading = true
-      let resource = this.entitySlug;
+      let resource = this.entityPath;
       Nova.request().get(`/nova-api/${resource}?search=${query}`).then(response => {
           this.isLoading = false;
           this.entityOptions = response.data.resources.map(item => {
