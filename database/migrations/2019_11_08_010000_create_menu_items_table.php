@@ -21,7 +21,7 @@ class CreateMenuItemsTable extends Migration
 
             $table->string('label');
             $table->string('locale');
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->string('url')->nullable();
             $table->string('class')->nullable();
             $table->json('data')->nullable();
