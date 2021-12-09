@@ -18,7 +18,7 @@ class ItemController extends Controller
      * @param Workup\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @return Illuminate\Http\Response
      **/
-    public function createMenuItem(MenuItemFormRequest $request)
+    public function store(MenuItemFormRequest $request)
     {
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
@@ -40,7 +40,7 @@ class ItemController extends Controller
      * @param $menuItemId
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItem($menuItemId)
+    public function show($menuItemId)
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
@@ -56,7 +56,7 @@ class ItemController extends Controller
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function updateMenuItem(MenuItemFormRequest $request, $menuItemId)
+    public function update(MenuItemFormRequest $request, $menuItemId)
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
@@ -78,7 +78,7 @@ class ItemController extends Controller
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/
-    public function deleteMenuItem($menuItemId)
+    public function destroy($menuItemId)
     {
         $menuItem = MenuBuilder::getMenuItemClass()::findOrFail($menuItemId);
         $menuItem->children()->delete();
@@ -126,32 +126,14 @@ class ItemController extends Controller
             $formatAndAppendMenuItemType($typeClass);
         }
 
-        $menu = MenuBuilder::getMenus()[$menu->slug] ?? null;
-        if ($menu !== null) {
-            $menuTypeClasses = $menu['menu_item_types'] ?? [];
-            foreach ($menuTypeClasses as $menuTypeClass) {
-                $formatAndAppendMenuItemType($menuTypeClass);
-            }
-        }
+//        $menu = MenuBuilder::getMenus()[$menu->slug] ?? null;
+//        if ($menu !== null) {
+//            $menuTypeClasses = $menu['menu_item_types'] ?? [];
+//            foreach ($menuTypeClasses as $menuTypeClass) {
+//                $formatAndAppendMenuItemType($menuTypeClass);
+//            }
+//        }
 
         return response()->json($menuItemTypes, 200);
-    }
-
-    /**
-     * Duplicates a MenuItem.
-     *
-     * @param $menuItem
-     * @return Illuminate\Http\Response
-     **/
-    public function duplicateMenuItem($menuItemId)
-    {
-        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
-
-        if (empty($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
-
-        $this->shiftMenuItemsWithHigherOrder($menuItem);
-        $this->recursivelyDuplicate($menuItem, $menuItem->parent_id, $menuItem->order + 1);
-
-        return response()->json(['success' => true], 200);
     }
 }
