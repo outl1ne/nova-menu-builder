@@ -47,10 +47,6 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
             return Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])
                 ->validate();
-//            return (MenuBuilder::getMenus()[$value]['unique'] ?? true)
-//                // If unique attribute is true or not defined, call unique validator
-//                ? Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])->validate()
-//                : true;
         }, '');
     }
 

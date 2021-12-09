@@ -16,25 +16,6 @@ return [
     'locales' => ['en_US' => 'English'],
 
     /**
-     * Menus
-     * Set all the possible menus in a keyed array of arrays, a closure
-     * or a callable (ie 'menus' => 'nova_get_menus' or
-     * 'menus' => '\App\Nova\MenuBuilder\Configuration@getMenuTypes') with the
-     * option 'name' and optionally 'menu_item_types' and unique.
-     *  Unique is true by default
-     *
-     * For example: ['header' => ['name' => 'Header', 'unique' => true, 'menu_item_types' => []]]
-     */
-    'menus' => [
-        // 'header' => [
-        //     'name' => 'Header',
-        //     'unique' => true,
-        //     'max_depth' => 10,
-        //     'menu_item_types' => []
-        // ]
-    ],
-
-    /**
      * Menu item types
      * Set all the available menu item types as an array.
      */
