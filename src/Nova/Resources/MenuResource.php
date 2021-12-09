@@ -45,11 +45,12 @@ class MenuResource extends Resource
     public function fields(Request $request)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
-        $menuOptions = collect(MenuBuilder::getMenus())
-            ->mapWithKeys(function ($menu, $key) {
-                return [$key => $menu['name']];
-            })
-            ->toArray();
+        $menuOptions = collect([]);
+//        $menuOptions = collect(MenuBuilder::getMenus())
+//            ->mapWithKeys(function ($menu, $key) {
+//                return [$key => $menu['name']];
+//            })
+//            ->toArray();
 
         $maxDepth = 10;
         if ($this->slug) $maxDepth = MenuBuilder::getMenuConfig($this->slug)['max_depth'] ?? 10;
@@ -59,19 +60,21 @@ class MenuResource extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Select::make(__('novaMenuBuilder.menuResourceSingularLabel'), 'slug')
-                ->options($menuOptions)
-                ->onlyOnForms()
-                ->creationRules('required', 'max:255', "unique_menu:$menusTableName,slug,NULL,id")
-                ->updateRules('required', 'max:255', "unique_menu:$menusTableName,slug,{{resourceId}},id"),
+//            Select::make(__('novaMenuBuilder.menuResourceSingularLabel'), 'slug')
+//                ->options($menuOptions)
+//                ->onlyOnForms()
+//                ->creationRules('required', 'max:255', "unique_menu:$menusTableName,slug,NULL,id")
+//                ->updateRules('required', 'max:255', "unique_menu:$menusTableName,slug,{{resourceId}},id"),
 
-            Text::make(__('novaMenuBuilder.menuResourceSingularLabel'), 'slug', function ($key) {
-                $menu = MenuBuilder::getMenus()[$key] ?? null;
-                return ($menu === null) ? "<s>{$key}</s>" : $menu['name'];
-            })
-                ->hideWhenCreating()
-                ->hideWhenUpdating()
-                ->asHtml(),
+//            Text::make(__('novaMenuBuilder.slugFieldName'), 'slug', function ($key) {
+//                $menu = MenuBuilder::getMenus()[$key] ?? null;
+//                return ($menu === null) ? "<s>{$key}</s>" : $menu['name'];
+//            })
+            Text::make(__('novaMenuBuilder.slugFieldName'), 'slug')
+                ->rules('required', 'max:255', "unique_menu:$menusTableName,slug,NULL,id"),
+//                ->hideWhenCreating()
+//                ->hideWhenUpdating()
+//                ->asHtml(),
 
             Panel::make(__('novaMenuBuilder.menuItemsPanelName'), [
                 MenuBuilderField::make('', 'menu_items')

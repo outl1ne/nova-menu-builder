@@ -2,6 +2,7 @@
   "novaMenuBuilder.menuResourceLabel": "Menu",
   "novaMenuBuilder.menuResourceSingularLabel": "Menu",
   "novaMenuBuilder.nameFieldName": "Nome",
+  "novaMenuBuilder.slugFieldName": "Slug",
   "novaMenuBuilder.menuItemsPanelName": "Elementi del menu",
   "novaMenuBuilder.sidebarTitle": "Menu",
   "novaMenuBuilder.noMenuItemsPlaceholder": "Nessuna voce di menu",
