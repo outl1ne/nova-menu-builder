@@ -23,6 +23,7 @@
               id="label"
               type="text"
               v-model="newItem.label"
+              @keyup="setSlug"
             />
 
             <help-text class="error-text mt-2 text-danger" v-if="getError('label')">
@@ -308,7 +309,9 @@ export default {
     'resourceId',
     'isMenuItemUpdating',
   ],
+
   components: { Modal, Multiselect },
+
   data: () => ({
     toggleLabels: false,
     entityOptions: [],
@@ -365,16 +368,16 @@ export default {
   },
 
   methods: {
-    showSlug() {
-      if (
-        this.linkType.type === 'static-url' ||
-        this.linkType.type === 'select' ||
-        this.linkType.type === 'text'
-      )  {
-        return true;
-      }
+    setSlug() {
+      this.newItem.slug = this.newItem.label.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '');
+    },
 
-      return false;
+    showSlug() {
+      return this.linkType.type === 'static-url' ||
+        this.linkType.type === 'select' ||
+        this.linkType.type === 'text';
     },
 
     setPath(path) {

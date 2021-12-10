@@ -87,6 +87,7 @@ export default {
     newItem: {
       label: null,
       url: '',
+      slug: null,
       target: '_self',
       menu_id: null,
       enabled: true,
@@ -186,6 +187,7 @@ export default {
       this.newItem = {
         label: null,
         url: '',
+        slug: null,
         target: '_self',
         enabled: true,
         menu_id: this.resourceId,
