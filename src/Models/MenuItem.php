@@ -2,8 +2,12 @@
 
 namespace Workup\MenuBuilder\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Workup\MenuBuilder\MenuBuilder;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Database\Eloquent\Model;
+use Workup\MenuBuilder\MenuItemTypes\MenuItemEntityType;
+use Workup\MenuBuilder\MenuItemTypes\MenuItemRouteType;
 
 class MenuItem extends Model
 {
@@ -94,11 +98,21 @@ class MenuItem extends Model
         return null;
     }
 
-    public function getCustomValueAttribute()
+    public function getCustomUrlAttribute()
     {
-        if (class_exists($this->class)) {
-            return $this->class::getValue($this->value, $this->data, $this->locale);
+        if ($this->item_type === MenuItemRouteType::class) {
+            return MenuBuilder::getRouteModel()::findOrFail($this->url)->path;
         }
+
+        if ($this->item_type === MenuItemEntityType::class) {
+            $entitySlug = Str::plural(MenuBuilder::getEntityModel()::findOrFail($this->entity_id)->slug);
+            $route_path = $this->is_index ? "/api/$entitySlug" : "/api/$entitySlug/$this->entity_item_id";
+            if (! app('router')->getRoutes()->match(app('request')->create($route_path))) {
+                return 'error';
+            }
+            return $route_path;
+        }
+
         return $this->value;
     }
 
