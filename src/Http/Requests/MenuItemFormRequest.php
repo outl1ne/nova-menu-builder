@@ -30,7 +30,21 @@ class MenuItemFormRequest extends FormRequest
 
     public function getValues()
     {
-        $keys = ['name', 'enabled', 'target', 'class', 'value', 'menu_id', 'locale'];
+        $keys = [
+            'menu_id',
+            'slug',
+            'item_type',
+            'entity_id',
+            'entity_item_id',
+            'is_index',
+            'label',
+            'locale',
+            'path',
+            'class',
+            'url',
+            'target',
+            'is_active',
+        ];
         foreach ($this->all() as $key => $value) {
             if (Str::startsWith($key, 'data->')) $keys[] = $key;
         }

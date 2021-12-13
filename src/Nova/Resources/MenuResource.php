@@ -7,6 +7,7 @@ use Laravel\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Slug;
 use Workup\MenuBuilder\MenuBuilder;
 use Workup\MenuBuilder\Nova\Fields\MenuBuilderField;
 
@@ -45,38 +46,20 @@ class MenuResource extends Resource
     public function fields(Request $request)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
-        $menuOptions = collect(MenuBuilder::getMenus())
-            ->mapWithKeys(function ($menu, $key) {
-                return [$key => $menu['name']];
-            })
-            ->toArray();
-
-        $maxDepth = 10;
-        if ($this->slug) $maxDepth = MenuBuilder::getMenuConfig($this->slug)['max_depth'] ?? 10;
 
         return [
             Text::make(__('novaMenuBuilder.nameFieldName'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Select::make(__('novaMenuBuilder.menuResourceSingularLabel'), 'slug')
-                ->options($menuOptions)
-                ->onlyOnForms()
-                ->creationRules('required', 'max:255', "unique_menu:$menusTableName,slug,NULL,id")
-                ->updateRules('required', 'max:255', "unique_menu:$menusTableName,slug,{{resourceId}},id"),
-
-            Text::make(__('novaMenuBuilder.menuResourceSingularLabel'), 'slug', function ($key) {
-                $menu = MenuBuilder::getMenus()[$key] ?? null;
-                return ($menu === null) ? "<s>{$key}</s>" : $menu['name'];
-            })
-                ->hideWhenCreating()
-                ->hideWhenUpdating()
-                ->asHtml(),
+            Slug::make(__('novaMenuBuilder.slugFieldName'), 'slug')
+                ->from('name')
+                ->rules('required', 'max:255', "unique_menu:$menusTableName,slug,NULL,id"),
 
             Panel::make(__('novaMenuBuilder.menuItemsPanelName'), [
                 MenuBuilderField::make('', 'menu_items')
                     ->hideWhenCreating()
-                    ->maxDepth($maxDepth)
+                    ->maxDepth(10)
                     ->readonly(),
             ])
         ];

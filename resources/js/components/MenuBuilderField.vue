@@ -25,6 +25,7 @@
     />
 
     <update-menu-item-modal
+      ref="UpdateMenuItemModal"
       :linkType="linkType"
       :menuItemTypes="menuItemTypes"
       :newItem="newItem"
@@ -38,6 +39,8 @@
       @confirmItemCreate="confirmItemCreate"
       @onLinkModelUpdate="updateLinkModel"
       @onLinkTypeUpdate="updateLinkType"
+      @onLinkEntityIdUpdate="updateEntityId"
+      @onLinkEntityItemIdUpdate="updateEntityItemId"
       @updateItem="updateItem"
     />
 
@@ -82,11 +85,16 @@ export default {
     linkType: '',
     errors: {},
     newItem: {
-      name: null,
-      value: '',
+      label: null,
+      url: '',
+      slug: null,
       target: '_self',
       menu_id: null,
       enabled: true,
+      item_type: '',
+      entity_id: null,
+      entity_item_id: null,
+      is_index: false,
       classProp: [],
     },
     menuItems: [],
@@ -147,6 +155,11 @@ export default {
       this.update = true;
       const menuItem = (await api.getMenuItem(item.id)).data;
       this.newItem = menuItem;
+
+      if (this.newItem.entity_item_id) {
+        this.$refs.UpdateMenuItemModal.setPath((await api.getEntityTable(this.newItem.entity_id)).data);
+      }
+
       this.showAddModal = true;
       this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
     },
@@ -160,7 +173,7 @@ export default {
       try {
         await api.destroy(this.itemToDelete.id);
         await this.refreshData();
-        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSucces'), { type: 'success' });
+        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSuccess'), { type: 'success' });
         this.itemToDelete = null;
         this.showDeleteModal = false;
       } catch (e) {
@@ -172,11 +185,16 @@ export default {
       this.errors = {};
 
       this.newItem = {
-        name: null,
-        value: '',
+        label: null,
+        url: '',
+        slug: null,
         target: '_self',
         enabled: true,
         menu_id: this.resourceId,
+        item_type: '',
+        entity_id: null,
+        entity_item_id: null,
+        is_index: false,
       };
 
       this.linkType = '';
@@ -241,12 +259,25 @@ export default {
     },
 
     updateLinkModel(modelId) {
-      this.newItem.value = modelId;
+      this.newItem.url = modelId;
+      return modelId;
+    },
+
+    updateEntityId(entityId) {
+      this.newItem.entity_id = entityId;
+    },
+
+    updateEntityItemId(itemId) {
+      this.newItem.entity_item_id = itemId;
+      this.newItem.is_index = itemId === '0';
+
+      return itemId;
     },
 
     updateLinkType(linkType) {
+      this.newItem.item_type = linkType;
       this.linkType = this.menuItemTypes.find(type => type.class === linkType);
-      this.newItem.value = '';
+      this.newItem.url = '';
     },
   },
 };

@@ -7,7 +7,10 @@ use Workup\MenuBuilder\MenuBuilder;
 
 class Menu extends Model
 {
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = [
+        'name',
+        'slug',
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -22,7 +25,7 @@ class Menu extends Model
             ->where('parent_id', null)
             ->orderBy('parent_id')
             ->orderBy('order')
-            ->orderBy('name');
+            ->orderBy('label');
     }
 
     public function formatForAPI($locale)

@@ -105,9 +105,8 @@ class MenuBuilder extends Tool
 
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required|min:1',
+            'label' => 'required|min:1',
             'locale' => 'required',
-            'value' => 'present',
             'class' => 'required',
             'target' => 'required|in:_self,_blank'
         ], $dataRules);
@@ -146,31 +145,18 @@ class MenuBuilder extends Tool
         return config('nova-menu.menu_item_types', []);
     }
 
-    public static function getMenus()
-    {
-        $menuConfig = config('nova-menu.menus', []);
-
-        if (is_callable($menuConfig)) {
-            return call_user_func($menuConfig);
-        } elseif (is_array($menuConfig)) {
-            return $menuConfig;
-        } elseif (Str::contains($menuConfig, '@')) {
-            [$class, $method] = Str::parseCallback($menuConfig);
-            return app()->make($class)->{$method}();
-        }
-
-        return [
-            'default' => [
-                'name' => 'Default',
-                'unique' => false,
-                'max_depth' => 10,
-                'menu_item_types' => [],
-            ],
-        ];
-    }
-
     public static function getMenuConfig($slug)
     {
         return config("nova-menu.menus.{$slug}", []);
+    }
+
+    public static function getEntityModel()
+    {
+        return config('nova-menu.menu_item_entity_model', \Workup\Larastub\Models\Entity::class);
+    }
+
+    public static function getRouteModel()
+    {
+        return config('nova-menu.menu_item_route_model', \App\Models\Route::class);
     }
 }

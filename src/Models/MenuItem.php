@@ -2,21 +2,49 @@
 
 namespace Workup\MenuBuilder\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Workup\MenuBuilder\MenuBuilder;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Database\Eloquent\Model;
+use Workup\MenuBuilder\MenuItemTypes\MenuItemEntityType;
+use Workup\MenuBuilder\MenuItemTypes\MenuItemRouteType;
 
 class MenuItem extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'value', 'class', 'target', 'parent_id', 'order', 'enabled', 'data', 'locale'];
+    protected $fillable = [
+        'menu_id',
+        'slug',
+        'parent_id',
+        'item_type',
+        'entity_id',
+        'entity_item_id',
+        'is_index',
+        'label',
+        'locale',
+        'path',
+        'value',
+        'class',
+        'data',
+        'target',
+        'order',
+        'is_active',
+    ];
 
-    protected $with = ['children'];
+    protected $with = [
+        'children'
+    ];
 
     protected $casts = [
-        'enabled' => 'boolean',
+        'is_active' => 'boolean',
+        'is_index' => 'boolean',
         'data' => 'array'
     ];
 
-    protected $appends = ['enabledClass', 'displayValue', 'fields'];
+    protected $appends = [
+        'enabledClass',
+        'displayValue',
+        'fields',
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -41,7 +69,7 @@ class MenuItem extends Model
 
     public function getEnabledClassAttribute()
     {
-        return ($this->enabled) ? 'enabled' : 'disabled';
+        return ($this->is_active) ? 'enabled' : 'disabled';
     }
 
     public function scopeRoot($query)
@@ -49,15 +77,15 @@ class MenuItem extends Model
         return $query->whereNull('parent_id');
     }
 
-    public function scopeEnabled($query)
+    public function scopeActive($query)
     {
-        return $query->where('enabled', 1);
+        return $query->where('is_active', 1);
     }
 
     public function getDisplayValueAttribute()
     {
         if (class_exists($this->class)) {
-            return $this->class::getDisplayValue($this->value, $this->data, $this->locale);
+            return $this->class::getDisplayValue($this, $this->locale);
         }
         return $this->value;
     }
@@ -70,11 +98,21 @@ class MenuItem extends Model
         return null;
     }
 
-    public function getCustomValueAttribute()
+    public function getCustomUrlAttribute()
     {
-        if (class_exists($this->class)) {
-            return $this->class::getValue($this->value, $this->data, $this->locale);
+        if ($this->item_type === MenuItemRouteType::class) {
+            return MenuBuilder::getRouteModel()::findOrFail($this->url)->path;
         }
+
+        if ($this->item_type === MenuItemEntityType::class) {
+            $entitySlug = Str::plural(MenuBuilder::getEntityModel()::findOrFail($this->entity_id)->slug);
+            $route_path = $this->is_index ? "/api/$entitySlug" : "/api/$entitySlug/$this->entity_item_id";
+            if (! app('router')->getRoutes()->match(app('request')->create($route_path))) {
+                return 'error';
+            }
+            return $route_path;
+        }
+
         return $this->value;
     }
 
