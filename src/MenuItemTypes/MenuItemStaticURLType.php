@@ -19,7 +19,7 @@ class MenuItemStaticURLType extends BaseMenuItemType
      **/
     public static function getDisplayValue(\Workup\MenuBuilder\Models\MenuItem $model, $locale): string
     {
-        return "Slug: $model->slug - Url: $model->url";
+        return "Path: $model->slug - Url: $model->url";
     }
 
     public static function getType(): string
