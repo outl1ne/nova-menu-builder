@@ -13,6 +13,7 @@ class CreateMenuItemsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('menu_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('slug')->unique();
 
             $table->string('item_type');
             $table->unsignedBigInteger('entity_id')->nullable();
@@ -21,7 +22,7 @@ class CreateMenuItemsTable extends Migration
 
             $table->string('label');
             $table->string('locale');
-            $table->string('slug');
+            $table->string('path')->nullable();
             $table->string('url')->nullable();
             $table->string('class')->nullable();
             $table->json('data')->nullable();

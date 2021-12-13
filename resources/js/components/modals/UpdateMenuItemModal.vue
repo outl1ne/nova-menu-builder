@@ -23,6 +23,7 @@
               id="label"
               type="text"
               v-model="newItem.label"
+              @keyup="setSlug"
             />
 
             <help-text class="error-text mt-2 text-danger" v-if="getError('label')">
@@ -78,6 +79,27 @@
           </div>
         </div>
 
+        <div class="flex" v-if="showSlug()">
+          <div class="w-1/5 py-4">
+            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemPath') }}</label>
+          </div>
+
+          <div class="py-4 w-4/5">
+            <input
+              :placeholder="__('novaMenuBuilder.menuItemPath')"
+              :class="{ 'border-danger': getError('path') }"
+              class="w-full form-control form-input form-input-bordered"
+              id="path"
+              type="text"
+              v-model="newItem.path"
+            />
+
+            <help-text class="error-text mt-2 text-danger" v-if="getError('path')">
+              {{ getError('path') }}
+            </help-text>
+          </div>
+        </div>
+
         <!-- Static URL -->
         <template v-if="linkType.type === 'static-url'">
           <div class="flex border-t border-40">
@@ -115,8 +137,36 @@
                 :options="options"
                 :placeholder="__('novaMenuBuilder.chooseOption')"
                 :value="options.find(option => option.id === newItem.url)"
-                v-model="newItem.url"
-                @input="url => $emit('onLinkModelUpdate', url.id)"
+                @input="value => $emit('onLinkModelUpdate', value.id)"
+                label="label"
+                track-by="id"
+                selectLabel=""
+                selectGroupLabel=""
+                selectedLabel=""
+                deselectLabel=""
+                deselectGroupLabel=""
+              />
+
+              <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
+                {{ getError('url') }}
+              </help-text>
+            </div>
+          </div>
+        </template>
+
+        <!-- Route Select -->
+        <template v-if="linkType.type === 'route-select'">
+          <div class="flex border-t border-40">
+            <div class="w-1/5 py-4">
+              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemValue') }}</label>
+            </div>
+
+            <div class="py-4 w-4/5">
+              <multiselect
+                :options="options"
+                :placeholder="__('novaMenuBuilder.chooseOption')"
+                :value="options.find(option => option.id === newItem.url)"
+                @input="value => $emit('onLinkModelUpdate', value.id)"
                 label="label"
                 track-by="id"
                 selectLabel=""
@@ -142,9 +192,9 @@
 
             <div class="py-4 w-4/5">
               <multiselect
-                :options="options"
+                :options="entities"
                 :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="options.find(option => option.id == newItem.entity_id)"
+                :value="entities.find(entity => entity.id == newItem.entity_id)"
                 @input="selectEntity"
                 label="label"
                 track-by="id"
@@ -259,11 +309,13 @@ export default {
     'resourceId',
     'isMenuItemUpdating',
   ],
+
   components: { Modal, Multiselect },
+
   data: () => ({
     toggleLabels: false,
     entityOptions: [],
-    entitySlug: '',
+    entityPath: '',
   }),
 
   mounted() {
@@ -276,6 +328,12 @@ export default {
 
   computed: {
     options() {
+      const options = [...this.linkType.options];
+      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
+      return options;
+    },
+
+    entities() {
       let options = [];
       if (this.linkType.options[0].label.includes('||')) {
         this.linkType.options.forEach(option => {
@@ -283,7 +341,7 @@ export default {
           options.push({
             id: option.id,
             label: value[0],
-            slug: value[1],
+            path: value[1],
           });
         });
       } else {
@@ -310,13 +368,25 @@ export default {
   },
 
   methods: {
-    setSlug(slug) {
-      this.entitySlug = slug;
+    setSlug() {
+      this.newItem.slug = this.newItem.label.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '');
+    },
+
+    showSlug() {
+      return this.linkType.type === 'static-url' ||
+        this.linkType.type === 'select' ||
+        this.linkType.type === 'text';
+    },
+
+    setPath(path) {
+      this.entityPath = path;
       this.asyncFindEntityOption('');
     },
 
     selectEntity(value) {
-      this.setSlug(value.slug);
+      this.setPath(value.path);
       this.$emit('onLinkEntityIdUpdate', value.id);
 
       return value.id;
@@ -349,7 +419,7 @@ export default {
 
     asyncFindEntityOption (query) {
       this.isLoading = true
-      let resource = this.entitySlug;
+      let resource = this.entityPath;
       Nova.request().get(`/nova-api/${resource}?search=${query}`).then(response => {
           this.isLoading = false;
           this.entityOptions = response.data.resources.map(item => {

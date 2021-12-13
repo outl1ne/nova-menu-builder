@@ -18,7 +18,7 @@ class MenuController extends Controller
      * @param $menuId
      * @return Illuminate\Http\Response
      **/
-    public function getMenuItems(Request $request, $menuId)
+    public function index(Request $request, $menuId)
     {
         $locale = $request->get('locale');
         $menu = MenuBuilder::getMenuClass()::find($menuId);
@@ -43,7 +43,7 @@ class MenuController extends Controller
      * @param $menuId
      * @return Illuminate\Http\Response
      **/
-    public function saveMenuItems(Request $request, $menuId)
+    public function store(Request $request, $menuId)
     {
         $items = $request->get('menuItems');
 

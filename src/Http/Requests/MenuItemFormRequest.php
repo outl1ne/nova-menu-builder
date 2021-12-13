@@ -32,13 +32,14 @@ class MenuItemFormRequest extends FormRequest
     {
         $keys = [
             'menu_id',
+            'slug',
             'item_type',
             'entity_id',
             'entity_item_id',
             'is_index',
             'label',
             'locale',
-            'slug',
+            'path',
             'class',
             'url',
             'target',

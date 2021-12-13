@@ -44,10 +44,9 @@ class MenuBuilderServiceProvider extends ServiceProvider
         Validator::extend('unique_menu', function ($attribute, $value, $parameters, $validator) {
             // Check if menu has unique attribute defined.
             $uniqueParams = join(',', $parameters);
-            return (MenuBuilder::getMenus()[$value]['unique'] ?? true)
-                // If unique attribute is true or not defined, call unique validator
-                ? Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])->validate()
-                : true;
+
+            return Validator::make([$attribute => $value], ['slug' => "unique:$uniqueParams"])
+                ->validate();
         }, '');
     }
 
@@ -68,8 +67,11 @@ class MenuBuilderServiceProvider extends ServiceProvider
         if ($this->app->routesAreCached()) return;
 
         Route::middleware(['nova', Authorize::class])
-            ->namespace('Workup\MenuBuilder\Http\Controllers')
             ->prefix('nova-vendor/nova-menu')
-            ->group(__DIR__ . '/../routes/api.php');
+            ->group(__DIR__ . '/../routes/backend.php');
+
+        Route::middleware(['auth:sanctum'])
+            ->prefix(config('nova-menu.api_prefix', 'api'))
+            ->group(__DIR__ . '/../routes/frontend.php');
     }
 }

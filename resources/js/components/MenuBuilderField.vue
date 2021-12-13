@@ -87,6 +87,7 @@ export default {
     newItem: {
       label: null,
       url: '',
+      slug: null,
       target: '_self',
       menu_id: null,
       enabled: true,
@@ -156,7 +157,7 @@ export default {
       this.newItem = menuItem;
 
       if (this.newItem.entity_item_id) {
-        this.$refs.UpdateMenuItemModal.setSlug((await api.getEntityTable(this.newItem.entity_id)).data);
+        this.$refs.UpdateMenuItemModal.setPath((await api.getEntityTable(this.newItem.entity_id)).data);
       }
 
       this.showAddModal = true;
@@ -186,6 +187,7 @@ export default {
       this.newItem = {
         label: null,
         url: '',
+        slug: null,
         target: '_self',
         enabled: true,
         menu_id: this.resourceId,
@@ -258,6 +260,7 @@ export default {
 
     updateLinkModel(modelId) {
       this.newItem.url = modelId;
+      return modelId;
     },
 
     updateEntityId(entityId) {

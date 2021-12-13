@@ -12,7 +12,7 @@ class CreateMenusTable extends Migration
         Schema::create(MenuBuilder::getMenusTableName(), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->json('slug');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

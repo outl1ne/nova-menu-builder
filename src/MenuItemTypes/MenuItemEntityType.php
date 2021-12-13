@@ -118,9 +118,6 @@ class MenuItemEntityType extends MenuItemSelectType
      */
     public static function getData($data = null): array
     {
-        return [
-            'api_path' => 'cippa',
-            'custom' => 'sticazzi',
-        ];
+        return [];
     }
 }
