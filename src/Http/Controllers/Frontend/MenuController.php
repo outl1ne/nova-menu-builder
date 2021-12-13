@@ -1,14 +1,14 @@
 <?php
 
-namespace Workup\MenuBuilder\Http\Controllers;
+namespace Workup\MenuBuilder\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\Http\Resources\MenuCollection;
 use Workup\MenuBuilder\Http\Resources\MenuResource;
-use  Workup\MenuBuilder\Http\Resources\MenuCollection;
+use Workup\MenuBuilder\MenuBuilder;
 
-class FrontendController extends Controller
+class MenuController extends Controller
 {
     public function index()
     {
