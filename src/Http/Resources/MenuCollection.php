@@ -17,10 +17,14 @@ class MenuCollection extends ResourceCollection
     public $collects = MenuResource::class;
 
     /**
-     * Transform the resource collection into an array.
+     * @OAS\Property(property="data",type="integer")
+     *
+     * @return array
      */
     public function toArray($request): array
     {
-        return $this->collection;
+        return [
+            'data' => $this->collection,
+        ];
     }
 }
