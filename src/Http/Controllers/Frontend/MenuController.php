@@ -118,16 +118,23 @@ class MenuController extends Controller
      * Menu List Endpoint
      *
      * @OA\Get(
-     *     path="/api/menus",
-     *     summary="Get a list of available menus.",
+     *     path="/api/menus/{id}",
+     *     summary="Get a detail of the required menu.",
      *     tags={"Menu"},
-     *     description="This endpoint returns a list of available menus.",
+     *     description="This endpoint returns a detail of the required menu.",
      *     @OA\Parameter(
      *         name="x-site-id",
      *         description="Site ID useful to detect right request configuration.",
      *         required=true,
      *         in="header",
      *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Parameter(
+     *         name="id",
+     *         description="The ID of the Menu.",
+     *         required=true,
+     *         in="path",
+     *         @OA\Schema(type="integer"),
      *     ),
      *     @OA\Response(
      *         response=404,
