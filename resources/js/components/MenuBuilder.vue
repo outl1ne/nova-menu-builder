@@ -23,7 +23,10 @@
           <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
         </button>
 
-        <div :class="`text-90 ${!item.is_active ? 'opacity-25' : ''}`">{{ item.label }}</div>
+        <div :class="`text-90 ${!item.is_active ? 'opacity-25' : ''}`">
+          {{ item.label }} (slug: {{ item.slug }})
+        </div>
+
         <div :class="`font-lighter text-80 ml-4 text-sm ${!item.is_active ? 'opacity-25' : ''}`">
           {{ item.displayValue }}
         </div>

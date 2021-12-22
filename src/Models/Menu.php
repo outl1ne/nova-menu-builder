@@ -54,9 +54,11 @@ class Menu extends Model
             'target' => $menuItem->target,
             'enabled' => $menuItem->enabled,
             'data' => $menuItem->customData,
-            'children' => empty($menuItem->children) ? [] : $menuItem->children->map(function ($item) {
-                return $this->formatMenuItem($item);
-            })
         ];
+    }
+
+    public function children()
+    {
+        return $this->hasMany(MenuBuilder::getMenuItemClass(), 'parent_id', 'id');
     }
 }

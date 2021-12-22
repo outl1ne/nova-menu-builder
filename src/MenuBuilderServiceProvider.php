@@ -70,7 +70,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
             ->prefix('nova-vendor/nova-menu')
             ->group(__DIR__ . '/../routes/backend.php');
 
-        Route::middleware(['auth:sanctum'])
+        Route::middleware(['api'])
             ->prefix(config('nova-menu.api_prefix', 'api'))
             ->group(__DIR__ . '/../routes/frontend.php');
     }
