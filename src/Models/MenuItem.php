@@ -113,7 +113,7 @@ class MenuItem extends Model
             return $route_path;
         }
 
-        return $this->value;
+        return $this->url;
     }
 
     public function getCustomDataAttribute()
