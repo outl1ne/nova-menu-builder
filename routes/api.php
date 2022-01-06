@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('/menus', 'MenuController@getMenus');
+Route::post('/menus/copy', 'MenuController@copyMenuItemsToMenu');
+
 Route::get('/menu/{menu}', 'MenuController@getMenuItems');
 Route::post('/menu/{menu}', 'MenuController@saveMenuItems');
 

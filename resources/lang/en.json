@@ -36,5 +36,8 @@
   "novaMenuBuilder.toastReorderSuccess": "Menu reordered",
   "novaMenuBuilder.toastDuplicateSuccess": "Menu item duplicated",
   "novaMenuBuilder.serverError": "Server error, please try again.",
-  "novaMenuBuilder.menuTypeRequired": "Menu type is required."
+  "novaMenuBuilder.menuTypeRequired": "Menu type is required.",
+  "novaMenuBuilder.copyMenuItemsFromTitle": "Copy menu items from",
+  "novaMenuBuilder.copyMenuItemsButtonTitle": "Copy items",
+  "novaMenuBuilder.locale": "Locale"
 }

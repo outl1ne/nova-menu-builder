@@ -1,6 +1,14 @@
 export default {
+  async getMenus() {
+    return Nova.request().get(`/nova-vendor/nova-menu/menus`);
+  },
+
   async getItems(menuId, locale) {
     return Nova.request().get(`/nova-vendor/nova-menu/menu/${menuId}`, { params: { locale } });
+  },
+
+  async copyItems(fromMenuId, fromLocale, toMenuId, toLocale) {
+    return Nova.request().post(`/nova-vendor/nova-menu/menus/copy`, { fromMenuId, fromLocale, toMenuId, toLocale });
   },
 
   async saveItems(menuId, menuItems) {

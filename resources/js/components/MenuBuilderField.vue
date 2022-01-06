@@ -1,10 +1,12 @@
 <template>
   <div id="menu-builder-field" class="relative py-3">
     <menu-builder-header
+      :locales="field.locales"
+      :resourceId="resourceId"
+      :activeLocale="selectedLocale"
       @addMenuItem="openAddModal"
       @changeLocale="setSelectedLocale"
-      :activeLocale="selectedLocale"
-      :locales="field.locales"
+      @refreshItems="refreshData"
     />
 
     <div class="py-6" v-if="loadingMenuItems">
@@ -93,12 +95,14 @@ export default {
     menuItemTypes: void 0,
   }),
 
+  beforeMount() {
+    // Set starting locale
+    this.selectedLocale = Object.keys(this.field.locales)[0];
+  },
+
   async mounted() {
     // Fix classes on Detail view
     this.$parent.$el.classList.remove('py-3', 'px-6');
-
-    // Set starting locale
-    this.selectedLocale = Object.keys(this.field.locales)[0];
 
     this.refreshData();
   },
