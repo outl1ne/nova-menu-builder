@@ -67,7 +67,8 @@ class MenuResource extends Resource
 
             Text::make(__('novaMenuBuilder.menuResourceSingularLabel'), 'slug', function ($key) {
                 $menu = MenuBuilder::getMenus()[$key] ?? null;
-                return ($menu === null) ? "<s>{$key}</s>" : $menu['name'];
+                if (!$menu) return "<s>{$key}</s>";
+                return "<span class='whitespace-no-wrap'><b>{$menu['name']}</b> <i>({$key})</i></span>";
             })
                 ->hideWhenCreating()
                 ->hideWhenUpdating()
