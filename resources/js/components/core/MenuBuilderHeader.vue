@@ -19,6 +19,7 @@
       id="copy-menu-btn"
       class="btn btn-default btn-icon bg-primary text-white flex-no-shrink mr-4"
       @click.prevent="showCopyModal = true"
+      v-if="showCopyButton"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24">
         <path
@@ -42,6 +43,7 @@
       :activeLocale="activeLocale"
       :locales="locales"
       :showModal="showCopyModal"
+      :menuCount="menuCount"
       @closeModal="showCopyModal = false"
       @refreshItems="$emit('refreshItems')"
     />
@@ -54,11 +56,19 @@ import CopyMenuItemsModal from '../modals/CopyMenuItemsModal';
 export default {
   components: { CopyMenuItemsModal },
 
-  props: ['locales', 'activeLocale', 'resourceId'],
+  props: ['locales', 'activeLocale', 'resourceId', 'menuCount'],
 
   data: () => ({
     showCopyModal: false,
   }),
+
+  computed: {
+    showCopyButton() {
+      // If only 1 locale and 1 menu, don't show the button
+      const localeCount = Object.keys(this.locales).length;
+      return localeCount > 1 || this.menuCount > 1;
+    },
+  },
 };
 </script>
 

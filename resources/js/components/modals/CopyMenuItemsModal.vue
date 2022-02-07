@@ -15,7 +15,7 @@
             }}</label>
           </div>
 
-          <div class="py-4 w-4/5">
+          <div class="py-4 w-4/5" v-if="hasMultipleMenus">
             <multiselect
               :options="menuOptions"
               :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="flex border-t border-40">
+        <div class="flex border-t border-40" v-if="hasMultipleLocales">
           <div class="w-1/5 py-4">
             <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.locale') }}</label>
           </div>
@@ -79,7 +79,7 @@ import Multiselect from 'vue-multiselect';
 import api from '../../api';
 
 export default {
-  props: ['showModal', 'activeLocale', 'locales', 'resourceName', 'resourceId'],
+  props: ['showModal', 'activeLocale', 'locales', 'resourceName', 'resourceId', 'menuCount'],
   components: { Modal, Multiselect },
   data: () => ({
     isCopying: false,
@@ -92,18 +92,33 @@ export default {
   async mounted() {
     this.setLocaleDataBasedOnActiveLocale();
     await this.fetchMenuOptions();
-    this.selectedMenu = this.menuOptions.find(m => String(m.id) === String(this.resourceId));
   },
 
   watch: {
     activeLocale() {
       this.setLocaleDataBasedOnActiveLocale();
     },
+    resourceId() {
+      this.setLocaleDataBasedOnActiveLocale();
+    },
+    selectedMenu() {
+      this.setLocaleDataBasedOnActiveLocale();
+    },
   },
 
   methods: {
     async fetchMenuOptions() {
-      this.menuOptions = (await api.getMenus()).data;
+      let menuOptions = (await api.getMenus()).data;
+
+      if (this.hasMultipleLocales) {
+        this.selectedMenu = menuOptions.find(m => String(m.id) === String(this.resourceId));
+      } else {
+        // Just one locale, let's remove the current menu from the selection
+        menuOptions = menuOptions.filter(m => String(m.id) !== String(this.resourceId));
+      }
+
+      this.menuOptions = menuOptions;
+      this.selectedMenu = menuOptions[0];
     },
 
     async copyMenuItemsFromMenu() {
@@ -120,14 +135,27 @@ export default {
     },
 
     setLocaleDataBasedOnActiveLocale() {
-      this.localeOptions = Object.keys(this.locales)
-        .filter(key => key !== this.activeLocale)
-        .map(key => ({
-          id: key,
-          name: this.locales[key],
-        }));
+      let options = Object.keys(this.locales).map(key => ({
+        id: key,
+        name: this.locales[key],
+      }));
 
-      this.selectedLocale = this.localeOptions[0];
+      // If it's the same menu, don't show current locale
+      if (this.selectedMenu && String(this.resourceId) === String(this.selectedMenu.id)) {
+        options = options.filter(obj => obj.id !== this.activeLocale);
+      }
+
+      this.localeOptions = options;
+      this.selectedLocale = options[0];
+    },
+  },
+  computed: {
+    hasMultipleLocales() {
+      return Object.keys(this.locales).length > 1;
+    },
+
+    hasMultipleMenus() {
+      return this.menuCount > 1;
     },
   },
 };

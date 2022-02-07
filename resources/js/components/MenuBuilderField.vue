@@ -4,6 +4,7 @@
       :locales="field.locales"
       :resourceId="resourceId"
       :activeLocale="selectedLocale"
+      :menuCount="field.menuCount"
       @addMenuItem="openAddModal"
       @changeLocale="setSelectedLocale"
       @refreshItems="refreshData"

@@ -4,6 +4,7 @@ namespace OptimistDigital\MenuBuilder\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
 use OptimistDigital\MenuBuilder\MenuBuilder;
+use OptimistDigital\MenuBuilder\Models\Menu;
 
 class MenuBuilderField extends Field
 {
@@ -14,6 +15,7 @@ class MenuBuilderField extends Field
         $this->withMeta([
             'locales' => MenuBuilder::getLocales(),
             'maxDepth' => 10,
+            'menuCount' => Menu::count(),
         ]);
     }
 
