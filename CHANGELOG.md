@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.1] - 07-02-2022
+
+### Added
+
+- Added French (fr) translations (thanks to [@Jimmylet](https://github.com/Jimmylet))
+
+### Changed
+
+- Improved "copy menu from" functionality logic when dealing with just one menu and/or locale
+- Updated packages
+
 ## [6.1.0] - 2022-01-06
 
 ### Added
