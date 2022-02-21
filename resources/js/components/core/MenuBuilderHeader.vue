@@ -19,7 +19,7 @@
       id="copy-menu-btn"
       class="btn btn-default btn-icon bg-primary text-white flex-no-shrink mr-4"
       @click.prevent="showCopyModal = true"
-      v-if="showCopyButton"
+      v-if="showCopyButton && showDuplicate"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24">
         <path
@@ -56,7 +56,7 @@ import CopyMenuItemsModal from '../modals/CopyMenuItemsModal';
 export default {
   components: { CopyMenuItemsModal },
 
-  props: ['locales', 'activeLocale', 'resourceId', 'menuCount'],
+  props: ['locales', 'activeLocale', 'resourceId', 'menuCount', 'showDuplicate'],
 
   data: () => ({
     showCopyModal: false,
