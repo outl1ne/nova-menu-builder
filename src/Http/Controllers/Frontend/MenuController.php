@@ -111,7 +111,9 @@ class MenuController extends Controller
      */
     public function index()
     {
-        return new MenuCollection(MenuBuilder::getMenuClass()::all());
+        return new MenuCollection(
+            MenuBuilder::getMenuClass()::all()
+        );
     }
 
     /**
