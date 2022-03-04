@@ -126,6 +126,7 @@ class MenuItemController extends Controller
             ->with('children')
             ->where('menu_id', $menu)
             ->where('slug', $slug)
+            ->where('locale', 'like', request()->getPreferredLanguage() . '%')
             ->get();
 
         return new MenuItemCollection($items);
