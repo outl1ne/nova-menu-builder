@@ -22,10 +22,10 @@ class MenuResource extends JsonResource
             'children' => $this->hasMany(MenuBuilder::getMenuItemClass())
                 ->where('parent_id', null)
                 ->where('is_active', true)
+                ->where('locale', 'like', request()->getPreferredLanguage() . '%')
                 ->orderBy('parent_id')
                 ->orderBy('order')
                 ->orderBy('label')
-//                ->where('locale', $locale)
                 ->get()
                 ->map(fn($menuItem) => $this->formatMenuItem($menuItem))
         ];
