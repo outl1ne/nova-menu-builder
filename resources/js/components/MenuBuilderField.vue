@@ -5,6 +5,7 @@
       :resourceId="resourceId"
       :activeLocale="selectedLocale"
       :menuCount="field.menuCount"
+      :showDuplicate="field.showDuplicate"
       @addMenuItem="openAddModal"
       @changeLocale="setSelectedLocale"
       @refreshItems="refreshData"

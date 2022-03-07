@@ -155,4 +155,9 @@ class MenuBuilder extends Tool
     {
         return config("nova-menu.menus.{$slug}", []);
     }
+
+    public static function showDuplicate()
+    {
+        return config("nova-menu.show_duplicate", true);
+    }
 }
