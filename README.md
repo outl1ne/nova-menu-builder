@@ -1,3 +1,7 @@
+# Archived
+
+This package has been replaced by [nova-pages](https://github.com/workupsrl/nova-pages)
+
 # Nova Menu Builder (WorkUp Version)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/Workup/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/Workup/nova-menu-builder)
