@@ -30,6 +30,7 @@
     "novaMenuBuilder.menuItemTargetNewWindow": "نافذة جديدة",
     "novaMenuBuilder.menuItemActive": "نشط",
     "novaMenuBuilder.menuItemDisabled": "معطل",
+    "novaMenuBuilder.nestableLabel": "عش",
     "novaMenuBuilder.toastDeleteSucces": "تم حذف العنصر",
     "novaMenuBuilder.toastCreateSuccess": "تم انشاء العنصر",
     "novaMenuBuilder.toastUpdateSuccess": "تم تحديث القائمة",

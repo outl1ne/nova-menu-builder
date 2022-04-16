@@ -4,6 +4,9 @@
     :max-depth="maxDepth"
     @input="value = $event"
     @change="$emit('onMenuChange')"
+    :hooks="{
+      'beforeMove': beforeMove
+    }"
     class="px-3"
     classProp="classProp"
   >
@@ -100,6 +103,14 @@ export default {
       isCascadeOpen(item) {
           return !item.classProp.find(className => className === 'hide-cascade');
       },
+
+      beforeMove ({ dragItem, pathFrom, pathTo }) {
+        if (dragItem.nestable) {
+          return true;
+        }
+
+        return pathTo.length === 1
+      }
   },
 };
 </script>

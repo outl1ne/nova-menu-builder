@@ -8,6 +8,14 @@
       {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
       <CheckboxWithLabel
+        class="ml-auto mr-4"
+        :checked="newItem.nestable"
+        @input="newItem.nestable = $event.target.checked"
+      >
+        {{ __('novaMenuBuilder.nestableLabel') }}
+      </CheckboxWithLabel>
+
+      <CheckboxWithLabel
         :checked="newItem.enabled"
         @input="newItem.enabled = $event.target.checked"
       >

@@ -29,6 +29,7 @@
   "novaMenuBuilder.menuItemTargetSameWindow": "Zelfde venster/tab",
   "novaMenuBuilder.menuItemTargetNewWindow": "Nieuw venster/tab",
   "novaMenuBuilder.menuItemActive": "Actief",
+  "novaMenuBuilder.nestableLabel": "Nestbaar",
   "novaMenuBuilder.menuItemDisabled": "Uitgeschakeld",
   "novaMenuBuilder.toastDeleteSucces": "Menu item verwijderd",
   "novaMenuBuilder.toastCreateSuccess": "Menu item gemaakt",

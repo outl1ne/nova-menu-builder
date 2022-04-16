@@ -29,14 +29,14 @@ export default {
           ? localItemsState.find(localItem => +localItem.id === +item.id)
           : false;
 
-        const classProp = item.children && item.children.length > 0 && (
+        const hideCascade = item.children && item.children.length > 0 && (
           (localItemState && !localItemState.cascade) ||
           (!this.getMenuLocalState() && collapsedAsDefault)
-        ) ? 'hide-cascade' : '';
+        );
 
         return {
           ...item,
-          classProp: [classProp],
+          classProp: [hideCascade ? 'hide-cascade' : ''],
           children: Array.isArray(item.children)
             ? this.setMenuItemProperties(item.children, localItemState && localItemState.children, collapsedAsDefault)
             : item.children,
