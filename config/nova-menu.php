@@ -74,6 +74,8 @@ return [
     */
     'show_duplicate' => true,
 
+    'collapsed_as_default' => true,
+
     /*
     |--------------------------------------------------------------------------
     | Resource

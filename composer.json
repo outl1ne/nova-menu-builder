@@ -10,8 +10,8 @@
   ],
   "repositories": [
     {
-      "type": "composer",
-      "url": "https://nova.laravel.com"
+      "type": "path",
+      "url": "../nova"
     }
   ],
   "license": "MIT",
@@ -28,15 +28,14 @@
     }
   ],
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=8.0",
     "doctrine/dbal": ">=2.0.0",
-    "laravel/nova": "^3.0",
-    "optimistdigital/nova-translations-loader": "^3.0",
-    "optimistdigital/nova-tailwind": "^1.0.2"
+    "laravel/nova": "^4.0",
+    "optimistdigital/nova-translations-loader": "^4.0"
   },
   "require-dev": {
-    "orchestra/testbench": "^5.0|^6.0",
-    "phpunit/phpunit": "^8.0|^9.0"
+    "orchestra/testbench": "^7.0",
+    "phpunit/phpunit": "^9.0"
   },
   "autoload": {
     "psr-4": {

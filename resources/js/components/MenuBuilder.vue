@@ -2,82 +2,64 @@
   <vue-nestable
     :value="value"
     :max-depth="maxDepth"
-    @input="val => $emit('input', val)"
+    @input="value = $event"
     @change="$emit('onMenuChange')"
-    class="px-3 menu-builder"
+    class="px-3"
     classProp="classProp"
   >
-    <vue-nestable-handle
-      slot-scope="{ item }"
-      :item="item"
-      class="handle flex flex-wrap bg-gray-100 shadow-sm border rounded-md outline-none"
-      :class="{ 'border-40': !item.enabled, 'border-60': item.enabled }"
-    >
-      <div :class="`item-data w-2/3 flex ${!hasChildren(item) ? 'pl-3' : ''}`">
-        <!-- Collapse icon -->
-        <button
-          v-if="hasChildren(item)"
-          @click.prevent="toggleMenuChildrenCascade(item)"
-          class="appearance-none cursor-pointer fill-current hover:text-primary flex px-4 items-center focus:outline-none"
-        >
-          <arrow-icon :wrapperClass="`${isCascadeOpen(item) ? 'btn-cascade-open' : ''}`" />
-        </button>
+    <template v-slot="{ item }">
+      <vue-nestable-handle
+        class="handle dark:bg-gray-800 flex items-center justify-between flex-wrap border rounded-lg outline-none border-b border-gray-200 dark:border-gray-600"
+      >
+        <div :class="`item-data items-center flex ${!hasChildren(item) ? 'px-3' : ''}`">
+          <button
+            v-if="hasChildren(item)"
+            @click.prevent="toggleMenuChildrenCascade(item)"
+            class="appearance-none cursor-pointer fill-current hover:text-primary flex px-3 items-center focus:outline-none"
+          >
+            <Icon :type="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
+          </button>
 
-        <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">{{ item.name }}</div>
-        <div :class="`font-lighter text-80 ml-4 text-sm ${!item.enabled ? 'opacity-25' : ''}`">
-          {{ item.displayValue }}
+          <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">
+            {{ item.name }}
+          </div>
+          <div :class="`font-lighter text-80 ml-4 text-sm ${!item.enabled ? 'opacity-25' : ''}`">
+            {{ item.displayValue }}
+          </div>
         </div>
-      </div>
 
-      <div class="buttons w-1/3 flex justify-end content-center">
-        <!-- Edit icon -->
-        <tooltip>
+        <div class="buttons md:w-1/3 flex justify-end content-center">
           <button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"
             class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
           >
-            <edit-icon />
+            <Icon type="pencil-alt" />
           </button>
 
-          <tooltip-content slot="content">
-            {{ __('novaMenuBuilder.edit') }}
-          </tooltip-content>
-        </tooltip>
-
-        <!-- Duplicate icon -->
-        <tooltip>
           <button
             :title="__('novaMenuBuilder.duplicate')"
             @click.prevent="$emit('duplicateMenuItem', item)"
             class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
           >
-            <duplicate-icon />
+            <Icon type="duplicate" />
           </button>
 
-          <tooltip-content slot="content">
-            {{ __('novaMenuBuilder.duplicate') }}
-          </tooltip-content>
-        </tooltip>
-
-        <button
-          :title="__('novaMenuBuilder.delete')"
-          @click.prevent="$emit('removeMenu', item)"
-          class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
-        >
-          <delete-icon />
-        </button>
-      </div>
-    </vue-nestable-handle>
+          <button
+            :title="__('novaMenuBuilder.delete')"
+            @click.prevent="$emit('removeMenu', item)"
+            class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
+          >
+            <Icon type="trash" />
+          </button>
+        </div>
+      </vue-nestable-handle>
+    </template>
   </vue-nestable>
 </template>
 
 <script>
-import { VueNestable, VueNestableHandle } from 'vue-nestable';
-import ArrowIcon from './icons/ArrowIcon';
-import DeleteIcon from './icons/DeleteIcon';
-import DuplicateIcon from './icons/DuplicateIcon';
-import EditIcon from './icons/EditIcon';
+import { VueNestable, VueNestableHandle } from "vue3-nestable";
 
 export default {
   props: {
@@ -95,10 +77,6 @@ export default {
   components: {
     VueNestable,
     VueNestableHandle,
-    ArrowIcon,
-    DeleteIcon,
-    DuplicateIcon,
-    EditIcon,
   },
 
   data: () => ({
@@ -106,22 +84,22 @@ export default {
   }),
 
   methods: {
-    hasChildren(item) {
-      return Array.isArray(item.children) && item.children.length;
-    },
+      hasChildren(item) {
+          return Array.isArray(item.children) && item.children.length;
+      },
 
-    toggleMenuChildrenCascade(item) {
-      if (item.classProp.find(className => className === 'hide-cascade')) {
-        item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
-      } else {
-        item.classProp.push('hide-cascade');
-      }
-      this.$emit('saveMenuLocalState', item);
-    },
+      toggleMenuChildrenCascade(item) {
+          if (item.classProp.find(className => className === 'hide-cascade')) {
+              item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
+          } else {
+              item.classProp.push('hide-cascade');
+          }
+          this.$emit('saveMenuLocalState', item);
+      },
 
-    isCascadeOpen(item) {
-      return !item.classProp.find(className => className === 'hide-cascade');
-    },
+      isCascadeOpen(item) {
+          return !item.classProp.find(className => className === 'hide-cascade');
+      },
   },
 };
 </script>
@@ -134,5 +112,11 @@ export default {
     justify-content: center;
     align-items: center;
   }
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.opacity-25 {
+  opacity: 0.25;
 }
 </style>

@@ -18,14 +18,15 @@
     <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length" />
 
     <menu-builder
-      v-if="!loadingMenuItems && menuItems.length"
-      @duplicateMenuItem="duplicateMenuItem"
-      @editMenu="editMenu"
-      @onMenuChange="updateMenu"
-      @removeMenu="removeMenu"
-      @saveMenuLocalState="saveMenuLocalState"
-      :max-depth="field.maxDepth"
-      v-model="menuItems"
+        v-if="!loadingMenuItems && menuItems.length"
+        @duplicateMenuItem="duplicateMenuItem"
+        @editMenu="editMenu"
+        @onMenuChange="updateMenu"
+        @removeMenu="removeMenu"
+        @saveMenuLocalState="saveMenuLocalState"
+        :max-depth="field.maxDepth"
+        :value="menuItems"
+        @input="menuItems = $event"
     />
 
     <update-menu-item-modal
@@ -141,7 +142,7 @@ export default {
       this.loadingMenuItems = true;
 
       const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
-      this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
+      this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState(), this.field.collapsedAsDefault);
 
       const menuItemTypes = (await api.getMenuItemTypes(this.resourceId, this.selectedLocale)).data;
       this.menuItemTypes = Object.values(menuItemTypes);
@@ -166,7 +167,7 @@ export default {
       try {
         await api.destroy(this.itemToDelete.id);
         await this.refreshData();
-        this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSucces'), { type: 'success' });
+        Nova.success(this.__('novaMenuBuilder.toastDeleteSucces'));
         this.itemToDelete = null;
         this.showDeleteModal = false;
       } catch (e) {
@@ -195,7 +196,7 @@ export default {
         this.refreshData();
         this.showAddModal = false;
         this.resetNewItem();
-        this.$toasted.show(this.__('novaMenuBuilder.toastCreateSuccess'), { type: 'success' });
+        Nova.success(this.__('novaMenuBuilder.toastCreateSuccess'));
       } catch (e) {
         console.error(e);
         this.handleErrors(e);
@@ -209,7 +210,7 @@ export default {
         await api.update(this.newItem.id, this.newItemData);
         this.isMenuItemUpdating = false;
         this.showAddModal = false;
-        this.$toasted.show(this.__('novaMenuBuilder.toastUpdateSuccess'), { type: 'success' });
+        Nova.success(this.__('novaMenuBuilder.toastUpdateSuccess'));
         this.resetNewItem();
         await this.refreshData();
       } catch (e) {
@@ -221,9 +222,9 @@ export default {
     async updateMenu() {
       try {
         await api.saveItems(this.resourceId, this.menuItems);
-        this.$toasted.show(this.__('novaMenuBuilder.toastReorderSuccess'), { type: 'success' });
+        Nova.success(this.__('novaMenuBuilder.toastReorderSuccess'));
       } catch (e) {
-        this.$toasted.show(this.__('novaMenuBuilder.serverError'), { type: 'error' });
+        Nova.error(this.__('novaMenuBuilder.serverError'));
       }
     },
 
@@ -231,7 +232,7 @@ export default {
       let errors = res.response && res.response.data && res.response.data.errors;
       if (errors) {
         this.errors = errors;
-        Object.values(errors).map(error => this.$toasted.show(error, { type: 'error' }));
+        Object.values(errors).map(error => Nova.error(error));
       }
     },
 
@@ -240,7 +241,7 @@ export default {
         await api.duplicate(item.id);
         await this.refreshData();
         this.resetNewItem();
-        this.$toasted.show(this.__('novaMenuBuilder.toastDuplicateSuccess'), { type: 'success' });
+        Nova.success(this.__('novaMenuBuilder.toastDuplicateSuccess'));
       } catch (e) {
         this.handleErrors(e);
       }
@@ -259,6 +260,9 @@ export default {
 </script>
 
 <style lang="scss">
+[dusk="nova-menus-detail-component"] #menu-builder-field {
+  margin: -8px 0;
+}
 #menu-builder-field {
   .menu-button {
     position: absolute;

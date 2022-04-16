@@ -2,23 +2,18 @@
 
 namespace OptimistDigital\MenuBuilder;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
+use Laravel\Nova\Menu\MenuSection;
 
 class MenuBuilder extends Tool
 {
-
-    /**
-     * Perform any tasks that need to happen when the tool is booted.
-     *
-     * @return void
-     */
     public function boot()
     {
-        Nova::script('nova-menu', __DIR__ . '/../dist/js/menu-builder.js');
-        Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
+        Nova::script('nova-menu', __DIR__ . '/../dist/js/entry.js');
+        // Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
 
         $menuBuilderUriKey = static::getMenuResource()::uriKey();
         Nova::provideToScript([
@@ -26,14 +21,13 @@ class MenuBuilder extends Tool
         ]);
     }
 
-    /**
-     * Build the view that renders the navigation links for the tool.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function renderNavigation()
+    public function menu(Request $request)
     {
-        return view('nova-menu::navigation');
+        // OptimistDigital\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
+        return MenuSection::make(__('novaMenuBuilder.sidebarTitle'))
+            ->path('/menus')
+            ->icon('adjustments')
+            ->collapsable();
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
@@ -159,5 +153,10 @@ class MenuBuilder extends Tool
     public static function showDuplicate()
     {
         return config("nova-menu.show_duplicate", true);
+    }
+
+    public static function collapsedAsDefault()
+    {
+        return config("nova-menu.collapsed_as_default", true);
     }
 }

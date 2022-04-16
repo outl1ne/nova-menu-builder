@@ -1,32 +1,31 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "mix",
-    "watch": "mix watch",
-    "hot": "mix watch --hot",
-    "prod": "mix --production",
-    "check-format": "prettier --list-different 'resources/**/*.{css,js,vue}'",
-    "format": "prettier --write 'resources/**/*.{css,js,vue}'"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-vue": "^7.20.0",
-    "laravel-mix": "^6.0.43",
-    "postcss": "^8.4.8",
-    "prettier": "^2.5.1",
-    "resolve-url-loader": "^4.0.0",
-    "sass": "^1.49.9",
-    "sass-loader": "^12.6.0",
-    "vue-loader": "^15.9.8",
-    "vue-template-compiler": "^2.6.14"
-  },
-  "dependencies": {
-    "laravel-nova": "^1.12.3",
-    "vue": "^2.6.14",
-    "vue-js-toggle-button": "^1.3.3",
-    "vue-multiselect": "^2.1.6",
-    "vue-nestable": "^2.6.0"
-  }
+    "private": true,
+    "scripts": {
+        "dev": "mix",
+        "watch": "mix watch",
+        "hot": "mix watch --hot",
+        "prod": "mix --production",
+        "format": "prettier --write 'resources/**/*.{css,js,vue}'"
+    },
+    "devDependencies": {
+        "@inertiajs/inertia": "^0.11.0",
+        "@vue/babel-plugin-jsx": "^1.1.1",
+        "axios": "^0.26.1",
+        "cross-env": "^7.0.3",
+        "form-backend-validation": "^2.4.0",
+        "laravel-mix": "^6.0.43",
+        "postcss": "^8.4.12",
+        "prettier": "^2.6.2",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.50.0",
+        "sass-loader": "^12.6.0",
+        "terser-webpack-plugin": "^5.3.1",
+        "vue-loader": "^17.0.0",
+        "vue-template-compiler": "^2.6.14",
+        "vuex": "^4.0.2"
+    },
+    "dependencies": {
+        "vue": "^3.2.31",
+        "vue3-nestable": "^3.0.3"
+    }
 }

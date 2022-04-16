@@ -1,86 +1,71 @@
 <template>
-  <modal align="flex justify-end" :show="showModal" class="copy-menu-items-modal">
-    <div slot="container">
-      <div class="flex flex-wrap justify-between mb-6">
-        <h2 class="text-90 font-normal text-xl">
-          {{ __('novaMenuBuilder.copyMenuItemsFromTitle') }}
-        </h2>
-      </div>
+  <Modal
+    :show="showModal"
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+  >
+    <ModalHeader v-text="__('novaMenuBuilder.copyMenuItemsFromTitle')" />
 
-      <form @submit.prevent="copyMenuItems" autocomplete="off">
-        <div class="flex">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{
-              __('novaMenuBuilder.menuResourceSingularLabel')
-            }}</label>
-          </div>
+    <form @submit.prevent="copyMenuItems" autocomplete="off">
+      <DefaultField :field="{
+        visible: true,
+        name: __('novaMenuBuilder.menuResourceSingularLabel'),
+      }">
+        <template #field>
+          <SelectControl
+            v-if="hasMultipleMenus"
+            :options="menuOptions.map(v => ({ value: v.id, label: v.name }))"
+            :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
+            v-model:selected="selectedMenu"
+            @change="selectedMenu = $event"
+          />
+        </template>
+      </DefaultField>
 
-          <div class="py-4 w-4/5" v-if="hasMultipleMenus">
-            <multiselect
-              :options="menuOptions"
-              :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
-              :value="selectedMenu"
-              @input="value => (selectedMenu = value)"
-              label="title"
-              track-by="id"
-              selectLabel=""
-              selectGroupLabel=""
-              selectedLabel=""
-              deselectLabel=""
-              deselectGroupLabel=""
-            />
-          </div>
-        </div>
+      <DefaultField :field="{
+        visible: true,
+        name: __('novaMenuBuilder.locale'),
+      }">
+        <template #field>
+          <SelectControl
+            :options="localeOptions.map(v => ({ value: v.id, label: v.name }))"
+            :placeholder="__('novaMenuBuilder.locale')"
+            v-model:selected="selectedLocale"
+            @change="selectedLocale = $event"
+          />
+        </template>
+      </DefaultField>
+    </form>
 
-        <div class="flex border-t border-40" v-if="hasMultipleLocales">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.locale') }}</label>
-          </div>
-          <div class="py-4 w-4/5">
-            <multiselect
-              :options="localeOptions"
-              :placeholder="__('novaMenuBuilder.locale')"
-              :value="selectedLocale"
-              @input="value => (selectedLocale = value)"
-              label="name"
-              track-by="id"
-              selectLabel=""
-              selectGroupLabel=""
-              selectedLabel=""
-              deselectLabel=""
-              deselectGroupLabel=""
-            />
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div slot="buttons">
+    <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <button
-          @click.prevent="$emit('closeModal')"
-          class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-          type="button"
-        >
-          {{ __('novaMenuBuilder.closeModalTitle') }}
-        </button>
+        <CancelButton
+            component="button"
+            type="button"
+            dusk="cancel-action-button"
+            @click.prevent="$emit('closeModal')"
+        />
 
-        <progress-button @click.native.prevent="copyMenuItemsFromMenu" :disabled="isCopying" :processing="isCopying">
+        <LoadingButton
+          class="ml-3"
+          type="submit"
+          ref="runButton"
+          component="DefaultButton"
+          :disabled="isCopying"
+          :loading="isCopying"
+          @click="copyMenuItemsFromMenu"
+        >
           {{ __('novaMenuBuilder.copyMenuItemsButtonTitle') }}
-        </progress-button>
+        </LoadingButton>
       </div>
-    </div>
-  </modal>
+    </ModalFooter>
+  </Modal>
 </template>
 
 <script>
-import Modal from './Modal';
-import Multiselect from 'vue-multiselect';
 import api from '../../api';
 
 export default {
   props: ['showModal', 'activeLocale', 'locales', 'resourceName', 'resourceId', 'menuCount'],
-  components: { Modal, Multiselect },
   data: () => ({
     isCopying: false,
     menuOptions: [],
@@ -111,21 +96,21 @@ export default {
       let menuOptions = (await api.getMenus()).data;
 
       if (this.hasMultipleLocales) {
-        this.selectedMenu = menuOptions.find(m => String(m.id) === String(this.resourceId));
+        this.selectedMenu = String(this.resourceId);
       } else {
         // Just one locale, let's remove the current menu from the selection
         menuOptions = menuOptions.filter(m => String(m.id) !== String(this.resourceId));
       }
 
       this.menuOptions = menuOptions;
-      this.selectedMenu = menuOptions[0];
+      this.selectedMenu = menuOptions[0].id;
     },
 
     async copyMenuItemsFromMenu() {
       if (!this.selectedMenu || !this.selectedLocale) return;
       this.isCopying = true;
       try {
-        await api.copyItems(this.selectedMenu.id, this.selectedLocale.id, this.resourceId, this.activeLocale);
+        await api.copyItems(this.selectedMenu, this.selectedLocale, this.resourceId, this.activeLocale);
         this.$emit('refreshItems');
         this.$emit('closeModal');
       } catch (e) {
@@ -141,12 +126,12 @@ export default {
       }));
 
       // If it's the same menu, don't show current locale
-      if (this.selectedMenu && String(this.resourceId) === String(this.selectedMenu.id)) {
+      if (this.selectedMenu && String(this.resourceId) === String(this.selectedMenu)) {
         options = options.filter(obj => obj.id !== this.activeLocale);
       }
 
       this.localeOptions = options;
-      this.selectedLocale = options[0];
+      this.selectedLocale = options[0].id;
     },
   },
   computed: {

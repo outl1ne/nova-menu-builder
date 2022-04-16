@@ -1,39 +1,41 @@
 <template>
-  <modal :show="showModal" align="flex justify-end" :width="400">
-    <div slot="container">
-      <h2 class="mb-6 text-90 font-normal text-xl">{{ __('novaMenuBuilder.delConfirmModalTitle') }}</h2>
-      <p v-if="itemToDelete && itemToDelete.children.length > 0" class="text-80 leading-normal mb-4">
+  <Modal
+    :show="showModal"
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+  >
+    <ModalHeader v-text="__('novaMenuBuilder.delConfirmModalTitle')" />
+
+    <div class="p-6 grid gap-6">
+      <p v-if="itemToDelete && itemToDelete.children.length > 0">
         {{ __('novaMenuBuilder.delConfirmModalDescChildren') }}
       </p>
-      <p class="text-80 leading-normal">{{ __('novaMenuBuilder.delConfirmModalDesc') }}</p>
+      <p>
+        {{ __('novaMenuBuilder.delConfirmModalDesc') }}
+      </p>
     </div>
-    <div slot="buttons">
-      <div class="ml-auto">
-        <button
-          type="button"
-          @click.prevent="$emit('closeModal')"
-          class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-        >
-          {{ __('novaMenuBuilder.delConfirmModalCancel') }}
-        </button>
 
-        <button
-          id="confirm-overwrite-button"
-          @click.prevent="$emit('confirmItemDelete')"
-          class="btn btn-default btn-danger"
+    <ModalFooter class="flex justify-end">
+      <div class="ml-auto">
+        <CancelButton
+            component="button"
+            type="button"
+            dusk="cancel-action-button"
+            @click.prevent="$emit('closeModal')"
+        />
+
+        <DangerButton
+          class="ml-3"
+          @click="$emit('confirmItemDelete')"
         >
           {{ __('novaMenuBuilder.delConfirmModalConfirm') }}
-        </button>
+        </DangerButton>
       </div>
-    </div>
-  </modal>
+    </ModalFooter>
+  </Modal>
 </template>
 
 <script>
-import Modal from './Modal';
-
 export default {
   props: ['showModal', 'itemToDelete'],
-  components: { Modal },
 };
 </script>
