@@ -2,7 +2,7 @@
 
 namespace App\Nova\MenuBuilderTypes;
 
-use OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType;
+use Outl1ne\MenuBuilder\MenuItemTypes\MenuItemTextType;
 
 class :className extends MenuItemTextType
 {

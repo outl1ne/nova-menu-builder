@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Tests;
+namespace Outl1ne\MenuBuilder\Tests;
 
 
 class SampleTest extends TestCase

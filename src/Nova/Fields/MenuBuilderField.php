@@ -1,10 +1,10 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Nova\Fields;
+namespace Outl1ne\MenuBuilder\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
-use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Models\Menu;
+use Outl1ne\MenuBuilder\MenuBuilder;
+use Outl1ne\MenuBuilder\Models\Menu;
 
 class MenuBuilderField extends Field
 {

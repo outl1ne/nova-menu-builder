@@ -1,5 +1,5 @@
 {
-  "name": "optimistdigital/nova-menu-builder",
+  "name": "outl1ne/nova-menu-builder",
   "description": "This Laravel Nova package allows you to create and manage menus and menu items.",
   "keywords": [
     "laravel",
@@ -10,8 +10,8 @@
   ],
   "repositories": [
     {
-      "type": "path",
-      "url": "../nova"
+      "type": "composer",
+      "url": "https://nova.laravel.com"
     }
   ],
   "license": "MIT",
@@ -39,7 +39,7 @@
   },
   "autoload": {
     "psr-4": {
-      "OptimistDigital\\MenuBuilder\\": "src/"
+      "Outl1ne\\MenuBuilder\\": "src/"
     },
     "files": [
       "src/helpers.php"
@@ -47,13 +47,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "OptimistDigital\\MenuBuilder\\Tests\\": "tests"
+      "Outl1ne\\MenuBuilder\\Tests\\": "tests"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "OptimistDigital\\MenuBuilder\\MenuBuilderServiceProvider"
+        "Outl1ne\\MenuBuilder\\MenuBuilderServiceProvider"
       ]
     }
   },

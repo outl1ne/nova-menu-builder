@@ -1,14 +1,14 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder;
+namespace Outl1ne\MenuBuilder;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
-use OptimistDigital\MenuBuilder\Commands\CreateMenuItemType;
-use OptimistDigital\MenuBuilder\Http\Middleware\Authorize;
-use OptimistDigital\NovaTranslationsLoader\LoadsNovaTranslations;
+use Outl1ne\MenuBuilder\Commands\CreateMenuItemType;
+use Outl1ne\MenuBuilder\Http\Middleware\Authorize;
+use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
@@ -70,7 +70,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
         if ($this->app->routesAreCached()) return;
 
         Route::middleware(['nova', Authorize::class])
-            ->namespace('OptimistDigital\MenuBuilder\Http\Controllers')
+            ->namespace('Outl1ne\MenuBuilder\Http\Controllers')
             ->prefix('nova-vendor/nova-menu')
             ->group(__DIR__ . '/../routes/api.php');
     }

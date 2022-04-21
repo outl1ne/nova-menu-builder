@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Commands;
+namespace Outl1ne\MenuBuilder\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;

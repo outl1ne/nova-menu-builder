@@ -1,18 +1,18 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder\Nova\Resources;
+namespace Outl1ne\MenuBuilder\Nova\Resources;
 
 use Laravel\Nova\Panel;
 use Laravel\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
-use OptimistDigital\MenuBuilder\MenuBuilder;
-use OptimistDigital\MenuBuilder\Nova\Fields\MenuBuilderField;
+use Outl1ne\MenuBuilder\MenuBuilder;
+use Outl1ne\MenuBuilder\Nova\Fields\MenuBuilderField;
 
 class MenuResource extends Resource
 {
-    public static $model = \OptimistDigital\MenuBuilder\Models\Menu::class;
+    public static $model = \Outl1ne\MenuBuilder\Models\Menu::class;
     public static $search = ['name', 'slug'];
     public static $displayInNavigation = false;
 

@@ -63,8 +63,8 @@ return [
     */
 
     'menu_item_types' => [
-        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
-        \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
+        \Outl1ne\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+        \Outl1ne\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
     ],
 
     /*
@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'resource' => OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class,
+    'resource' => Outl1ne\MenuBuilder\Nova\Resources\MenuResource::class,
 
 
     /*
@@ -97,7 +97,7 @@ return [
     |
     */
 
-    'menu_model' => OptimistDigital\MenuBuilder\Models\Menu::class,
+    'menu_model' => Outl1ne\MenuBuilder\Models\Menu::class,
 
 
     /*
@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'menu_item_model' => OptimistDigital\MenuBuilder\Models\MenuItem::class,
+    'menu_item_model' => Outl1ne\MenuBuilder\Models\MenuItem::class,
 
 
     /*

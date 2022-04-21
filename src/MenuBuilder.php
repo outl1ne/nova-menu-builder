@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\MenuBuilder;
+namespace Outl1ne\MenuBuilder;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
@@ -23,11 +23,10 @@ class MenuBuilder extends Tool
 
     public function menu(Request $request)
     {
-        // OptimistDigital\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
+        // Outl1ne\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
         return MenuSection::make(__('novaMenuBuilder.sidebarTitle'))
             ->path('/menus')
-            ->icon('adjustments')
-            ->collapsable();
+            ->icon('adjustments');
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
@@ -112,7 +111,7 @@ class MenuBuilder extends Tool
     // In-package helpers
     public static function getMenuResource()
     {
-        return config('nova-menu.resource', \OptimistDigital\MenuBuilder\Nova\Resources\MenuResource::class);
+        return config('nova-menu.resource', \Outl1ne\MenuBuilder\Nova\Resources\MenuResource::class);
     }
 
     public static function getMenusTableName()
@@ -127,12 +126,12 @@ class MenuBuilder extends Tool
 
     public static function getMenuClass()
     {
-        return config('nova-menu.menu_model', \OptimistDigital\MenuBuilder\Models\Menu::class);
+        return config('nova-menu.menu_model', \Outl1ne\MenuBuilder\Models\Menu::class);
     }
 
     public static function getMenuItemClass()
     {
-        return config('nova-menu.menu_item_model', \OptimistDigital\MenuBuilder\Models\MenuItem::class);
+        return config('nova-menu.menu_item_model', \Outl1ne\MenuBuilder\Models\MenuItem::class);
     }
 
     public static function getMenuItemTypes()
