@@ -29,10 +29,10 @@ export default {
           ? localItemsState.find(localItem => +localItem.id === +item.id)
           : false;
 
-        const hideCascade = item.children && item.children.length > 0 && (
-          (localItemState && !localItemState.cascade) ||
-          (!this.getMenuLocalState() && collapsedAsDefault)
-        );
+        const hideCascade =
+          item.children &&
+          item.children.length > 0 &&
+          ((localItemState && !localItemState.cascade) || (!this.getMenuLocalState() && collapsedAsDefault));
 
         return {
           ...item,

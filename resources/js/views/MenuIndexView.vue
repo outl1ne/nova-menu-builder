@@ -1,7 +1,5 @@
 <template>
-  <ResourceIndex
-    :resource-name="resourceName"
-  />
+  <ResourceIndex :resource-name="resourceName" />
 </template>
 
 <script>

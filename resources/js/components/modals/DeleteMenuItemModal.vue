@@ -1,8 +1,5 @@
 <template>
-  <Modal
-    :show="showModal"
-    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
-  >
+  <Modal :show="showModal" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
     <ModalHeader v-text="__('novaMenuBuilder.delConfirmModalTitle')" />
 
     <div class="p-6 grid gap-6">
@@ -17,16 +14,13 @@
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
         <CancelButton
-            component="button"
-            type="button"
-            dusk="cancel-action-button"
-            @click.prevent="$emit('closeModal')"
+          component="button"
+          type="button"
+          dusk="cancel-action-button"
+          @click.prevent="$emit('closeModal')"
         />
 
-        <DangerButton
-          class="ml-3"
-          @click="$emit('confirmItemDelete')"
-        >
+        <DangerButton class="ml-3" @click="$emit('confirmItemDelete')">
           {{ __('novaMenuBuilder.delConfirmModalConfirm') }}
         </DangerButton>
       </div>

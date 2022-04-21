@@ -18,15 +18,15 @@
     <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length" />
 
     <menu-builder
-        v-if="!loadingMenuItems && menuItems.length"
-        @duplicateMenuItem="duplicateMenuItem"
-        @editMenu="editMenu"
-        @onMenuChange="updateMenu"
-        @removeMenu="removeMenu"
-        @saveMenuLocalState="saveMenuLocalState"
-        :max-depth="field.maxDepth"
-        :value="menuItems"
-        @input="menuItems = $event"
+      v-if="!loadingMenuItems && menuItems.length"
+      @duplicateMenuItem="duplicateMenuItem"
+      @editMenu="editMenu"
+      @onMenuChange="updateMenu"
+      @removeMenu="removeMenu"
+      @saveMenuLocalState="saveMenuLocalState"
+      :max-depth="field.maxDepth"
+      :value="menuItems"
+      @input="menuItems = $event"
     />
 
     <update-menu-item-modal
@@ -142,7 +142,11 @@ export default {
       this.loadingMenuItems = true;
 
       const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
-      this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState(), this.field.collapsedAsDefault);
+      this.menuItems = this.setMenuItemProperties(
+        Object.values(menuItems),
+        this.getMenuLocalState(),
+        this.field.collapsedAsDefault
+      );
 
       const menuItemTypes = (await api.getMenuItemTypes(this.resourceId, this.selectedLocale)).data;
       this.menuItemTypes = Object.values(menuItemTypes);
@@ -260,7 +264,7 @@ export default {
 </script>
 
 <style lang="scss">
-[dusk="nova-menus-detail-component"] #menu-builder-field {
+[dusk='nova-menus-detail-component'] #menu-builder-field {
   margin: -8px 0;
 }
 #menu-builder-field {

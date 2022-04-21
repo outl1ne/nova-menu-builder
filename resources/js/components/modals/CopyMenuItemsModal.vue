@@ -1,15 +1,14 @@
 <template>
-  <Modal
-    :show="showModal"
-    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
-  >
+  <Modal :show="showModal" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
     <ModalHeader v-text="__('novaMenuBuilder.copyMenuItemsFromTitle')" />
 
     <form @submit.prevent="copyMenuItems" autocomplete="off">
-      <DefaultField :field="{
-        visible: true,
-        name: __('novaMenuBuilder.menuResourceSingularLabel'),
-      }">
+      <DefaultField
+        :field="{
+          visible: true,
+          name: __('novaMenuBuilder.menuResourceSingularLabel'),
+        }"
+      >
         <template #field>
           <SelectControl
             v-if="hasMultipleMenus"
@@ -21,10 +20,12 @@
         </template>
       </DefaultField>
 
-      <DefaultField :field="{
-        visible: true,
-        name: __('novaMenuBuilder.locale'),
-      }">
+      <DefaultField
+        :field="{
+          visible: true,
+          name: __('novaMenuBuilder.locale'),
+        }"
+      >
         <template #field>
           <SelectControl
             :options="localeOptions.map(v => ({ value: v.id, label: v.name }))"
@@ -39,10 +40,10 @@
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
         <CancelButton
-            component="button"
-            type="button"
-            dusk="cancel-action-button"
-            @click.prevent="$emit('closeModal')"
+          component="button"
+          type="button"
+          dusk="cancel-action-button"
+          @click.prevent="$emit('closeModal')"
         />
 
         <LoadingButton
