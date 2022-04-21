@@ -5,8 +5,7 @@
     "laravel",
     "nova",
     "menu",
-    "builder",
-    "optimistdigital"
+    "builder"
   ],
   "repositories": [
     {

@@ -1,7 +1,7 @@
 # Nova Menu Builder
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/optimistdigital/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/optimistdigital/nova-menu-builder)
-[![Total Downloads](https://img.shields.io/packagist/dt/optimistdigital/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/optimistdigital/nova-menu-builder)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-menu-builder)
+[![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-menu-builder)
 
 This [Laravel Nova](https://nova.laravel.com/) package allows you to create and manage menus and menu items.
 
@@ -35,7 +35,7 @@ Install the package in a Laravel Nova project via Composer, edit the configurati
 
 ```bash
 # Install the package
-composer require optimistdigital/nova-menu-builder
+composer require outl1ne/nova-menu-builder
 
 # Publish the configuration file and edit it to your preference
 # NB! If you want custom table names, configure them before running the migrations.
@@ -51,7 +51,7 @@ public function tools()
 {
     return [
         // ...
-        new \OptimistDigital\MenuBuilder\MenuBuilder,
+        \Outl1ne\MenuBuilder\MenuBuilder::make(),
     ];
 }
 ```
@@ -138,7 +138,7 @@ return [
 
 Menu builder allows you create custom menu item types with custom fields.
 
-Create a class that extends the `OptimistDigital\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
+Create a class that extends the `Outl1ne\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
 
 ```php
 // in config/nova-menu.php

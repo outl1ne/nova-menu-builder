@@ -12,7 +12,7 @@ mix
       vue: 'Vue',
     },
     output: {
-      uniqueName: 'optimistdigital/nova-menu-builder-runner',
+      uniqueName: 'outl1ne/nova-menu-builder-runner',
     },
   })
   .alias({
