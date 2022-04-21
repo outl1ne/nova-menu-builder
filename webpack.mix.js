@@ -1,11 +1,11 @@
 let mix = require('laravel-mix');
 let path = require('path');
+const tailwindcss = require('tailwindcss');
 
-
-console.log(path.join(__dirname, 'vendor/laravel/nova/resources/js/mixins/packages.js'));
 mix
   .setPublicPath('dist')
-  .js('resources/js/entry.js', 'js')
+  .js('resources/js/entry.js', '')
+  .postCss('resources/css/entry.css', '', [tailwindcss('tailwind.config.js')])
   .vue({ version: 3 })
   .webpackConfig({
     externals: {

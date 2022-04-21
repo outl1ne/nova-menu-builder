@@ -12,8 +12,8 @@ class MenuBuilder extends Tool
 {
     public function boot()
     {
-        Nova::script('nova-menu', __DIR__ . '/../dist/js/entry.js');
-        // Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
+        Nova::script('nova-menu', __DIR__ . '/../dist/entry.js');
+        Nova::style('nova-menu', __DIR__ . '/../dist/entry.css');
 
         $menuBuilderUriKey = static::getMenuResource()::uriKey();
         Nova::provideToScript([

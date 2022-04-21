@@ -1,31 +1,32 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "mix",
-        "watch": "mix watch",
-        "hot": "mix watch --hot",
-        "prod": "mix --production",
-        "format": "prettier --write 'resources/**/*.{css,js,vue}'"
-    },
-    "devDependencies": {
-        "@inertiajs/inertia": "^0.11.0",
-        "@vue/babel-plugin-jsx": "^1.1.1",
-        "axios": "^0.26.1",
-        "cross-env": "^7.0.3",
-        "form-backend-validation": "^2.4.0",
-        "laravel-mix": "^6.0.43",
-        "postcss": "^8.4.12",
-        "prettier": "^2.6.2",
-        "resolve-url-loader": "^5.0.0",
-        "sass": "^1.50.0",
-        "sass-loader": "^12.6.0",
-        "terser-webpack-plugin": "^5.3.1",
-        "vue-loader": "^17.0.0",
-        "vue-template-compiler": "^2.6.14",
-        "vuex": "^4.0.2"
-    },
-    "dependencies": {
-        "vue": "^3.2.31",
-        "vue3-nestable": "^3.0.3"
-    }
+  "private": true,
+  "scripts": {
+    "dev": "mix",
+    "watch": "mix watch",
+    "hot": "mix watch --hot",
+    "prod": "mix --production",
+    "format": "prettier --write 'resources/**/*.{css,js,vue}'"
+  },
+  "devDependencies": {
+    "@inertiajs/inertia": "^0.11.0",
+    "@vue/babel-plugin-jsx": "^1.1.1",
+    "axios": "^0.26.1",
+    "cross-env": "^7.0.3",
+    "form-backend-validation": "^2.4.0",
+    "laravel-mix": "^6.0.43",
+    "postcss": "^8.4.12",
+    "prettier": "^2.6.2",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.50.1",
+    "sass-loader": "^12.6.0",
+    "terser-webpack-plugin": "^5.3.1",
+    "vue-loader": "^17.0.0",
+    "vue-template-compiler": "^2.6.14",
+    "vuex": "^4.0.2"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.0.24",
+    "vue": "^3.2.33",
+    "vue3-nestable": "^3.0.3"
+  }
 }

@@ -2,13 +2,13 @@
 
 namespace Outl1ne\MenuBuilder;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
-use Outl1ne\MenuBuilder\Commands\CreateMenuItemType;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Outl1ne\MenuBuilder\Http\Middleware\Authorize;
-use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
+use Outl1ne\MenuBuilder\Commands\CreateMenuItemType;
+use OptimistDigital\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
@@ -37,7 +37,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
         // Register resource
         Nova::resources([
-            MenuBuilder::getMenuResource()
+            MenuBuilder::getMenuResource(),
         ]);
 
         Validator::extend('unique_menu', function ($attribute, $value, $parameters, $validator) {

@@ -1,13 +1,16 @@
 <template>
   <div id="menu-builder-header">
-    <div class="locale-selection px-4 py-2 mr-4 bg-white dark:bg-gray-800 rounded-lg" v-if="Object.keys(locales).length > 1">
+    <div
+      class="locale-selection px-4 py-2 mr-4 bg-white dark:bg-gray-800 rounded-lg"
+      v-if="Object.keys(locales).length > 1"
+    >
       <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
         @click.prevent="$emit('changeLocale', locale)"
-        class="cursor-pointer font-bold border-b-2 px-2 h-full flex items-center box-border"
+        class="cursor-pointer font-bold px-2 border-b-2 h-full flex items-center box-border"
         :class="{
-          'text-primary border-primary': activeLocale === locale,
+          'text-primary-500 border-primary-500': activeLocale === locale,
           'text-80 border-white': activeLocale !== locale,
         }"
       >
@@ -15,20 +18,16 @@
       </div>
     </div>
 
-    <OutlineButton
-        class="mr-4"
-        @click.prevent="showCopyModal = true"
-        v-if="showCopyButton && showDuplicate"
-    >
-        <Icon type="duplicate" />
+    <OutlineButton class="mr-4" @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
+      <Icon type="duplicate" />
     </OutlineButton>
 
     <DefaultButton
-        :title="__('novaMenuBuilder.addMenuItem')"
-        class="mr-2 btn btn-default btn-icon bg-primary text-white flex-no-shrink"
-        @click.prevent="$emit('addMenuItem')"
+      :title="__('novaMenuBuilder.addMenuItem')"
+      class="mr-2 btn btn-default btn-icon bg-primary text-white flex-no-shrink"
+      @click.prevent="$emit('addMenuItem')"
     >
-        {{ __('novaMenuBuilder.addMenuItem') }}
+      {{ __('novaMenuBuilder.addMenuItem') }}
     </DefaultButton>
 
     <copy-menu-items-modal
