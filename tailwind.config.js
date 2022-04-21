@@ -19,6 +19,7 @@ module.exports = {
     padding: false,
     margin: false,
   },
+  darkMode: 'class',
   theme: {},
   plugins: [],
 };
