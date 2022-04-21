@@ -7,8 +7,8 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 
 ## Requirements
 
-- `php: >=7.2`
-- `laravel/nova: ^3.0`
+- `php: >=8.0`
+- `laravel/nova: ^4.0`
 
 ## Features
 
@@ -68,7 +68,7 @@ After publishing the configuration file, you have to make some required changes 
 # Define the locales for your project:
 # If your project doesn't have localization, you can just leave it as it is.
 # When there's just one locale, anything related to localization isn't displayed.
-'locales' => ['en_US' => 'English'],
+'locales' => ['en' => 'English'],
 
 # Define the list of possible menus (ie 'footer', 'header', 'main-menu'):
 'menus' => [
