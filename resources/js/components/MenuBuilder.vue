@@ -5,7 +5,7 @@
     @input="value = $event"
     @change="$emit('onMenuChange')"
     :hooks="{
-      'beforeMove': beforeMove
+      beforeMove: beforeMove,
     }"
     class="px-3"
     classProp="classProp"
@@ -23,9 +23,10 @@
             <Icon :type="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
           </button>
 
-          <div :class="`text-90 ${!item.enabled ? 'opacity-25' : ''}`">
+          <div :class="`text-90 font-bold ${!item.enabled ? 'opacity-25' : ''}`">
             {{ item.name }}
           </div>
+
           <div :class="`font-lighter text-80 ml-4 text-sm ${!item.enabled ? 'opacity-25' : ''}`">
             {{ item.displayValue }}
           </div>
@@ -62,7 +63,7 @@
 </template>
 
 <script>
-import { VueNestable, VueNestableHandle } from "vue3-nestable";
+import { VueNestable, VueNestableHandle } from 'vue3-nestable';
 
 export default {
   props: {
@@ -87,30 +88,30 @@ export default {
   }),
 
   methods: {
-      hasChildren(item) {
-          return Array.isArray(item.children) && item.children.length;
-      },
+    hasChildren(item) {
+      return Array.isArray(item.children) && item.children.length;
+    },
 
-      toggleMenuChildrenCascade(item) {
-          if (item.classProp.find(className => className === 'hide-cascade')) {
-              item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
-          } else {
-              item.classProp.push('hide-cascade');
-          }
-          this.$emit('saveMenuLocalState', item);
-      },
-
-      isCascadeOpen(item) {
-          return !item.classProp.find(className => className === 'hide-cascade');
-      },
-
-      beforeMove ({ dragItem, pathFrom, pathTo }) {
-        if (dragItem.nestable) {
-          return true;
-        }
-
-        return pathTo.length === 1
+    toggleMenuChildrenCascade(item) {
+      if (item.classProp.find(className => className === 'hide-cascade')) {
+        item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
+      } else {
+        item.classProp.push('hide-cascade');
       }
+      this.$emit('saveMenuLocalState', item);
+    },
+
+    isCascadeOpen(item) {
+      return !item.classProp.find(className => className === 'hide-cascade');
+    },
+
+    beforeMove({ dragItem, pathFrom, pathTo }) {
+      if (dragItem.nestable) {
+        return true;
+      }
+
+      return pathTo.length === 1;
+    },
   },
 };
 </script>

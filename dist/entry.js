@@ -5382,7 +5382,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _ctx.$emit('onMenuChange');
     }),
     hooks: {
-      'beforeMove': $options.beforeMove
+      beforeMove: $options.beforeMove
     },
     "class": "px-3",
     classProp: "classProp"
@@ -5408,7 +5408,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           , ["type"])], 8
           /* PROPS */
           , _hoisted_1)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-            "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("text-90 ".concat(!item.enabled ? 'opacity-25' : ''))
+            "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("text-90 font-bold ".concat(!item.enabled ? 'opacity-25' : ''))
           }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 3
           /* TEXT, CLASS */
           ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
