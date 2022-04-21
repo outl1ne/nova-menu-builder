@@ -1,11 +1,13 @@
 <template>
-  <resource-index :resourceName="resourceName" />
+  <ResourceIndex
+    :resource-name="resourceName"
+  />
 </template>
 
 <script>
 export default {
   data: () => ({
-    resourceName: Nova.config.menuBuilderUriKey,
+    resourceName: Nova.config('menuBuilderUriKey'),
   }),
 };
 </script>

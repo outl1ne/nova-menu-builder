@@ -30,6 +30,7 @@
   "novaMenuBuilder.menuItemTargetNewWindow": "New window/tab",
   "novaMenuBuilder.menuItemActive": "Active",
   "novaMenuBuilder.menuItemDisabled": "Disabled",
+  "novaMenuBuilder.nestableLabel": "Nestable",
   "novaMenuBuilder.toastDeleteSucces": "Menu item deleted",
   "novaMenuBuilder.toastCreateSuccess": "Menu item created",
   "novaMenuBuilder.toastUpdateSuccess": "Menu item updated",

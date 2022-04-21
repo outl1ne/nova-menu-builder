@@ -77,6 +77,7 @@ class MenuController extends Controller
     {
         $locale = $request->get('locale');
         $menu = MenuBuilder::getMenuClass()::find($menuId);
+
         if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
         if (empty($locale)) return response()->json(['menu' => 'locale_required_but_missing'], 400);
 

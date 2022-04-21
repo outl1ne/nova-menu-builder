@@ -16,11 +16,8 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Load views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu');
-
         // Load translations
-        $this->loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
+        $this->loadTranslations(__DIR__ . '/../lang', 'nova-menu-builder', true);
 
         // Load migrations
         if (config('nova-menu.auto_load_migrations', true)) {
@@ -43,11 +40,6 @@ class MenuBuilderServiceProvider extends ServiceProvider
             MenuBuilder::getMenuResource()
         ]);
 
-        // Register routes
-        $this->app->booted(function () {
-            $this->routes();
-        });
-
         Validator::extend('unique_menu', function ($attribute, $value, $parameters, $validator) {
             // Check if menu has unique attribute defined.
             $uniqueParams = join(',', $parameters);
@@ -58,8 +50,23 @@ class MenuBuilderServiceProvider extends ServiceProvider
         }, '');
     }
 
-    protected function routes()
+    public function register()
     {
+        $this->registerRoutes();
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/nova-menu.php',
+            'nova-menu',
+        );
+    }
+    protected function registerRoutes()
+    {
+        // Register nova routes
+        Nova::router()->group(function ($router) {
+            $path = '/menus';
+            $router->get($path, fn () => inertia('NovaMenu', ['basePath' => $path]));
+        });
+
         if ($this->app->routesAreCached()) return;
 
         Route::middleware(['nova', Authorize::class])

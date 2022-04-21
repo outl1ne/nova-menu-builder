@@ -17,6 +17,7 @@ class MenuBuilderField extends Field
             'maxDepth' => 10,
             'menuCount' => Menu::count(),
             'showDuplicate' => MenuBuilder::showDuplicate(),
+            'collapsedAsDefault' => MenuBuilder::collapsedAsDefault(),
         ]);
     }
 

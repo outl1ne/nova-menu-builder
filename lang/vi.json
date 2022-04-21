@@ -30,6 +30,7 @@
     "novaMenuBuilder.menuItemTargetNewWindow": "New window/tab",
     "novaMenuBuilder.menuItemActive": "Kích hoạt",
     "novaMenuBuilder.menuItemDisabled": "Vô hiệu hóa",
+    "novaMenuBuilder.nestableLabel": "Có thể lồng vào nhau",
     "novaMenuBuilder.toastDeleteSucces": "Mục menu đã bị xóa",
     "novaMenuBuilder.toastCreateSuccess": "Đã tạo mục menu",
     "novaMenuBuilder.toastUpdateSuccess": "Đã cập nhật mục menu",

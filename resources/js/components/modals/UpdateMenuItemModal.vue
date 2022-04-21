@@ -1,21 +1,36 @@
 <template>
-  <modal align="flex justify-end" :show="showModal" class="add-new-menu-item-modal">
-    <div slot="container">
-      <div class="flex flex-wrap justify-between mb-6">
-        <h2 class="text-90 font-normal text-xl">
-          {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
-        </h2>
+  <Modal
+    :show="showModal"
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+    align="flex justify-end"
+  >
+    <ModalHeader class="flex flex-wrap justify-between">
+      {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
-        <toggle-button v-model="newItem.enabled" :color="switchColor" :labels="toggleLabels" :sync="true" :width="78" />
-      </div>
+      <CheckboxWithLabel
+        class="ml-auto mr-4"
+        :checked="newItem.nestable"
+        @input="newItem.nestable = $event.target.checked"
+      >
+        {{ __('novaMenuBuilder.nestableLabel') }}
+      </CheckboxWithLabel>
 
+      <CheckboxWithLabel
+        :checked="newItem.enabled"
+        @input="newItem.enabled = $event.target.checked"
+      >
+        {{ newItem.enabled ? this.toggleLabels.checked : this.toggleLabels.unchecked }}
+      </CheckboxWithLabel>
+    </ModalHeader>
+    <div>
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
-        <div class="flex">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemName') }}</label>
-          </div>
-
-          <div class="py-4 w-4/5">
+        <DefaultField :field="{
+          visible: true,
+          hasError: !!getError('name'),
+          firstError: getError('name'),
+          name: __('novaMenuBuilder.menuItemName'),
+        }">
+          <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemName')"
               :class="{ 'border-danger': getError('name') }"
@@ -25,89 +40,49 @@
               v-model="newItem.name"
             />
 
-            <help-text class="error-text mt-2 text-danger" v-if="getError('name')">
-              {{ getError('name') }}
-            </help-text>
-          </div>
-        </div>
+          </template>
+        </DefaultField>
 
-        <div class="flex border-t border-40">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemType') }}</label>
-          </div>
-          <div class="py-4 w-4/5">
-            <select
-              :value="linkType.class"
-              @input="e => $emit('onLinkTypeUpdate', e.target.value)"
-              class="w-full form-control form-select"
-              :class="{ 'border-danger': getError('class') }"
+        <DefaultField :field="{
+          visible: true,
+          hasError: !!getError('class'),
+          firstError: __('novaMenuBuilder.menuTypeRequired'),
+          name: __('novaMenuBuilder.menuItemType'),
+        }">
+          <template #field>
+            <SelectControl
+              v-model:selected="linkType.class"
+              :options="(menuItemTypes.map(val => ({ value: val.class, label: __(val.name) })))"
+              @change="e => $emit('onLinkTypeUpdate', e)"
             >
               <option disabled="disabled" selected="selected" value="">
                 {{ __('novaMenuBuilder.chooseMenuItemType') }}
               </option>
-              <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">
-                {{ __(type.name) }}
-              </option>
-            </select>
+            </SelectControl>
+          </template>
+        </DefaultField>
 
-            <help-text class="error-text mt-2 text-danger" v-if="getError('class')">
-              {{ __('novaMenuBuilder.menuTypeRequired') }}
-            </help-text>
-          </div>
-        </div>
+        <DefaultField
+          v-if="linkType.type === 'static-url'"
+          :field="{
+            visible: true,
+            hasError: !!getError('value'),
+            firstError: getError('value'),
+            name: __('novaMenuBuilder.menuItemUrlFieldName'),
+          }"
+        >
+          <template #field>
+            <input
+              :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
+              :class="{ 'border-danger': getError('value') }"
+              class="w-full form-control form-input form-input-bordered"
+              id="url"
+              type="text"
+              v-model="newItem.value"
+            />
 
-        <template v-if="linkType.type === 'static-url'">
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">
-                {{ __('novaMenuBuilder.menuItemUrlFieldName') }}
-              </label>
-            </div>
-            <div class="py-4 w-4/5">
-              <input
-                id="url"
-                type="text"
-                v-model="newItem.value"
-                :class="{ 'border-danger': getError('value') }"
-                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
-                class="w-full form-control form-input form-input-bordered"
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
-                {{ getError('value') }}
-              </help-text>
-            </div>
-          </div>
-        </template>
-
-        <!-- Select -->
-        <template v-if="linkType.type === 'select'">
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemValue') }}</label>
-            </div>
-
-            <div class="py-4 w-4/5">
-              <multiselect
-                :options="options"
-                :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="options.find(option => option.id === newItem.value)"
-                @input="value => $emit('onLinkModelUpdate', value.id)"
-                label="label"
-                track-by="id"
-                selectLabel=""
-                selectGroupLabel=""
-                selectedLabel=""
-                deselectLabel=""
-                deselectGroupLabel=""
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
-                {{ getError('value') }}
-              </help-text>
-            </div>
-          </div>
-        </template>
+          </template>
+        </DefaultField>
 
         <div v-if="fields && fields.length">
           <component
@@ -123,45 +98,56 @@
           />
         </div>
 
-        <div class="flex border-t border-40" v-if="linkType.type && linkType.type !== 'text'">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
-          </div>
-          <div class="py-4 w-4/5">
-            <select class="w-full form-control form-select" v-model="newItem.target">
-              <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
-              <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
-            </select>
-          </div>
-        </div>
+        <DefaultField
+          v-if="linkType.type && linkType.type !== 'text'"
+          :field="{
+            visible: true,
+            name: __('Open in'),
+          }"
+        >
+          <template #field>
+            <SelectControl
+              v-model:selected="newItem.target"
+              @change="newItem.target = $event"
+              :options="[{
+                value: '_self',
+                label: __('novaMenuBuilder.menuItemTargetSameWindow'),
+              }, {
+                value: '_blank',
+                label: __('novaMenuBuilder.menuItemTargetNewWindow'),
+              }]"
+            />
+          </template>
+        </DefaultField>
       </form>
     </div>
 
-    <div slot="buttons">
+    <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <button
-          @click.prevent="$emit('closeModal')"
-          class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-          type="button"
-        >
-          {{ __('novaMenuBuilder.closeModalTitle') }}
-        </button>
+        <CancelButton
+            component="button"
+            type="button"
+            dusk="cancel-action-button"
+            @click.prevent="$emit('closeModal')"
+        />
 
-        <progress-button
-          @click.native.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
+        <LoadingButton
+        class="ml-3"
+          type="submit"
+          ref="runButton"
+          component="DefaultButton"
           :disabled="isMenuItemUpdating"
-          :processing="isMenuItemUpdating"
+          :loading="isMenuItemUpdating"
+          @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
         >
           {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
-        </progress-button>
+        </LoadingButton>
       </div>
-    </div>
-  </modal>
+    </ModalFooter>
+  </Modal>
 </template>
 
 <script>
-import Modal from './Modal';
-import Multiselect from 'vue-multiselect';
 import { HandlesValidationErrors } from 'laravel-nova';
 import { Errors } from 'form-backend-validation';
 
@@ -177,7 +163,6 @@ export default {
     'resourceId',
     'isMenuItemUpdating',
   ],
-  components: { Modal, Multiselect },
   data: () => ({
     toggleLabels: false,
   }),
@@ -215,6 +200,7 @@ export default {
 
   methods: {
     storeWithData(eventType) {
+      console.log(eventType);
       this.fields.forEach(field => {
         const formData = new FormData();
         field.fill(formData);
@@ -222,18 +208,18 @@ export default {
         const values = Array.from(formData.values());
 
         if (field.component === 'trix-field') {
-          this.$set(this.newItem, field.attribute, values[0]);
+          this.newItem[field.attribute] = values[0];
           return;
         }
 
         // Is array
         const firstKey = Array.from(formData.keys())[0];
         if (firstKey && firstKey.endsWith(']')) {
-          this.$set(this.newItem, field.attribute, values || []);
+          this.newItem[field.attribute] = values || [];
         } else {
-          if (values.length === 0) this.$set(this.newItem, field.attribute, void 0);
-          if (values.length === 1) this.$set(this.newItem, field.attribute, values[0]);
-          if (values.length > 1) this.$set(this.newItem, field.attribute, values);
+          if (values.length === 0) this.newItem[field.attribute] = void 0;
+          if (values.length === 1) this.newItem[field.attribute] = values[0];
+          if (values.length > 1) this.newItem[field.attribute] = values;
         }
       });
 
@@ -248,8 +234,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~vue-multiselect/dist/vue-multiselect.min.css';
-
 .add-new-menu-item-modal {
   .menu-item-component {
     div.py-6.px-8 {
@@ -261,14 +245,6 @@ export default {
         padding: 1rem 0 1rem 0;
         width: 80%;
       }
-    }
-  }
-
-  .multiselect {
-    > .multiselect__tags {
-      border-color: var(\-\-60);
-      border-radius: 0.5rem;
-      box-shadow: none;
     }
   }
 }
