@@ -82,4 +82,9 @@ class MenuResource extends Resource
             ])
         ];
     }
+
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
+    }
 }

@@ -15,21 +15,20 @@
         {{ __('novaMenuBuilder.nestableLabel') }}
       </CheckboxWithLabel>
 
-      <CheckboxWithLabel
-        :checked="newItem.enabled"
-        @input="newItem.enabled = $event.target.checked"
-      >
+      <CheckboxWithLabel :checked="newItem.enabled" @input="newItem.enabled = $event.target.checked">
         {{ newItem.enabled ? this.toggleLabels.checked : this.toggleLabels.unchecked }}
       </CheckboxWithLabel>
     </ModalHeader>
     <div>
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
-        <DefaultField :field="{
-          visible: true,
-          hasError: !!getError('name'),
-          firstError: getError('name'),
-          name: __('novaMenuBuilder.menuItemName'),
-        }">
+        <DefaultField
+          :field="{
+            visible: true,
+            hasError: !!getError('name'),
+            firstError: getError('name'),
+            name: __('novaMenuBuilder.menuItemName'),
+          }"
+        >
           <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemName')"
@@ -39,20 +38,21 @@
               type="text"
               v-model="newItem.name"
             />
-
           </template>
         </DefaultField>
 
-        <DefaultField :field="{
-          visible: true,
-          hasError: !!getError('class'),
-          firstError: __('novaMenuBuilder.menuTypeRequired'),
-          name: __('novaMenuBuilder.menuItemType'),
-        }">
+        <DefaultField
+          :field="{
+            visible: true,
+            hasError: !!getError('class'),
+            firstError: __('novaMenuBuilder.menuTypeRequired'),
+            name: __('novaMenuBuilder.menuItemType'),
+          }"
+        >
           <template #field>
             <SelectControl
               v-model:selected="linkType.class"
-              :options="(menuItemTypes.map(val => ({ value: val.class, label: __(val.name) })))"
+              :options="menuItemTypes.map(val => ({ value: val.class, label: __(val.name) }))"
               @change="e => $emit('onLinkTypeUpdate', e)"
             >
               <option disabled="disabled" selected="selected" value="">
@@ -80,7 +80,6 @@
               type="text"
               v-model="newItem.value"
             />
-
           </template>
         </DefaultField>
 
@@ -109,13 +108,16 @@
             <SelectControl
               v-model:selected="newItem.target"
               @change="newItem.target = $event"
-              :options="[{
-                value: '_self',
-                label: __('novaMenuBuilder.menuItemTargetSameWindow'),
-              }, {
-                value: '_blank',
-                label: __('novaMenuBuilder.menuItemTargetNewWindow'),
-              }]"
+              :options="[
+                {
+                  value: '_self',
+                  label: __('novaMenuBuilder.menuItemTargetSameWindow'),
+                },
+                {
+                  value: '_blank',
+                  label: __('novaMenuBuilder.menuItemTargetNewWindow'),
+                },
+              ]"
             />
           </template>
         </DefaultField>
@@ -125,17 +127,16 @@
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
         <CancelButton
-            component="button"
-            type="button"
-            dusk="cancel-action-button"
-            @click.prevent="$emit('closeModal')"
+          component="button"
+          type="button"
+          dusk="cancel-action-button"
+          @click.prevent="$emit('closeModal')"
         />
 
         <LoadingButton
-        class="ml-3"
+          class="ml-3"
           type="submit"
           ref="runButton"
-          component="DefaultButton"
           :disabled="isMenuItemUpdating"
           :loading="isMenuItemUpdating"
           @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"

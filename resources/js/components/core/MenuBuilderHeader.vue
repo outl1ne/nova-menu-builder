@@ -11,16 +11,16 @@
         class="cursor-pointer font-bold px-2 border-b-2 h-full flex items-center box-border"
         :class="{
           'text-primary-500 border-primary-500': activeLocale === locale,
-          'text-80 border-white': activeLocale !== locale,
+          'text-80 border-transparent': activeLocale !== locale,
         }"
       >
         <span> {{ locales[locale] }} ({{ locale }}) </span>
       </div>
     </div>
 
-    <OutlineButton class="mr-4" @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
+    <DefaultButton class="mr-4" @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
       <Icon type="duplicate" />
-    </OutlineButton>
+    </DefaultButton>
 
     <DefaultButton
       :title="__('novaMenuBuilder.addMenuItem')"
