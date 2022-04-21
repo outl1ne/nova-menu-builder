@@ -84,7 +84,7 @@ export default {
     showAddModal: false,
     itemToDelete: null,
     update: false,
-    linkType: '',
+    linkType: {},
     errors: {},
     newItem: {
       name: null,
@@ -159,7 +159,7 @@ export default {
       const menuItem = (await api.getMenuItem(item.id)).data;
       this.newItem = menuItem;
       this.showAddModal = true;
-      this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
+      this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class) || {};
     },
 
     removeMenu(item) {
@@ -190,7 +190,7 @@ export default {
         menu_id: this.resourceId,
       };
 
-      this.linkType = '';
+      this.linkType = {};
     },
 
     async confirmItemCreate() {
@@ -256,7 +256,7 @@ export default {
     },
 
     updateLinkType(linkType) {
-      this.linkType = this.menuItemTypes.find(type => type.class === linkType);
+      this.linkType = this.menuItemTypes.find(type => type.class === linkType) || {};
       this.newItem.value = '';
     },
   },
