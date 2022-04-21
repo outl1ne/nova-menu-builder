@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.0.0] - 21-04-2022
 
+Initial Nova 4 compatible release. Still a beta and there may be bugs and visual issues.
+
 ### Added
 
 - Added Nova 4 support (huge thanks to [@stepanenko3](https://github.com/stepanenko3))
