@@ -83,6 +83,44 @@
           </template>
         </DefaultField>
 
+        <DefaultField
+          v-if="linkType.type === 'select'"
+          class="option-select-field"
+          :field="{
+            visible: true,
+            hasError: !!getError('value'),
+            name: __('novaMenuBuilder.menuItemValue'),
+          }"
+        >
+          <template #field>
+            <multiselect
+              :options="options"
+              :placeholder="__('novaMenuBuilder.chooseOption')"
+              :value="selectedOption"
+              @input="value => $emit('onLinkModelUpdate', value ? value.id : void 0)"
+              label="label"
+              track-by="id"
+              selectLabel=""
+              selectGroupLabel=""
+              selectedLabel=""
+              deselectLabel=""
+              deselectGroupLabel=""
+            >
+              <template #singleLabel>
+                <span>{{ selectedOption ? selectedOption.label : '' }}</span>
+              </template>
+
+              <template #noOptions>
+                <span>No options</span>
+              </template>
+
+              <template #noResult>
+                <span>No results</span>
+              </template>
+            </multiselect>
+          </template>
+        </DefaultField>
+
         <div v-if="fields && fields.length">
           <component
             v-for="(field, i) in fields"
@@ -151,6 +189,7 @@
 <script>
 import { HandlesValidationErrors } from 'laravel-nova';
 import { Errors } from 'form-backend-validation';
+import Multiselect from 'vue-multiselect/src/Multiselect';
 
 export default {
   mixins: [HandlesValidationErrors],
@@ -167,7 +206,7 @@ export default {
   data: () => ({
     toggleLabels: false,
   }),
-
+  components: { Multiselect },
   mounted() {
     this.toggleLabels = {
       checked: this.__('novaMenuBuilder.menuItemActive'),
@@ -197,11 +236,17 @@ export default {
       if (ogErrors && typeof ogErrors.has === 'function') return ogErrors;
       return new Errors(ogErrors || {});
     },
+
+    selectedOption() {
+      if (this.linkType.type === 'select') {
+        return this.options.find(option => option.id === this.newItem.value);
+      }
+      return void 0;
+    },
   },
 
   methods: {
     storeWithData(eventType) {
-      console.log(eventType);
       this.fields.forEach(field => {
         const formData = new FormData();
         field.fill(formData);
@@ -246,6 +291,192 @@ export default {
         padding: 1rem 0 1rem 0;
         width: 80%;
       }
+    }
+  }
+}
+
+/* Multiselect styles */
+.option-select-field {
+  .multiselect__tags {
+    --tw-border-opacity: 1;
+    border-width: 1px;
+    border-color: rgba(var(--colors-gray-300), var(--tw-border-opacity));
+    background-color: rgba(var(--colors-white), var(--tw-bg-opacity));
+    color: rgba(var(--colors-gray-600), var(--tw-text-opacity));
+
+    .dark & {
+      border-color: rgba(var(--colors-gray-700), var(--tw-border-opacity));
+      background-color: rgba(var(--colors-gray-900), var(--tw-bg-opacity));
+      color: rgba(var(--colors-gray-400), var(--tw-text-opacity));
+    }
+  }
+  .multiselect__input {
+    border: none;
+    background-color: rgba(var(--colors-white), var(--tw-bg-opacity));
+    color: rgba(var(--colors-gray-600), var(--tw-text-opacity));
+
+    .dark & {
+      background-color: rgba(var(--colors-gray-900), var(--tw-bg-opacity));
+      color: rgba(var(--colors-gray-400), var(--tw-text-opacity));
+    }
+  }
+  .multiselect__tag {
+    background-color: rgba(var(--colors-primary-500));
+    color: rgba(var(--colors-white), var(--tw-text-opacity));
+    --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    font-weight: 700;
+
+    .multiselect__tag-icon {
+      &::after {
+        color: rgba(var(--colors-white));
+      }
+      &:hover {
+        background: rgba(var(--colors-primary-400));
+        &::after {
+          color: rgba(var(--colors-red-500));
+        }
+      }
+    }
+  }
+  .multiselect > .multiselect__clear {
+    &::before,
+    &::after {
+      width: 2px;
+      background: rgba(var(--colors-gray-400));
+    }
+
+    &:hover {
+      &::before,
+      &::after {
+        background: rgba(var(--colors-red-400));
+      }
+    }
+  }
+  .multiselect__single {
+    background-color: rgba(var(--colors-white), var(--tw-bg-opacity));
+    color: rgba(var(--colors-gray-600), var(--tw-text-opacity));
+
+    .dark & {
+      background-color: rgba(var(--colors-gray-900), var(--tw-bg-opacity));
+      color: rgba(var(--colors-gray-400), var(--tw-text-opacity));
+    }
+  }
+  .multiselect__spinner {
+    background-color: rgba(var(--colors-white), var(--tw-bg-opacity));
+    color: rgba(var(--colors-gray-600), var(--tw-text-opacity));
+
+    .dark & {
+      background-color: rgba(var(--colors-gray-900), var(--tw-bg-opacity));
+      color: rgba(var(--colors-gray-400), var(--tw-text-opacity));
+    }
+    &:before,
+    &:after {
+      border-color: rgba(var(--colors-primary-500)) transparent transparent;
+    }
+  }
+  .multiselect__content-wrapper {
+    border-color: rgba(var(--colors-gray-300), var(--tw-border-opacity));
+
+    .dark & {
+      border-color: rgba(var(--colors-gray-700), var(--tw-border-opacity));
+    }
+
+    li > span.multiselect__option {
+      background-color: #fff;
+      color: rgba(var(--colors-gray-400));
+
+      .dark & {
+        background-color: rgba(var(--colors-gray-900));
+      }
+    }
+    .multiselect__element {
+      background-color: rgba(var(--colors-white), var(--tw-bg-opacity));
+      color: rgba(var(--colors-gray-600), var(--tw-text-opacity));
+
+      .dark & {
+        background-color: rgba(var(--colors-gray-900), var(--tw-bg-opacity));
+        color: rgba(var(--colors-gray-400), var(--tw-text-opacity));
+      }
+
+      .multiselect__option {
+        color: rgba(var(--colors-gray-600));
+
+        .dark & {
+          color: rgba(var(--colors-gray-400));
+        }
+
+        &.multiselect__option--selected {
+          color: rgba(var(--colors-primary-400));
+          background-color: rgba(var(--colors-white));
+
+          .dark & {
+            background-color: rgba(var(--colors-gray-900));
+          }
+        }
+        &.multiselect__option--highlight {
+          background-color: rgba(var(--colors-primary-500));
+          color: rgba(var(--colors-white));
+
+          &::after {
+            background-color: rgba(var(--colors-primary-500));
+            font-weight: 700;
+          }
+
+          &.multiselect__option--selected {
+            background-color: rgba(var(--colors-red-500));
+
+            .dark & {
+              background-color: rgba(var(--colors-red-500));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .reorder__tag {
+    background-color: rgba(var(--colors-primary-500));
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+    font-weight: 700;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  .multiselect__clear {
+    position: absolute;
+    right: 41px;
+    height: 40px;
+    width: 40px;
+    display: block;
+    cursor: pointer;
+    z-index: 2;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 3px;
+      height: 16px;
+      background: #aaa;
+      top: 12px;
+      right: 4px;
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
     }
   }
 }

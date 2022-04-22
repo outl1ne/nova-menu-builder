@@ -252,7 +252,7 @@ export default {
     },
 
     updateLinkModel(modelId) {
-      this.newItem.value = modelId;
+      this.newItem.value = modelId || '';
     },
 
     updateLinkType(linkType) {

@@ -27,6 +27,7 @@
   "dependencies": {
     "tailwindcss": "^3.0.24",
     "vue": "^3.2.33",
+    "vue-multiselect": "^2.1.6",
     "vue3-nestable": "^3.0.3"
   }
 }
