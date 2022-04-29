@@ -5,7 +5,6 @@ const tailwindcss = require('tailwindcss');
 mix
   .setPublicPath('dist')
   .js('resources/js/entry.js', '')
-  .postCss('resources/css/entry.css', '', [tailwindcss('tailwind.config.js')])
   .vue({ version: 3 })
   .webpackConfig({
     externals: {

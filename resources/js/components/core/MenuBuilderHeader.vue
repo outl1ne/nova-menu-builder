@@ -8,11 +8,12 @@
         v-for="locale of Object.keys(locales)"
         :key="locale"
         @click.prevent="$emit('changeLocale', locale)"
-        class="cursor-pointer font-bold px-2 border-b-2 h-full flex items-center box-border"
+        class="cursor-pointer font-bold px-2 h-full flex items-center box-border"
         :class="{
           'text-primary-500 border-primary-500': activeLocale === locale,
           'text-80 border-transparent': activeLocale !== locale,
         }"
+        style="border-bottom-width: 2px"
       >
         <span> {{ locales[locale] }} ({{ locale }}) </span>
       </div>
