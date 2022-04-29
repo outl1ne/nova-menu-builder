@@ -1,5 +1,5 @@
 <template>
-  <ResourceIndex :resource-name="resourceName" />
+  <ResourceIndex :resource-name="resourceName" :shouldOverrideMeta="true" />
 </template>
 
 <script>
