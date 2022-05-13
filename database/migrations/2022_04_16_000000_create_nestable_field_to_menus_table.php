@@ -1,11 +1,11 @@
 <?php
 
+use Outl1ne\MenuBuilder\MenuBuilder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Outl1ne\MenuBuilder\MenuBuilder;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNestableFieldToMenusTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -18,6 +18,6 @@ class CreateNestableFieldToMenusTable extends Migration
 
     public function down()
     {
-        Schema::dropColumns(['nestable']);
+        Schema::dropColumns(MenuBuilder::getMenuItemsTableName(), ['nestable']);
     }
 }

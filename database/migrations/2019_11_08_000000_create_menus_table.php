@@ -1,11 +1,11 @@
 <?php
 
+use Outl1ne\MenuBuilder\MenuBuilder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Outl1ne\MenuBuilder\MenuBuilder;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMenusTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
