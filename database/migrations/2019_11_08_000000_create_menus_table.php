@@ -39,4 +39,4 @@ return new class extends Migration
         Schema::dropIfExists(MenuBuilder::getMenuItemsTableName());
         Schema::dropIfExists(MenuBuilder::getMenusTableName());
     }
-}
+};

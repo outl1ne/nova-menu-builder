@@ -20,4 +20,4 @@ return new class extends Migration
     {
         Schema::dropColumns(MenuBuilder::getMenuItemsTableName(), ['nestable']);
     }
-}
+};
