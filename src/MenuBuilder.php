@@ -25,7 +25,7 @@ class MenuBuilder extends Tool
         // Outl1ne\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
         return MenuSection::make(__('novaMenuBuilder.sidebarTitle'))
             ->path('/menus')
-            ->icon('adjustments');
+            ->icon(config('nova-menu.icon','adjustments'));
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
