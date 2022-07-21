@@ -2,10 +2,10 @@
 
 namespace Outl1ne\MenuBuilder;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 
 class MenuBuilder extends Tool
@@ -82,27 +82,6 @@ class MenuBuilder extends Tool
         }
 
         return $templateFields;
-    }
-
-    public static function getRulesFromMenuLinkable(?string $menuLinkableClass)
-    {
-        $menusTableName = MenuBuilder::getMenusTableName();
-
-        $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
-        $dataRules = [];
-        foreach ($menuItemRules as $key => $rule) {
-            if ($key !== 'value' && !Str::startsWith($key, 'data->')) $key = "data->{$key}";
-            $dataRules[$key] = $rule;
-        }
-
-        return array_merge([
-            'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required|min:1',
-            'locale' => 'required',
-            'value' => 'present',
-            'class' => 'required',
-            'target' => 'required|in:_self,_blank'
-        ], $dataRules);
     }
 
 
