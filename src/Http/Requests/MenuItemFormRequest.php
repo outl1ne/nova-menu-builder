@@ -26,6 +26,13 @@ class MenuItemFormRequest extends FormRequest
      */
     public function rules()
     {
+        if (!$this->has('class')) {
+            return [
+                'name' => 'required',
+                'class' => 'required',
+            ];
+        }
+
         $menuItemClass = $this->get('class');
         $menuItemId = $this->route('menuItem');
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);

@@ -22,18 +22,18 @@
     <div>
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <DefaultField
+          :errors="wrappedErrors"
           :field="{
             visible: true,
-            hasError: !!getError('name'),
-            firstError: getError('name'),
             stacked: true,
+            validationKey: 'name',
             name: __('novaMenuBuilder.menuItemName'),
           }"
         >
           <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemName')"
-              :class="{ 'border-danger': getError('name') }"
+              :class="{ 'o1-border-red-400': getError('name') }"
               class="w-full form-control form-input form-input-bordered"
               id="name"
               type="text"
@@ -43,11 +43,11 @@
         </DefaultField>
 
         <DefaultField
+          :errors="wrappedErrors"
           :field="{
             visible: true,
-            hasError: !!getError('class'),
-            firstError: __('novaMenuBuilder.menuTypeRequired'),
             stacked: true,
+            validationKey: 'class',
             name: __('novaMenuBuilder.menuItemType'),
           }"
         >
@@ -66,18 +66,18 @@
 
         <DefaultField
           v-if="linkType.type === 'static-url'"
+          :errors="wrappedErrors"
           :field="{
             visible: true,
-            hasError: !!getError('value'),
-            firstError: getError('value'),
             stacked: true,
+            validationKey: 'value',
             name: __('novaMenuBuilder.menuItemUrlFieldName'),
           }"
         >
           <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
-              :class="{ 'border-danger': getError('value') }"
+              :class="{ 'o1-border-red-400': hasError('value') }"
               class="w-full form-control form-input form-input-bordered"
               id="url"
               type="text"
@@ -89,10 +89,11 @@
         <DefaultField
           v-if="linkType.type === 'select'"
           class="option-select-field"
+          :errors="wrappedErrors"
           :field="{
             visible: true,
-            hasError: !!getError('value'),
             stacked: true,
+            validationKey: 'value',
             name: __('novaMenuBuilder.menuItemValue'),
           }"
         >
@@ -133,7 +134,7 @@
             :field="field"
             :resource-id="resourceId"
             :resource-name="resourceName"
-            :errors="errors"
+            :errors="wrappedErrors"
             :show-errors="true"
             class="menu-item-component"
           />
@@ -258,10 +259,11 @@ export default {
       return fields || [];
     },
 
-    errors() {
+    wrappedErrors() {
       const ogErrors = this.$props.errors;
       if (ogErrors && typeof ogErrors.has === 'function') return ogErrors;
-      return new Errors(ogErrors || {});
+      let newerror = new Errors(ogErrors || {});
+      return newerror;
     },
 
     selectedOption() {
@@ -300,7 +302,7 @@ export default {
     },
 
     getError(key) {
-      return (this.errors && this.errors[key] && this.errors[key][0]) || void 0;
+      return this.wrappedErrors.has(key);
     },
 
     emitFieldValue(attribute, value) {
