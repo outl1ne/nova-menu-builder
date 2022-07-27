@@ -126,20 +126,6 @@
           </template>
         </DefaultField>
 
-        <template v-if="fields && fields.length">
-          <component
-            v-for="(field, i) in fields"
-            :is="`form-${field.component}`"
-            :key="`${linkType.class}_${i}`"
-            :field="field"
-            :resource-id="resourceId"
-            :resource-name="resourceName"
-            :errors="wrappedErrors"
-            :show-errors="true"
-            class="menu-item-component"
-          />
-        </template>
-
         <DefaultField
           v-if="linkType.type && linkType.type !== 'text'"
           :field="{
@@ -165,6 +151,20 @@
             />
           </template>
         </DefaultField>
+
+        <template v-if="fields && fields.length">
+          <component
+            v-for="(field, i) in fields"
+            :is="`form-${field.component}`"
+            :key="`${linkType.class}_${i}`"
+            :field="field"
+            :resource-id="resourceId"
+            :resource-name="resourceName"
+            :errors="wrappedErrors"
+            :show-errors="true"
+            class="menu-item-component"
+          />
+        </template>
       </form>
     </div>
 
