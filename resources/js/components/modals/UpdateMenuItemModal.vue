@@ -26,6 +26,7 @@
             visible: true,
             hasError: !!getError('name'),
             firstError: getError('name'),
+            stacked: true,
             name: __('novaMenuBuilder.menuItemName'),
           }"
         >
@@ -46,6 +47,7 @@
             visible: true,
             hasError: !!getError('class'),
             firstError: __('novaMenuBuilder.menuTypeRequired'),
+            stacked: true,
             name: __('novaMenuBuilder.menuItemType'),
           }"
         >
@@ -68,6 +70,7 @@
             visible: true,
             hasError: !!getError('value'),
             firstError: getError('value'),
+            stacked: true,
             name: __('novaMenuBuilder.menuItemUrlFieldName'),
           }"
         >
@@ -89,6 +92,7 @@
           :field="{
             visible: true,
             hasError: !!getError('value'),
+            stacked: true,
             name: __('novaMenuBuilder.menuItemValue'),
           }"
         >
@@ -121,7 +125,7 @@
           </template>
         </DefaultField>
 
-        <div v-if="fields && fields.length">
+        <template v-if="fields && fields.length">
           <component
             v-for="(field, i) in fields"
             :is="`form-${field.component}`"
@@ -131,14 +135,15 @@
             :resource-name="resourceName"
             :errors="errors"
             :show-errors="true"
-            class="menu-item-component border-t border-40 remove-bottom-border"
+            class="menu-item-component"
           />
-        </div>
+        </template>
 
         <DefaultField
           v-if="linkType.type && linkType.type !== 'text'"
           :field="{
             visible: true,
+            stacked: true,
             name: __('Open in'),
           }"
         >
@@ -233,9 +238,10 @@ export default {
     },
 
     fields() {
-      let fields = this.linkType.fields;
+      let fields = this.linkType.fields || [];
+
       if (this.update) {
-        fields = this.linkType.class === this.newItem.class ? this.newItem.fields : this.linkType.fields;
+        fields = (this.linkType.class === this.newItem.class ? this.newItem.fields : this.linkType.fields) || [];
         fields.forEach(f => {
           if (f.component === 'slug-field') {
             f.updating = true;
@@ -244,6 +250,11 @@ export default {
           }
         });
       }
+
+      fields.forEach(f => {
+        f.stacked = true;
+      });
+
       return fields || [];
     },
 
