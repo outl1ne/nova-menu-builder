@@ -193,6 +193,7 @@ import Multiselect from 'vue-multiselect/src/Multiselect';
 
 export default {
   mixins: [HandlesValidationErrors],
+
   props: [
     'newItem',
     'showModal',
@@ -203,10 +204,19 @@ export default {
     'resourceId',
     'isMenuItemUpdating',
   ],
+
   data: () => ({
     toggleLabels: false,
   }),
+
   components: { Multiselect },
+
+  watch: {
+    'newItem.name'(newName) {
+      this.emitFieldValueChange('name', newName);
+    },
+  },
+
   mounted() {
     this.toggleLabels = {
       checked: this.__('novaMenuBuilder.menuItemActive'),
@@ -226,8 +236,14 @@ export default {
       let fields = this.linkType.fields;
       if (this.update) {
         fields = this.linkType.class === this.newItem.class ? this.newItem.fields : this.linkType.fields;
+        fields.forEach(f => {
+          if (f.component === 'slug-field') {
+            f.updating = true;
+            f.readonly = true;
+            f.showCustomizeButton = true;
+          }
+        });
       }
-
       return fields || [];
     },
 
@@ -274,6 +290,14 @@ export default {
 
     getError(key) {
       return (this.errors && this.errors[key] && this.errors[key][0]) || void 0;
+    },
+
+    emitFieldValue(attribute, value) {
+      Nova.$emit(`${attribute}-value`, value);
+    },
+
+    emitFieldValueChange(attribute, value) {
+      Nova.$emit(`${attribute}-change`, value);
     },
   },
 };
