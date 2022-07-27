@@ -104,7 +104,7 @@ export default {
       }
 
       this.menuOptions = menuOptions;
-      this.selectedMenu = menuOptions[0].id;
+      this.selectedMenu = menuOptions[0] ? menuOptions[0].id : void 0;
     },
 
     async copyMenuItemsFromMenu() {
