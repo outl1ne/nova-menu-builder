@@ -18,11 +18,11 @@
     "postcss-import": "^14.1.0",
     "prettier": "^2.7.1",
     "resolve-url-loader": "^5.0.0",
-    "sass": "^1.53.0",
+    "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
     "terser-webpack-plugin": "^5.3.3",
     "vue-loader": "^17.0.0",
-    "vue-template-compiler": "^2.7.7",
+    "vue-template-compiler": "^2.7.8",
     "vuex": "^4.0.2"
   },
   "dependencies": {
