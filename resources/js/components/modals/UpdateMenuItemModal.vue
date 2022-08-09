@@ -77,7 +77,7 @@
           <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
-              :class="{ 'o1-border-red-400': hasError('value') }"
+              :class="{ 'o1-border-red-400': getError('value') }"
               class="w-full form-control form-input form-input-bordered"
               id="url"
               type="text"
