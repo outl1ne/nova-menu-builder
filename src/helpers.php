@@ -31,6 +31,16 @@ if (!function_exists('nova_get_menu_by_slug')) {
     }
 }
 
+if (!function_exists('nova_get_menu_by_id')) {
+    function nova_get_menu_by_id($id, $locale = null)
+    {
+        if (empty($id)) return null;
+        if (empty($locale)) $locale = array_keys(MenuBuilder::getLocales())[0] ?? null;
+        $menu = MenuBuilder::getMenuClass()::where('id', $id)->first();
+        return !empty($menu) ? $menu->formatForAPI($locale) : null;
+    }
+}
+
 // ------------------------------
 // nova_menu_builder_sanitize_panel_name
 // ------------------------------
