@@ -1,5 +1,5 @@
 <template>
-  <div id="menu-builder-field" class="relative py-3">
+  <div id="menu-builder-field" class="relative py-3 o1-w-full">
     <menu-builder-header
       :locales="field.locales"
       :resourceId="resourceId"
