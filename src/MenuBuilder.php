@@ -7,9 +7,12 @@ use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
+use Outl1ne\MenuBuilder\Traits\Menuable;
 
 class MenuBuilder extends Tool
 {
+    use Menuable;
+
     public function boot()
     {
         Nova::script('nova-menu', __DIR__ . '/../dist/js/entry.js');
@@ -23,10 +26,14 @@ class MenuBuilder extends Tool
 
     public function menu(Request $request)
     {
+        if ($this->hideMenu) {
+            return null;
+        }
+
         // Outl1ne\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
-        return MenuSection::make(__('novaMenuBuilder.sidebarTitle'))
+        return MenuSection::make($this->title ?: __('novaMenuBuilder.sidebarTitle'))
             ->path('/menus')
-            ->icon('adjustments');
+            ->icon($this->icon);
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
