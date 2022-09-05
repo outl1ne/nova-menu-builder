@@ -1,9 +1,5 @@
 <template>
-  <Modal
-    :show="showModal"
-    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
-    align="flex justify-end"
-  >
+  <Modal :show="showModal" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg" align="flex justify-end">
     <ModalHeader class="flex flex-wrap justify-between">
       {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
