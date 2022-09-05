@@ -52,6 +52,11 @@ public function tools()
     return [
         // ...
         \Outl1ne\MenuBuilder\MenuBuilder::make(),
+
+        // Optional customization
+        ->name('Menus') // Define a new name for sidebar
+        ->icon('adjustments') // Customize menu icon, supports heroicons
+        ->hideMenu(false) // Hide MenuBuilder defined MenuSection.
     ];
 }
 ```
@@ -277,9 +282,16 @@ public function getMenus(Request $request) {
 }
 ```
 
-#### nova_get_menu_by_slug(\$menuSlug, \$locale = null)
+#### Get single menu via identifier
 
-To get a single menu, you can use the helper function `nova_get_menu_by_slug('slug', 'en')`. Returns null if no menu with the slug is found or returns the menu if it is found. If no locale is passed, the helper will automatically choose the first configured locale.
+```php
+// Available helpers
+nova_get_menu_by_slug($menuSlug, $locale = null)
+nova_get_menu_by_id($menuId, $locale = null)
+```
+
+To get a single menu, you can use the available helper functions.<br />
+Returns null if no menu with the identifier is found or returns the menu if it is found. If no locale is passed, the helper will automatically choose the first configured locale.
 
 ## Credits
 
