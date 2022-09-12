@@ -12,27 +12,30 @@
   >
     <template v-slot="{ item }">
       <vue-nestable-handle
-        class="handle dark:bg-gray-800 flex items-center justify-between flex-wrap border rounded-lg outline-none border-b border-gray-200 dark:border-gray-600"
+        class="handle dark:o1-bg-gray-800 o1-flex io1-tems-center o1-justify-between o1-border o1-rounded-lg o1-outline-none o1-border-b o1-border-gray-200 dark:o1-border-gray-600"
       >
-        <div :class="`item-data items-center flex ${!hasChildren(item) ? 'px-3' : ''}`">
+        <div class="item-data o1-items-center o1-flex o1-shrink o1-min-w-0" :class="{ 'o1-px-3': !hasChildren(item) }">
           <button
             v-if="hasChildren(item)"
             @click.prevent="toggleMenuChildrenCascade(item)"
-            class="appearance-none cursor-pointer fill-current hover:text-primary flex px-3 items-center focus:outline-none"
+            class="o1-appearance-none o1-cursor-pointer o1-fill-current hover:o1-text-primary o1-flex o1-px-3 o1-items-center focus:o1-outline-none"
           >
             <Icon :type="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
           </button>
 
-          <div :class="`text-90 font-bold ${!item.enabled ? 'opacity-25' : ''}`">
+          <div :class="`text-90 o1-font-bold ${!item.enabled ? 'opacity-25' : ''}`">
             {{ item.name }}
           </div>
 
-          <div :class="`font-lighter text-80 ml-4 text-sm ${!item.enabled ? 'opacity-25' : ''}`">
+          <div
+            class="o1-font-lighter o1-text-80 o1-ml-4 o1-text-sm o1-whitespace-nowrap o1-text-ellipsis o1-overflow-hidden"
+            :class="{ 'o1-opacity-25': !item.enabled }"
+          >
             {{ item.displayValue }}
           </div>
         </div>
 
-        <div class="buttons md:w-1/3 flex justify-end content-center">
+        <div class="buttons md:o1-w-1/3 o1-flex o1-justify-end o1-content-center o1-shrink-0">
           <button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"
