@@ -23,7 +23,10 @@
             <Icon :type="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
           </button>
 
-          <div :class="`text-90 o1-font-bold ${!item.enabled ? 'opacity-25' : ''}`">
+          <div
+            class="o1-text-90 o1-font-bold o1-whitespace-nowrap o1-overflow-hidden o1-text-ellipsis"
+            :class="{ 'opacity-25': !item.enabled }"
+          >
             {{ item.name }}
           </div>
 
@@ -35,7 +38,7 @@
           </div>
         </div>
 
-        <div class="buttons md:o1-w-1/3 o1-flex o1-justify-end o1-content-center o1-shrink-0">
+        <div class="buttons md:o1-w-1/3 o1-flex o1-justify-end o1-content-center">
           <button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"
