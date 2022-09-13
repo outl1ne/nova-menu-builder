@@ -22,7 +22,7 @@ class MenuItemStaticURLType extends BaseMenuItemType
     public static function getRules(): array
     {
         return [
-            'value' => 'required',
+            'value' => 'required|max:255',
         ];
     }
 }
