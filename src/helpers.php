@@ -5,15 +5,18 @@ use Outl1ne\MenuBuilder\MenuBuilder;
 if (!function_exists('nova_get_menus')) {
     function nova_get_menus($locale = null)
     {
+        $model = MenuBuilder::getMenuClass();
+        $models = $model::with('rootMenuItems')->get();
+
         if ($locale !== null) {
-            return MenuBuilder::getMenuClass()::all()->map(function ($menu) use ($locale) {
+            return $models->map(function ($menu) use ($locale) {
                 return $menu->formatForAPI($locale);
             });
         }
 
         $locales = array_keys(MenuBuilder::getLocales());
 
-        return MenuBuilder::getMenuClass()::all()->map(function ($menu) use ($locales) {
+        return $models->map(function ($menu) use ($locales) {
             return array_map(function ($locale) use ($menu) {
                 return $menu->formatForAPI($locale);
             }, $locales);
