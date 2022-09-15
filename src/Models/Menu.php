@@ -34,6 +34,7 @@ class Menu extends Model
             'locale' => $locale,
             'menuItems' => $this->rootMenuItems
                 ->where('locale', $locale)
+                ->values()
                 ->map(function ($menuItem) {
                     return $this->formatMenuItem($menuItem);
                 })
