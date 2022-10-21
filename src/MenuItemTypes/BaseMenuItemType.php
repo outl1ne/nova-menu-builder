@@ -43,6 +43,19 @@ abstract class BaseMenuItemType
     }
 
     /**
+     * Get the enabled value
+     *
+     * @param $value
+     * @param $data The data from item fields.
+     * @param $locale
+     * @return string
+     */
+    public static function getEnabledValue($value, ?array $data, $locale)
+    {
+        return true;
+    }
+
+    /**
      * Get the value of the link visible to the front-end.
      *
      * Can be anything. It is up to you how you will handle parsing it.

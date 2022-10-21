@@ -54,6 +54,20 @@ class MenuItem extends Model
         return $query->where('enabled', 1);
     }
 
+    public function getEnabledAttribute()
+    {
+        if (!$this->attributes['enabled']) {
+            // Filter out already disabled menu items
+            return $this->attributes['enabled'];
+        }
+
+        if (method_exists($this->class, 'getEnabledValue')) {
+            return $this->class::getEnabledValue($this->value, $this->data, $this->locale);
+        }
+
+        return true;
+    }
+
     public function getDisplayValueAttribute()
     {
         if (class_exists($this->class)) {
