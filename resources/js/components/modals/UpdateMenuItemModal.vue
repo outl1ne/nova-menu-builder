@@ -20,6 +20,7 @@
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <DefaultField
           :errors="wrappedErrors"
+          :fullWidthContent="true"
           :field="{
             visible: true,
             stacked: true,
@@ -41,6 +42,7 @@
 
         <DefaultField
           :errors="wrappedErrors"
+          :fullWidthContent="true"
           :field="{
             visible: true,
             stacked: true,
@@ -64,6 +66,7 @@
         <DefaultField
           v-if="linkType.type === 'static-url'"
           :errors="wrappedErrors"
+          :fullWidthContent="true"
           :field="{
             visible: true,
             stacked: true,
@@ -87,6 +90,7 @@
           v-if="linkType.type === 'select'"
           class="option-select-field o1-menu-builder-multiselect-wrapper"
           :errors="wrappedErrors"
+          :fullWidthContent="true"
           :field="{
             visible: true,
             stacked: true,
@@ -129,6 +133,7 @@
 
         <DefaultField
           v-if="linkType.type && linkType.type !== 'text'"
+          :fullWidthContent="true"
           :field="{
             visible: true,
             stacked: true,
@@ -164,6 +169,7 @@
             :errors="wrappedErrors"
             :show-errors="true"
             class="menu-item-component"
+            :fullWidthContent="true"
           />
         </template>
       </form>
