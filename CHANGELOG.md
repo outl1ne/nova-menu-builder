@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0] - 21-10-2022
+
+### Added
+
+- Custom menu items now have `getEnabledValue` function available. [#75]
+  - You can use this to override the enabled value set in database.
+    Useful when dealing with relationships inside menu items that might of have been deleted.
+
+### Changed
+
+- Updated the width of fields inside menu modal [#162]
+
 ## [7.0.5] - 15-09-2022
 
 ### Changed
