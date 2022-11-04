@@ -5,7 +5,7 @@ namespace Workup\MenuBuilder;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
+use Workup\Core\Services\Nova\Helper;
 
 class MenuBuilder extends Tool
 {
@@ -20,9 +20,8 @@ class MenuBuilder extends Tool
         Nova::script('nova-menu', __DIR__ . '/../dist/js/menu-builder.js');
         Nova::style('nova-menu', __DIR__ . '/../dist/css/menu-builder.css');
 
-        $menuBuilderUriKey = static::getMenuResource()::uriKey();
         Nova::provideToScript([
-            'menuBuilderUriKey' => $menuBuilderUriKey,
+            'menuBuilder' => $this->config(),
         ]);
     }
 
@@ -33,19 +32,23 @@ class MenuBuilder extends Tool
      */
     public function renderNavigation()
     {
-        return view('nova-menu::navigation');
+        return view('nova-pages::menu-navigation');
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
     public static function getLocales(): array
     {
-        $localesConfig = config('nova-menu.locales');
+        $localesConfig = config('rubinred.locales');
 
         if (is_callable($localesConfig)) {
             return call_user_func($localesConfig);
-        } elseif (is_array($localesConfig)) {
+        }
+
+        if (is_array($localesConfig)) {
             return $localesConfig;
-        } elseif (Str::contains($localesConfig, '@')) {
+        }
+
+        if (Str::contains($localesConfig, '@')) {
             [$class, $method] = Str::parseCallback($localesConfig);
             return app()->make($class)->{$method}();
         }
@@ -62,7 +65,7 @@ class MenuBuilder extends Tool
                 if (empty($field->panel)) {
                     $field->attribute = 'data->' . $field->attribute;
                 } else {
-                    $sanitizedPanel = nova_menu_builder_sanitize_panel_name($field->panel);
+                    $sanitizedPanel = Helper::sanitizePanelName($field->panel);
                     $field->attribute = 'data->' . $sanitizedPanel . '->' . $field->attribute;
                 }
             }
@@ -70,7 +73,7 @@ class MenuBuilder extends Tool
             return $field;
         };
 
-        if (isset($menuItemTypeClass) && method_exists($menuItemTypeClass, 'getFields')) {
+        if (method_exists($menuItemTypeClass, 'getFields')) {
             $rawFields = $menuItemTypeClass::getFields();
             foreach ($rawFields as $field) {
                 // Handle Panel
@@ -94,7 +97,7 @@ class MenuBuilder extends Tool
 
     public static function getRulesFromMenuLinkable(?string $menuLinkableClass)
     {
-        $menusTableName = MenuBuilder::getMenusTableName();
+        $menusTableName = static::getMenusTableName();
 
         $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
         $dataRules = [];
@@ -115,48 +118,54 @@ class MenuBuilder extends Tool
 
 
     // In-package helpers
-    public static function getMenuResource()
+    public static function getResourceClass()
     {
-        return config('nova-menu.resource', \Workup\MenuBuilder\Nova\Resources\MenuResource::class);
+        return config('nova-menu-builder.resource', \Workup\Menus\Nova\Menu::class);
     }
 
     public static function getMenusTableName()
     {
-        return config('nova-menu.menus_table_name', 'nova_menu_menus');
+        return config('nova-menu-builder.table_name', 'menus');
     }
 
     public static function getMenuItemsTableName()
     {
-        return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
+        return config('nova-menu-builder.items_table_name', 'menu_items');
     }
 
     public static function getMenuClass()
     {
-        return config('nova-menu.menu_model', \Workup\MenuBuilder\Models\Menu::class);
+        return config('nova-menu-builder.model', \Workup\Menus\Models\Menu::class);
     }
 
     public static function getMenuItemClass()
     {
-        return config('nova-menu.menu_item_model', \Workup\MenuBuilder\Models\MenuItem::class);
+        return config('nova-menu-builder.item_model', \Workup\Menus\Models\MenuItem::class);
     }
 
     public static function getMenuItemTypes()
     {
-        return config('nova-menu.menu_item_types', []);
-    }
-
-    public static function getMenuConfig($slug)
-    {
-        return config("nova-menu.menus.{$slug}", []);
+        return config('nova-menu-builder.item_types', []);
     }
 
     public static function getEntityModel()
     {
-        return config('nova-menu.menu_item_entity_model', \Workup\Larastub\Models\Entity::class);
+        return config('nova-menu-builder.item_entity_model', \Workup\Larastub\Models\Entity::class);
     }
 
     public static function getRouteModel()
     {
-        return config('nova-menu.menu_item_route_model', \App\Models\Route::class);
+        return config('nova-menu-builder.item_route_model', \Workup\Pages\Models\Page::class);
+    }
+
+    protected function config()
+    {
+        return [
+            'menuBuilderUriKey' => static::getResourceClass()::uriKey(),
+            'permissions' => request()->user()
+                ->getAllPermissions()
+                ->filter(fn ($permission) => str_contains($permission, '.menus'))
+                ->pluck('name'),
+        ];
     }
 }

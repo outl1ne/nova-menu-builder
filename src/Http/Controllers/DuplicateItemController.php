@@ -2,7 +2,7 @@
 
 namespace Workup\MenuBuilder\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Workup\MenuBuilder\MenuBuilder;
 use Workup\MenuBuilder\Http\Traits\MenuHelpers;
@@ -13,17 +13,17 @@ class DuplicateItemController extends Controller
 
     /**
      * Duplicates a MenuItem.
-     *
-     * @param $menuItem
-     * @return Illuminate\Http\Response
      **/
-    public function __invoke($menuItemId)
+    public function __invoke($menuItemId): JsonResponse
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
-        if (empty($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
+        if (empty($menuItem)) {
+            return response()->json(['error' => 'menu_item_not_found'], 400);
+        }
 
         $this->shiftMenuItemsWithHigherOrder($menuItem);
+
         $this->recursivelyDuplicate($menuItem, $menuItem->parent_id, $menuItem->order + 1);
 
         return response()->json(['success' => true], 200);

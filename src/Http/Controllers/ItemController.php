@@ -3,6 +3,7 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Workup\MenuBuilder\MenuBuilder;
 use Workup\MenuBuilder\Http\Traits\MenuHelpers;
@@ -14,11 +15,8 @@ class ItemController extends Controller
 
     /**
      * Creates new MenuItem.
-     *
-     * @param Workup\MenuBuilder\Http\Requests\MenuItemFormRequest $request
-     * @return Illuminate\Http\Response
      **/
-    public function store(MenuItemFormRequest $request)
+    public function store(MenuItemFormRequest $request): JsonResponse
     {
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
@@ -36,11 +34,8 @@ class ItemController extends Controller
 
     /**
      * Returns the menu item as JSON.
-     *
-     * @param $menuItemId
-     * @return Illuminate\Http\Response
      **/
-    public function show($menuItemId)
+    public function show($menuItemId): JsonResponse
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
@@ -51,16 +46,14 @@ class ItemController extends Controller
 
     /**
      * Updates a MenuItem.
-     *
-     * @param Workup\MenuBuilder\Http\Requests\MenuItemFormRequest $request
-     * @param $menuItem
-     * @return Illuminate\Http\Response
      **/
-    public function update(MenuItemFormRequest $request, $menuItemId)
+    public function update(MenuItemFormRequest $request, $menuItemId): JsonResponse
     {
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
-        if (!isset($menuItem)) return response()->json(['error' => 'menu_item_not_found'], 400);
+        if (! isset($menuItem)) {
+            return response()->json(['error' => 'menu_item_not_found'], 400);
+        }
         $data = $request->getValues();
 
         $menuItem->data = [];
@@ -74,11 +67,8 @@ class ItemController extends Controller
 
     /**
      * Deletes a MenuItem.
-     *
-     * @param $menuItem
-     * @return Illuminate\Http\Response
      **/
-    public function destroy($menuItemId)
+    public function destroy($menuItemId): JsonResponse
     {
         $menuItem = MenuBuilder::getMenuItemClass()::findOrFail($menuItemId);
         $menuItem->children()->delete();
@@ -88,28 +78,32 @@ class ItemController extends Controller
 
     /**
      * Get link types for locale.
-     *
-     * @param string $locale
-     * @return Illuminate\Http\Response
      **/
-    public function getMenuItemTypes(Request $request, $menuId)
+    public function getMenuItemTypes(Request $request, $menuId): JsonResponse
     {
         $menu = MenuBuilder::getMenuClass()::find($menuId);
-        if ($menu === null) return response()->json(['error' => 'menu_not_found'], 404);
+        if ($menu === null) {
+            return response()->json(['error' => 'menu_not_found'], 404);
+        }
+
         $locale = $request->get('locale');
-        if ($locale === null) return response()->json(['error' => 'locale_required'], 400);
+        if ($locale === null) {
+            return response()->json(['error' => 'locale_required'], 400);
+        }
 
         $menuItemTypes = [];
         $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
 
         $formatAndAppendMenuItemType = function ($typeClass) use (&$menuItemTypes, $locale) {
-            if (!class_exists($typeClass)) return;
+            if (! class_exists($typeClass)) {
+                return;
+            }
 
             $data = [
                 'name' => $typeClass::getName(),
                 'type' => $typeClass::getType(),
                 'fields' => MenuBuilder::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
-                'class' => $typeClass
+                'class' => $typeClass,
             ];
 
             if (method_exists($typeClass, 'getOptions')) {

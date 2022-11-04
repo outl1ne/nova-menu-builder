@@ -6,13 +6,16 @@
           {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
         </h2>
 
-        <toggle-button v-model="newItem.is_active" :color="switchColor" :labels="toggleLabels" :sync="true" :width="78" />
+        <toggle-button v-model="newItem.is_active" :color="switchColor" :labels="toggleLabels" :sync="true"
+                       :width="78"/>
       </div>
 
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <div class="flex">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemLabel') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{
+              __('novaMenuBuilder.menuItemLabel')
+            }}</label>
           </div>
 
           <div class="py-4 w-4/5">
@@ -34,7 +37,9 @@
 
         <div class="flex">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemSlug') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{
+              __('novaMenuBuilder.menuItemSlug')
+            }}</label>
           </div>
 
           <div class="py-4 w-4/5">
@@ -55,7 +60,9 @@
 
         <div class="flex border-t border-40">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemType') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{
+              __('novaMenuBuilder.menuItemType')
+            }}</label>
           </div>
 
           <div class="py-4 w-4/5">
@@ -81,7 +88,9 @@
 
         <div class="flex" v-if="showSlug()">
           <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemPath') }}</label>
+            <label class="inline-block text-80 pt-2 leading-tight">{{
+              __('novaMenuBuilder.menuItemPath')
+            }}</label>
           </div>
 
           <div class="py-4 w-4/5">
@@ -129,7 +138,9 @@
         <template v-if="linkType.type === 'select'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemValue') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{
+                __('novaMenuBuilder.menuItemValue')
+              }}</label>
             </div>
 
             <div class="py-4 w-4/5">
@@ -158,7 +169,9 @@
         <template v-if="linkType.type === 'route-select'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemValue') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{
+                __('novaMenuBuilder.menuItemValue')
+              }}</label>
             </div>
 
             <div class="py-4 w-4/5">
@@ -187,7 +200,9 @@
         <template v-if="linkType.type === 'entity-select'">
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemEntity') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{
+                __('novaMenuBuilder.menuItemEntity')
+              }}</label>
             </div>
 
             <div class="py-4 w-4/5">
@@ -213,7 +228,9 @@
 
           <div class="flex border-t border-40">
             <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{ __('novaMenuBuilder.menuItemEntityValue') }}</label>
+              <label class="inline-block text-80 pt-2 leading-tight">{{
+                __('novaMenuBuilder.menuItemEntityValue')
+              }}</label>
             </div>
 
             <div class="py-4 w-4/5">
@@ -293,149 +310,150 @@
 <script>
 import Modal from './Modal';
 import Multiselect from 'vue-multiselect';
-import { HandlesValidationErrors } from 'laravel-nova';
-import { Errors } from 'form-backend-validation';
-import api from "../../api";
+import {HandlesValidationErrors} from 'laravel-nova';
+import {Errors} from 'form-backend-validation';
+import api from "../../menu-api";
 
 export default {
-  mixins: [HandlesValidationErrors],
-  props: [
-    'newItem',
-    'showModal',
-    'update',
-    'linkType',
-    'menuItemTypes',
-    'resourceName',
-    'resourceId',
-    'isMenuItemUpdating',
-  ],
+    mixins: [HandlesValidationErrors],
+    props: [
+        'newItem',
+        'showModal',
+        'update',
+        'linkType',
+        'menuItemTypes',
+        'resourceName',
+        'resourceId',
+        'isMenuItemUpdating',
+        'errors',
+    ],
 
-  components: { Modal, Multiselect },
+    components: {Modal, Multiselect},
 
-  data: () => ({
-    toggleLabels: false,
-    entityOptions: [],
-    entityPath: '',
-  }),
+    data: () => ({
+        toggleLabels: false,
+        entityOptions: [],
+        entityPath: '',
+    }),
 
-  mounted() {
-    this.toggleLabels = {
-      checked: this.__('novaMenuBuilder.menuItemActive'),
-      unchecked: this.__('novaMenuBuilder.menuItemDisabled'),
-    };
-    this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
-  },
-
-  computed: {
-    options() {
-      const options = [...this.linkType.options];
-      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
-      return options;
+    mounted() {
+        this.toggleLabels = {
+            checked: this.__('novaMenuBuilder.menuItemActive'),
+            unchecked: this.__('novaMenuBuilder.menuItemDisabled'),
+        };
+        this.switchColor = {checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4'};
     },
 
-    entities() {
-      let options = [];
-      if (this.linkType.options[0].label.includes('||')) {
-        this.linkType.options.forEach(option => {
-          let value = option.label.split('||');
-          options.push({
-            id: option.id,
-            label: value[0],
-            path: value[1],
-          });
-        });
-      } else {
-        options = [...this.linkType.options];
-      }
-      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
-      return options;
+    computed: {
+        options() {
+            const options = [...this.linkType.options];
+            options.unshift({id: '', label: this.__('novaMenuBuilder.chooseOption')});
+            return options;
+        },
+
+        entities() {
+            let options = [];
+            if (this.linkType.options[0].label.includes('||')) {
+                this.linkType.options.forEach(option => {
+                    let value = option.label.split('||');
+                    options.push({
+                        id: option.id,
+                        label: value[0],
+                        path: value[1],
+                    });
+                });
+            } else {
+                options = [...this.linkType.options];
+            }
+            options.unshift({id: '', label: this.__('novaMenuBuilder.chooseOption')});
+            return options;
+        },
+
+        fields() {
+            let fields = this.linkType.fields;
+            if (this.update) {
+                fields = this.linkType.class === this.newItem.class ? this.newItem.fields : this.linkType.fields;
+            }
+
+            return fields || [];
+        },
+
+        errors() {
+            const ogErrors = this.$props.errors;
+            if (ogErrors && typeof ogErrors.has === 'function') return ogErrors;
+            return new Errors(ogErrors || {});
+        },
     },
 
-    fields() {
-      let fields = this.linkType.fields;
-      if (this.update) {
-        fields = this.linkType.class === this.newItem.class ? this.newItem.fields : this.linkType.fields;
-      }
+    methods: {
+        setSlug() {
+            this.newItem.slug = this.newItem.label.toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w-]+/g, '');
+        },
 
-      return fields || [];
+        showSlug() {
+            return this.linkType.type === 'static-url' ||
+                this.linkType.type === 'select' ||
+                this.linkType.type === 'text';
+        },
+
+        setPath(path) {
+            this.entityPath = path;
+            this.asyncFindEntityOption('');
+        },
+
+        selectEntity(value) {
+            this.setPath(value.path);
+            this.$emit('onLinkEntityIdUpdate', value.id);
+
+            return value.id;
+        },
+
+        storeWithData(eventType) {
+            this.fields.forEach(field => {
+                const formData = new FormData();
+                field.fill(formData);
+
+                const values = Array.from(formData.values());
+                if (field.component === 'trix-field') {
+                    this.$set(this.newItem, field.attribute, values[0]);
+                    return;
+                }
+
+                // Is array
+                const firstKey = Array.from(formData.keys())[0];
+                if (firstKey && firstKey.endsWith(']')) {
+                    this.$set(this.newItem, field.attribute, values || []);
+                } else {
+                    if (values.length === 0) this.$set(this.newItem, field.attribute, void 0);
+                    if (values.length === 1) this.$set(this.newItem, field.attribute, values[0]);
+                    if (values.length > 1) this.$set(this.newItem, field.attribute, values);
+                }
+            });
+
+            this.$emit(eventType);
+        },
+
+        asyncFindEntityOption(query) {
+            this.isLoading = true
+            let resource = this.entityPath;
+            Nova.request().get(`/nova-api/${resource}?search=${query}`).then(response => {
+                this.isLoading = false;
+                this.entityOptions = response.data.resources.map(item => {
+                    return {
+                        id: item.id.value,
+                        label: item.title,
+                    };
+                });
+                this.entityOptions.unshift({id: '0', label: this.__('novaMenuBuilder.indexOption')});
+            })
+        },
+
+        getError(key) {
+            return (this.errors && this.errors[key] && this.errors[key][0]) || void 0;
+        },
     },
-
-    errors() {
-      const ogErrors = this.$props.errors;
-      if (ogErrors && typeof ogErrors.has === 'function') return ogErrors;
-      return new Errors(ogErrors || {});
-    },
-  },
-
-  methods: {
-    setSlug() {
-      this.newItem.slug = this.newItem.label.toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w-]+/g, '');
-    },
-
-    showSlug() {
-      return this.linkType.type === 'static-url' ||
-        this.linkType.type === 'select' ||
-        this.linkType.type === 'text';
-    },
-
-    setPath(path) {
-      this.entityPath = path;
-      this.asyncFindEntityOption('');
-    },
-
-    selectEntity(value) {
-      this.setPath(value.path);
-      this.$emit('onLinkEntityIdUpdate', value.id);
-
-      return value.id;
-    },
-
-    storeWithData(eventType) {
-      this.fields.forEach(field => {
-        const formData = new FormData();
-        field.fill(formData);
-
-        const values = Array.from(formData.values());
-        if (field.component === 'trix-field') {
-          this.$set(this.newItem, field.attribute, values[0]);
-          return;
-        }
-
-        // Is array
-        const firstKey = Array.from(formData.keys())[0];
-        if (firstKey && firstKey.endsWith(']')) {
-          this.$set(this.newItem, field.attribute, values || []);
-        } else {
-          if (values.length === 0) this.$set(this.newItem, field.attribute, void 0);
-          if (values.length === 1) this.$set(this.newItem, field.attribute, values[0]);
-          if (values.length > 1) this.$set(this.newItem, field.attribute, values);
-        }
-      });
-
-      this.$emit(eventType);
-    },
-
-    asyncFindEntityOption (query) {
-      this.isLoading = true
-      let resource = this.entityPath;
-      Nova.request().get(`/nova-api/${resource}?search=${query}`).then(response => {
-          this.isLoading = false;
-          this.entityOptions = response.data.resources.map(item => {
-            return {
-              id: item.id.value,
-              label: item.title,
-            };
-          });
-          this.entityOptions.unshift({ id: '0', label: this.__('novaMenuBuilder.indexOption') });
-        })
-    },
-
-    getError(key) {
-      return (this.errors && this.errors[key] && this.errors[key][0]) || void 0;
-    },
-  },
 };
 </script>
 
@@ -443,25 +461,25 @@ export default {
 @import '~vue-multiselect/dist/vue-multiselect.min.css';
 
 .add-new-menu-item-modal {
-  .menu-item-component {
-    div.py-6.px-8 {
-      &:nth-child(1) {
-        padding: 1rem 2rem 1rem 0;
-      }
+    .menu-item-component {
+        div.py-6.px-8 {
+            &:nth-child(1) {
+                padding: 1rem 2rem 1rem 0;
+            }
 
-      &:nth-child(2) {
-        padding: 1rem 0 1rem 0;
-        width: 80%;
-      }
+            &:nth-child(2) {
+                padding: 1rem 0 1rem 0;
+                width: 80%;
+            }
+        }
     }
-  }
 
-  .multiselect {
-    > .multiselect__tags {
-      border-color: var(\-\-60);
-      border-radius: 0.5rem;
-      box-shadow: none;
+    .multiselect {
+        > .multiselect__tags {
+            border-color: var(\-\-60);
+            border-radius: 0.5rem;
+            box-shadow: none;
+        }
     }
-  }
 }
 </style>

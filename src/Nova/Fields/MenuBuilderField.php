@@ -15,6 +15,8 @@ class MenuBuilderField extends Field
             'locales' => MenuBuilder::getLocales(),
             'maxDepth' => 10,
         ]);
+
+        parent::__construct($name, $attribute, $resolveCallback);
     }
 
     public function maxDepth($maxDepth = 10)

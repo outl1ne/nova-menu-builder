@@ -2,11 +2,10 @@
 
 namespace Workup\MenuBuilder;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
-use Workup\MenuBuilder\Commands\CreateMenuItemType;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Workup\MenuBuilder\Http\Middleware\Authorize;
 use Workup\NovaTranslationsLoader\LoadsNovaTranslations;
 
@@ -17,24 +16,13 @@ class MenuBuilderServiceProvider extends ServiceProvider
     public function boot()
     {
         // Load views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu-builder');
 
         // Load translations
         $this->loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
 
-        // Load migrations
-        if (config('nova-menu.auto_load_migrations', true)) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        }
-
         // Publish data
-        $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'nova-menu-builder-migrations');
         $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
-
-        // Register resource
-        Nova::resources([
-            MenuBuilder::getMenuResource()
-        ]);
 
         // Register routes
         $this->app->booted(function () {
@@ -57,21 +45,17 @@ class MenuBuilderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/nova-menu.php', 'nova-menu'
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../config/nova-menu-builder.php', 'nova-menu-builder');
     }
 
     protected function routes()
     {
-        if ($this->app->routesAreCached()) return;
+        if ($this->app->routesAreCached()) {
+            return;
+        }
 
         Route::middleware(['nova', Authorize::class])
-            ->prefix('nova-vendor/nova-menu')
-            ->group(__DIR__ . '/../routes/backend.php');
-
-        Route::middleware(['api'])
-            ->prefix(config('nova-menu.api_prefix', 'api'))
-            ->group(__DIR__ . '/../routes/frontend.php');
+            ->prefix('nova-vendor/nova-menu-builder')
+            ->group(__DIR__ . '/../routes/api.php');
     }
 }

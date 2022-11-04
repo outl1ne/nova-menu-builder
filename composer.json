@@ -1,49 +1,51 @@
 {
-  "name": "workup/nova-menu-builder",
-  "description": "This Laravel Nova package allows you to create and manage menus and menu items.",
-  "keywords": [
-    "laravel",
-    "nova",
-    "menu",
-    "builder",
-    "workup"
-  ],
-  "license": "MIT",
-  "require": {
-    "php": ">=8.0",
-    "laravel/framework": "^8.0 || ^9.0",
-    "doctrine/dbal": ">=2.0.0",
-    "workup/nova": "^3.0",
-    "workup/nova-translations-loader": "^3.0",
-    "workup/nova-tailwind": "^1.0.2"
-  },
-  "require-dev": {
-    "orchestra/testbench": "^6.0",
-    "phpunit/phpunit": "^9.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Workup\\MenuBuilder\\": "src/"
+    "name": "workup/nova-menu-builder",
+    "description": "This Laravel Nova package allows you to create and manage menus and menu items.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "menu",
+        "builder",
+        "workup"
+    ],
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/workupsrl/nova.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/workupsrl/nova-translatable-field.git"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "laravel/framework": "^9.0",
+        "doctrine/dbal": ">=2.0.0",
+        "workup/nova": "^3.0",
+        "workup/nova-translations-loader": "^3.0",
+        "workup/nova-tailwind": "^1.0.2"
     },
-    "files": [
-      "src/helpers.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Workup\\MenuBuilder\\Tests\\": "tests"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Workup\\MenuBuilder\\MenuBuilderServiceProvider"
-      ]
-    }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "require-dev": {
+        "orchestra/testbench": "^7.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Workup\\MenuBuilder\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Workup\\MenuBuilder\\MenuBuilderServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

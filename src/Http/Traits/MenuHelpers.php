@@ -48,17 +48,25 @@ trait MenuHelpers
     {
         $data = $menuItem->toArray();
         unset($data['id']);
-        if ($parentId !== null) $data['parent_id'] = $parentId;
-        if ($order !== null) $data['order'] = $order;
+
+        if ($parentId !== null) {
+            $data['parent_id'] = $parentId;
+        }
+        if ($order !== null) {
+            $data['order'] = $order;
+        }
         $data['locale'] = $menuItem->locale;
 
         // Save the long way instead of ::create() to trigger observer(s)
         $menuItemClass = MenuBuilder::getMenuItemClass();
         $newMenuItem = new $menuItemClass;
         $newMenuItem->fill($data);
+        info($newMenuItem);
         $newMenuItem->save();
 
         $children = $menuItem->children;
-        foreach ($children as $child) $this->recursivelyDuplicate($child, $newMenuItem->id);
+        foreach ($children as $child) {
+            $this->recursivelyDuplicate($child, $newMenuItem->id);
+        }
     }
 }
