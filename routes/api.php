@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Workup\MenuBuilder\Http\Controllers\DuplicateItemController;
 use Workup\MenuBuilder\Http\Controllers\ItemController;
 use Workup\MenuBuilder\Http\Controllers\MenuController;
 use Workup\MenuBuilder\Http\Controllers\EntityController;
 use Workup\MenuBuilder\Http\Controllers\MenuItemController;
+use Workup\MenuBuilder\Http\Controllers\DuplicateItemController;
 
+
+// Menu
 Route::get('/menu/{menu}', [MenuController::class, 'index']);
 Route::post('/menu/{menu}', [MenuController::class, 'store']);
 

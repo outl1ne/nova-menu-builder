@@ -13,9 +13,9 @@ class MenuItemFormRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return resolve(MenuBuilder::class)->authorize(request()) ? true : false;
+        return (bool) resolve(MenuBuilder::class)->authorize(request());
     }
 
     /**
@@ -23,12 +23,12 @@ class MenuItemFormRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return MenuBuilder::getRulesFromMenuLinkable($this->get('class'));
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         $keys = [
             'menu_id',
@@ -45,9 +45,13 @@ class MenuItemFormRequest extends FormRequest
             'target',
             'is_active',
         ];
+
         foreach ($this->all() as $key => $value) {
-            if (Str::startsWith($key, 'data->')) $keys[] = $key;
+            if (Str::startsWith($key, 'data->')) {
+                $keys[] = $key;
+            }
         }
+
         return $this->only($keys);
     }
 }

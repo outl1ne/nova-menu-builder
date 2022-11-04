@@ -3,6 +3,7 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Workup\MenuBuilder\MenuBuilder;
 
@@ -10,28 +11,33 @@ class MenuItemController extends Controller
 {
     /**
      * Get link types for locale.
-     *
-     * @param string $locale
-     * @return Illuminate\Http\Response
      **/
-    public function __invoke(Request $request, $menuId)
+    public function __invoke(Request $request, $menuId): JsonResponse
     {
         $menu = MenuBuilder::getMenuClass()::find($menuId);
-        if ($menu === null) return response()->json(['error' => 'menu_not_found'], 404);
+
+        if ($menu === null) {
+            return response()->json(['error' => 'menu_not_found'], 404);
+        }
+
         $locale = $request->get('locale');
-        if ($locale === null) return response()->json(['error' => 'locale_required'], 400);
+        if ($locale === null) {
+            return response()->json(['error' => 'locale_required'], 400);
+        }
 
         $menuItemTypes = [];
         $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
 
         $formatAndAppendMenuItemType = function ($typeClass) use (&$menuItemTypes, $locale) {
-            if (!class_exists($typeClass)) return;
+            if (! class_exists($typeClass)) {
+                return;
+            }
 
             $data = [
                 'name' => $typeClass::getName(),
                 'type' => $typeClass::getType(),
                 'fields' => MenuBuilder::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
-                'class' => $typeClass
+                'class' => $typeClass,
             ];
 
             if (method_exists($typeClass, 'getOptions')) {

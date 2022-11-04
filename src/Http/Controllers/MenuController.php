@@ -3,6 +3,7 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Workup\MenuBuilder\MenuBuilder;
 use Workup\MenuBuilder\Http\Traits\MenuHelpers;
@@ -13,17 +14,18 @@ class MenuController extends Controller
 
     /**
      * Return root menu items for one menu.
-     *
-     * @param Illuminate\Http\Request $request
-     * @param $menuId
-     * @return Illuminate\Http\Response
      **/
-    public function index(Request $request, $menuId)
+    public function index(Request $request, int $menuId): JsonResponse
     {
-        $locale = $request->get('locale');
         $menu = MenuBuilder::getMenuClass()::find($menuId);
-        if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
-        if (empty($locale)) return response()->json(['menu' => 'locale_required_but_missing'], 400);
+        if (empty($menu)) {
+            return response()->json(['menu' => 'menu_not_found'], 400);
+        }
+
+        $locale = $request->get('locale');
+        if (empty($locale)) {
+            return response()->json(['menu' => 'locale_required_but_missing'], 400);
+        }
 
         $menuItems = $menu
             ->rootMenuItems()
@@ -38,12 +40,8 @@ class MenuController extends Controller
 
     /**
      * Save menu items.
-     *
-     * @param Illuminate\Http\Request $request
-     * @param $menuId
-     * @return Illuminate\Http\Response
      **/
-    public function store(Request $request, $menuId)
+    public function store(Request $request): JsonResponse
     {
         $items = $request->get('menuItems');
 
