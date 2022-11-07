@@ -1,8 +1,5 @@
 # Nova Menu Builder (WorkUp Version)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/Workup/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/Workup/nova-menu-builder)
-[![Total Downloads](https://img.shields.io/packagist/dt/Workup/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/Workup/nova-menu-builder)
-
 This [Laravel Nova](https://nova.laravel.com/) package allows you to create and manage menus and menu items.
 
 ## Requirements
@@ -108,7 +105,7 @@ php artisan vendor:publish --tag=nova-menu-builder-migrations
 You can define the locales for the menus in the config file, as shown below.
 
 ```php
-// in config/nova-menu.php
+// in config/nova-menu-builder.php
 
 return [
   // ...
@@ -141,7 +138,7 @@ Menu builder allows you create custom menu item types with custom fields.
 Create a class that extends the `Workup\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
 
 ```php
-// in config/nova-menu.php
+// in config/nova-menu-builder.php
 
 return [
   // ...
