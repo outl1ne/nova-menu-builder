@@ -505,12 +505,12 @@ NB! This release contains breaking changes. See [UPGRADING.md](UPGRADING.md) for
 ### Changed
 
 - Better localization support through `nova-locale-field`
-- Moved all config options from tool constructor to `config/nova-menu.php`
+- Moved all config options from tool constructor to `config/nova-menu-builder.php`
 - Updated all packages
 - All migrations are now loaded automatically
   - Publishing migrations is not necessary anymore
   - Running `migrate` will delete the original migration from project source
-- Table names are now configurable through `config/nova-menu.php`
+- Table names are now configurable through `config/nova-menu-builder.php`
 
 ## [1.4.2] - 2019-10-09
 
@@ -629,7 +629,7 @@ public static function getValue($value = null, array $parameters = null)
 
 ### Changed
 
-- Rename tool from menu-builder to nova-menu
+- Rename tool from menu-builder to nova-menu-builder
 
 ## [1.0.1] - 2019-03-13
 
