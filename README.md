@@ -54,7 +54,7 @@ public function tools()
         \Outl1ne\MenuBuilder\MenuBuilder::make(),
 
         // Optional customization
-        ->name('Menus') // Define a new name for sidebar
+        ->title('Menus') // Define a new name for sidebar
         ->icon('adjustments') // Customize menu icon, supports heroicons
         ->hideMenu(false) // Hide MenuBuilder defined MenuSection.
     ];
