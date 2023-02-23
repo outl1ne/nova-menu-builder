@@ -534,6 +534,7 @@ $red500: #ef4444;
 
     .dark & {
       border-color: $slate700;
+      background-color: $slate900;
     }
 
     li > span.multiselect__option {
