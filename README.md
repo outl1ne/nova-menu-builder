@@ -1,7 +1,3 @@
-# Archived
-
-This package has been replaced by [nova-pages](https://github.com/workupsrl/nova-pages)
-
 # Nova Menu Builder (WorkUp Version)
 
 This [Laravel Nova](https://nova.laravel.com/) package allows you to create and manage menus and menu items.
