@@ -96,6 +96,7 @@ export default {
             entity_item_id: null,
             is_index: false,
             classProp: [],
+            media: null
         },
         menuItems: [],
         menuItemTypes: void 0,
@@ -153,8 +154,7 @@ export default {
 
         async editMenu(item) {
             this.update = true;
-            const menuItem = (await api.getMenuItem(item.id)).data;
-            this.newItem = menuItem;
+            this.newItem = (await api.getMenuItem(item.id)).data;
 
             if (this.newItem.entity_item_id) {
                 this.$refs.UpdateMenuItemModal.setPath((await api.getEntityTable(this.newItem.entity_id)).data);
@@ -195,6 +195,7 @@ export default {
                 entity_id: null,
                 entity_item_id: null,
                 is_index: false,
+                media: null
             };
 
             this.linkType = '';
@@ -203,7 +204,11 @@ export default {
         async confirmItemCreate() {
             try {
                 this.errors = {};
-                await api.create(this.newItemData);
+                const formData = new FormData();
+                Object.keys(this.newItemData).forEach((key) => {
+                    formData.append(key, this.newItemData[key])
+                })
+                await api.create(formData);
                 await this.refreshData();
                 this.showAddModal = false;
                 this.resetNewItem();
@@ -217,7 +222,11 @@ export default {
             try {
                 this.isMenuItemUpdating = true;
                 this.errors = {};
-                await api.update(this.newItem.id, this.newItemData);
+                const formData = new FormData();
+                Object.keys(this.newItemData).forEach((key) => {
+                    formData.append(key, this.newItemData[key])
+                })
+                await api.update(this.newItem.id, formData);
                 this.isMenuItemUpdating = false;
                 this.showAddModal = false;
                 this.$toasted.show(this.__('novaMenuBuilder.toastUpdateSuccess'), {type: 'success'});
