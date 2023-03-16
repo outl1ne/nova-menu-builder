@@ -21,13 +21,18 @@ class ItemController extends Controller
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
         $data = $request->getValues();
+
         $data['order'] = $menuItemModel::max('id') + 1;
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {
-            $model->{$key} = $value;
+            $model->{$key} = $this->cleanUpStringValue($value);;
         }
         $model->save();
+
+        if ($request->hasFile('media')) {
+            $model->addMediaFromRequest('media')->toMediaCollection('menu-item-collection');
+        }
 
         return response()->json(['success' => true], 200);
     }
@@ -58,10 +63,15 @@ class ItemController extends Controller
 
         $menuItem->data = [];
         foreach ($data as $key => $value) {
-            $menuItem->{$key} = $value;
+            $menuItem->{$key} = $this->cleanUpStringValue($value);;
         }
 
         $menuItem->save();
+
+        if ($request->hasFile('media')) {
+            $menuItem->addMediaFromRequest('media')->toMediaCollection('menu-item-collection');
+        }
+
         return response()->json(['success' => true], 200);
     }
 
@@ -121,5 +131,21 @@ class ItemController extends Controller
         }
 
         return response()->json($menuItemTypes, 200);
+    }
+
+    /**
+     * @param  mixed  $value
+     *
+     * @return bool|mixed|null
+     */
+    protected function cleanUpStringValue(mixed $value): mixed
+    {
+        $value = match ($value) {
+            'null' => null,
+            'true' => true,
+            'false' => false,
+            default => $value,
+        };
+        return $value;
     }
 }

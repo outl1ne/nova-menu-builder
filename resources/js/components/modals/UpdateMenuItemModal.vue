@@ -1,310 +1,326 @@
 <template>
-  <modal align="flex justify-end" :show="showModal" class="add-new-menu-item-modal">
-    <div slot="container">
-      <div class="flex flex-wrap justify-between mb-6">
-        <h2 class="text-90 font-normal text-xl">
-          {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
-        </h2>
+    <modal align="flex justify-end" :show="showModal" class="add-new-menu-item-modal">
+        <div slot="container">
+            <div class="flex flex-wrap justify-between mb-6">
+                <h2 class="text-90 font-normal text-xl">
+                    {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
+                </h2>
 
-        <toggle-button v-model="newItem.is_active" :color="switchColor" :labels="toggleLabels" :sync="true"
-                       :width="78"/>
-      </div>
+                <toggle-button v-model="newItem.is_active" :color="switchColor" :labels="toggleLabels" :sync="true"
+                               :width="78"/>
+            </div>
 
-      <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
-        <div class="flex">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{
-              __('novaMenuBuilder.menuItemLabel')
-            }}</label>
-          </div>
+            <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off" enctype="multipart/form-data">
+                <div class="flex">
+                    <div class="w-1/5 py-4">
+                        <label class="inline-block text-80 pt-2 leading-tight">{{
+                            __('novaMenuBuilder.menuItemLabel')
+                        }}</label>
+                    </div>
 
-          <div class="py-4 w-4/5">
-            <input
-              :placeholder="__('novaMenuBuilder.menuItemLabel')"
-              :class="{ 'border-danger': getError('label') }"
-              class="w-full form-control form-input form-input-bordered"
-              id="label"
-              type="text"
-              v-model="newItem.label"
-              @keyup="setSlug"
-            />
+                    <div class="py-4 w-4/5">
+                        <input
+                            :placeholder="__('novaMenuBuilder.menuItemLabel')"
+                            :class="{ 'border-danger': getError('label') }"
+                            class="w-full form-control form-input form-input-bordered"
+                            id="label"
+                            type="text"
+                            v-model="newItem.label"
+                            @keyup="setSlug"
+                        />
 
-            <help-text class="error-text mt-2 text-danger" v-if="getError('label')">
-              {{ getError('label') }}
-            </help-text>
-          </div>
+                        <help-text class="error-text mt-2 text-danger" v-if="getError('label')">
+                            {{ getError('label') }}
+                        </help-text>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <div class="w-1/5 py-4">
+                        <label class="inline-block text-80 pt-2 leading-tight">{{
+                            __('novaMenuBuilder.menuItemSlug')
+                        }}</label>
+                    </div>
+
+                    <div class="py-4 w-4/5">
+                        <input
+                            :placeholder="__('novaMenuBuilder.menuItemSlug')"
+                            :class="{ 'border-danger': getError('slug') }"
+                            class="w-full form-control form-input form-input-bordered"
+                            id="slug"
+                            type="text"
+                            v-model="newItem.slug"
+                        />
+
+                        <help-text class="error-text mt-2 text-danger" v-if="getError('slug')">
+                            {{ getError('slug') }}
+                        </help-text>
+                    </div>
+                </div>
+
+                <div class="flex border-t border-40">
+                    <div class="w-1/5 py-4">
+                        <label class="inline-block text-80 pt-2 leading-tight">{{
+                            __('novaMenuBuilder.menuItemType')
+                        }}</label>
+                    </div>
+
+                    <div class="py-4 w-4/5">
+                        <select
+                            :value="linkType.class"
+                            @input="e => $emit('onLinkTypeUpdate', e.target.value)"
+                            class="w-full form-control form-select"
+                            :class="{ 'border-danger': getError('class') }"
+                        >
+                            <option disabled="disabled" selected="selected" value="">
+                                {{ __('novaMenuBuilder.chooseMenuItemType') }}
+                            </option>
+                            <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">
+                                {{ __(type.name) }}
+                            </option>
+                        </select>
+
+                        <help-text class="error-text mt-2 text-danger" v-if="getError('class')">
+                            {{ __('novaMenuBuilder.menuTypeRequired') }}
+                        </help-text>
+                    </div>
+                </div>
+
+                <div class="flex" v-if="showSlug()">
+                    <div class="w-1/5 py-4">
+                        <label class="inline-block text-80 pt-2 leading-tight">{{
+                            __('novaMenuBuilder.menuItemPath')
+                        }}</label>
+                    </div>
+
+                    <div class="py-4 w-4/5">
+                        <input
+                            :placeholder="__('novaMenuBuilder.menuItemPath')"
+                            :class="{ 'border-danger': getError('path') }"
+                            class="w-full form-control form-input form-input-bordered"
+                            id="path"
+                            type="text"
+                            v-model="newItem.path"
+                        />
+
+                        <help-text class="error-text mt-2 text-danger" v-if="getError('path')">
+                            {{ getError('path') }}
+                        </help-text>
+                    </div>
+                </div>
+
+                <!-- Static URL -->
+                <template v-if="linkType.type === 'static-url'">
+                    <div class="flex border-t border-40">
+                        <div class="w-1/5 py-4">
+                            <label class="inline-block text-80 pt-2 leading-tight">
+                                {{ __('novaMenuBuilder.menuItemUrlFieldName') }}
+                            </label>
+                        </div>
+                        <div class="py-4 w-4/5">
+                            <input
+                                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
+                                :class="{ 'border-danger': getError('url') }"
+                                class="w-full form-control form-input form-input-bordered"
+                                id="url"
+                                type="text"
+                                v-model="newItem.url"
+                            />
+
+                            <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
+                                {{ getError('url') }}
+                            </help-text>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Select -->
+                <template v-if="linkType.type === 'select'">
+                    <div class="flex border-t border-40">
+                        <div class="w-1/5 py-4">
+                            <label class="inline-block text-80 pt-2 leading-tight">{{
+                                __('novaMenuBuilder.menuItemValue')
+                            }}</label>
+                        </div>
+
+                        <div class="py-4 w-4/5">
+                            <multiselect
+                                :options="options"
+                                :placeholder="__('novaMenuBuilder.chooseOption')"
+                                :value="options.find(option => option.id === newItem.url)"
+                                @input="value => $emit('onLinkModelUpdate', value.id)"
+                                label="label"
+                                track-by="id"
+                                selectLabel=""
+                                selectGroupLabel=""
+                                selectedLabel=""
+                                deselectLabel=""
+                                deselectGroupLabel=""
+                            />
+
+                            <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
+                                {{ getError('url') }}
+                            </help-text>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Route Select -->
+                <template v-if="linkType.type === 'route-select'">
+                    <div class="flex border-t border-40">
+                        <div class="w-1/5 py-4">
+                            <label class="inline-block text-80 pt-2 leading-tight">{{
+                                __('novaMenuBuilder.menuItemValue')
+                            }}</label>
+                        </div>
+
+                        <div class="py-4 w-4/5">
+                            <multiselect
+                                :options="options"
+                                :placeholder="__('novaMenuBuilder.chooseOption')"
+                                :value="options.find(option => option.id === newItem.url)"
+                                @input="value => $emit('onLinkModelUpdate', value.id)"
+                                label="label"
+                                track-by="id"
+                                selectLabel=""
+                                selectGroupLabel=""
+                                selectedLabel=""
+                                deselectLabel=""
+                                deselectGroupLabel=""
+                            />
+
+                            <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
+                                {{ getError('url') }}
+                            </help-text>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Entity Select -->
+                <template v-if="linkType.type === 'entity-select'">
+                    <div class="flex border-t border-40">
+                        <div class="w-1/5 py-4">
+                            <label class="inline-block text-80 pt-2 leading-tight">{{
+                                __('novaMenuBuilder.menuItemEntity')
+                            }}</label>
+                        </div>
+
+                        <div class="py-4 w-4/5">
+                            <multiselect
+                                :options="entities"
+                                :placeholder="__('novaMenuBuilder.chooseOption')"
+                                :value="entities.find(entity => entity.id == newItem.entity_id)"
+                                @input="selectEntity"
+                                label="label"
+                                track-by="id"
+                                selectLabel=""
+                                selectGroupLabel=""
+                                selectedLabel=""
+                                deselectLabel=""
+                                deselectGroupLabel=""
+                            />
+
+                            <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                                {{ getError('value') }}
+                            </help-text>
+                        </div>
+                    </div>
+
+                    <div class="flex border-t border-40">
+                        <div class="w-1/5 py-4">
+                            <label class="inline-block text-80 pt-2 leading-tight">{{
+                                __('novaMenuBuilder.menuItemEntityValue')
+                            }}</label>
+                        </div>
+
+                        <div class="py-4 w-4/5">
+                            <multiselect
+                                :options="entityOptions"
+                                :placeholder="__('novaMenuBuilder.chooseEntityOption')"
+                                :value="entityOptions.find(entityOption => entityOption.id == newItem.entity_item_id)"
+                                @input="value => this.$emit('onLinkEntityItemIdUpdate', value.id)"
+                                label="label"
+                                track-by="id"
+                                selectLabel=""
+                                selectGroupLabel=""
+                                selectedLabel=""
+                                deselectLabel=""
+                                deselectGroupLabel=""
+                                @search-change="asyncFindEntityOption"
+                            />
+
+                            <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                                {{ getError('value') }}
+                            </help-text>
+                        </div>
+                    </div>
+                </template>
+
+                <div v-if="fields && fields.length">
+                    <component
+                        v-for="(field, i) in fields"
+                        :is="`form-${field.component}`"
+                        :key="`${linkType.class}_${i}`"
+                        :field="field"
+                        :resource-id="resourceId"
+                        :resource-name="resourceName"
+                        :errors="errors"
+                        :show-errors="true"
+                        class="menu-item-component border-t border-40 remove-bottom-border"
+                    />
+                </div>
+
+                <div class="flex border-t border-40" v-if="linkType.type && linkType.type !== 'text'">
+                    <div class="w-1/5 py-4">
+                        <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
+                    </div>
+                    <div class="py-4 w-4/5">
+                        <select class="w-full form-control form-select" v-model="newItem.target">
+                            <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
+                            <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex border-t border-40">
+                    <div class="w-1/5 py-4">
+                        <label class="inline-block text-80 pt-2 leading-tight">{{ __('Image') }}</label>
+                    </div>
+                    <div class="py-4 w-4/5">
+                        <span class="form-file">
+                            <input id="media" multiple="multiple" type="file" class="form-file-input" @change="selectMedia">
+                            <label for="media" class="form-file-btn btn btn-default btn-primary">
+                                <span>Add New Media</span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+
+            </form>
+
         </div>
 
-        <div class="flex">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{
-              __('novaMenuBuilder.menuItemSlug')
-            }}</label>
-          </div>
+        <div slot="buttons">
+            <div class="ml-auto">
+                <button
+                    @click.prevent="$emit('closeModal')"
+                    class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+                    type="button"
+                >
+                    {{ __('novaMenuBuilder.closeModalTitle') }}
+                </button>
 
-          <div class="py-4 w-4/5">
-            <input
-              :placeholder="__('novaMenuBuilder.menuItemSlug')"
-              :class="{ 'border-danger': getError('slug') }"
-              class="w-full form-control form-input form-input-bordered"
-              id="slug"
-              type="text"
-              v-model="newItem.slug"
-            />
-
-            <help-text class="error-text mt-2 text-danger" v-if="getError('slug')">
-              {{ getError('slug') }}
-            </help-text>
-          </div>
+                <progress-button
+                    @click.native.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
+                    :disabled="isMenuItemUpdating"
+                    :processing="isMenuItemUpdating"
+                >
+                    {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
+                </progress-button>
+            </div>
         </div>
-
-        <div class="flex border-t border-40">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{
-              __('novaMenuBuilder.menuItemType')
-            }}</label>
-          </div>
-
-          <div class="py-4 w-4/5">
-            <select
-              :value="linkType.class"
-              @input="e => $emit('onLinkTypeUpdate', e.target.value)"
-              class="w-full form-control form-select"
-              :class="{ 'border-danger': getError('class') }"
-            >
-              <option disabled="disabled" selected="selected" value="">
-                {{ __('novaMenuBuilder.chooseMenuItemType') }}
-              </option>
-              <option :key="i" :value="type.class" v-for="(type, i) of menuItemTypes">
-                {{ __(type.name) }}
-              </option>
-            </select>
-
-            <help-text class="error-text mt-2 text-danger" v-if="getError('class')">
-              {{ __('novaMenuBuilder.menuTypeRequired') }}
-            </help-text>
-          </div>
-        </div>
-
-        <div class="flex" v-if="showSlug()">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{
-              __('novaMenuBuilder.menuItemPath')
-            }}</label>
-          </div>
-
-          <div class="py-4 w-4/5">
-            <input
-              :placeholder="__('novaMenuBuilder.menuItemPath')"
-              :class="{ 'border-danger': getError('path') }"
-              class="w-full form-control form-input form-input-bordered"
-              id="path"
-              type="text"
-              v-model="newItem.path"
-            />
-
-            <help-text class="error-text mt-2 text-danger" v-if="getError('path')">
-              {{ getError('path') }}
-            </help-text>
-          </div>
-        </div>
-
-        <!-- Static URL -->
-        <template v-if="linkType.type === 'static-url'">
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">
-                {{ __('novaMenuBuilder.menuItemUrlFieldName') }}
-              </label>
-            </div>
-            <div class="py-4 w-4/5">
-              <input
-                :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
-                :class="{ 'border-danger': getError('url') }"
-                class="w-full form-control form-input form-input-bordered"
-                id="url"
-                type="text"
-                v-model="newItem.url"
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
-                {{ getError('url') }}
-              </help-text>
-            </div>
-          </div>
-        </template>
-
-        <!-- Select -->
-        <template v-if="linkType.type === 'select'">
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{
-                __('novaMenuBuilder.menuItemValue')
-              }}</label>
-            </div>
-
-            <div class="py-4 w-4/5">
-              <multiselect
-                :options="options"
-                :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="options.find(option => option.id === newItem.url)"
-                @input="value => $emit('onLinkModelUpdate', value.id)"
-                label="label"
-                track-by="id"
-                selectLabel=""
-                selectGroupLabel=""
-                selectedLabel=""
-                deselectLabel=""
-                deselectGroupLabel=""
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
-                {{ getError('url') }}
-              </help-text>
-            </div>
-          </div>
-        </template>
-
-        <!-- Route Select -->
-        <template v-if="linkType.type === 'route-select'">
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{
-                __('novaMenuBuilder.menuItemValue')
-              }}</label>
-            </div>
-
-            <div class="py-4 w-4/5">
-              <multiselect
-                :options="options"
-                :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="options.find(option => option.id === newItem.url)"
-                @input="value => $emit('onLinkModelUpdate', value.id)"
-                label="label"
-                track-by="id"
-                selectLabel=""
-                selectGroupLabel=""
-                selectedLabel=""
-                deselectLabel=""
-                deselectGroupLabel=""
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('url')">
-                {{ getError('url') }}
-              </help-text>
-            </div>
-          </div>
-        </template>
-
-        <!-- Entity Select -->
-        <template v-if="linkType.type === 'entity-select'">
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{
-                __('novaMenuBuilder.menuItemEntity')
-              }}</label>
-            </div>
-
-            <div class="py-4 w-4/5">
-              <multiselect
-                :options="entities"
-                :placeholder="__('novaMenuBuilder.chooseOption')"
-                :value="entities.find(entity => entity.id == newItem.entity_id)"
-                @input="selectEntity"
-                label="label"
-                track-by="id"
-                selectLabel=""
-                selectGroupLabel=""
-                selectedLabel=""
-                deselectLabel=""
-                deselectGroupLabel=""
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
-                {{ getError('value') }}
-              </help-text>
-            </div>
-          </div>
-
-          <div class="flex border-t border-40">
-            <div class="w-1/5 py-4">
-              <label class="inline-block text-80 pt-2 leading-tight">{{
-                __('novaMenuBuilder.menuItemEntityValue')
-              }}</label>
-            </div>
-
-            <div class="py-4 w-4/5">
-              <multiselect
-                :options="entityOptions"
-                :placeholder="__('novaMenuBuilder.chooseEntityOption')"
-                :value="entityOptions.find(entityOption => entityOption.id == newItem.entity_item_id)"
-                @input="value => this.$emit('onLinkEntityItemIdUpdate', value.id)"
-                label="label"
-                track-by="id"
-                selectLabel=""
-                selectGroupLabel=""
-                selectedLabel=""
-                deselectLabel=""
-                deselectGroupLabel=""
-                @search-change="asyncFindEntityOption"
-              />
-
-              <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
-                {{ getError('value') }}
-              </help-text>
-            </div>
-          </div>
-        </template>
-
-        <div v-if="fields && fields.length">
-          <component
-            v-for="(field, i) in fields"
-            :is="`form-${field.component}`"
-            :key="`${linkType.class}_${i}`"
-            :field="field"
-            :resource-id="resourceId"
-            :resource-name="resourceName"
-            :errors="errors"
-            :show-errors="true"
-            class="menu-item-component border-t border-40 remove-bottom-border"
-          />
-        </div>
-
-        <div class="flex border-t border-40" v-if="linkType.type && linkType.type !== 'text'">
-          <div class="w-1/5 py-4">
-            <label class="inline-block text-80 pt-2 leading-tight">{{ __('Open in') }}</label>
-          </div>
-          <div class="py-4 w-4/5">
-            <select class="w-full form-control form-select" v-model="newItem.target">
-              <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
-              <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
-            </select>
-          </div>
-        </div>
-      </form>
-
-    </div>
-
-    <div slot="buttons">
-      <div class="ml-auto">
-        <button
-          @click.prevent="$emit('closeModal')"
-          class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-          type="button"
-        >
-          {{ __('novaMenuBuilder.closeModalTitle') }}
-        </button>
-
-        <progress-button
-          @click.native.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
-          :disabled="isMenuItemUpdating"
-          :processing="isMenuItemUpdating"
-        >
-          {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
-        </progress-button>
-      </div>
-    </div>
-  </modal>
+    </modal>
 </template>
 
 <script>
@@ -325,7 +341,6 @@ export default {
         'resourceName',
         'resourceId',
         'isMenuItemUpdating',
-        'errors',
     ],
 
     components: {Modal, Multiselect},
@@ -386,6 +401,14 @@ export default {
     },
 
     methods: {
+        selectMedia(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                return;
+            }
+            this.newItem.media = files[0];
+        },
+
         setSlug() {
             this.newItem.slug = this.newItem.label.toLowerCase()
                 .replace(/\s+/g, '-')
