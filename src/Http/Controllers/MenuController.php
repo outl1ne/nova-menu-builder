@@ -123,7 +123,7 @@ class MenuController extends Controller
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
         $data = $request->getValues();
-        $data['order'] = $menuItemModel::max('id') + 1;
+        $data['order'] = $menuItemModel::max('order') + 1;
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {
