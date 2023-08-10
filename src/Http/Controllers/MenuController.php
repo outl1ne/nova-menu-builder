@@ -12,7 +12,11 @@ class MenuController extends Controller
 {
     public function getMenus(Request $request)
     {
-        return Menu::all()->map(function (Menu $menu) {
+        $query = Menu::query();
+
+        if ($request->boolean('notEmpty')) $query->whereHas('rootMenuItems');
+
+        return $query->get()->map(function (Menu $menu) {
             return [
                 'id' => $menu->id,
                 'title' => "{$menu->name} ({$menu->slug})",

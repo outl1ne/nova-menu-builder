@@ -94,7 +94,7 @@ export default {
 
   methods: {
     async fetchMenuOptions() {
-      let menuOptions = (await api.getMenus()).data;
+      let menuOptions = (await api.getMenus({ notEmpty: true })).data;
 
       if (this.hasMultipleLocales) {
         this.selectedMenu = String(this.resourceId);

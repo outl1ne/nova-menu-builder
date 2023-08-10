@@ -1,6 +1,6 @@
 export default {
-  async getMenus() {
-    return Nova.request().get(`/nova-vendor/nova-menu/menus`);
+  async getMenus(params) {
+    return Nova.request().get(`/nova-vendor/nova-menu/menus`, { params });
   },
 
   async getItems(menuId, locale) {
