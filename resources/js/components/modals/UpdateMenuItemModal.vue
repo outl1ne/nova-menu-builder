@@ -8,11 +8,11 @@
         :checked="newItem.nestable"
         @input="newItem.nestable = $event.target.checked"
       >
-        {{ __('novaMenuBuilder.nestableLabel') }}
+        <span class="ml-1">{{ __('novaMenuBuilder.nestableLabel') }}</span>
       </CheckboxWithLabel>
 
       <CheckboxWithLabel :checked="newItem.enabled" @input="newItem.enabled = $event.target.checked">
-        {{ newItem.enabled ? this.toggleLabels.checked : this.toggleLabels.unchecked }}
+        <span class="ml-1">{{ newItem.enabled ? this.toggleLabels.checked : this.toggleLabels.unchecked }}</span>
       </CheckboxWithLabel>
     </ModalHeader>
 
@@ -22,8 +22,7 @@
           :errors="wrappedErrors"
           :fullWidthContent="true"
           :field="{
-            visible: true,
-            stacked: true,
+            ...defaultFieldProps,
             validationKey: 'name',
             name: __('novaMenuBuilder.menuItemName'),
           }"
@@ -44,8 +43,7 @@
           :errors="wrappedErrors"
           :fullWidthContent="true"
           :field="{
-            visible: true,
-            stacked: true,
+            ...defaultFieldProps,
             validationKey: 'class',
             name: __('novaMenuBuilder.menuItemType'),
           }"
@@ -68,8 +66,7 @@
           :errors="wrappedErrors"
           :fullWidthContent="true"
           :field="{
-            visible: true,
-            stacked: true,
+            ...defaultFieldProps,
             validationKey: 'value',
             name: __('novaMenuBuilder.menuItemUrlFieldName'),
           }"
@@ -92,8 +89,7 @@
           :errors="wrappedErrors"
           :fullWidthContent="true"
           :field="{
-            visible: true,
-            stacked: true,
+            ...defaultFieldProps,
             validationKey: 'value',
             name: __('novaMenuBuilder.menuItemValue'),
           }"
@@ -135,8 +131,7 @@
           v-if="linkType.type && linkType.type !== 'text'"
           :fullWidthContent="true"
           :field="{
-            visible: true,
-            stacked: true,
+            ...defaultFieldProps,
             name: __('Open in'),
           }"
         >
@@ -220,6 +215,12 @@ export default {
 
   data: () => ({
     toggleLabels: false,
+    defaultFieldProps: {
+      fullWidth: true,
+      stacked: true,
+      withLabel: true,
+      visible: true,
+    },
   }),
 
   components: { Multiselect },
@@ -271,6 +272,8 @@ export default {
 
       fields.forEach(f => {
         f.stacked = true;
+        f.fullWidth = true;
+        f.withLabel = true;
       });
 
       return fields || [];
