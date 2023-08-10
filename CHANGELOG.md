@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.2] - 10-08-2023
+
+### Added
+
+- Added Turkish translations (thanks to [@thecaliskan](https://github.com/thecaliskan))
+
+### Changed
+
+- Hide empty menus when selecting menus to copy from
+- Fixed fields not displaying full width and labels in Nova 4.26 and greater
+- Fixed missing dark field background on dark mode
+- Bump packages
+
 ## [7.1.1] - 16-01-2023
 
 ### Changed
