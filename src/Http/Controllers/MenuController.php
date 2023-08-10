@@ -5,18 +5,18 @@ namespace Outl1ne\MenuBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Outl1ne\MenuBuilder\MenuBuilder;
-use Outl1ne\MenuBuilder\Models\Menu;
 use Outl1ne\MenuBuilder\Http\Requests\MenuItemFormRequest;
 
 class MenuController extends Controller
 {
     public function getMenus(Request $request)
     {
-        $query = Menu::query();
+        $menuModel = MenuBuilder::getMenuClass();
+        $query = $menuModel::query();
 
         if ($request->boolean('notEmpty')) $query->whereHas('rootMenuItems');
 
-        return $query->get()->map(function (Menu $menu) {
+        return $query->get()->map(function ($menu) {
             return [
                 'id' => $menu->id,
                 'title' => "{$menu->name} ({$menu->slug})",
@@ -28,6 +28,8 @@ class MenuController extends Controller
 
     public function copyMenuItemsToMenu(Request $request)
     {
+        $menuModel = MenuBuilder::getMenuClass();
+
         $data = $request->validate([
             'fromMenuId' => 'required',
             'toMenuId' => 'required',
@@ -40,8 +42,8 @@ class MenuController extends Controller
         $fromLocale = $data['fromLocale'];
         $toLocale = $data['toLocale'];
 
-        $fromMenu = Menu::find($fromMenuId);
-        $toMenu = Menu::find($toMenuId);
+        $fromMenu = $menuModel::find($fromMenuId);
+        $toMenu = $menuModel::find($toMenuId);
 
         if (!$fromMenu || !$toMenu) return response()->json(['error' => 'menu_not_found'], 404);
 
