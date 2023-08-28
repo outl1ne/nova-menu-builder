@@ -1,11 +1,11 @@
 <template>
-    <resource-index :resourceName="resourceName"/>
+  <ResourceIndex :resource-name="resourceName" :shouldOverrideMeta="true" />
 </template>
 
 <script>
 export default {
-    data: () => ({
-        resourceName: Nova.config.menuBuilderUriKey,
-    }),
+  data: () => ({
+    resourceName: Nova.config('menuBuilderUriKey'),
+  }),
 };
 </script>

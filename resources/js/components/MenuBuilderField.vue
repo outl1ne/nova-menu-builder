@@ -1,11 +1,15 @@
 <template>
-    <div id="menu-builder-field" class="relative py-3">
-        <menu-builder-header
-            @addMenuItem="openAddModal"
-            @changeLocale="setSelectedLocale"
-            :activeLocale="selectedLocale"
-            :locales="field.locales"
-        />
+  <div id="menu-builder-field" class="relative py-3 o1-w-full">
+    <menu-builder-header
+      :locales="field.locales"
+      :resourceId="resourceId"
+      :activeLocale="selectedLocale"
+      :menuCount="field.menuCount"
+      :showDuplicate="field.showDuplicate"
+      @addMenuItem="openAddModal"
+      @changeLocale="setSelectedLocale"
+      @refreshItems="refreshData"
+    />
 
         <div class="py-6" v-if="loadingMenuItems">
             <loader class="text-60"/>
@@ -51,6 +55,45 @@
             @confirmItemDelete="confirmItemDelete"
         />
     </div>
+
+    <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length" />
+
+    <menu-builder
+      v-if="!loadingMenuItems && menuItems.length"
+      @duplicateMenuItem="duplicateMenuItem"
+      @editMenu="editMenu"
+      @onMenuChange="updateMenu"
+      @removeMenu="removeMenu"
+      @saveMenuLocalState="saveMenuLocalState"
+      :max-depth="field.maxDepth"
+      :value="menuItems"
+      @input="menuItems = $event"
+    />
+
+    <update-menu-item-modal
+      :linkType="linkType"
+      :menuItemTypes="menuItemTypes"
+      :newItem="newItem"
+      :resourceId="resourceId"
+      :resourceName="resourceName"
+      :showModal="showAddModal"
+      :update="update"
+      :errors="errors"
+      :isMenuItemUpdating="isMenuItemUpdating"
+      @closeModal="closeModal"
+      @confirmItemCreate="confirmItemCreate"
+      @onLinkModelUpdate="updateLinkModel"
+      @onLinkTypeUpdate="updateLinkType"
+      @updateItem="updateItem"
+    />
+
+    <delete-menu-item-modal
+      :itemToDelete="itemToDelete"
+      :showModal="showDeleteModal"
+      @closeModal="closeModal"
+      @confirmItemDelete="confirmItemDelete"
+    />
+  </div>
 </template>
 
 <script>
@@ -67,11 +110,62 @@ export default {
 
     props: ['resourceName', 'resourceId', 'field'],
 
-    components: {
-        MenuBuilderHeader,
-        NoMenuItemsPlaceholder,
-        DeleteMenuItemModal,
-        UpdateMenuItemModal,
+  components: {
+    MenuBuilderHeader,
+    NoMenuItemsPlaceholder,
+    DeleteMenuItemModal,
+    UpdateMenuItemModal,
+  },
+
+  data: () => ({
+    loadingMenuItems: false,
+    isMenuItemUpdating: false,
+    selectedLocale: void 0,
+    showDeleteModal: false,
+    showAddModal: false,
+    itemToDelete: null,
+    update: false,
+    linkType: {},
+    errors: {},
+    newItem: {
+      name: null,
+      value: '',
+      target: '_self',
+      menu_id: null,
+      enabled: true,
+      classProp: [],
+    },
+    menuItems: [],
+    menuItemTypes: void 0,
+  }),
+
+  beforeMount() {
+    // Set starting locale
+    this.selectedLocale = Object.keys(this.field.locales)[0];
+  },
+
+  async mounted() {
+    // Fix classes on Detail view
+    this.$parent.$el.classList.remove('py-3', 'px-6');
+
+    this.refreshData();
+  },
+
+  computed: {
+    newItemData() {
+      return {
+        ...this.newItem,
+        locale: this.selectedLocale,
+        class: this.linkType.class,
+        menu_id: this.resourceId,
+      };
+    },
+  },
+
+  methods: {
+    setSelectedLocale(locale) {
+      this.selectedLocale = locale;
+      this.refreshData();
     },
 
     data: () => ({
@@ -109,189 +203,131 @@ export default {
         // Set starting locale
         this.selectedLocale = Object.keys(this.field.locales)[0];
 
+      const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
+      this.menuItems = this.setMenuItemProperties(
+        Object.values(menuItems),
+        this.getMenuLocalState(),
+        this.field.collapsedAsDefault
+      );
+
+      const menuItemTypes = (await api.getMenuItemTypes(this.resourceId, this.selectedLocale)).data;
+      this.menuItemTypes = Object.values(menuItemTypes);
+
+      this.loadingMenuItems = false;
+    },
+
+    async editMenu(item) {
+      this.update = true;
+      const menuItem = (await api.getMenuItem(item.id)).data;
+      this.newItem = menuItem;
+      this.showAddModal = true;
+      this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class) || {};
+    },
+
+    removeMenu(item) {
+      this.itemToDelete = item;
+      this.showDeleteModal = true;
+    },
+
+    async confirmItemDelete() {
+      try {
+        await api.destroy(this.itemToDelete.id);
+        await this.refreshData();
+        Nova.success(this.__('novaMenuBuilder.toastDeleteSucces'));
+        this.itemToDelete = null;
+        this.showDeleteModal = false;
+      } catch (e) {
+        this.handleErrors(e);
+      }
+    },
+
+    resetNewItem() {
+      this.errors = {};
+
+      this.newItem = {
+        name: null,
+        value: '',
+        target: '_self',
+        enabled: true,
+        menu_id: this.resourceId,
+      };
+
+      this.linkType = {};
+    },
+
+    async confirmItemCreate() {
+      try {
+        this.errors = {};
+        await api.create(this.newItemData);
         this.refreshData();
+        this.showAddModal = false;
+        this.resetNewItem();
+        Nova.success(this.__('novaMenuBuilder.toastCreateSuccess'));
+      } catch (e) {
+        console.error(e);
+        this.handleErrors(e);
+      }
     },
 
-    computed: {
-        newItemData() {
-            return {
-                ...this.newItem,
-                locale: this.selectedLocale,
-                class: this.linkType.class,
-                menu_id: this.resourceId,
-            };
-        },
+    async updateItem() {
+      try {
+        this.isMenuItemUpdating = true;
+        this.errors = {};
+        await api.update(this.newItem.id, this.newItemData);
+        this.isMenuItemUpdating = false;
+        this.showAddModal = false;
+        Nova.success(this.__('novaMenuBuilder.toastUpdateSuccess'));
+        this.resetNewItem();
+        await this.refreshData();
+      } catch (e) {
+        this.isMenuItemUpdating = false;
+        this.handleErrors(e);
+      }
     },
 
-    methods: {
-        setSelectedLocale(locale) {
-            this.selectedLocale = locale;
-            this.refreshData();
-        },
+    async updateMenu() {
+      try {
+        await api.saveItems(this.resourceId, this.menuItems);
+        Nova.success(this.__('novaMenuBuilder.toastReorderSuccess'));
+      } catch (e) {
+        Nova.error(this.__('novaMenuBuilder.serverError'));
+      }
+    },
 
-        openAddModal() {
-            this.update = false;
-            this.showAddModal = true;
-        },
+    handleErrors(res) {
+      let errors = res.response && res.response.data && res.response.data.errors;
+      if (errors) {
+        this.errors = errors;
+        Object.values(errors).map(error => Nova.error(error));
+      }
+    },
 
-        closeModal() {
-            this.showAddModal = false;
-            this.showDeleteModal = false;
-            this.resetNewItem();
-        },
+    async duplicateMenuItem(item) {
+      try {
+        await api.duplicate(item.id);
+        await this.refreshData();
+        this.resetNewItem();
+        Nova.success(this.__('novaMenuBuilder.toastDuplicateSuccess'));
+      } catch (e) {
+        this.handleErrors(e);
+      }
+    },
 
-        async refreshData() {
-            this.loadingMenuItems = true;
+    updateLinkModel(modelId) {
+      this.newItem.value = modelId || '';
+    },
 
-            const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
-            this.menuItems = this.setMenuItemProperties(Object.values(menuItems), this.getMenuLocalState());
-
-            const menuItemTypes = (await api.getMenuItemTypes(this.resourceId, this.selectedLocale)).data;
-            this.menuItemTypes = Object.values(menuItemTypes);
-
-            this.loadingMenuItems = false;
-        },
-
-        async editMenu(item) {
-            this.update = true;
-            this.newItem = (await api.getMenuItem(item.id)).data;
-
-            if (this.newItem.entity_item_id) {
-                this.$refs.UpdateMenuItemModal.setPath((await api.getEntityTable(this.newItem.entity_id)).data);
-            }
-
-            this.showAddModal = true;
-            this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class);
-        },
-
-        removeMenu(item) {
-            this.itemToDelete = item;
-            this.showDeleteModal = true;
-        },
-
-        async confirmItemDelete() {
-            try {
-                await api.destroy(this.itemToDelete.id);
-                await this.refreshData();
-                this.$toasted.show(this.__('novaMenuBuilder.toastDeleteSuccess'), {type: 'success'});
-                this.itemToDelete = null;
-                this.showDeleteModal = false;
-            } catch (e) {
-                this.handleErrors(e);
-            }
-        },
-
-        resetNewItem() {
-            this.errors = {};
-
-            this.newItem = {
-                label: null,
-                url: '',
-                slug: null,
-                target: '_self',
-                enabled: true,
-                menu_id: this.resourceId,
-                item_type: '',
-                entity_id: null,
-                entity_item_id: null,
-                is_index: false,
-                media: null
-            };
-
-            this.linkType = '';
-        },
-
-        async confirmItemCreate() {
-            try {
-                this.errors = {};
-                const formData = new FormData();
-                Object.keys(this.newItemData).forEach((key) => {
-                    formData.append(key, this.newItemData[key])
-                })
-                await api.create(formData);
-                await this.refreshData();
-                this.showAddModal = false;
-                this.resetNewItem();
-                this.$toasted.show(this.__('novaMenuBuilder.toastCreateSuccess'), {type: 'success'});
-            } catch (e) {
-                this.handleErrors(e);
-            }
-        },
-
-        async updateItem() {
-            try {
-                this.isMenuItemUpdating = true;
-                this.errors = {};
-                const formData = new FormData();
-                Object.keys(this.newItemData).forEach((key) => {
-                    formData.append(key, this.newItemData[key])
-                })
-                await api.update(this.newItem.id, formData);
-                this.isMenuItemUpdating = false;
-                this.showAddModal = false;
-                this.$toasted.show(this.__('novaMenuBuilder.toastUpdateSuccess'), {type: 'success'});
-                this.resetNewItem();
-                await this.refreshData();
-            } catch (e) {
-                this.isMenuItemUpdating = false;
-                this.handleErrors(e);
-            }
-        },
-
-        async updateMenu() {
-            try {
-                await api.saveItems(this.resourceId, this.menuItems);
-                this.$toasted.show(this.__('novaMenuBuilder.toastReorderSuccess'), {type: 'success'});
-            } catch (e) {
-                this.$toasted.show(this.__('novaMenuBuilder.serverError'), {type: 'error'});
-            }
-        },
-
-        handleErrors(res) {
-            let errors = res.response && res.response.data && res.response.data.errors;
-            if (errors) {
-                this.errors = errors;
-                Object.values(errors).map(error => this.$toasted.show(error, {type: 'error'}));
-            }
-        },
-
-        async duplicateMenuItem(item) {
-            try {
-                await api.duplicate(item.id);
-                await this.refreshData();
-                this.resetNewItem();
-                this.$toasted.show(this.__('novaMenuBuilder.toastDuplicateSuccess'), {type: 'success'});
-            } catch (e) {
-                this.handleErrors(e);
-            }
-        },
-
-        updateLinkModel(modelId) {
-            this.newItem.url = modelId;
-            return modelId;
-        },
-
-        updateEntityId(entityId) {
-            this.newItem.entity_id = entityId;
-        },
-
-        updateEntityItemId(itemId) {
-            this.newItem.entity_item_id = itemId;
-            this.newItem.is_index = itemId === '0';
-
-            return itemId;
-        },
-
-        updateLinkType(linkType) {
-            this.newItem.item_type = linkType;
-            this.linkType = this.menuItemTypes.find(type => type.class === linkType);
-            this.newItem.url = '';
-        },
+    updateLinkType(linkType) {
+      this.linkType = this.menuItemTypes.find(type => type.class === linkType) || {};
+      this.newItem.value = '';
     },
 };
 </script>
 
 <style lang="scss">
+[dusk='nova-menus-detail-component'] #menu-builder-field {
+  margin: -8px 0;
+}
 #menu-builder-field {
     .menu-button {
         position: absolute;

@@ -23,20 +23,25 @@ export default {
             return menuStorage[`resource-${this.resourceId}`];
         },
 
-        setMenuItemProperties(menuItems, localItemsState = null) {
+        setMenuItemProperties(menuItems, localItemsState = null, collapsedAsDefault = false) {
             return menuItems.map(item => {
                 const localItemState = Array.isArray(localItemsState)
                     ? localItemsState.find(localItem => +localItem.id === +item.id)
                     : false;
 
+                const hideCascade =
+                    item.children &&
+                    item.children.length > 0 &&
+                    ((localItemState && !localItemState.cascade) || (!this.getMenuLocalState() && collapsedAsDefault));
+
                 return {
                     ...item,
-                    classProp: [localItemState && !localItemState.cascade ? 'hide-cascade' : ''],
+                    classProp: [hideCascade ? 'hide-cascade' : ''],
                     children: Array.isArray(item.children)
-                        ? this.setMenuItemProperties(item.children, localItemState && localItemState.children)
+                        ? this.setMenuItemProperties(item.children, localItemState && localItemState.children, collapsedAsDefault)
                         : item.children,
                 };
             });
         },
-    },
-};
+    }
+}

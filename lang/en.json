@@ -20,7 +20,7 @@
   "novaMenuBuilder.menuItemValue": "Value",
   "novaMenuBuilder.menuItemEntity": "Entity",
   "novaMenuBuilder.menuItemEntityValue": "Id",
-  "novaMenuBuilder.updatebuttonTitle": "Update menu item",
+  "novaMenuBuilder.updateButtonTitle": "Update menu item",
   "novaMenuBuilder.createButtonTitle": "Create menu item",
   "novaMenuBuilder.closeModalTitle": "Cancel",
   "novaMenuBuilder.delConfirmModalTitle": "Delete menu item",
@@ -37,11 +37,15 @@
   "novaMenuBuilder.menuItemTargetNewWindow": "New window/tab",
   "novaMenuBuilder.menuItemActive": "Active",
   "novaMenuBuilder.menuItemDisabled": "Disabled",
+  "novaMenuBuilder.nestableLabel": "Nestable",
   "novaMenuBuilder.toastDeleteSuccess": "Menu item deleted",
   "novaMenuBuilder.toastCreateSuccess": "Menu item created",
   "novaMenuBuilder.toastUpdateSuccess": "Menu item updated",
   "novaMenuBuilder.toastReorderSuccess": "Menu reordered",
   "novaMenuBuilder.toastDuplicateSuccess": "Menu item duplicated",
   "novaMenuBuilder.serverError": "Server error, please try again.",
-  "novaMenuBuilder.menuTypeRequired": "Menu type is required."
+  "novaMenuBuilder.menuTypeRequired": "Menu type is required.",
+  "novaMenuBuilder.copyMenuItemsFromTitle": "Copy menu items from",
+  "novaMenuBuilder.copyMenuItemsButtonTitle": "Copy items",
+  "novaMenuBuilder.locale": "Locale"
 }

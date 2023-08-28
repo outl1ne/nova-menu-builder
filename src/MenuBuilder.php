@@ -5,16 +5,15 @@ namespace Workup\MenuBuilder;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Laravel\Nova\Menu\MenuSection;
 use Workup\Core\Services\Nova\Helper;
+use Outl1ne\MenuBuilder\Traits\Menuable;
 
 class MenuBuilder extends Tool
 {
+    use Menuable;
 
-    /**
-     * Perform any tasks that need to happen when the tool is booted.
-     *
-     * @return void
-     */
     public function boot()
     {
         Nova::script('nova-menu-builder', __DIR__ . '/../dist/js/menu-builder.js');
@@ -25,14 +24,16 @@ class MenuBuilder extends Tool
         ]);
     }
 
-    /**
-     * Build the view that renders the navigation links for the tool.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function renderNavigation()
+    public function menu(Request $request)
     {
-        return view('nova-menu-builder::menu-navigation');
+        if ($this->hideMenu) {
+            return null;
+        }
+
+        // Outl1ne\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
+        return MenuSection::make($this->title ?: __('novaMenuBuilder.sidebarTitle'))
+            ->path('/menus')
+            ->icon($this->icon);
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
@@ -102,7 +103,9 @@ class MenuBuilder extends Tool
         $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
         $dataRules = [];
         foreach ($menuItemRules as $key => $rule) {
-            if ($key !== 'value' && !Str::startsWith($key, 'data->')) $key = "data->{$key}";
+            if ($key !== 'value' && !Str::startsWith($key, 'data->')) {
+                $key = "data->{$key}";
+            }
             $dataRules[$key] = $rule;
         }
 
@@ -115,12 +118,10 @@ class MenuBuilder extends Tool
         ], $dataRules);
     }
 
-
-
     // In-package helpers
     public static function getResourceClass()
     {
-        return config('nova-menu-builder.resource', \Workup\Menus\Nova\Menu::class);
+        return config('nova-menu.resource', \Outl1ne\MenuBuilder\Nova\Resources\MenuResource::class);
     }
 
     public static function getMenusTableName()
@@ -167,5 +168,15 @@ class MenuBuilder extends Tool
                 ->filter(fn ($permission) => str_contains($permission, '.menus'))
                 ->pluck('name'),
         ];
+    }
+
+    public static function showDuplicate()
+    {
+        return config("nova-menu.show_duplicate", true);
+    }
+
+    public static function collapsedAsDefault()
+    {
+        return config("nova-menu.collapsed_as_default", true);
     }
 }

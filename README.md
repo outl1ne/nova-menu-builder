@@ -5,7 +5,7 @@ This [Laravel Nova](https://nova.laravel.com/) package allows you to create and 
 ## Requirements
 
 - `php: >=8.0`
-- `workup/nova: ^3.0`
+- `laravel/nova: ^4.0`
 
 ## Features
 
@@ -32,7 +32,7 @@ Install the package in a Laravel Nova project via Composer, edit the configurati
 
 ```bash
 # Install the package
-composer require Workup/nova-menu-builder
+composer require workup/nova-menu-builder
 
 # Publish the configuration file and edit it to your preference
 # NB! If you want custom table names, configure them before running the migrations.
@@ -48,7 +48,12 @@ public function tools()
 {
     return [
         // ...
-        new \Workup\MenuBuilder\MenuBuilder,
+        new \Workup\MenuBuilder\MenuBuilder::make(),
+
+        // Optional customization
+        ->title('Menus') // Define a new name for sidebar
+        ->icon('adjustments') // Customize menu icon, supports heroicons
+        ->hideMenu(false) // Hide MenuBuilder defined MenuSection.
     ];
 }
 ```
@@ -65,7 +70,7 @@ After publishing the configuration file, you have to make some required changes 
 # Define the locales for your project:
 # If your project doesn't have localization, you can just leave it as it is.
 # When there's just one locale, anything related to localization isn't displayed.
-'locales' => ['en_US' => 'English'],
+'locales' => ['en' => 'English'],
 
 # Define the list of possible menus (ie 'footer', 'header', 'main-menu'):
 'menus' => [
@@ -210,6 +215,19 @@ public static function getDisplayValue($value, ?array $data, $locale) {
 }
 
 /**
+ * Get the enabled value
+ *
+ * @param $value
+ * @param $data The data from item fields.
+ * @param $locale
+ * @return string
+*/
+public static function getEnabledValue($value, ?array $data, $locale)
+{
+  return true;
+}
+
+/**
  * Get the value of the link visible to the front-end.
  *
  * Can be anything. It is up to you how you will handle parsing it.
@@ -279,9 +297,16 @@ public function getMenus(Request $request) {
 }
 ```
 
-#### nova_get_menu_by_slug(\$menuSlug, \$locale = null)
+#### Get single menu via identifier
 
-To get a single menu, you can use the helper function `nova_get_menu_by_slug('slug', 'en')`. Returns null if no menu with the slug is found or returns the menu if it is found. If no locale is passed, the helper will automatically choose the first configured locale.
+```php
+// Available helpers
+nova_get_menu_by_slug($menuSlug, $locale = null)
+nova_get_menu_by_id($menuId, $locale = null)
+```
+
+To get a single menu, you can use the available helper functions.<br />
+Returns null if no menu with the identifier is found or returns the menu if it is found. If no locale is passed, the helper will automatically choose the first configured locale.
 
 ## Credits
 

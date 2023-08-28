@@ -1,8 +1,8 @@
-# Upgrading from Nova Menu Builder 2.0/3.0 to 4.0/5.0
+# Upgrading from Nova Menu Builder 6.X to 7.0
 
-## Database changes
+## Major changes
 
-The locale system has been reworked.
+Nova 3 will not work with version 7.0. Only Nova 4 is now supported.
 
 The Menu models table no longer has `locale` and `locale_parent_id` columns. Instead, the menu items table has a `locale` column.
 

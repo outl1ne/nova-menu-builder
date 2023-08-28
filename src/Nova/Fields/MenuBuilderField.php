@@ -11,9 +11,14 @@ class MenuBuilderField extends Field
 
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
+        $menuModel = MenuBuilder::getMenuClass();
+
         $this->withMeta([
             'locales' => MenuBuilder::getLocales(),
             'maxDepth' => 10,
+            'menuCount' => $menuModel::count(),
+            'showDuplicate' => MenuBuilder::showDuplicate(),
+            'collapsedAsDefault' => MenuBuilder::collapsedAsDefault(),
         ]);
 
         parent::__construct($name, $attribute, $resolveCallback);

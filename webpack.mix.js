@@ -1,9 +1,21 @@
-const mix = require('laravel-mix');
+let path = require('path');
+let mix = require('laravel-mix');
+let postcss = require('postcss');
+let tailwindcss = require('tailwindcss');
 
 mix
   .setPublicPath('dist')
-  .js('resources/js/menu-builder.js', 'js')
-  .vue({
-    extractStyles: mix.inProduction() ? 'css/menu-builder.css' : false,
-    processCssUrls: false,
+  .js('resources/js/entry.js', 'js')
+  .vue({ version: 3 })
+  .webpackConfig({
+    externals: {
+      vue: 'Vue',
+    },
+    output: {
+      uniqueName: 'outl1ne/nova-menu-builder-runner',
+    },
+  })
+  .postCss('resources/css/entry.css', 'dist/css/', [postcss(), tailwindcss('tailwind.config.js')])
+  .alias({
+    'laravel-nova': path.join(__dirname, 'vendor/laravel/nova/resources/js/mixins/packages.js'),
   });
