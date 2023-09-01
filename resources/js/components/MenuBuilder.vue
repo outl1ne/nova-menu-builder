@@ -98,41 +98,17 @@ export default {
       return Array.isArray(item.children) && item.children.length;
     },
 
-    components: {
-        VueNestable,
-        VueNestableHandle,
-        ArrowIcon,
-        DeleteIcon,
-        DuplicateIcon,
-        EditIcon,
+    toggleMenuChildrenCascade(item) {
+      if (item.classProp.find(className => className === 'hide-cascade')) {
+        item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
+      } else {
+        item.classProp.push('hide-cascade');
+      }
+      this.$emit('saveMenuLocalState', item);
     },
 
-    data() {
-        let config = window.Nova.config.menuBuilder;
-
-        return {
-            config,
-            duplicateItem: null,
-        }
-    },
-
-    methods: {
-        hasChildren(item) {
-            return Array.isArray(item.children) && item.children.length;
-        },
-
-        toggleMenuChildrenCascade(item) {
-            if (item.classProp.find(className => className === 'hide-cascade')) {
-                item.classProp.splice(item.classProp.indexOf('hide-cascade'), 1);
-            } else {
-                item.classProp.push('hide-cascade');
-            }
-            this.$emit('saveMenuLocalState', item);
-        },
-
-        isCascadeOpen(item) {
-            return !item.classProp.find(className => className === 'hide-cascade');
-        },
+    isCascadeOpen(item) {
+      return !item.classProp.find(className => className === 'hide-cascade');
     },
 
     beforeMove({ dragItem, pathFrom, pathTo }) {
@@ -148,17 +124,12 @@ export default {
 
 <style lang="scss">
 .menu-builder {
-    .v-popover,
-    .v-popover > * > span {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .handle {
-        .item-data {
-            max-height: 45px;
-        }
-    }
+  .v-popover,
+  .v-popover > * > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 .justify-end {
   justify-content: flex-end;

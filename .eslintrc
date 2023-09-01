@@ -1,22 +1,15 @@
 {
-    "extends": [
-        "eslint:recommended",
-        "plugin:vue/essential",
-        "prettier"
-    ],
-    "globals": {
-        "Nova": true
-    },
-    "env": {
-        "browser": true,
-        "node": true
-    },
-    "rules": {
-        "vue/html-indent": [
-            "error",
-            4
-        ],
-        "vue/custom-event-name-casing": "off",
-        "vue/no-mutating-props": "off"
-    }
+  "extends": ["eslint:recommended", "plugin:vue/essential", "prettier"],
+  "globals": {
+    "Nova": true
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "vue/html-indent": ["error", 2],
+    "vue/custom-event-name-casing": "off",
+    "vue/no-mutating-props": "off"
+  }
 }

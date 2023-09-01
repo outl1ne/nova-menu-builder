@@ -11,49 +11,8 @@
       @refreshItems="refreshData"
     />
 
-        <div class="py-6" v-if="loadingMenuItems">
-            <loader class="text-60"/>
-        </div>
-
-        <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length"/>
-
-        <menu-builder
-            v-if="!loadingMenuItems && menuItems.length"
-            @duplicateMenuItem="duplicateMenuItem"
-            @editMenu="editMenu"
-            @onMenuChange="updateMenu"
-            @removeMenu="removeMenu"
-            @saveMenuLocalState="saveMenuLocalState"
-            :max-depth="field.maxDepth"
-            v-model="menuItems"
-        />
-
-        <update-menu-item-modal
-            ref="UpdateMenuItemModal"
-            :linkType="linkType"
-            :menuItemTypes="menuItemTypes"
-            :newItem="newItem"
-            :resourceId="resourceId"
-            :resourceName="resourceName"
-            :showModal="showAddModal"
-            :update="update"
-            :errors="errors"
-            :isMenuItemUpdating="isMenuItemUpdating"
-            @closeModal="closeModal"
-            @confirmItemCreate="confirmItemCreate"
-            @onLinkModelUpdate="updateLinkModel"
-            @onLinkTypeUpdate="updateLinkType"
-            @onLinkEntityIdUpdate="updateEntityId"
-            @onLinkEntityItemIdUpdate="updateEntityItemId"
-            @updateItem="updateItem"
-        />
-
-        <delete-menu-item-modal
-            :itemToDelete="itemToDelete"
-            :showModal="showDeleteModal"
-            @closeModal="closeModal"
-            @confirmItemDelete="confirmItemDelete"
-        />
+    <div class="py-6" v-if="loadingMenuItems">
+      <loader class="text-60" />
     </div>
 
     <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length" />
@@ -97,8 +56,8 @@
 </template>
 
 <script>
-import api from '../menu-api';
-import {FormField} from 'laravel-nova';
+import api from '../api';
+import { FormField } from 'laravel-nova';
 import MenuBuilderHeader from './core/MenuBuilderHeader';
 import UpdateMenuItemModal from './modals/UpdateMenuItemModal';
 import DeleteMenuItemModal from './modals/DeleteMenuItemModal';
@@ -106,9 +65,9 @@ import NoMenuItemsPlaceholder from './core/NoMenuItemsPlaceholder';
 import HandlesCollapsibleState from '../mixins/HandlesCollapsibleState';
 
 export default {
-    mixins: [FormField, HandlesCollapsibleState],
+  mixins: [FormField, HandlesCollapsibleState],
 
-    props: ['resourceName', 'resourceId', 'field'],
+  props: ['resourceName', 'resourceId', 'field'],
 
   components: {
     MenuBuilderHeader,
@@ -168,40 +127,19 @@ export default {
       this.refreshData();
     },
 
-    data: () => ({
-        loadingMenuItems: false,
-        isMenuItemUpdating: false,
-        selectedLocale: void 0,
-        showDeleteModal: false,
-        showAddModal: false,
-        itemToDelete: null,
-        update: false,
-        linkType: '',
-        errors: {},
-        newItem: {
-            label: null,
-            url: '',
-            slug: null,
-            target: '_self',
-            menu_id: null,
-            enabled: true,
-            item_type: '',
-            entity_id: null,
-            entity_item_id: null,
-            is_index: false,
-            classProp: [],
-            media: null
-        },
-        menuItems: [],
-        menuItemTypes: void 0,
-    }),
+    openAddModal() {
+      this.update = false;
+      this.showAddModal = true;
+    },
 
-    async mounted() {
-        // Fix classes on Detail view
-        this.$parent.$el.classList.remove('py-3', 'px-6');
+    closeModal() {
+      this.showAddModal = false;
+      this.showDeleteModal = false;
+      this.resetNewItem();
+    },
 
-        // Set starting locale
-        this.selectedLocale = Object.keys(this.field.locales)[0];
+    async refreshData() {
+      this.loadingMenuItems = true;
 
       const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
       this.menuItems = this.setMenuItemProperties(
@@ -321,6 +259,7 @@ export default {
       this.linkType = this.menuItemTypes.find(type => type.class === linkType) || {};
       this.newItem.value = '';
     },
+  },
 };
 </script>
 
@@ -329,105 +268,105 @@ export default {
   margin: -8px 0;
 }
 #menu-builder-field {
-    .menu-button {
-        position: absolute;
-        right: -12px;
-        margin-top: -72px;
+  .menu-button {
+    position: absolute;
+    right: -12px;
+    margin-top: -72px;
+  }
+
+  .nestable {
+    position: relative;
+
+    .nestable-list {
+      margin: 0;
+      padding: 0 0 0 40px;
+      list-style-type: none;
     }
 
-    .nestable {
-        position: relative;
-
-        .nestable-list {
-            margin: 0;
-            padding: 0 0 0 40px;
-            list-style-type: none;
-        }
-
-        > .nestable-list {
-            padding: 0;
-        }
-
-        .nestable-item,
-        .nestable-item-copy {
-            margin: 10px 0 0;
-        }
-
-        .nestable-item:first-child,
-        .nestable-item-copy:first-child {
-            margin-top: 0;
-        }
-
-        .nestable-item .nestable-list,
-        .nestable-item-copy .nestable-list {
-            margin-top: 10px;
-        }
-
-        .nestable-item {
-            position: relative;
-        }
+    > .nestable-list {
+      padding: 0;
     }
 
-    .handle {
-        width: 100%;
-        padding: 0 10px 0 0;
-        height: 45px;
-        line-height: 45px;
+    .nestable-item,
+    .nestable-item-copy {
+      margin: 10px 0 0;
     }
 
-    .nestable-item.is-dragging .nestable-list {
-        pointer-events: none;
+    .nestable-item:first-child,
+    .nestable-item-copy:first-child {
+      margin-top: 0;
     }
 
-    .nestable-item.is-dragging * {
-        opacity: 0;
-        filter: alpha(opacity=0);
+    .nestable-item .nestable-list,
+    .nestable-item-copy .nestable-list {
+      margin-top: 10px;
     }
 
-    .nestable-item.is-dragging:before {
-        content: ' ';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(106, 127, 233, 0.274);
-        border: 1px dashed rgb(73, 100, 241);
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
+    .nestable-item {
+      position: relative;
     }
+  }
 
-    .nestable-drag-layer {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        pointer-events: none;
-    }
+  .handle {
+    width: 100%;
+    padding: 0 10px 0 0;
+    height: 45px;
+    line-height: 45px;
+  }
 
-    .nestable-drag-layer > .nestable-list {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 0;
-        background-color: rgba(106, 127, 233, 0.274);
-    }
+  .nestable-item.is-dragging .nestable-list {
+    pointer-events: none;
+  }
 
-    .nestable [draggable='true'] {
-        cursor: move;
-    }
+  .nestable-item.is-dragging * {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
 
-    .disabled {
-        opacity: 0.5;
-    }
+  .nestable-item.is-dragging:before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(106, 127, 233, 0.274);
+    border: 1px dashed rgb(73, 100, 241);
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+  }
 
-    .btn-cascade-open {
-        transform: rotate(180deg);
-        transform-origin: center center;
-    }
+  .nestable-drag-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
 
-    .hide-cascade > ol {
-        display: none;
-    }
+  .nestable-drag-layer > .nestable-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    background-color: rgba(106, 127, 233, 0.274);
+  }
+
+  .nestable [draggable='true'] {
+    cursor: move;
+  }
+
+  .disabled {
+    opacity: 0.5;
+  }
+
+  .btn-cascade-open {
+    transform: rotate(180deg);
+    transform-origin: center center;
+  }
+
+  .hide-cascade > ol {
+    display: none;
+  }
 }
 </style>

@@ -20,7 +20,7 @@
     </div>
 
     <DefaultButton class="mr-4" @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
-      <Icon type="duplicate" />
+      <Icon type="duplicate"/>
     </DefaultButton>
 
     <DefaultButton
@@ -47,21 +47,21 @@
 import CopyMenuItemsModal from '../modals/CopyMenuItemsModal';
 
 export default {
-  components: { CopyMenuItemsModal },
+    components: {CopyMenuItemsModal},
 
-  props: ['locales', 'activeLocale', 'resourceId', 'menuCount', 'showDuplicate'],
+    props: ['locales', 'activeLocale', 'resourceId', 'menuCount', 'showDuplicate'],
 
-  data: () => ({
-    showCopyModal: false,
-  }),
+    data: () => ({
+        showCopyModal: false,
+    }),
 
-  computed: {
-    showCopyButton() {
-      // If only 1 locale and 1 menu, don't show the button
-      const localeCount = Object.keys(this.locales).length;
-      return localeCount > 1 || this.menuCount > 1;
+    computed: {
+        showCopyButton() {
+            // If only 1 locale and 1 menu, don't show the button
+            const localeCount = Object.keys(this.locales).length;
+            return localeCount > 1 || this.menuCount > 1;
+        },
     },
-  },
 };
 </script>
 

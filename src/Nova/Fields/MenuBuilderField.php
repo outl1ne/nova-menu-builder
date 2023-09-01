@@ -21,7 +21,7 @@ class MenuBuilderField extends Field
             'collapsedAsDefault' => MenuBuilder::collapsedAsDefault(),
         ]);
 
-        parent::__construct($name, $attribute, $resolveCallback);
+        // parent::__construct($name, $attribute, $resolveCallback);
     }
 
     public function maxDepth($maxDepth = 10)

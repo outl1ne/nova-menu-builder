@@ -249,18 +249,11 @@ export default {
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
   },
 
-    data: () => ({
-        toggleLabels: false,
-        entityOptions: [],
-        entityPath: '',
-    }),
-
-    mounted() {
-        this.toggleLabels = {
-            checked: this.__('novaMenuBuilder.menuItemActive'),
-            unchecked: this.__('novaMenuBuilder.menuItemDisabled'),
-        };
-        this.switchColor = {checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4'};
+  computed: {
+    options() {
+      const options = [...this.linkType.options];
+      options.unshift({ id: '', label: this.__('novaMenuBuilder.chooseOption') });
+      return options;
     },
 
     fields() {
@@ -398,17 +391,16 @@ $red400: #f87171;
 $red500: #ef4444;
 
 .add-new-menu-item-modal {
-    .menu-item-component {
-        div.py-6.px-8 {
-            &:nth-child(1) {
-                padding: 1rem 2rem 1rem 0;
-            }
+  .menu-item-component {
+    div.py-6.px-8 {
+      &:nth-child(1) {
+        padding: 1rem 2rem 1rem 0;
+      }
 
-            &:nth-child(2) {
-                padding: 1rem 0 1rem 0;
-                width: 80%;
-            }
-        }
+      &:nth-child(2) {
+        padding: 1rem 0 1rem 0;
+        width: 80%;
+      }
     }
   }
 }
@@ -679,5 +671,6 @@ $red500: #ef4444;
     &::after {
       transform: rotate(-45deg);
     }
+  }
 }
 </style>
