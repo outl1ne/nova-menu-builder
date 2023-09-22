@@ -23,9 +23,7 @@
     "terser-webpack-plugin": "^5.3.6",
     "vue-loader": "^17.0.0",
     "vue-template-compiler": "^2.7.10",
-    "vuex": "^4.0.2"
-  },
-  "dependencies": {
+    "vuex": "^4.0.2",
     "tailwindcss": "^3.1.8",
     "vue": "^3.2.39",
     "vue-multiselect": "^2.1.6",

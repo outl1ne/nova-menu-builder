@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Traits;
+namespace Workup\MenuBuilder\Traits;
 
 trait Menuable
 {

@@ -3,9 +3,9 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Workup\MenuBuilder\Settings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Workup\MenuBuilder\MenuBuilder;
 
 class MenuItemController extends Controller
 {
@@ -14,7 +14,7 @@ class MenuItemController extends Controller
      **/
     public function __invoke(Request $request, $menuId): JsonResponse
     {
-        $menu = MenuBuilder::getMenuClass()::find($menuId);
+        $menu = Settings::getMenuClass()::find($menuId);
 
         if ($menu === null) {
             return response()->json(['error' => 'menu_not_found'], 404);
@@ -26,7 +26,7 @@ class MenuItemController extends Controller
         }
 
         $menuItemTypes = [];
-        $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
+        $menuItemTypesRaw = Settings::getMenuItemTypes();
 
         $formatAndAppendMenuItemType = function ($typeClass) use (&$menuItemTypes, $locale) {
             if (! class_exists($typeClass)) {
@@ -36,7 +36,7 @@ class MenuItemController extends Controller
             $data = [
                 'name' => $typeClass::getName(),
                 'type' => $typeClass::getType(),
-                'fields' => MenuBuilder::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
+                'fields' => Settings::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
                 'class' => $typeClass,
             ];
 

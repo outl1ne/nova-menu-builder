@@ -3,7 +3,7 @@
 namespace Workup\MenuBuilder\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
-use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\Settings;
 
 class MenuBuilderField extends Field
 {
@@ -11,17 +11,17 @@ class MenuBuilderField extends Field
 
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
-        $menuModel = MenuBuilder::getMenuClass();
+        $menuModel = Settings::getMenuClass();
 
         $this->withMeta([
-            'locales' => MenuBuilder::getLocales(),
+            'locales' => Settings::getLocales(),
             'maxDepth' => 10,
             'menuCount' => $menuModel::count(),
-            'showDuplicate' => MenuBuilder::showDuplicate(),
-            'collapsedAsDefault' => MenuBuilder::collapsedAsDefault(),
+            'showDuplicate' => Settings::showDuplicate(),
+            'collapsedAsDefault' => Settings::collapsedAsDefault(),
         ]);
 
-        // parent::__construct($name, $attribute, $resolveCallback);
+         parent::__construct($name, $attribute, $resolveCallback);
     }
 
     public function maxDepth($maxDepth = 10)

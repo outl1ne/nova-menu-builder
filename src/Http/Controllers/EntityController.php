@@ -3,9 +3,9 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Support\Str;
+use Workup\MenuBuilder\Settings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Workup\MenuBuilder\MenuBuilder;
 
 class EntityController extends Controller
 {
@@ -14,7 +14,7 @@ class EntityController extends Controller
      **/
     public function __invoke($entityId): JsonResponse
     {
-        $entity = MenuBuilder::getEntityModel()::find($entityId);
+        $entity = Settings::getEntityModel()::find($entityId);
 
         return isset($entity)
             ? response()->json(Str::plural($entity->slug), 200)

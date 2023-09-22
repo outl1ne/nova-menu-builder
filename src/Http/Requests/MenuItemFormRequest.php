@@ -3,6 +3,7 @@
 namespace Workup\MenuBuilder\Http\Requests;
 
 use Illuminate\Support\Str;
+use Workup\MenuBuilder\Settings;
 use Workup\MenuBuilder\MenuBuilder;
 use Illuminate\Foundation\Http\FormRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -26,7 +27,7 @@ class MenuItemFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (!$this->has('class')) {
+        if (! $this->has('class')) {
             return [
                 'name' => 'required',
                 'class' => 'required',
@@ -35,7 +36,7 @@ class MenuItemFormRequest extends FormRequest
 
         $menuItemClass = $this->get('class');
         $menuItemId = $this->route('menuItem');
-        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+        $menuItem = Settings::getMenuItemClass()::find($menuItemId);
 
         return $this->getRulesFromMenuLinkable($menuItemClass, $menuItem);
     }
@@ -67,12 +68,12 @@ class MenuItemFormRequest extends FormRequest
         return $this->only($keys);
     }
 
-    private function getRulesFromMenuLinkable(string $menuLinkableClass, $menuItem = null)
+    private function getRulesFromMenuLinkable(string $menuLinkableClass, $menuItem = null): array
     {
-        $menusTableName = MenuBuilder::getMenusTableName();
+        $menusTableName = Settings::getMenusTableName();
         $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
 
-        $fields = MenuBuilder::getFieldsFromMenuItemTypeClass($menuLinkableClass);
+        $fields = Settings::getFieldsFromMenuItemTypeClass($menuLinkableClass);
         $novaRequest = app()->make(NovaRequest::class);
         $fieldRules = collect($fields)
             ->map(fn ($field) => $field->{$menuItem ? 'getUpdateRules' : 'getCreationRules'}($novaRequest))
@@ -81,7 +82,7 @@ class MenuItemFormRequest extends FormRequest
 
         $dataRules = [];
         foreach ($menuItemRules as $key => $rule) {
-            if ($key !== 'value' && !Str::startsWith($key, 'data->')) {
+            if ($key !== 'value' && ! Str::startsWith($key, 'data->')) {
                 $key = "data->{$key}";
             }
             $dataRules[$key] = $rule;
@@ -100,7 +101,7 @@ class MenuItemFormRequest extends FormRequest
             'locale' => 'required',
             'value' => 'present',
             'class' => 'required',
-            'target' => 'required|in:_self,_blank'
+            'target' => 'required|in:_self,_blank',
         ], $dataRules);
     }
 }

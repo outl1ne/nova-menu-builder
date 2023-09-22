@@ -16,7 +16,7 @@
       </CheckboxWithLabel>
     </ModalHeader>
 
-    <div class="o1-pt-2 o1-pb-6">
+    <div class="pt-2 pb-6">
       <form @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" autocomplete="off">
         <DefaultField
           :errors="wrappedErrors"
@@ -30,7 +30,7 @@
           <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemName')"
-              :class="{ 'o1-border-red-400': getError('name') }"
+              :class="{ 'border-red-400': getError('name') }"
               class="w-full form-control form-input form-input-bordered"
               id="name"
               type="text"
@@ -74,7 +74,7 @@
           <template #field>
             <input
               :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
-              :class="{ 'o1-border-red-400': getError('value') }"
+              :class="{ 'border-red-400': getError('value') }"
               class="w-full form-control form-input form-input-bordered"
               id="url"
               type="text"
@@ -85,7 +85,7 @@
 
         <DefaultField
           v-if="linkType.type === 'select'"
-          class="option-select-field o1-menu-builder-multiselect-wrapper"
+          class="option-select-field menu-builder-multiselect-wrapper"
           :errors="wrappedErrors"
           :fullWidthContent="true"
           :field="{
@@ -406,7 +406,7 @@ $red500: #ef4444;
 }
 
 /* Multiselect styles */
-.o1-menu-builder-multiselect-wrapper {
+.menu-builder-multiselect-wrapper {
   .multiselect {
     min-height: 36px;
     border: none;
