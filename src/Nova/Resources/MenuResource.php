@@ -18,7 +18,7 @@ class MenuResource extends Resource
 
     public static $displayInNavigation = true;
 
-    public function __construct($resource)
+    public function __construct($resource = null)
     {
         $this->resource = $resource;
         static::$model = Settings::getMenuClass();
