@@ -117,7 +117,7 @@ class Settings
 
     public static function getMenuItemTypes()
     {
-        return config('nova-menu-builder.item_types', []);
+        return config('rubinred.menus.item_types', config('nova-menu-builder.item_types', []));
     }
 
     public static function getMenus()

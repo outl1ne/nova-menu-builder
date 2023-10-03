@@ -15,6 +15,7 @@
     "novaMenuBuilder.menuItemName": "Name",
     "novaMenuBuilder.menuItemSlug": "Slug",
     "novaMenuBuilder.menuItemPath": "Path",
+    "novaMenuBuilder.menuItemRoute": "Route",
     "novaMenuBuilder.menuItemLabel": "Label",
     "novaMenuBuilder.menuItemType": "Type",
     "novaMenuBuilder.menuItemValue": "Value",

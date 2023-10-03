@@ -15,6 +15,7 @@
     "novaMenuBuilder.menuItemName": "Nome",
     "novaMenuBuilder.menuItemSlug": "Slug",
     "novaMenuBuilder.menuItemPath": "Path",
+    "novaMenuBuilder.menuItemRoute": "Rotta",
     "novaMenuBuilder.menuItemLabel": "Etichetta",
     "novaMenuBuilder.menuItemType": "Tipologia",
     "novaMenuBuilder.menuItemValue": "Valore",
