@@ -7,29 +7,14 @@ return [
     |------------------|
     */
 
-
     /*
     |--------------------------------------------------------------------------
     | Table names
     |--------------------------------------------------------------------------
     */
 
-    'menus_table_name' => 'nova_menu_menus',
-    'menu_items_table_name' => 'nova_menu_menu_items',
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Locales
-    |--------------------------------------------------------------------------
-    |
-    | Set all the available locales as either [key => name] pairs, a closure
-    | or a callable (ie 'locales' => 'nova_get_locales').
-    |
-    */
-
-    'locales' => ['en_US' => 'English'],
-
+    'table_name' => 'menus',
+    'items_table_name' => 'menu_items',
 
     /*
     |--------------------------------------------------------------------------
@@ -37,10 +22,10 @@ return [
     |--------------------------------------------------------------------------
     |
     | Set all the possible menus in a keyed array of arrays with the options
-    | 'name' and optionally 'menu_item_types' and unique.
+    | 'name' and optionally 'item_types' and unique.
     /  Unique is true by default
     |
-    | For example: ['header' => ['name' => 'Header', 'unique' => true, 'menu_item_types' => []]]
+    | For example: ['header' => ['name' => 'Header', 'unique' => true, 'item_types' => []]]
     |
     */
 
@@ -49,7 +34,7 @@ return [
         //     'name' => 'Header',
         //     'unique' => true,
         //     'max_depth' => 10,
-        //     'menu_item_types' => []
+        //     'item_types' => []
         // ]
     ],
 
@@ -62,9 +47,11 @@ return [
     |
     */
 
-    'menu_item_types' => [
-        Workup\Menus\MenuItemTypes\MenuItemTextType::class,
-        Workup\Menus\MenuItemTypes\MenuItemStaticURLType::class,
+    'item_types' => [
+        \Workup\Menus\MenuItemTypes\TextType::class,
+        \Workup\Menus\MenuItemTypes\StaticURLType::class,
+        \Workup\Menus\MenuItemTypes\RouteType::class,
+        // \Workup\Menus\MenuItemTypes\MenuItemEntityType::class,
     ],
 
     /*
@@ -74,7 +61,7 @@ return [
     */
     'show_duplicate' => true,
 
-    'collapsed_as_default' => true,
+    'collapsed_as_default' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -85,8 +72,7 @@ return [
     |
     */
 
-    'resource' => Workup\MenuBuilder\Nova\Resources\MenuResource::class,
-
+    'resource' => Workup\Menus\Nova\Menu::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -97,8 +83,7 @@ return [
     |
     */
 
-    'menu_model' => Workup\Menus\Models\Menu::class,
-
+    'model' => Workup\Menus\Models\Menu::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -109,8 +94,7 @@ return [
     |
     */
 
-    'menu_item_model' => Workup\Menus\Models\MenuItem::class,
-
+    'item_model' => Workup\Menus\Models\MenuItem::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -122,6 +106,5 @@ return [
     */
 
     'auto_load_migrations' => true,
-
 
 ];
