@@ -1,6 +1,5 @@
 <template>
     <div class="menu-builder">
-<!--
         <vue-nestable
             :value="value"
             :max-depth="maxDepth"
@@ -25,16 +24,16 @@
 
                         <div
                             class="text-90 font-bold whitespace-nowrap overflow-hidden text-ellipsis"
-                            :class="{ 'opacity-25': !item.enabled }"
+                            :class="{ 'opacity-25': !item.is_active }"
                         >
-                            {{ item.name }}
+                            {{ item.label }}
                         </div>
 
                         <div
                             class="font-lighter text-80 ml-4 text-sm whitespace-nowrap text-ellipsis overflow-hidden"
-                            :class="{ 'opacity-25': !item.enabled }"
+                            :class="{ 'opacity-25': !item.is_active }"
                         >
-                            {{ item.displayValue }}
+                            Slug: {{ item.slug }}
                         </div>
                     </div>
 
@@ -66,12 +65,9 @@
                 </vue-nestable-handle>
             </template>
         </vue-nestable>
--->
-        Ciao
     </div>
 </template>
 
-<!--
 <script>
 import {VueNestable, VueNestableHandle} from 'vue3-nestable';
 
@@ -125,7 +121,6 @@ export default {
     },
 };
 </script>
--->
 
 <style lang="scss">
 .menu-builder {

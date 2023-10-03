@@ -1,7 +1,7 @@
 <?php
 
 use Workup\MenuBuilder\Settings;
-use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilderTool;
 
 if (! function_exists('nova_get_menus')) {
     function nova_get_menus($locale = null)

@@ -16,7 +16,7 @@ class MenuResource extends Resource
 
     public static $search = ['name', 'slug'];
 
-    public static $displayInNavigation = true;
+    public static $displayInNavigation = false;
 
     public function __construct($resource = null)
     {
@@ -38,7 +38,7 @@ class MenuResource extends Resource
 
     public static function uriKey()
     {
-        return 'nova-menus';
+        return 'menus';
     }
 
     public function title()

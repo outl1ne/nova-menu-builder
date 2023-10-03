@@ -13,14 +13,34 @@ class MenuController extends Controller
     /**
      * Return root menu items for one menu.
      **/
-    public function index(Request $request, int $menuId): JsonResponse
+    public function index(Request $request)
     {
+        $menuModel = Settings::getMenuClass();
+        $query = $menuModel::query();
+
+        if ($request->boolean('notEmpty')) {
+            $query->whereHas('rootMenuItems');
+        }
+
+        return $query->get()->map(function ($menu) {
+            return [
+                'id' => $menu->id,
+                'title' => "{$menu->name} ({$menu->slug})",
+                'name' => $menu->name,
+                'slug' => $menu->slug,
+            ];
+        });
+    }
+
+    public function show(Request $request, int $menuId): JsonResponse
+    {
+        $locale = $request->get('locale');
         $menu = Settings::getMenuClass()::find($menuId);
+
         if (empty($menu)) {
             return response()->json(['menu' => 'menu_not_found'], 400);
         }
 
-        $locale = $request->get('locale');
         if (empty($locale)) {
             return response()->json(['menu' => 'locale_required_but_missing'], 400);
         }
@@ -233,7 +253,7 @@ class MenuController extends Controller
 
         $menu = Settings::getMenus()[$menu->slug] ?? null;
         if ($menu !== null) {
-            $menuTypeClasses = $menu['menu_item_types'] ?? [];
+            $menuTypeClasses = $menu['item_types'] ?? [];
             foreach ($menuTypeClasses as $menuTypeClass) {
                 $formatAndAppendMenuItemType($menuTypeClass);
             }

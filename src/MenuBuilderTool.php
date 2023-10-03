@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 use Workup\MenuBuilder\Traits\Menuable;
 
-class MenuBuilder extends Tool
+class MenuBuilderTool extends Tool
 {
     use Menuable;
 

@@ -4,7 +4,7 @@ namespace Workup\MenuBuilder\Http\Requests;
 
 use Illuminate\Support\Str;
 use Workup\MenuBuilder\Settings;
-use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilderTool;
 use Illuminate\Foundation\Http\FormRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -17,7 +17,7 @@ class MenuItemFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (bool) resolve(MenuBuilder::class)->authorize(request());
+        return (bool) resolve(MenuBuilderTool::class)->authorize(request());
     }
 
     /**

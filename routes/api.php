@@ -8,10 +8,9 @@ use Workup\MenuBuilder\Http\Controllers\MenuItemController;
 use Workup\MenuBuilder\Http\Controllers\DuplicateItemController;
 use Workup\MenuBuilder\Http\Controllers\CopyMenuItemsToMenuController;
 
-
-Route::get('/menus', [MenuController::class, 'index']);
 Route::post('/menus/copy', CopyMenuItemsToMenuController::class);
 
+Route::get('/menus', [MenuController::class, 'index']);
 Route::get('/menu/{menu}', [MenuController::class, 'show']);
 Route::post('/menu/{menu}', [MenuController::class, 'store']);
 

@@ -1,7 +1,5 @@
 <template>
     <div id="menu-builder-field" class="relative py-3 w-full">
-        MERDA
-        <!--
         <menu-builder-header
             :locales="field.locales"
             :resourceId="resourceId"
@@ -18,7 +16,6 @@
         </div>
 
         <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length"/>
-
         <menu-builder
             v-if="!loadingMenuItems && menuItems.length"
             @duplicateMenuItem="duplicateMenuItem"
@@ -45,6 +42,8 @@
             @confirmItemCreate="confirmItemCreate"
             @onLinkModelUpdate="updateLinkModel"
             @onLinkTypeUpdate="updateLinkType"
+            @onLinkEntityIdUpdate="updateEntityId"
+            @onLinkEntityItemIdUpdate="updateEntityItemId"
             @updateItem="updateItem"
         />
 
@@ -54,7 +53,6 @@
             @closeModal="closeModal"
             @confirmItemDelete="confirmItemDelete"
         />
-        -->
     </div>
 </template>
 
@@ -111,7 +109,6 @@ export default {
     async mounted() {
         // Fix classes on Detail view
         this.$parent.$el.classList.remove('py-3', 'px-6');
-
         this.refreshData();
     },
 
@@ -145,7 +142,6 @@ export default {
 
         async refreshData() {
             this.loadingMenuItems = true;
-
             const menuItems = (await api.getItems(this.resourceId, this.selectedLocale)).data;
             this.menuItems = this.setMenuItemProperties(
                 Object.values(menuItems),
@@ -161,8 +157,7 @@ export default {
 
         async editMenu(item) {
             this.update = true;
-            const menuItem = (await api.getMenuItem(item.id)).data;
-            this.newItem = menuItem;
+            this.newItem = (await api.getMenuItem(item.id)).data;
             this.showAddModal = true;
             this.linkType = this.menuItemTypes.find(lt => lt.class === this.newItem.class) || {};
         },
@@ -257,12 +252,23 @@ export default {
         },
 
         updateLinkModel(modelId) {
-            this.newItem.value = modelId || '';
+            this.newItem.url = modelId || '';
+        },
+
+        updateEntityId(entityId) {
+            this.newItem.entity_id = entityId;
+        },
+
+        updateEntityItemId(itemId) {
+            this.newItem.entity_item_id = itemId;
+            this.newItem.is_index = itemId === '0';
+
+            return itemId;
         },
 
         updateLinkType(linkType) {
             this.linkType = this.menuItemTypes.find(type => type.class === linkType) || {};
-            this.newItem.value = '';
+            this.newItem.url = '';
         },
     },
 };

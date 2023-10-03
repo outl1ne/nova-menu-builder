@@ -48,7 +48,7 @@ public function tools()
 {
     return [
         // ...
-        new \Workup\MenuBuilder\MenuBuilder::make(),
+        new \Workup\MenuBuilder\MenuBuilderTool::make(),
 
         // Optional customization
         ->title('Menus') // Define a new name for sidebar
@@ -64,8 +64,8 @@ After publishing the configuration file, you have to make some required changes 
 
 ```php
 # Choose table names of your liking by editing the two key/values:
-'menus_table_name' => 'nova_menu_menus',
-'menu_items_table_name' => 'nova_menu_menu_items',
+'table_name' => 'nova_menu_menus',
+'items_table_name' => 'nova_menu_menu_items',
 
 # Define the locales for your project:
 # If your project doesn't have localization, you can just leave it as it is.
@@ -77,14 +77,14 @@ After publishing the configuration file, you have to make some required changes 
     // 'header' => [
     //     'name' => 'Header',
     //     'unique' => true,
-    //     'menu_item_types' => []
+    //     'item_types' => []
     // ]
 ],
 
 # If you're just setting up, this is probably of no importance to you,
 # but later on, when you want custom menu item types with custom fields
 # , you can register them here:
-'menu_item_types' => [],
+'item_types' => [],
 ```
 
 Next, just run the migrations and you're set.
@@ -147,7 +147,7 @@ Create a class that extends the `Workup\MenuBuilder\MenuItemTypes\BaseMenuItemTy
 
 return [
   // ...
-  'menu_item_types' => [
+  'item_types' => [
     \App\MenuItemTypes\CustomMenuItemType::class,
   ],
   // ...

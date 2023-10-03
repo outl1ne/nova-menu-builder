@@ -37,12 +37,18 @@
     "novaMenuBuilder.menuItemTargetNewWindow": "Nuova finestra/tab",
     "novaMenuBuilder.menuItemActive": "Attivo",
     "novaMenuBuilder.menuItemDisabled": "Disattivato",
+    "novaMenuBuilder.nestableLabel": "Nidificabile",
     "novaMenuBuilder.toastDeleteSuccess": "Voce di menu cancellata",
     "novaMenuBuilder.toastCreateSuccess": "Voce di menu creata",
     "novaMenuBuilder.toastUpdateSuccess": "Voce di menu aggiornata",
     "novaMenuBuilder.toastReorderSuccess": "Menu riordinato",
     "novaMenuBuilder.toastDuplicateSuccess": "Voce di menu duplicata",
     "novaMenuBuilder.serverError": "Errore del server, si prega di riprovare.",
-    "novaMenuBuilder.menuTypeRequired": "Il tipo di menu è necessario."
+    "novaMenuBuilder.menuTypeRequired": "Il tipo di menu è necessario.",
+    "novaMenuBuilder.copyMenuItemsFromTitle": "Copia elementi da",
+    "novaMenuBuilder.copyMenuItemsButtonTitle": "Copia elementi",
+    "novaMenuBuilder.locale": "Locale",
+    "novaMenuBuilder.image": "Immagine",
+    "novaMenuBuilder.addNewMedia": "Aggiungi immagine"
 }
 
