@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [7.1.3.001] - 2023-10-05
+
+### Changed
+
+- Nova 4 compatibility
 
 ## [7.1.3] - 10-08-2023
 
@@ -33,8 +38,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Custom menu items now have `getEnabledValue` function available. [#75]
-  - You can use this to override the enabled value set in database.
-    Useful when dealing with relationships inside menu items that might of have been deleted.
+    - You can use this to override the enabled value set in database.
+      Useful when dealing with relationships inside menu items that might of have been deleted.
 
 ### Changed
 
