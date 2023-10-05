@@ -9,10 +9,22 @@
         "workup"
     ],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Tarvo Reinpalu",
+            "email": "tarvoreinpalu@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Optimist Digital",
+            "email": "info@optimistdigital.com",
+            "role": "Maintainer"
+        }
+    ],
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/workupsrl/nova.git"
+            "type": "composer",
+            "url": "https://nova.laravel.com"
         },
         {
             "type": "vcs",
@@ -21,11 +33,9 @@
     ],
     "require": {
         "php": ">=8.0",
-        "laravel/framework": "^9.0",
         "doctrine/dbal": ">=2.0.0",
-        "workup/nova": "^3.0",
-        "workup/nova-translations-loader": "^3.0",
-        "workup/nova-tailwind": "^1.0.2"
+        "laravel/nova": "^4.0",
+        "workup/nova-translations-loader": "^5.0.0"
     },
     "require-dev": {
         "orchestra/testbench": "^7.0",
@@ -34,6 +44,14 @@
     "autoload": {
         "psr-4": {
             "Workup\\MenuBuilder\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Workup\\MenuBuilder\\Tests\\": "tests"
         }
     },
     "extra": {

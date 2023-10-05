@@ -1,6 +1,19 @@
 export default {
+    async getMenus(params) {
+        return Nova.request().get(`/nova-vendor/nova-menu-builder/menus`, {params});
+    },
+
     async getItems(menuId, locale) {
         return Nova.request().get(`/nova-vendor/nova-menu-builder/menu/${menuId}`, {params: {locale}});
+    },
+
+    async copyItems(fromMenuId, fromLocale, toMenuId, toLocale) {
+        return Nova.request().post(`/nova-vendor/nova-menu-builder/menus/copy`, {
+            fromMenuId,
+            fromLocale,
+            toMenuId,
+            toLocale
+        });
     },
 
     async saveItems(menuId, menuItems) {
@@ -13,10 +26,6 @@ export default {
 
     async getMenuItem(menuItemId) {
         return Nova.request().get(`/nova-vendor/nova-menu-builder/items/${menuItemId}`);
-    },
-
-    async getEntityTable(entityId) {
-        return Nova.request().get(`/nova-vendor/nova-menu-builder/entity/${entityId}`);
     },
 
     async update(menuItemId, menuItem) {

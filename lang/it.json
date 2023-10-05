@@ -15,6 +15,7 @@
     "novaMenuBuilder.menuItemName": "Nome",
     "novaMenuBuilder.menuItemSlug": "Slug",
     "novaMenuBuilder.menuItemPath": "Path",
+    "novaMenuBuilder.menuItemRoute": "Rotta",
     "novaMenuBuilder.menuItemLabel": "Etichetta",
     "novaMenuBuilder.menuItemType": "Tipologia",
     "novaMenuBuilder.menuItemValue": "Valore",
@@ -23,7 +24,7 @@
     "novaMenuBuilder.updatebuttonTitle": "Aggiorna voce di menu",
     "novaMenuBuilder.createButtonTitle": "Crea voce di menu",
     "novaMenuBuilder.closeModalTitle": "Annulla",
-    "novaMenuBuilder.delConfirmModalTitle": "Cancella voce di menu",
+    "novaMenuBuilder.delConfirmModalTitle":     "Cancella voce di menu",
     "novaMenuBuilder.delConfirmModalDesc": "Sei sicuro di voler cancellare questa voce di menu?",
     "novaMenuBuilder.delConfirmModalDescChildren": "Fate attenzione. Tutti gli elementi figli saranno cancellati insieme al genitore.",
     "novaMenuBuilder.delConfirmModalCancel": "Annulla",
@@ -37,12 +38,18 @@
     "novaMenuBuilder.menuItemTargetNewWindow": "Nuova finestra/tab",
     "novaMenuBuilder.menuItemActive": "Attivo",
     "novaMenuBuilder.menuItemDisabled": "Disattivato",
+    "novaMenuBuilder.nestableLabel": "Nidificabile",
     "novaMenuBuilder.toastDeleteSuccess": "Voce di menu cancellata",
     "novaMenuBuilder.toastCreateSuccess": "Voce di menu creata",
     "novaMenuBuilder.toastUpdateSuccess": "Voce di menu aggiornata",
     "novaMenuBuilder.toastReorderSuccess": "Menu riordinato",
     "novaMenuBuilder.toastDuplicateSuccess": "Voce di menu duplicata",
     "novaMenuBuilder.serverError": "Errore del server, si prega di riprovare.",
-    "novaMenuBuilder.menuTypeRequired": "Il tipo di menu è necessario."
+    "novaMenuBuilder.menuTypeRequired": "Il tipo di menu è necessario.",
+    "novaMenuBuilder.copyMenuItemsFromTitle": "Copia elementi da",
+    "novaMenuBuilder.copyMenuItemsButtonTitle": "Copia elementi",
+    "novaMenuBuilder.locale": "Locale",
+    "novaMenuBuilder.image": "Immagine",
+    "novaMenuBuilder.addNewMedia": "Aggiungi immagine"
 }
 

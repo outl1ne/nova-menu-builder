@@ -3,9 +3,9 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Workup\MenuBuilder\Settings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Workup\MenuBuilder\MenuBuilder;
 use Workup\MenuBuilder\Http\Traits\MenuHelpers;
 use Workup\MenuBuilder\Http\Requests\MenuItemFormRequest;
 
@@ -18,7 +18,7 @@ class ItemController extends Controller
      **/
     public function store(MenuItemFormRequest $request): JsonResponse
     {
-        $menuItemModel = MenuBuilder::getMenuItemClass();
+        $menuItemModel = Settings::getMenuItemClass();
 
         $data = $request->getValues();
 
@@ -42,7 +42,7 @@ class ItemController extends Controller
      **/
     public function show($menuItemId): JsonResponse
     {
-        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+        $menuItem = Settings::getMenuItemClass()::find($menuItemId);
 
         return isset($menuItem)
             ? response()->json($menuItem, 200)
@@ -54,7 +54,7 @@ class ItemController extends Controller
      **/
     public function update(MenuItemFormRequest $request, $menuItemId): JsonResponse
     {
-        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
+        $menuItem = Settings::getMenuItemClass()::find($menuItemId);
 
         if (! isset($menuItem)) {
             return response()->json(['error' => 'menu_item_not_found'], 400);
@@ -80,7 +80,7 @@ class ItemController extends Controller
      **/
     public function destroy($menuItemId): JsonResponse
     {
-        $menuItem = MenuBuilder::getMenuItemClass()::findOrFail($menuItemId);
+        $menuItem = Settings::getMenuItemClass()::findOrFail($menuItemId);
         $menuItem->children()->delete();
         $menuItem->delete();
         return response()->json(['success' => true], 200);
@@ -91,7 +91,7 @@ class ItemController extends Controller
      **/
     public function getMenuItemTypes(Request $request, $menuId): JsonResponse
     {
-        $menu = MenuBuilder::getMenuClass()::find($menuId);
+        $menu = Settings::getMenuClass()::find($menuId);
         if ($menu === null) {
             return response()->json(['error' => 'menu_not_found'], 404);
         }
@@ -102,7 +102,7 @@ class ItemController extends Controller
         }
 
         $menuItemTypes = [];
-        $menuItemTypesRaw = MenuBuilder::getMenuItemTypes();
+        $menuItemTypesRaw = Settings::getMenuItemTypes();
 
         $formatAndAppendMenuItemType = function ($typeClass) use (&$menuItemTypes, $locale) {
             if (! class_exists($typeClass)) {
@@ -112,7 +112,7 @@ class ItemController extends Controller
             $data = [
                 'name' => $typeClass::getName(),
                 'type' => $typeClass::getType(),
-                'fields' => MenuBuilder::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
+                'fields' => Settings::getFieldsFromMenuItemTypeClass($typeClass) ?? [],
                 'class' => $typeClass,
             ];
 

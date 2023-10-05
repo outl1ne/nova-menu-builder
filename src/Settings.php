@@ -2,39 +2,11 @@
 
 namespace Workup\MenuBuilder;
 
-use Laravel\Nova\Nova;
-use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
 use Workup\Core\Services\Nova\Helper;
 
-class MenuBuilder extends Tool
+class Settings
 {
-
-    /**
-     * Perform any tasks that need to happen when the tool is booted.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Nova::script('nova-menu-builder', __DIR__ . '/../dist/js/menu-builder.js');
-        Nova::style('nova-menu-builder', __DIR__ . '/../dist/css/menu-builder.css');
-
-        Nova::provideToScript([
-            'menuBuilder' => $this->config(),
-        ]);
-    }
-
-    /**
-     * Build the view that renders the navigation links for the tool.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function renderNavigation()
-    {
-        return view('nova-menu-builder::menu-navigation');
-    }
-
     /** @noinspection PhpUnhandledExceptionInspection */
     public static function getLocales(): array
     {
@@ -61,7 +33,7 @@ class MenuBuilder extends Tool
         $templateFields = [];
 
         $handleField = function (&$field) {
-            if (!empty($field->attribute) && ($field->attribute !== 'ComputedField')) {
+            if (! empty($field->attribute) && ($field->attribute !== 'ComputedField')) {
                 if (empty($field->panel)) {
                     $field->attribute = 'data->' . $field->attribute;
                 } else {
@@ -102,7 +74,9 @@ class MenuBuilder extends Tool
         $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
         $dataRules = [];
         foreach ($menuItemRules as $key => $rule) {
-            if ($key !== 'value' && !Str::startsWith($key, 'data->')) $key = "data->{$key}";
+            if ($key !== 'value' && ! Str::startsWith($key, 'data->')) {
+                $key = "data->{$key}";
+            }
             $dataRules[$key] = $rule;
         }
 
@@ -111,16 +85,14 @@ class MenuBuilder extends Tool
             'label' => 'required|min:1',
             'locale' => 'required',
             'class' => 'required',
-            'target' => 'required|in:_self,_blank'
+            'target' => 'required|in:_self,_blank',
         ], $dataRules);
     }
 
-
-
     // In-package helpers
-    public static function getResourceClass()
+    public static function getMenuResource()
     {
-        return config('nova-menu-builder.resource', \Workup\Menus\Nova\Menu::class);
+        return config('nova-menu-builder.resource', \Workup\MenuBuilder\Nova\Resources\MenuResource::class);
     }
 
     public static function getMenusTableName()
@@ -145,7 +117,17 @@ class MenuBuilder extends Tool
 
     public static function getMenuItemTypes()
     {
-        return config('nova-menu-builder.item_types', []);
+        return config('rubinred.menus.item_types', config('nova-menu-builder.item_types', []));
+    }
+
+    public static function getMenus()
+    {
+        return config('nova-menu-builder.menus', []);
+    }
+
+    public static function getMenuConfig($slug)
+    {
+        return config("nova-menu-builder.menus.{$slug}", []);
     }
 
     public static function getEntityModel()
@@ -158,14 +140,13 @@ class MenuBuilder extends Tool
         return config('nova-menu-builder.item_route_model', \Workup\Pages\Models\Page::class);
     }
 
-    protected function config()
+    public static function showDuplicate()
     {
-        return [
-            'menuBuilderUriKey' => static::getResourceClass()::uriKey(),
-            'permissions' => request()->user()
-                ->getAllPermissions()
-                ->filter(fn ($permission) => str_contains($permission, '.menus'))
-                ->pluck('name'),
-        ];
+        return config("nova-menu-builder.show_duplicate", true);
+    }
+
+    public static function collapsedAsDefault()
+    {
+        return config("nova-menu-builder.collapsed_as_default", true);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Workup\MenuBuilder\Http\Middleware;
 
-use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\MenuBuilderTool;
 
 class Authorize
 {
@@ -15,6 +15,6 @@ class Authorize
      */
     public function handle($request, $next)
     {
-        return resolve(MenuBuilder::class)->authorize($request) ? $next($request) : abort(403);
+        return resolve(MenuBuilderTool::class)->authorize($request) ? $next($request) : abort(403);
     }
 }

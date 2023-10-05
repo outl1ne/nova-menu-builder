@@ -2,7 +2,7 @@
 
 namespace Workup\MenuBuilder\Http\Traits;
 
-use Workup\MenuBuilder\MenuBuilder;
+use Workup\MenuBuilder\Settings;
 
 trait MenuHelpers
 {
@@ -11,9 +11,9 @@ trait MenuHelpers
      *
      * @param $menuItem
      */
-    private function shiftMenuItemsWithHigherOrder($menuItem)
+    private function shiftMenuItemsWithHigherOrder($menuItem): void
     {
-        $menuItems = MenuBuilder::getMenuItemClass()
+        $menuItems = Settings::getMenuItemClass()
             ::where('order', '>', $menuItem->order)
             ->where('menu_id', $menuItem->menu_id)
             ->where('parent_id', $menuItem->parent_id)
@@ -26,7 +26,7 @@ trait MenuHelpers
         }
     }
 
-    private function recursivelyOrderChildren($menuItem)
+    private function recursivelyOrderChildren($menuItem): void
     {
         if (count($menuItem['children']) > 0) {
             foreach ($menuItem['children'] as $i => $child) {
@@ -35,16 +35,16 @@ trait MenuHelpers
         }
     }
 
-    private function saveMenuItemWithNewOrder($orderNr, $menuItemData, $parentId = null)
+    private function saveMenuItemWithNewOrder($orderNr, $menuItemData, $parentId = null): void
     {
-        $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemData['id']);
+        $menuItem = Settings::getMenuItemClass()::find($menuItemData['id']);
         $menuItem->order = $orderNr;
         $menuItem->parent_id = $parentId;
         $menuItem->save();
         $this->recursivelyOrderChildren($menuItemData);
     }
 
-    protected function recursivelyDuplicate($menuItem, $parentId = null, $order = null)
+    protected function recursivelyDuplicate($menuItem, $parentId = null, $order = null): void
     {
         $data = $menuItem->toArray();
         unset($data['id']);
@@ -58,10 +58,9 @@ trait MenuHelpers
         $data['locale'] = $menuItem->locale;
 
         // Save the long way instead of ::create() to trigger observer(s)
-        $menuItemClass = MenuBuilder::getMenuItemClass();
+        $menuItemClass = Settings::getMenuItemClass();
         $newMenuItem = new $menuItemClass;
         $newMenuItem->fill($data);
-        info($newMenuItem);
         $newMenuItem->save();
 
         $children = $menuItem->children;

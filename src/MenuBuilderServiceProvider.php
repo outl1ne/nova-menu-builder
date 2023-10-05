@@ -3,9 +3,11 @@
 namespace Workup\MenuBuilder;
 
 use Laravel\Nova\Nova;
+use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Nova\Http\Middleware\Authenticate;
 use Workup\MenuBuilder\Http\Middleware\Authorize;
 use Workup\NovaTranslationsLoader\LoadsNovaTranslations;
 
@@ -15,19 +17,46 @@ class MenuBuilderServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Load views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-menu-builder');
+        $this->config();
 
-        // Load translations
-        $this->loadTranslations(__DIR__ . '/../resources/lang', 'nova-menu-builder', true);
-
-        // Publish data
-        $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
-
-        // Register routes
         $this->app->booted(function () {
             $this->routes();
         });
+
+        Nova::serving(function (ServingNova $event) {
+            //
+        });
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    protected function config(): void
+    {
+        // Load translations
+        $this->loadTranslations(__DIR__ . '/../lang', 'nova-menu-builder', true);
+
+        // Publish data
+        if ($this->app->runningInConsole()) {
+            $this->publishes([__DIR__ . '/../config' => config_path()], 'nova-menu-builder-config');
+        }
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/nova-menu-builder.php',
+            'nova-menu-builder',
+        );
+
+        // Register resource
+//        Nova::resources([
+//            Settings::getMenuResource(),
+//        ]);
 
         Validator::extend('unique_menu', function ($attribute, $value, $parameters, $validator) {
             // Check if menu has unique attribute defined.
@@ -38,21 +67,14 @@ class MenuBuilderServiceProvider extends ServiceProvider
         }, '');
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->mergeConfigFrom(__DIR__ . '/../config/nova-menu-builder.php', 'nova-menu-builder');
-    }
-
-    protected function routes()
+    protected function routes(): void
     {
         if ($this->app->routesAreCached()) {
             return;
         }
+
+        Nova::router(['nova', Authorize::class], 'menus')
+            ->group(__DIR__ . '/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
             ->prefix('nova-vendor/nova-menu-builder')
