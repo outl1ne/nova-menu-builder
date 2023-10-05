@@ -97,11 +97,13 @@ class MenuItemFormRequest extends FormRequest
 
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
-            'name' => 'required|min:1',
+            'slug' => 'required',
+            'item_type' => 'required',
+            'label' => 'required|min:1',
             'locale' => 'required',
-            'value' => 'present',
-            'class' => 'required',
-            'target' => 'required|in:_self,_blank',
+            'path' => 'present',
+            'url' => 'present',
+//            'target' => 'required|in:_self,_blank',
         ], $dataRules);
     }
 }

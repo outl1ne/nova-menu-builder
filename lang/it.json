@@ -24,7 +24,7 @@
     "novaMenuBuilder.updatebuttonTitle": "Aggiorna voce di menu",
     "novaMenuBuilder.createButtonTitle": "Crea voce di menu",
     "novaMenuBuilder.closeModalTitle": "Annulla",
-    "novaMenuBuilder.delConfirmModalTitle": "Cancella voce di menu",
+    "novaMenuBuilder.delConfirmModalTitle":     "Cancella voce di menu",
     "novaMenuBuilder.delConfirmModalDesc": "Sei sicuro di voler cancellare questa voce di menu?",
     "novaMenuBuilder.delConfirmModalDescChildren": "Fate attenzione. Tutti gli elementi figli saranno cancellati insieme al genitore.",
     "novaMenuBuilder.delConfirmModalCancel": "Annulla",
