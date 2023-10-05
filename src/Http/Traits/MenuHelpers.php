@@ -61,7 +61,6 @@ trait MenuHelpers
         $menuItemClass = Settings::getMenuItemClass();
         $newMenuItem = new $menuItemClass;
         $newMenuItem->fill($data);
-        info($newMenuItem);
         $newMenuItem->save();
 
         $children = $menuItem->children;
