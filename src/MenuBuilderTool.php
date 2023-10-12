@@ -26,7 +26,7 @@ class MenuBuilderTool extends Tool
             return null;
         }
 
-        return MenuSection::make($this->title ?: __('novaMenuBuilder.sidebarTitle'))
+        return MenuSection::make(__('Menu Builder'))
             ->path('/menus')
             ->icon($this->icon);
     }
