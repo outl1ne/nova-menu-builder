@@ -110,6 +110,16 @@ class MenuBuilder extends Tool
         return config('nova-menu.menu_items_table_name', 'nova_menu_menu_items');
     }
 
+    public static function getDatabaseTableConnection(string $table_name)
+    {
+        $connection = config('nova-menu.menus_table_connection');
+        if ($connection) {
+            return "{$connection}.{$table_name}";
+        }
+
+        return $table_name;
+    }
+
     public static function getMenuClass()
     {
         return config('nova-menu.menu_model', \Outl1ne\MenuBuilder\Models\Menu::class);
