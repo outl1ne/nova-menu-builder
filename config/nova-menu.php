@@ -63,8 +63,8 @@ return [
     */
 
     'menu_item_types' => [
-        \Outl1ne\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
-        \Outl1ne\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
+        \Marshmallow\MenuBuilder\MenuItemTypes\MenuItemTextType::class,
+        \Marshmallow\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
     ],
 
     /*
@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'resource' => Outl1ne\MenuBuilder\Nova\Resources\MenuResource::class,
+    'resource' => Marshmallow\MenuBuilder\Nova\Resources\MenuResource::class,
 
 
     /*
@@ -97,7 +97,7 @@ return [
     |
     */
 
-    'menu_model' => Outl1ne\MenuBuilder\Models\Menu::class,
+    'menu_model' => Marshmallow\MenuBuilder\Models\Menu::class,
 
 
     /*
@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'menu_item_model' => Outl1ne\MenuBuilder\Models\MenuItem::class,
+    'menu_item_model' => Marshmallow\MenuBuilder\Models\MenuItem::class,
 
 
     /*

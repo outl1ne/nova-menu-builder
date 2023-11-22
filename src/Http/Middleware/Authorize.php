@@ -1,8 +1,8 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Http\Middleware;
+namespace Marshmallow\MenuBuilder\Http\Middleware;
 
-use Outl1ne\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\MenuBuilder;
 
 class Authorize
 {

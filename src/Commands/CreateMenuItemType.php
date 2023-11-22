@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Commands;
+namespace Marshmallow\MenuBuilder\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;

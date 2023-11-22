@@ -51,7 +51,7 @@ public function tools()
 {
     return [
         // ...
-        \Outl1ne\MenuBuilder\MenuBuilder::make(),
+        \Marshmallow\MenuBuilder\MenuBuilder::make(),
 
         // Optional customization
         ->title('Menus') // Define a new name for sidebar
@@ -143,7 +143,7 @@ return [
 
 Menu builder allows you create custom menu item types with custom fields.
 
-Create a class that extends the `Outl1ne\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
+Create a class that extends the `Marshmallow\MenuBuilder\MenuItemTypes\BaseMenuItemType` class and register it in the config file.
 
 ```php
 // in config/nova-menu.php

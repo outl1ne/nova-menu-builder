@@ -1,5 +1,5 @@
 {
-  "name": "outl1ne/nova-menu-builder",
+  "name": "marshmallow/nova-4-menu-builder",
   "description": "This Laravel Nova package allows you to create and manage menus and menu items.",
   "keywords": [
     "laravel",
@@ -24,6 +24,10 @@
       "name": "Optimist Digital",
       "email": "info@optimistdigital.com",
       "role": "Maintainer"
+    },{
+      "name": "Stef van Esch",
+      "email": "stef@marshmallow.dev",
+      "role": "Maintainer"
     }
   ],
   "require": {
@@ -38,7 +42,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Outl1ne\\MenuBuilder\\": "src/"
+      "Marshmallow\\MenuBuilder\\": "src/"
     },
     "files": [
       "src/helpers.php"
@@ -46,13 +50,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Outl1ne\\MenuBuilder\\Tests\\": "tests"
+      "Marshmallow\\MenuBuilder\\Tests\\": "tests"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Outl1ne\\MenuBuilder\\MenuBuilderServiceProvider"
+        "Marshmallow\\MenuBuilder\\MenuBuilderServiceProvider"
       ]
     }
   },

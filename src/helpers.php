@@ -1,6 +1,6 @@
 <?php
 
-use Outl1ne\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\MenuBuilder;
 
 if (!function_exists('nova_get_menus')) {
     function nova_get_menus($locale = null)

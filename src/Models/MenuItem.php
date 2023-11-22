@@ -1,9 +1,9 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Models;
+namespace Marshmallow\MenuBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Outl1ne\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\MenuBuilder;
 
 class MenuItem extends Model
 {

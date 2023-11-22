@@ -1,6 +1,6 @@
 <?php
 
-use Outl1ne\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\MenuBuilder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

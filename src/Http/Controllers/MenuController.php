@@ -1,11 +1,11 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Http\Controllers;
+namespace Marshmallow\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Outl1ne\MenuBuilder\MenuBuilder;
-use Outl1ne\MenuBuilder\Http\Requests\MenuItemFormRequest;
+use Marshmallow\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\Http\Requests\MenuItemFormRequest;
 
 class MenuController extends Controller
 {
@@ -121,7 +121,7 @@ class MenuController extends Controller
     /**
      * Creates new MenuItem.
      *
-     * @param Outl1ne\MenuBuilder\Http\Requests\MenuItemFormRequest $request
+     * @param Marshmallow\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @return Illuminate\Http\Response
      **/
     public function createMenuItem(MenuItemFormRequest $request)
@@ -158,7 +158,7 @@ class MenuController extends Controller
     /**
      * Updates a MenuItem.
      *
-     * @param Outl1ne\MenuBuilder\Http\Requests\MenuItemFormRequest $request
+     * @param Marshmallow\MenuBuilder\Http\Requests\MenuItemFormRequest $request
      * @param $menuItem
      * @return Illuminate\Http\Response
      **/

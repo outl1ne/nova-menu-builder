@@ -2,7 +2,7 @@
 
 namespace App\Nova\MenuBuilderTypes;
 
-use Outl1ne\MenuBuilder\MenuItemTypes\MenuItemSelectType;
+use Marshmallow\MenuBuilder\MenuItemTypes\MenuItemSelectType;
 
 class :className extends MenuItemSelectType
 {

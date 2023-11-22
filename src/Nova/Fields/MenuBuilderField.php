@@ -1,9 +1,9 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Nova\Fields;
+namespace Marshmallow\MenuBuilder\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
-use Outl1ne\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\MenuBuilder;
 
 class MenuBuilderField extends Field
 {

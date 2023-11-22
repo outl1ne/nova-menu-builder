@@ -1,10 +1,10 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Tests;
+namespace Marshmallow\MenuBuilder\Tests;
 
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Outl1ne\MenuBuilder\MenuBuilderServiceProvider;
+use Marshmallow\MenuBuilder\MenuBuilderServiceProvider;
 
 abstract class TestCase extends Orchestra
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Outl1ne\MenuBuilder;
+namespace Marshmallow\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
-use Outl1ne\MenuBuilder\Http\Middleware\Authorize;
-use Outl1ne\MenuBuilder\Commands\CreateMenuItemType;
-use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
+use Marshmallow\MenuBuilder\Http\Middleware\Authorize;
+use Marshmallow\MenuBuilder\Commands\CreateMenuItemType;
+use Marshmallow\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
@@ -70,7 +70,7 @@ class MenuBuilderServiceProvider extends ServiceProvider
         if ($this->app->routesAreCached()) return;
 
         Route::middleware(['nova', Authorize::class])
-            ->namespace('Outl1ne\MenuBuilder\Http\Controllers')
+            ->namespace('Marshmallow\MenuBuilder\Http\Controllers')
             ->prefix('nova-vendor/nova-menu')
             ->group(__DIR__ . '/../routes/api.php');
     }

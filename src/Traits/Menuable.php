@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Traits;
+namespace Marshmallow\MenuBuilder\Traits;
 
 trait Menuable
 {

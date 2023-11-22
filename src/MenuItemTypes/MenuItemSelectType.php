@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\MenuItemTypes;
+namespace Marshmallow\MenuBuilder\MenuItemTypes;
 
 abstract class MenuItemSelectType extends BaseMenuItemType
 {

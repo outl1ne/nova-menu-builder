@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Tests;
+namespace Marshmallow\MenuBuilder\Tests;
 
 
 class SampleTest extends TestCase

@@ -2,7 +2,7 @@
 
 namespace App\Nova\MenuBuilderTypes;
 
-use Outl1ne\MenuBuilder\MenuItemTypes\MenuItemTextType;
+use Marshmallow\MenuBuilder\MenuItemTypes\MenuItemTextType;
 
 class :className extends MenuItemTextType
 {

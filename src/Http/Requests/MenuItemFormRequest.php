@@ -1,9 +1,9 @@
 <?php
 
-namespace Outl1ne\MenuBuilder\Http\Requests;
+namespace Marshmallow\MenuBuilder\Http\Requests;
 
 use Illuminate\Support\Str;
-use Outl1ne\MenuBuilder\MenuBuilder;
+use Marshmallow\MenuBuilder\MenuBuilder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Foundation\Http\FormRequest;
 

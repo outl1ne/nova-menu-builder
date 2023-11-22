@@ -1,13 +1,13 @@
 <?php
 
-namespace Outl1ne\MenuBuilder;
+namespace Marshmallow\MenuBuilder;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
-use Outl1ne\MenuBuilder\Traits\Menuable;
+use Marshmallow\MenuBuilder\Traits\Menuable;
 
 class MenuBuilder extends Tool
 {
@@ -30,7 +30,7 @@ class MenuBuilder extends Tool
             return null;
         }
 
-        // Outl1ne\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
+        // Marshmallow\MenuBuilder\MenuBuilder::getMenuResource()::authorizedToViewAny(request())
         return MenuSection::make($this->title ?: __('novaMenuBuilder.sidebarTitle'))
             ->path('/menus')
             ->icon($this->icon);
@@ -97,7 +97,7 @@ class MenuBuilder extends Tool
     // In-package helpers
     public static function getMenuResource()
     {
-        return config('nova-menu.resource', \Outl1ne\MenuBuilder\Nova\Resources\MenuResource::class);
+        return config('nova-menu.resource', \Marshmallow\MenuBuilder\Nova\Resources\MenuResource::class);
     }
 
     public static function getMenusTableName()
@@ -112,12 +112,12 @@ class MenuBuilder extends Tool
 
     public static function getMenuClass()
     {
-        return config('nova-menu.menu_model', \Outl1ne\MenuBuilder\Models\Menu::class);
+        return config('nova-menu.menu_model', \Marshmallow\MenuBuilder\Models\Menu::class);
     }
 
     public static function getMenuItemClass()
     {
-        return config('nova-menu.menu_item_model', \Outl1ne\MenuBuilder\Models\MenuItem::class);
+        return config('nova-menu.menu_item_model', \Marshmallow\MenuBuilder\Models\MenuItem::class);
     }
 
     public static function getMenuItemTypes()
