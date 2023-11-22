@@ -1,4 +1,4 @@
-# Nova Menu Builder
+# Nova 4 Menu Builder
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-menu-builder)
 [![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-menu-builder)
