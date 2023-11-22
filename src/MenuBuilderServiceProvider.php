@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Marshmallow\MenuBuilder\Http\Middleware\Authorize;
 use Marshmallow\MenuBuilder\Commands\CreateMenuItemType;
-use Marshmallow\NovaTranslationsLoader\LoadsNovaTranslations;
+use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MenuBuilderServiceProvider extends ServiceProvider
 {
