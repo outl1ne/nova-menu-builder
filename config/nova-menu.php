@@ -17,6 +17,13 @@ return [
     'menus_table_name' => 'nova_menu_menus',
     'menu_items_table_name' => 'nova_menu_menu_items',
 
+    /*
+    |--------------------------------------------------------------------------
+    | You can override the table connection for validation on the Nova Menu
+    | When you keep this as null we will just use your default connection.
+    |--------------------------------------------------------------------------
+    */
+    'menus_table_connection' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -45,12 +52,18 @@ return [
     */
 
     'menus' => [
-        // 'header' => [
-        //     'name' => 'Header',
-        //     'unique' => true,
-        //     'max_depth' => 10,
-        //     'menu_item_types' => []
-        // ]
+        'header' => [
+            'name' => 'Header',
+            'unique' => true,
+            'max_depth' => 10,
+            'menu_item_types' => []
+        ],
+        'footer' => [
+            'name' => 'Footer',
+            'unique' => true,
+            'max_depth' => 10,
+            'menu_item_types' => []
+        ]
     ],
 
     /*
