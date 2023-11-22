@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="showModal" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg" align="flex justify-end">
+  <Modal :show="showModal" class="bg-white rounded-lg shadow-lg dark:bg-gray-800" align="flex justify-end">
     <ModalHeader class="flex flex-wrap justify-between">
       {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
@@ -179,7 +179,7 @@
           @click.prevent="$emit('closeModal')"
         />
 
-        <LoadingButton
+        <DefaultButton
           class="ml-3"
           type="submit"
           ref="runButton"
@@ -188,7 +188,7 @@
           @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
         >
           {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
-        </LoadingButton>
+        </DefaultButton>
       </div>
     </ModalFooter>
   </Modal>

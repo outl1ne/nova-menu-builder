@@ -12,10 +12,13 @@ mix
       vue: 'Vue',
     },
     output: {
-      uniqueName: 'outl1ne/nova-menu-builder-runner',
+      uniqueName: 'marshmallow/nova-menu-builder-runner',
     },
   })
   .postCss('resources/css/entry.css', 'dist/css/', [postcss(), tailwindcss('tailwind.config.js')])
   .alias({
-    'laravel-nova': path.join(__dirname, 'vendor/laravel/nova/resources/js/mixins/packages.js'),
+    'laravel-nova': path.join(
+        __dirname,
+        '../../vendor/laravel/nova/resources/js/mixins/packages.js'
+      ),
   });

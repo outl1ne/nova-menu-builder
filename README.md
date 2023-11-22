@@ -35,7 +35,7 @@ Install the package in a Laravel Nova project via Composer, edit the configurati
 
 ```bash
 # Install the package
-composer require outl1ne/nova-menu-builder
+composer require marshmallow/nova-4-menu-builder
 
 # Publish the configuration file and edit it to your preference
 # NB! If you want custom table names, configure them before running the migrations.
@@ -47,6 +47,22 @@ Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`
 ```php
 // in app/Providers/NovaServiceProvider.php
 
+/** Add it to the Nova::mainMenu helper */
+public function boot()
+{
+    parent::boot();
+
+    Nova::mainMenu(function (Request $request) {
+        return [
+          // ...
+          MenuSection::make('Menus')
+            ->path('/menus')
+            ->icon('adjustments'),
+        ]
+    });
+}
+
+/** Register the tool it self. */
 public function tools()
 {
     return [

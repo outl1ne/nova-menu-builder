@@ -42,7 +42,7 @@
           <button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"
-            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+            class="mr-3 appearance-none cursor-pointer text-70 hover:text-primary"
           >
             <Icon type="pencil-alt" />
           </button>
@@ -50,7 +50,7 @@
           <button
             :title="__('novaMenuBuilder.duplicate')"
             @click.prevent="$emit('duplicateMenuItem', item)"
-            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+            class="mr-3 appearance-none cursor-pointer text-70 hover:text-primary"
           >
             <Icon type="duplicate" />
           </button>
@@ -58,7 +58,7 @@
           <button
             :title="__('novaMenuBuilder.delete')"
             @click.prevent="$emit('removeMenu', item)"
-            class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
+            class="mr-1 appearance-none cursor-pointer text-70 hover:text-primary"
           >
             <Icon type="trash" />
           </button>
