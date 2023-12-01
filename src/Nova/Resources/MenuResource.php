@@ -45,6 +45,8 @@ class MenuResource extends Resource
     public function fields(Request $request)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
+        $menusTableName = MenuBuilder::getDatabaseTableConnection($menusTableName);
+
         $menuOptions = collect(MenuBuilder::getMenus())
             ->mapWithKeys(function ($menu, $key) {
                 return [$key => $menu['name']];
