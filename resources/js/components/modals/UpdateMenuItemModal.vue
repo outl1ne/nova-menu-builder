@@ -26,7 +26,7 @@
                     :field="{
                         ...defaultFieldProps,
                         validationKey: 'label',
-                        name: __('novaMenuBuilder.menuItemLabel'),
+                        name: __('novaMenuBuilder.menuItemLabel') + ' *',
                     }"
                     :fullWidthContent="true"
                 >
@@ -39,6 +39,7 @@
                             class="w-full form-control form-input form-input-bordered"
                             type="text"
                             @input="setSlug"
+                            required
                         />
                     </template>
                 </DefaultField>
@@ -291,7 +292,7 @@
                     ref="runButton"
                     :disabled="isMenuItemUpdating"
                     :loading="isMenuItemUpdating"
-                    class="ml-3"
+                    class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 relative disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&amp;:not(:disabled)]:bg-primary-400 hover:[&amp;:not(:disabled)]:border-primary-400 text-white dark:text-gray-900"
                     type="submit"
                     @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
                 >
