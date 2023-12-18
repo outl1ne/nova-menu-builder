@@ -51,7 +51,7 @@ return [
         \Workup\Menus\MenuItemTypes\TextType::class,
         \Workup\Menus\MenuItemTypes\StaticURLType::class,
         \Workup\Menus\MenuItemTypes\RouteType::class,
-        \Workup\Menus\MenuItemTypes\MenuItemEntityType::class,
+        \Workup\Menus\MenuItemTypes\EntityType::class,
     ],
 
     /*

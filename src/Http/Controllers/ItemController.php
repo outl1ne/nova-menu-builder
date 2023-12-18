@@ -23,6 +23,7 @@ class ItemController extends Controller
         $data = $request->getValues();
 
         $data['order'] = $menuItemModel::max('id') + 1;
+        $data['item_type'] = $data['class'];
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {
@@ -60,6 +61,8 @@ class ItemController extends Controller
             return response()->json(['error' => 'menu_item_not_found'], 400);
         }
         $data = $request->getValues();
+
+        $data['item_type'] = $data['class'];
 
         $menuItem->data = [];
         foreach ($data as $key => $value) {
