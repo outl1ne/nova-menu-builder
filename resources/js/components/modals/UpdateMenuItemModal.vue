@@ -38,6 +38,7 @@
                             :placeholder="__('novaMenuBuilder.menuItemLabel')"
                             class="w-full form-control form-input form-input-bordered"
                             type="text"
+                            @input="setSlug"
                         />
                     </template>
                 </DefaultField>
