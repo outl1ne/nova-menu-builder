@@ -31,7 +31,7 @@
   "novaMenuBuilder.menuItemActive": "Aktif",
   "novaMenuBuilder.menuItemDisabled": "Devre Dışı",
   "novaMenuBuilder.nestableLabel": "Hiyerarşik",
-  "novaMenuBuilder.toastDeleteSucces": "Menü maddesi silindi",
+  "novaMenuBuilder.toastDeleteSuccess": "Menü maddesi silindi",
   "novaMenuBuilder.toastCreateSuccess": "Menü maddesi eklendi",
   "novaMenuBuilder.toastUpdateSuccess": "Menü maddesi güncellendi",
   "novaMenuBuilder.toastReorderSuccess": "Menü tekrar sıralandı",

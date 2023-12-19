@@ -3,13 +3,13 @@
         <ModalHeader class="flex flex-wrap justify-between">
             {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
-<!--            <CheckboxWithLabel-->
-<!--                :checked="newItem.nestable"-->
-<!--                class="ml-auto mr-4"-->
-<!--                @input="newItem.nestable = $event.target.checked"-->
-<!--            >-->
-<!--                <span class="ml-1">{{ __('novaMenuBuilder.nestableLabel') }}</span>-->
-<!--            </CheckboxWithLabel>-->
+            <!--            <CheckboxWithLabel-->
+            <!--                :checked="newItem.nestable"-->
+            <!--                class="ml-auto mr-4"-->
+            <!--                @input="newItem.nestable = $event.target.checked"-->
+            <!--            >-->
+            <!--                <span class="ml-1">{{ __('novaMenuBuilder.nestableLabel') }}</span>-->
+            <!--            </CheckboxWithLabel>-->
 
             <CheckboxWithLabel :checked="newItem.is_active" @input="newItem.is_active = $event.target.checked">
                 <span class="ml-1">{{
@@ -19,7 +19,8 @@
         </ModalHeader>
 
         <div class="pt-2 pb-6">
-            <form autocomplete="off" @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')" enctype="multipart/form-data">
+            <form autocomplete="off" enctype="multipart/form-data"
+                  @submit.prevent="$emit(update ? 'updateItem' : 'confirmItemCreate')">
                 <!-- Label -->
                 <DefaultField
                     :errors="wrappedErrors"
@@ -37,9 +38,9 @@
                             :class="{ 'border-red-400': getError('label') }"
                             :placeholder="__('novaMenuBuilder.menuItemLabel')"
                             class="w-full form-control form-input form-input-bordered"
+                            required
                             type="text"
                             @input="setSlug"
-                            required
                         />
                     </template>
                 </DefaultField>
@@ -91,6 +92,7 @@
 
                 <!-- Path -->
                 <DefaultField
+                    v-if="showSlug()"
                     :errors="wrappedErrors"
                     :field="{
                         ...defaultFieldProps,
@@ -98,7 +100,6 @@
                         name: __('novaMenuBuilder.menuItemPath'),
                     }"
                     :fullWidthContent="true"
-                    v-if="showSlug()"
                 >
                     <template #field>
                         <input
@@ -154,17 +155,17 @@
                             :options="options"
                             :placeholder="__('novaMenuBuilder.chooseOption')"
                             :value="selectedOption"
-                            @input="handleChange"
-                            @close="handleClose"
-                            @remove="handleRemove"
-                            @open="handleOpen"
-                            label="label"
-                            track-by="id"
-                            selectLabel=""
-                            selectGroupLabel=""
-                            selectedLabel=""
-                            deselectLabel=""
                             deselectGroupLabel=""
+                            deselectLabel=""
+                            label="label"
+                            selectGroupLabel=""
+                            selectLabel=""
+                            selectedLabel=""
+                            track-by="id"
+                            @close="handleClose"
+                            @input="handleChange"
+                            @open="handleOpen"
+                            @remove="handleRemove"
                         >
                             <template #singleLabel>
                                 <span>{{ selectedOption ? selectedOption.label : '' }}</span>
@@ -196,17 +197,17 @@
                             :options="entities"
                             :placeholder="__('novaMenuBuilder.chooseOption')"
                             :value="selectedEntity"
-                            @input="selectEntity"
-                            label="label"
-                            track-by="id"
-                            selectLabel=""
-                            selectGroupLabel=""
-                            selectedLabel=""
-                            deselectLabel=""
                             deselectGroupLabel=""
+                            deselectLabel=""
+                            label="label"
+                            selectGroupLabel=""
+                            selectLabel=""
+                            selectedLabel=""
+                            track-by="id"
+                            @input="selectEntity"
                         />
 
-                        <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                        <help-text v-if="getError('value')" class="error-text mt-2 text-danger">
                             {{ getError('value') }}
                         </help-text>
                     </template>
@@ -225,18 +226,18 @@
                             :options="entityOptions"
                             :placeholder="__('novaMenuBuilder.chooseEntityOption')"
                             :value="entityOptions.find(entityOption => entityOption.id === this.newItem.entity_item_id)"
-                            @input="value => this.$emit('onLinkEntityItemIdUpdate', value.id)"
-                            label="label"
-                            track-by="id"
-                            selectLabel=""
-                            selectGroupLabel=""
-                            selectedLabel=""
-                            deselectLabel=""
                             deselectGroupLabel=""
+                            deselectLabel=""
+                            label="label"
+                            selectGroupLabel=""
+                            selectLabel=""
+                            selectedLabel=""
+                            track-by="id"
+                            @input="value => this.$emit('onLinkEntityItemIdUpdate', value.id)"
                             @search-change="asyncFindEntityOption"
                         />
 
-                        <help-text class="error-text mt-2 text-danger" v-if="getError('value')">
+                        <help-text v-if="getError('value')" class="error-text mt-2 text-danger">
                             {{ getError('value') }}
                         </help-text>
                     </template>
@@ -254,12 +255,15 @@
                 >
                     <template #field>
                         <span class="form-file">
-                            <input id="media" multiple="multiple" type="file" class="form-file-input" @change="selectMedia">
-                            <label for="media" class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 bg-primary-500 hover:bg-primary-400">
+                            <input id="media" class="form-file-input" multiple="multiple" type="file"
+                                   @change="selectMedia">
+                            <label
+                                class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 bg-primary-500 hover:bg-primary-400"
+                                for="media">
                                 <span>{{ __('novaMenuBuilder.addNewMedia') }}</span>
                             </label>
                         </span>
-                        <img v-if="previewUrl" :src="previewUrl" alt="" />
+                        <img v-if="previewUrl" :src="previewUrl" alt=""/>
                         <button v-if="previewUrl" @click="removeMedia">{{ __('novaMenuBuilder.removeMedia') }}</button>
                     </template>
                 </DefaultField>
@@ -294,7 +298,7 @@
                     ref="runButton"
                     :disabled="isMenuItemUpdating"
                     :loading="isMenuItemUpdating"
-                    class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 relative disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&amp;:not(:disabled)]:bg-primary-400 hover:[&amp;:not(:disabled)]:border-primary-400 text-white dark:text-gray-900"
+                    class="ml-3 border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 relative disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&amp;:not(:disabled)]:bg-primary-400 hover:[&amp;:not(:disabled)]:border-primary-400 text-white dark:text-gray-900"
                     type="submit"
                     @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
                 >
@@ -337,7 +341,7 @@ export default {
         },
     }),
 
-    components: { Multiselect },
+    components: {Multiselect},
 
     watch: {
         'newItem.name'(newName) {

@@ -31,7 +31,7 @@
     "novaMenuBuilder.menuItemActive": "Kích hoạt",
     "novaMenuBuilder.menuItemDisabled": "Vô hiệu hóa",
     "novaMenuBuilder.nestableLabel": "Có thể lồng vào nhau",
-    "novaMenuBuilder.toastDeleteSucces": "Mục menu đã bị xóa",
+    "novaMenuBuilder.toastDeleteSuccess": "Mục menu đã bị xóa",
     "novaMenuBuilder.toastCreateSuccess": "Đã tạo mục menu",
     "novaMenuBuilder.toastUpdateSuccess": "Đã cập nhật mục menu",
     "novaMenuBuilder.toastReorderSuccess": "Đã sắp xếp lại menu",

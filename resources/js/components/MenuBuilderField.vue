@@ -171,7 +171,7 @@ export default {
             try {
                 await api.destroy(this.itemToDelete.id);
                 await this.refreshData();
-                Nova.success(this.__('novaMenuBuilder.toastDeleteSucces'));
+                Nova.success(this.__('novaMenuBuilder.toastDeleteSuccess'));
                 this.itemToDelete = null;
                 this.showDeleteModal = false;
             } catch (e) {

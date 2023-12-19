@@ -31,7 +31,7 @@
   "novaMenuBuilder.menuItemActive": "Activé",
   "novaMenuBuilder.menuItemDisabled": "Désactivé",
   "novaMenuBuilder.nestableLabel": "Emboîtable",
-  "novaMenuBuilder.toastDeleteSucces": "Élément de menu supprimé",
+  "novaMenuBuilder.toastDeleteSuccess": "Élément de menu supprimé",
   "novaMenuBuilder.toastCreateSuccess": "Entrée de menu créée",
   "novaMenuBuilder.toastUpdateSuccess": "Entrée de menu mise à jour",
   "novaMenuBuilder.toastReorderSuccess": "Menu réordonné",

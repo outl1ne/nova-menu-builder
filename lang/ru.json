@@ -31,7 +31,7 @@
   "novaMenuBuilder.menuItemActive": "Вкл",
   "novaMenuBuilder.menuItemDisabled": "Выкл",
   "novaMenuBuilder.nestableLabel": "Вкладываемый",
-  "novaMenuBuilder.toastDeleteSucces": "Пункт меню удален",
+  "novaMenuBuilder.toastDeleteSuccess": "Пункт меню удален",
   "novaMenuBuilder.toastCreateSuccess": "Пункт меню создан",
   "novaMenuBuilder.toastUpdateSuccess": "Пункт меню обновлен",
   "novaMenuBuilder.toastReorderSuccess": "Меню пересортировано",
