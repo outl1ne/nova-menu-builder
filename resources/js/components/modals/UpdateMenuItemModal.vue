@@ -260,7 +260,7 @@
                             </label>
                         </span>
                         <img v-if="previewUrl" :src="previewUrl" alt="" />
-                        <button v-if="previewUrl" @click="removeMedia">Elimina</button>
+                        <button v-if="previewUrl" @click="removeMedia">{{ __('novaMenuBuilder.removeMedia') }}</button>
                     </template>
                 </DefaultField>
 
@@ -473,6 +473,10 @@ export default {
                 if (field.component === 'trix-field') {
                     this.newItem[field.attribute] = values[0];
                     return;
+                }
+
+                if (this.newItem.media) {
+                    formData.append('media', this.newItem.media);
                 }
 
                 // Is array

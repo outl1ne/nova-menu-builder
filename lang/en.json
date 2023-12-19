@@ -50,5 +50,6 @@
     "novaMenuBuilder.copyMenuItemsButtonTitle": "Copy items",
     "novaMenuBuilder.locale": "Locale",
     "novaMenuBuilder.image": "Image",
-    "novaMenuBuilder.addNewMedia": "Add New Media"
+    "novaMenuBuilder.addNewMedia": "Add New Media",
+    "novaMenuBuilder.removeMedia": "Remove Image"
 }
