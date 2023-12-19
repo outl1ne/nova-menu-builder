@@ -56,7 +56,7 @@ class MenuItemFormRequest extends FormRequest
             'class',
             'url',
             'target',
-            'is_active',
+            'is_active'
         ];
 
         foreach ($this->all() as $key => $value) {

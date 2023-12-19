@@ -259,6 +259,8 @@
                                 <span>{{ __('novaMenuBuilder.addNewMedia') }}</span>
                             </label>
                         </span>
+                        <img v-if="previewUrl" :src="previewUrl" alt="" />
+                        <button v-if="previewUrl" @click="removeMedia">Elimina</button>
                     </template>
                 </DefaultField>
 
@@ -323,6 +325,7 @@ export default {
     ],
 
     data: () => ({
+        previewUrl: null,
         toggleLabels: false,
         entityOptions: [],
         entityPath: '',
@@ -438,6 +441,7 @@ export default {
     },
 
     methods: {
+
         handleChange(value) {
             this.$emit('onLinkModelUpdate', value ? value.id : void 0);
             this.$nextTick(this.repositionDropdown);
@@ -526,6 +530,12 @@ export default {
                 return;
             }
             this.newItem.media = files[0];
+            this.previewUrl = URL.createObjectURL(files[0]);
+        },
+
+        removeMedia() {
+            this.newItem.media = null;
+            this.previewUrl = null;
         },
 
         setSlug() {
