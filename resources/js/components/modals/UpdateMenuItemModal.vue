@@ -27,22 +27,22 @@
                     :field="{
                         ...defaultFieldProps,
                         validationKey: 'label',
-                        name: __('novaMenuBuilder.menuItemLabel') + ' *',
-                    }"
-                    :fullWidthContent="true"
+                        name: __('novaMenuBuilder.menuItemLabel'),
+                        required: true,
+                }"
+                :fullWidthContent="true"
                 >
-                    <template #field>
-                        <input
-                            id="label"
-                            v-model="newItem.label"
-                            :class="{ 'border-red-400': getError('label') }"
-                            :placeholder="__('novaMenuBuilder.menuItemLabel')"
-                            class="w-full form-control form-input form-input-bordered"
-                            required
-                            type="text"
-                            @input="setSlug"
-                        />
-                    </template>
+                <template #field>
+                    <input
+                        id="label"
+                        v-model="newItem.label"
+                        :class="{ 'border-red-400': getError('label') }"
+                        :placeholder="__('novaMenuBuilder.menuItemLabel')"
+                        class="w-full form-control form-input form-input-bordered"
+                        type="text"
+                        @input="setSlug"
+                    />
+                </template>
                 </DefaultField>
 
                 <!-- Slug -->
@@ -52,6 +52,7 @@
                         ...defaultFieldProps,
                         validationKey: 'slug',
                         name: __('novaMenuBuilder.menuItemSlug'),
+                        required: true,
                     }"
                     :fullWidthContent="true"
                 >
@@ -74,6 +75,7 @@
                         ...defaultFieldProps,
                         validationKey: 'class',
                         name: __('novaMenuBuilder.menuItemType'),
+                        required: true,
                     }"
                     :fullWidthContent="true"
                 >
@@ -269,7 +271,9 @@
                             </label>
                         </span>
                         <img v-if="previewUrl || newItem.media_url" :src="previewUrl || newItem.media_url" alt=""/>
-                        <button type="button" v-if="previewUrl || newItem.media_url" @click="removeMedia">{{ __('novaMenuBuilder.removeMedia') }}</button>
+                        <button v-if="previewUrl || newItem.media_url" type="button" @click="removeMedia">
+                            {{ __('novaMenuBuilder.removeMedia') }}
+                        </button>
                     </template>
                 </DefaultField>
 
@@ -346,7 +350,9 @@ export default {
         },
     }),
 
-    components: {Multiselect},
+    components: {
+            Multiselect
+        },
 
     watch: {
         'newItem.name'(newName) {
