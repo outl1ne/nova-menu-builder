@@ -100,6 +100,7 @@
                         ...defaultFieldProps,
                         validationKey: 'path',
                         name: __('novaMenuBuilder.menuItemPath'),
+                        required: true,
                     }"
                     :fullWidthContent="true"
                 >

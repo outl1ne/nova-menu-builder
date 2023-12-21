@@ -1,5 +1,5 @@
 <template>
-    <div id="menu-builder-header">
+    <div id="menu-builder-header" class="relative py-3 px-3 w-full">
         <div
             class="locale-selection px-4 py-2 mr-4 bg-white dark:bg-gray-800 rounded-lg"
             v-if="Object.keys(locales).length > 1"
@@ -67,15 +67,16 @@ export default {
 
 <style lang="scss">
 #menu-builder-header {
-    position: absolute;
-    right: 0;
-    top: -46px;
     display: flex;
 
     .locale-selection {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: var(--spacing-responsive-md);
+        margin-right: var(--spacing-responsive-md);
+        background-color: var(--color-background-elevation-1);
+        border-radius: var(--border-radius-md);
     }
 }
 </style>
