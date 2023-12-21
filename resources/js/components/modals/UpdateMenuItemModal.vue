@@ -255,16 +255,21 @@
                 >
                     <template #field>
                         <span class="form-file">
-                            <input id="media" class="form-file-input" multiple="multiple" type="file"
-                                   @change="selectMedia">
+                            <input
+                                id="media"
+                                :class="{ 'border-red-400': getError('media') }"
+                                class="form-file-input"
+                                type="file"
+                                @change="selectMedia"
+                            />
                             <label
                                 class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 bg-primary-500 hover:bg-primary-400"
                                 for="media">
                                 <span>{{ __('novaMenuBuilder.addNewMedia') }}</span>
                             </label>
                         </span>
-                        <img v-if="previewUrl" :src="previewUrl" alt=""/>
-                        <button v-if="previewUrl" @click="removeMedia">{{ __('novaMenuBuilder.removeMedia') }}</button>
+                        <img v-if="previewUrl || newItem.media_url" :src="previewUrl || newItem.media_url" alt=""/>
+                        <button type="button" v-if="previewUrl || newItem.media_url" @click="removeMedia">{{ __('novaMenuBuilder.removeMedia') }}</button>
                     </template>
                 </DefaultField>
 
@@ -300,7 +305,7 @@
                     :loading="isMenuItemUpdating"
                     class="ml-3 border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 relative disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&amp;:not(:disabled)]:bg-primary-400 hover:[&amp;:not(:disabled)]:border-primary-400 text-white dark:text-gray-900"
                     type="submit"
-                    @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
+                    @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate', $event)"
                 >
                     {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
                 </LoadingButton>
@@ -467,8 +472,12 @@ export default {
             this.$nextTick(this.repositionDropdown);
         },
 
-        storeWithData(eventType) {
+        storeWithData(eventType, event) {
+
+            event.preventDefault();
+
             this.fields.forEach(field => {
+
                 const formData = new FormData();
                 field.fill(formData);
 
@@ -477,10 +486,6 @@ export default {
                 if (field.component === 'trix-field') {
                     this.newItem[field.attribute] = values[0];
                     return;
-                }
-
-                if (this.newItem.media) {
-                    formData.append('media', this.newItem.media);
                 }
 
                 // Is array
@@ -544,6 +549,7 @@ export default {
         removeMedia() {
             this.newItem.media = null;
             this.previewUrl = null;
+            this.newItem.media_url = null;
         },
 
         setSlug() {

@@ -3,6 +3,7 @@
 namespace Workup\MenuBuilder\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Workup\Core\Http\Resources\MediaResource;
 use Workup\MenuBuilder\Settings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -32,7 +33,9 @@ class ItemController extends Controller
         $model->save();
 
         if ($request->hasFile('media')) {
-            $model->addMediaFromRequest('media')->toMediaCollection('menu-item-collection');
+            $model->addMediaFromRequest('media')->toMediaCollection(
+                $model->getDefaultMediaCollection()
+            );
         }
 
         return response()->json(['success' => true], 200);
@@ -45,9 +48,12 @@ class ItemController extends Controller
     {
         $menuItem = Settings::getMenuItemClass()::find($menuItemId);
 
-        return isset($menuItem)
-            ? response()->json($menuItem, 200)
-            : response()->json(['error' => 'item_not_found'], 400);
+        if (isset($menuItem)) {
+            $menuItem->media_url = $menuItem->getFirstMediaUrl($menuItem->getDefaultMediaCollection());
+            return response()->json($menuItem, 200);
+        } else {
+            return response()->json(['error' => 'item_not_found'], 400);
+        }
     }
 
     /**
@@ -72,7 +78,11 @@ class ItemController extends Controller
         $menuItem->save();
 
         if ($request->hasFile('media')) {
-            $menuItem->addMediaFromRequest('media')->toMediaCollection('menu-item-collection');
+            $menuItem->addMediaFromRequest('media')->toMediaCollection(
+                $menuItem->getDefaultMediaCollection()
+            );
+        } else {
+            $menuItem->clearMediaCollection($menuItem->getDefaultMediaCollection());
         }
 
         return response()->json(['success' => true], 200);
@@ -84,6 +94,9 @@ class ItemController extends Controller
     public function destroy($menuItemId): JsonResponse
     {
         $menuItem = Settings::getMenuItemClass()::findOrFail($menuItemId);
+
+        $menuItem->clearMediaCollection($menuItem->getDefaultMediaCollection());
+
         $menuItem->children()->delete();
         $menuItem->delete();
         return response()->json(['success' => true], 200);
