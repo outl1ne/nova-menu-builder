@@ -54,6 +54,8 @@
     "novaMenuBuilder.removeMedia": "Rimuovi immagine",
     "novaMenuBuilder.imageMobile": "Immagine mobile",
     "novaMenuBuilder.addNewMediaMobile": "Aggiungi immagine mobile",
-    "novaMenuBuilder.removeMediaMobile": "Rimuovi immagine mobile"
+    "novaMenuBuilder.removeMediaMobile": "Rimuovi immagine mobile",
+    "novaMenuBuilder.chooseChildItem": "Scegliere un elemento figlio",
+    "novaMenuBuilder.childItem": "Elemento figlio di"
 }
 

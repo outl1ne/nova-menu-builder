@@ -30,19 +30,19 @@
                         name: __('novaMenuBuilder.menuItemLabel'),
                         required: true,
                 }"
-                :fullWidthContent="true"
+                    :fullWidthContent="true"
                 >
-                <template #field>
-                    <input
-                        id="label"
-                        v-model="newItem.label"
-                        :class="{ 'border-red-400': getError('label') }"
-                        :placeholder="__('novaMenuBuilder.menuItemLabel')"
-                        class="w-full form-control form-input form-input-bordered"
-                        type="text"
-                        @input="setSlug"
-                    />
-                </template>
+                    <template #field>
+                        <input
+                            id="label"
+                            v-model="newItem.label"
+                            :class="{ 'border-red-400': getError('label') }"
+                            :placeholder="__('novaMenuBuilder.menuItemLabel')"
+                            class="w-full form-control form-input form-input-bordered"
+                            type="text"
+                            @input="setSlug"
+                        />
+                    </template>
                 </DefaultField>
 
                 <!-- Slug -->
@@ -64,6 +64,20 @@
                             :placeholder="__('novaMenuBuilder.menuItemSlug')"
                             class="w-full form-control form-input form-input-bordered"
                             type="text"
+                        />
+                    </template>
+                </DefaultField>
+
+                <!-- Child Item Select -->
+                <DefaultField
+                    :errors="wrappedErrors"
+                    :field="{...defaultFieldProps, validationKey:'child_items', name: __('novaMenuBuilder.childItem'), }"
+                    :fullWidthContent="true"
+                >
+                    <template #field>
+                        <SelectControl
+                            v-model:selected="newItem.child_items"
+                            :options="buildTreeOptions(newItem)"
                         />
                     </template>
                 </DefaultField>
@@ -115,7 +129,6 @@
                         />
                     </template>
                 </DefaultField>
-
 
                 <!-- Static URL -->
                 <DefaultField
@@ -352,8 +365,8 @@ export default {
     }),
 
     components: {
-            Multiselect
-        },
+        Multiselect
+    },
 
     watch: {
         'newItem.name'(newName) {
@@ -446,7 +459,6 @@ export default {
             if (this.linkType.type === 'route-select') {
                 return this.options.find(option => option.id === this.newItem.url);
             }
-
 
             return void 0;
         },
@@ -542,6 +554,26 @@ export default {
 
         emitFieldValueChange(attribute, value) {
             Nova.$emit(`${attribute}-change`, value);
+        },
+
+        buildTreeOptions(item, level = 0) {
+            let options = [];
+            if (level === 0 && item.parent) {
+                options.push({value: item.parent.id, label: item.parent.name});
+                level = 1;
+            }
+            if (item.child_items) {
+                item.child_items.forEach(childItem => {
+                    if (!this.isDuplicate(childItem, options)) {
+                        options.push({value: childItem.id, label: '-'.repeat(level * 2) + ' ' + childItem.label});
+                        options = options.concat(this.buildTreeOptions(childItem, level + 1));
+                    }
+                });
+            }
+            return options;
+        },
+        isDuplicate(item, options) {
+            return options.some(option => option.value === item.id);
         },
 
         selectMedia(e) {

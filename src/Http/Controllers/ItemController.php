@@ -2,13 +2,12 @@
 
 namespace Workup\MenuBuilder\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Workup\Core\Http\Resources\MediaResource;
-use Workup\MenuBuilder\Settings;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Workup\MenuBuilder\Http\Traits\MenuHelpers;
 use Workup\MenuBuilder\Http\Requests\MenuItemFormRequest;
+use Workup\MenuBuilder\Http\Traits\MenuHelpers;
+use Workup\MenuBuilder\Settings;
 
 class ItemController extends Controller
 {
@@ -28,7 +27,7 @@ class ItemController extends Controller
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {
-            $model->{$key} = $this->cleanUpStringValue($value);;
+            $model->{$key} = $this->cleanUpStringValue($value);
         }
         $model->save();
 
@@ -49,11 +48,40 @@ class ItemController extends Controller
         $menuItem = Settings::getMenuItemClass()::find($menuItemId);
 
         if (isset($menuItem)) {
+
+            $menuItem->parent = Settings::getMenuClass()::find($menuItem->menu_id);
+            $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
+                    ->whereNull('parent_id')
+                    ->orderBy('order')
+                    ->orderBy('label')
+                    ->get();
+            foreach ($childItems as $childItem) {
+                $childItem->child_items = $this->getChildItems($childItem);
+            }
+            $menuItem->child_items = $childItems;
+
             $menuItem->media_url = $menuItem->getFirstMediaUrl($menuItem->getDefaultMediaCollection());
+
             return response()->json($menuItem, 200);
         } else {
             return response()->json(['error' => 'item_not_found'], 400);
         }
+    }
+
+    private function getChildItems($menuItem)
+    {
+        $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
+                ->where('parent_id', $menuItem->id)
+                ->orderBy('order')
+                ->orderBy('parent_id')
+                ->orderBy('label')
+                ->get();
+
+        foreach ($childItems as $childItem) {
+            $childItem->child_items = $this->getChildItems($childItem);
+        }
+
+        return $childItems;
     }
 
     /**
@@ -72,7 +100,7 @@ class ItemController extends Controller
 
         $menuItem->data = [];
         foreach ($data as $key => $value) {
-            $menuItem->{$key} = $this->cleanUpStringValue($value);;
+            $menuItem->{$key} = $this->cleanUpStringValue($value);
         }
 
         $menuItem->save();
@@ -99,6 +127,7 @@ class ItemController extends Controller
 
         $menuItem->children()->delete();
         $menuItem->delete();
+
         return response()->json(['success' => true], 200);
     }
 
@@ -150,8 +179,6 @@ class ItemController extends Controller
     }
 
     /**
-     * @param  mixed  $value
-     *
      * @return bool|mixed|null
      */
     protected function cleanUpStringValue(mixed $value): mixed
@@ -162,6 +189,7 @@ class ItemController extends Controller
             'false' => false,
             default => $value,
         };
+
         return $value;
     }
 }
