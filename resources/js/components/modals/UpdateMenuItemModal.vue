@@ -76,7 +76,7 @@
                 >
                     <template #field>
                         <SelectControl
-                            v-model:selected="newItem.child_items"
+                            v-model:selected="newItem.parent_id"
                             :options="buildTreeOptions(newItem)"
                         />
                     </template>

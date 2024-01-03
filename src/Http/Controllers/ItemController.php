@@ -56,6 +56,7 @@ class ItemController extends Controller
                     ->orderBy('label')
                     ->get();
             foreach ($childItems as $childItem) {
+                $menuItem->parent_id = $menuItem->parent_id ?? $menuItem->menu_id;
                 $childItem->child_items = $this->getChildItems($childItem);
             }
             $menuItem->child_items = $childItems;
