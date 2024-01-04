@@ -57,7 +57,7 @@ class ItemController extends Controller
                     ->get();
             foreach ($childItems as $childItem) {
                 $menuItem->parent_id = $menuItem->parent_id ?? $menuItem->menu_id;
-                $childItem->child_items = $this->getChildItems($childItem);
+                $childItem->child_items = $this->recursivelyGetChildItems($childItem);
             }
             $menuItem->child_items = $childItems;
 
@@ -67,22 +67,6 @@ class ItemController extends Controller
         } else {
             return response()->json(['error' => 'item_not_found'], 400);
         }
-    }
-
-    private function getChildItems($menuItem)
-    {
-        $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
-                ->where('parent_id', $menuItem->id)
-                ->orderBy('order')
-                ->orderBy('parent_id')
-                ->orderBy('label')
-                ->get();
-
-        foreach ($childItems as $childItem) {
-            $childItem->child_items = $this->getChildItems($childItem);
-        }
-
-        return $childItems;
     }
 
     /**

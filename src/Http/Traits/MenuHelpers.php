@@ -68,4 +68,20 @@ trait MenuHelpers
             $this->recursivelyDuplicate($child, $newMenuItem->id);
         }
     }
+
+    protected function recursivelyGetChildItems($menuItem)
+    {
+        $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
+            ->where('parent_id', $menuItem->id)
+            ->orderBy('order')
+            ->orderBy('parent_id')
+            ->orderBy('label')
+            ->get();
+
+        foreach ($childItems as $childItem) {
+            $childItem->child_items = $this->recursivelyGetChildItems($childItem);
+        }
+
+        return $childItems;
+    }
 }
