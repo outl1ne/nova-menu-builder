@@ -78,4 +78,9 @@ export default {
     align-items: center;
   }
 }
+
+div.relative.overflow-hidden:has(> #menu-builder-field) {
+  // fix for laravel-nova applying overflow-hidden to card elements.
+  overflow: visible;
+}
 </style>
