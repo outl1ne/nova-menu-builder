@@ -49,6 +49,7 @@ class ItemController extends Controller
 
         if (isset($menuItem)) {
 
+            // TODO: it work only for update modal, so we should create vue component for this
             $menuItem->parent = Settings::getMenuClass()::find($menuItem->menu_id);
             $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
                     ->whereNull('parent_id')
@@ -60,6 +61,7 @@ class ItemController extends Controller
                 $childItem->child_items = $this->recursivelyGetChildItems($childItem);
             }
             $menuItem->child_items = $childItems;
+            // END
 
             $menuItem->media_url = $menuItem->getFirstMediaUrl($menuItem->getDefaultMediaCollection());
 
@@ -82,6 +84,10 @@ class ItemController extends Controller
         $data = $request->getValues();
 
         $data['item_type'] = $data['class'];
+
+        if($data['menu_id'] == $data['parent_id']) {
+            $data['parent_id'] = null;
+        }
 
         $menuItem->data = [];
         foreach ($data as $key => $value) {

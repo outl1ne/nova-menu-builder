@@ -70,14 +70,16 @@
 
                 <!-- Child Item Select -->
                 <DefaultField
+                    v-if="update"
                     :errors="wrappedErrors"
-                    :field="{...defaultFieldProps, validationKey:'child_items', name: __('novaMenuBuilder.childItem'), }"
+                    :field="{...defaultFieldProps, validationKey:'parent_id', name: __('novaMenuBuilder.childItem'), }"
                     :fullWidthContent="true"
                 >
                     <template #field>
                         <SelectControl
                             v-model:selected="newItem.parent_id"
                             :options="buildTreeOptions(newItem)"
+                            @change="selectParentId"
                         />
                     </template>
                 </DefaultField>
@@ -572,8 +574,13 @@ export default {
             }
             return options;
         },
+
         isDuplicate(item, options) {
             return options.some(option => option.value === item.id);
+        },
+
+        selectParentId(newVal) {
+            this.newItem.parent_id = newVal;
         },
 
         selectMedia(e) {
