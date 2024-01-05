@@ -53,6 +53,7 @@ class ItemController extends Controller
             $menuItem->parent = Settings::getMenuClass()::find($menuItem->menu_id);
             $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
                     ->whereNull('parent_id')
+                    ->where('locale', $menuItem->locale)
                     ->orderBy('order')
                     ->orderBy('label')
                     ->get();
@@ -116,6 +117,7 @@ class ItemController extends Controller
 
         $menuItem->clearMediaCollection($menuItem->getDefaultMediaCollection());
 
+        // TODO children should be deleted
         $menuItem->children()->delete();
         $menuItem->delete();
 
