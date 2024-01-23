@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [7.1.3.002] - 2024-01-23
+
+### Fixed
+
+- Fixed Add menu item logic
+
 ## [7.1.3.001] - 2023-10-05
 
 ### Changed
