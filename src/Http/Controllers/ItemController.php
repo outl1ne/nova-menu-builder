@@ -2,12 +2,12 @@
 
 namespace Workup\MenuBuilder\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Workup\MenuBuilder\Settings;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Workup\MenuBuilder\Http\Traits\MenuHelpers;
 use Workup\MenuBuilder\Http\Requests\MenuItemFormRequest;
+use Workup\MenuBuilder\Http\Traits\MenuHelpers;
+use Workup\MenuBuilder\Settings;
 
 class ItemController extends Controller
 {
@@ -23,15 +23,18 @@ class ItemController extends Controller
         $data = $request->getValues();
 
         $data['order'] = $menuItemModel::max('id') + 1;
+        $data['item_type'] = $data['class'];
 
         $model = new $menuItemModel;
         foreach ($data as $key => $value) {
-            $model->{$key} = $this->cleanUpStringValue($value);;
+            $model->{$key} = $this->cleanUpStringValue($value);
         }
         $model->save();
 
         if ($request->hasFile('media')) {
-            $model->addMediaFromRequest('media')->toMediaCollection('menu-item-collection');
+            $model->addMediaFromRequest('media')->toMediaCollection(
+                $model->getDefaultMediaCollection()
+            );
         }
 
         return response()->json(['success' => true], 200);
@@ -44,9 +47,29 @@ class ItemController extends Controller
     {
         $menuItem = Settings::getMenuItemClass()::find($menuItemId);
 
-        return isset($menuItem)
-            ? response()->json($menuItem, 200)
-            : response()->json(['error' => 'item_not_found'], 400);
+        if (isset($menuItem)) {
+
+            // TODO: it work only for update modal, so we should create vue component for this
+            $menuItem->parent = Settings::getMenuClass()::find($menuItem->menu_id);
+            $childItems = Settings::getMenuItemClass()::where('menu_id', $menuItem->menu_id)
+                    ->whereNull('parent_id')
+                    ->where('locale', $menuItem->locale)
+                    ->orderBy('order')
+                    ->orderBy('label')
+                    ->get();
+            foreach ($childItems as $childItem) {
+                $menuItem->parent_id = $menuItem->parent_id ?? $menuItem->menu_id;
+                $childItem->child_items = $this->recursivelyGetChildItems($childItem);
+            }
+            $menuItem->child_items = $childItems;
+            // END
+
+            $menuItem->media_url = $menuItem->getFirstMediaUrl($menuItem->getDefaultMediaCollection());
+
+            return response()->json($menuItem, 200);
+        } else {
+            return response()->json(['error' => 'item_not_found'], 400);
+        }
     }
 
     /**
@@ -61,15 +84,25 @@ class ItemController extends Controller
         }
         $data = $request->getValues();
 
+        $data['item_type'] = $data['class'];
+
+        if($data['menu_id'] == $data['parent_id']) {
+            $data['parent_id'] = null;
+        }
+
         $menuItem->data = [];
         foreach ($data as $key => $value) {
-            $menuItem->{$key} = $this->cleanUpStringValue($value);;
+            $menuItem->{$key} = $this->cleanUpStringValue($value);
         }
 
         $menuItem->save();
 
         if ($request->hasFile('media')) {
-            $menuItem->addMediaFromRequest('media')->toMediaCollection('menu-item-collection');
+            $menuItem->addMediaFromRequest('media')->toMediaCollection(
+                $menuItem->getDefaultMediaCollection()
+            );
+        } else {
+            $menuItem->clearMediaCollection($menuItem->getDefaultMediaCollection());
         }
 
         return response()->json(['success' => true], 200);
@@ -81,8 +114,13 @@ class ItemController extends Controller
     public function destroy($menuItemId): JsonResponse
     {
         $menuItem = Settings::getMenuItemClass()::findOrFail($menuItemId);
+
+        $menuItem->clearMediaCollection($menuItem->getDefaultMediaCollection());
+
+        // TODO children should be deleted
         $menuItem->children()->delete();
         $menuItem->delete();
+
         return response()->json(['success' => true], 200);
     }
 
@@ -134,8 +172,6 @@ class ItemController extends Controller
     }
 
     /**
-     * @param  mixed  $value
-     *
      * @return bool|mixed|null
      */
     protected function cleanUpStringValue(mixed $value): mixed
@@ -146,6 +182,7 @@ class ItemController extends Controller
             'false' => false,
             default => $value,
         };
+
         return $value;
     }
 }

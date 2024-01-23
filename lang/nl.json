@@ -31,7 +31,7 @@
   "novaMenuBuilder.menuItemActive": "Actief",
   "novaMenuBuilder.nestableLabel": "Nestbaar",
   "novaMenuBuilder.menuItemDisabled": "Uitgeschakeld",
-  "novaMenuBuilder.toastDeleteSucces": "Menu item verwijderd",
+  "novaMenuBuilder.toastDeleteSuccess": "Menu item verwijderd",
   "novaMenuBuilder.toastCreateSuccess": "Menu item gemaakt",
   "novaMenuBuilder.toastUpdateSuccess": "Menu item gewijzigd",
   "novaMenuBuilder.toastReorderSuccess": "Menu herordend",

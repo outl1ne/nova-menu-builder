@@ -31,7 +31,7 @@
   "novaMenuBuilder.menuItemActive": "Умімк",
   "novaMenuBuilder.menuItemDisabled": "Вимк",
   "novaMenuBuilder.nestableLabel": "Вкладається",
-  "novaMenuBuilder.toastDeleteSucces": "Пункт меню видалено",
+  "novaMenuBuilder.toastDeleteSuccess": "Пункт меню видалено",
   "novaMenuBuilder.toastCreateSuccess": "Пункт меню створено",
   "novaMenuBuilder.toastUpdateSuccess": "Пункт меню оновлено",
   "novaMenuBuilder.toastReorderSuccess": "Меню пересортовано",

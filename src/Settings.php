@@ -132,7 +132,7 @@ class Settings
 
     public static function getEntityModel()
     {
-        return config('nova-menu-builder.item_entity_model', \Workup\Larastub\Models\Entity::class);
+        return config('nova-menu-builder.item_entity_model', \Workup\Core\Models\Entity::class);
     }
 
     public static function getRouteModel()

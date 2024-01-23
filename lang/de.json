@@ -31,7 +31,7 @@
   "novaMenuBuilder.menuItemActive": "Aktiv",
   "novaMenuBuilder.menuItemDisabled": "Deaktiviert",
   "novaMenuBuilder.nestableLabel": "Nestbar",
-  "novaMenuBuilder.toastDeleteSucces": "Navigationsmenü-Eintrag gelöscht",
+  "novaMenuBuilder.toastDeleteSuccess": "Navigationsmenü-Eintrag gelöscht",
   "novaMenuBuilder.toastCreateSuccess": "Navigationsmenü-Eintrag erstellt",
   "novaMenuBuilder.toastUpdateSuccess": "Navigationsmenü-Eintrag gespeichert",
   "novaMenuBuilder.toastReorderSuccess": "Navigationsmenü neu sortiert",

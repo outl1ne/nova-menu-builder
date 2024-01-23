@@ -1,34 +1,36 @@
 <template>
-    <div id="menu-builder-field" class="relative py-3 w-full">
+    <div id="menu-builder-field" class="relative pb-3 w-full">
         <menu-builder-header
-            :locales="field.locales"
-            :resourceId="resourceId"
             :activeLocale="selectedLocale"
+            :locales="field.locales"
             :menuCount="field.menuCount"
+            :resourceId="resourceId"
             :showDuplicate="field.showDuplicate"
             @addMenuItem="openAddModal"
             @changeLocale="setSelectedLocale"
             @refreshItems="refreshData"
         />
 
-        <div class="py-6" v-if="loadingMenuItems">
+        <div v-if="loadingMenuItems" class="py-6">
             <loader class="text-60"/>
         </div>
 
-        <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length"/>
+        <no-menu-items-placeholder v-if="!loadingMenuItems && !menuItems.length" @onAddClick="openAddModal"/>
         <menu-builder
             v-if="!loadingMenuItems && menuItems.length"
+            :max-depth="field.maxDepth"
+            :value="menuItems"
             @duplicateMenuItem="duplicateMenuItem"
             @editMenu="editMenu"
+            @input="menuItems = $event"
             @onMenuChange="updateMenu"
             @removeMenu="removeMenu"
             @saveMenuLocalState="saveMenuLocalState"
-            :max-depth="field.maxDepth"
-            :value="menuItems"
-            @input="menuItems = $event"
         />
 
         <update-menu-item-modal
+            :errors="errors"
+            :isMenuItemUpdating="isMenuItemUpdating"
             :linkType="linkType"
             :menuItemTypes="menuItemTypes"
             :newItem="newItem"
@@ -36,14 +38,12 @@
             :resourceName="resourceName"
             :showModal="showAddModal"
             :update="update"
-            :errors="errors"
-            :isMenuItemUpdating="isMenuItemUpdating"
             @closeModal="closeModal"
             @confirmItemCreate="confirmItemCreate"
-            @onLinkModelUpdate="updateLinkModel"
-            @onLinkTypeUpdate="updateLinkType"
             @onLinkEntityIdUpdate="updateEntityId"
             @onLinkEntityItemIdUpdate="updateEntityItemId"
+            @onLinkModelUpdate="updateLinkModel"
+            @onLinkTypeUpdate="updateLinkType"
             @updateItem="updateItem"
         />
 
@@ -171,7 +171,7 @@ export default {
             try {
                 await api.destroy(this.itemToDelete.id);
                 await this.refreshData();
-                Nova.success(this.__('novaMenuBuilder.toastDeleteSucces'));
+                Nova.success(this.__('novaMenuBuilder.toastDeleteSuccess'));
                 this.itemToDelete = null;
                 this.showDeleteModal = false;
             } catch (e) {
@@ -211,7 +211,14 @@ export default {
             try {
                 this.isMenuItemUpdating = true;
                 this.errors = {};
-                await api.update(this.newItem.id, this.newItemData);
+
+                let formData = new FormData();
+                Object.entries(this.newItemData).forEach(([key, value]) => {
+                    formData.append(key, value);
+                });
+
+                await api.update(this.newItem.id, formData);
+
                 this.isMenuItemUpdating = false;
                 this.showAddModal = false;
                 Nova.success(this.__('novaMenuBuilder.toastUpdateSuccess'));

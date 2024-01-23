@@ -45,6 +45,7 @@ class MenuItemFormRequest extends FormRequest
     {
         $keys = [
             'menu_id',
+            'parent_id',
             'slug',
             'item_type',
             'entity_id',
@@ -56,7 +57,7 @@ class MenuItemFormRequest extends FormRequest
             'class',
             'url',
             'target',
-            'is_active',
+            'is_active'
         ];
 
         foreach ($this->all() as $key => $value) {
@@ -98,7 +99,7 @@ class MenuItemFormRequest extends FormRequest
         return array_merge([
             'menu_id' => "required|exists:$menusTableName,id",
             'slug' => 'required',
-            'item_type' => 'required',
+            'class' => 'required',
             'label' => 'required|min:1',
             'locale' => 'required',
             'path' => 'present',
