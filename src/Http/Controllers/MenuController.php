@@ -306,7 +306,8 @@ class MenuController extends Controller
 
     protected function recursivelyDuplicate($menuItem, $parentId = null, $order = null)
     {
-        $data = $menuItem->toArray();
+        // Prevent appended or relational attributes from being duplicated
+        $data = $menuItem->getAttributes();
         unset($data['id']);
         if ($parentId !== null) $data['parent_id'] = $parentId;
         if ($order !== null) $data['order'] = $order;

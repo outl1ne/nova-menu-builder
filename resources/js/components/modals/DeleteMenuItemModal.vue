@@ -18,18 +18,26 @@
           type="button"
           dusk="cancel-action-button"
           @click.prevent="$emit('closeModal')"
+          class="mr-3"
         />
 
-        <DangerButton class="ml-3" @click="$emit('confirmItemDelete')">
-          {{ __('novaMenuBuilder.delConfirmModalConfirm') }}
-        </DangerButton>
+        <Button
+          type="button"
+          dusk="confirm-action-button"
+          state="danger"
+          :label="__('novaMenuBuilder.delConfirmModalConfirm')"
+          @click.prevent="$emit('confirmItemDelete')"
+        />
       </div>
     </ModalFooter>
   </Modal>
 </template>
 
 <script>
+import { Button } from 'laravel-nova-ui';
+
 export default {
   props: ['showModal', 'itemToDelete'],
+  components: { Button },
 };
 </script>
