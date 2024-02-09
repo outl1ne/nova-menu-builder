@@ -19,6 +19,7 @@ class MenuBuilderField extends Field
             'menuCount' => $menuModel::count(),
             'showDuplicate' => Settings::showDuplicate(),
             'collapsedAsDefault' => Settings::collapsedAsDefault(),
+            'novaPath' => config('nova.path'),
         ]);
 
          parent::__construct($name, $attribute, $resolveCallback);

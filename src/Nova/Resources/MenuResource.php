@@ -26,27 +26,27 @@ class MenuResource extends Resource
         parent::__construct($resource);
     }
 
-    public static function label()
+    public static function label(): string
     {
         return __('novaMenuBuilder.menuResourceLabel');
     }
 
-    public static function singularLabel()
+    public static function singularLabel(): string
     {
         return __('novaMenuBuilder.menuResourceSingularLabel');
     }
 
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'menus';
     }
 
-    public function title()
+    public function title(): string
     {
         return $this->name . ' (' . $this->slug . ')';
     }
 
-    public function fields(Request $request)
+    public function fields(Request $request): array
     {
         $menusTableName = Settings::getMenusTableName();
 
@@ -92,7 +92,7 @@ class MenuResource extends Resource
         ];
     }
 
-    public function authorizedToReplicate(Request $request)
+    public function authorizedToReplicate(Request $request): bool
     {
         return false;
     }

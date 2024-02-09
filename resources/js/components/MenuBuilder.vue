@@ -38,6 +38,14 @@
                     </div>
 
                     <div class="buttons md:w-1/3 flex justify-end content-center">
+                        <a
+                            :href="getEditUrl(item)"
+                            :title="__('novaMenuBuilder.advancedEdit')"
+                            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+                        >
+                            <span v-text="__('novaMenuBuilder.advancedEdit')"></span>
+                        </a>
+
                         <button
                             :title="__('novaMenuBuilder.edit')"
                             @click.prevent="$emit('editMenu', item)"
@@ -82,6 +90,10 @@ export default {
             required: false,
             default: 10,
         },
+        novaPath: {
+            type: String,
+            required: true,
+        },
     },
 
     components: {
@@ -109,6 +121,10 @@ export default {
 
         isCascadeOpen(item) {
             return !item.classProp.find(className => className === 'hide-cascade');
+        },
+
+        getEditUrl(item) {
+            return `${this.novaPath}/resources/menu-items/${item.id}/edit`;
         },
 
         beforeMove({dragItem, pathFrom, pathTo}) {

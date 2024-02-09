@@ -310,8 +310,18 @@
             </form>
         </div>
 
-        <ModalFooter class="flex justify-end">
+        <ModalFooter class="flex justify-between">
+            <div>
+                <a
+                    :href="getEditUrl(newItem)"
+                    :title="__('novaMenuBuilder.advancedEdit')"
+                    class="cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 appearance-none bg-transparent text-gray-400 hover:text-gray-300 active:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600 dark:hover:bg-gray-800"
+                >
+                    <span v-text="__('novaMenuBuilder.advancedEdit')"></span>
+                </a>
+            </div>
             <div class="ml-auto">
+
                 <CancelButton
                     component="button"
                     dusk="cancel-action-button"
@@ -351,6 +361,7 @@ export default {
         'resourceName',
         'resourceId',
         'isMenuItemUpdating',
+        'novaPath',
     ],
 
     data: () => ({
@@ -491,6 +502,10 @@ export default {
 
         handleRemove() {
             this.$nextTick(this.repositionDropdown);
+        },
+
+        getEditUrl(item) {
+            return `${this.novaPath}/resources/menu-items/${item.id}/edit`;
         },
 
         storeWithData(eventType, event) {
