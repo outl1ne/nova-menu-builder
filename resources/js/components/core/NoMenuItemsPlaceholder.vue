@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center px-6 py-8" :dusk="`${resourceName}-empty-dialog`">
+  <div class="flex flex-col justify-center items-center px-6 py-8" :dusk="`${resourceName}-empty-dialog`">
     <svg
       class="inline-block text-gray-300 dark:text-gray-500"
       xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +13,7 @@
       />
     </svg>
 
-    <h3 class="mt-3 text-base font-normal">
+    <h3 class="text-base font-normal mt-3">
       {{ __('novaMenuBuilder.noMenuItemsPlaceholder') }}
     </h3>
 

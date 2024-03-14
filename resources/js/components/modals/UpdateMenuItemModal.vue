@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="showModal" class="bg-white rounded-lg shadow-lg dark:bg-gray-800" align="flex justify-end">
+  <Modal :show="showModal" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg" align="flex justify-end">
     <ModalHeader class="flex flex-wrap justify-between">
       {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
@@ -177,18 +177,19 @@
           type="button"
           dusk="cancel-action-button"
           @click.prevent="$emit('closeModal')"
+          class="mr-3"
         />
 
-        <DefaultButton
-          class="ml-3"
-          type="submit"
-          ref="runButton"
+        <Button
+          type="button"
+          dusk="confirm-action-button"
+          state="default"
+          variant="solid"
           :disabled="isMenuItemUpdating"
           :loading="isMenuItemUpdating"
-          @click="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
-        >
-          {{ __(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle') }}
-        </DefaultButton>
+          :label="__(update ? 'novaMenuBuilder.updatebuttonTitle' : 'novaMenuBuilder.createButtonTitle')"
+          @click.prevent="storeWithData(update ? 'updateItem' : 'confirmItemCreate')"
+        />
       </div>
     </ModalFooter>
   </Modal>
@@ -197,6 +198,7 @@
 <script>
 import { HandlesValidationErrors } from 'laravel-nova';
 import { Errors } from 'form-backend-validation';
+import { Button } from 'laravel-nova-ui';
 import Multiselect from 'vue-multiselect/src/Multiselect';
 
 export default {
@@ -223,7 +225,7 @@ export default {
     },
   }),
 
-  components: { Multiselect },
+  components: { Button, Multiselect },
 
   watch: {
     'newItem.name'(newName) {
