@@ -1,7 +1,7 @@
 # Nova 4 Menu Builder
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-menu-builder)
-[![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-menu-builder.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-menu-builder)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/marshmallow/nova-4-menu-builder.svg?style=flat-square)](https://packagist.org/packages/marshmallow/nova-4-menu-builder)
+[![Total Downloads](https://img.shields.io/packagist/dt/marshmallow/nova-4-menu-builder.svg?style=flat-square)](https://packagist.org/packages/marshmallow/nova-4-menu-builder)
 
 This [Laravel Nova](https://nova.laravel.com/) package allows you to create and manage menus and menu items.
 
@@ -47,22 +47,6 @@ Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`
 ```php
 // in app/Providers/NovaServiceProvider.php
 
-/** Add it to the Nova::mainMenu helper */
-public function boot()
-{
-    parent::boot();
-
-    Nova::mainMenu(function (Request $request) {
-        return [
-          // ...
-          MenuSection::make('Menus')
-            ->path('/menus')
-            ->icon('adjustments'),
-        ]
-    });
-}
-
-/** Register the tool it self. */
 public function tools()
 {
     return [

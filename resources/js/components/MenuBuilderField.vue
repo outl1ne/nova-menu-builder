@@ -15,12 +15,6 @@
       <loader class="text-60" />
     </div>
 
-    <div class="px-4 pb-4">
-      <DefaultButton class="mt-3" @click="openAddModal">
-        {{ __('novaMenuBuilder.addMenuItem') }}
-      </DefaultButton>
-    </div>
-
     <no-menu-items-placeholder @onAddClick="openAddModal" v-if="!loadingMenuItems && !menuItems.length" />
 
     <menu-builder

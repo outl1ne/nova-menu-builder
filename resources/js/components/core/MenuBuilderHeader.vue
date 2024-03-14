@@ -1,14 +1,14 @@
 <template>
   <div id="menu-builder-header">
     <div
-      class="px-4 py-2 mr-4 bg-white rounded-lg locale-selection dark:bg-gray-800"
+      class="locale-selection px-4 py-2 mr-4 bg-white dark:bg-gray-800 rounded-lg"
       v-if="Object.keys(locales).length > 1"
     >
       <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
         @click.prevent="$emit('changeLocale', locale)"
-        class="box-border flex items-center h-full px-2 font-bold cursor-pointer"
+        class="cursor-pointer font-bold px-2 h-full flex items-center box-border"
         :class="{
           'text-primary-500 border-primary-500': activeLocale === locale,
           'text-80 border-transparent': activeLocale !== locale,
@@ -25,7 +25,7 @@
 
     <DefaultButton
       :title="__('novaMenuBuilder.addMenuItem')"
-      class="mr-2 text-white btn btn-default btn-icon bg-primary flex-no-shrink"
+      class="mr-2 btn btn-default btn-icon bg-primary text-white flex-no-shrink"
       @click.prevent="$emit('addMenuItem')"
     >
       {{ __('novaMenuBuilder.addMenuItem') }}
@@ -77,5 +77,10 @@ export default {
     justify-content: center;
     align-items: center;
   }
+}
+
+div.relative.overflow-hidden:has(> #menu-builder-field) {
+  // fix for laravel-nova applying overflow-hidden to card elements.
+  overflow: visible;
 }
 </style>
