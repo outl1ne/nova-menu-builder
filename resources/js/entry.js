@@ -1,9 +1,7 @@
-import MenuIndexView from './pages/MenuIndex'
+Nova.booting((Vue, router) => {
+  Nova.inertia('NovaMenu', require('./views/MenuIndexView').default);
 
-Nova.booting((app, store) => {
-    Nova.inertia('NovaMenu', MenuIndexView);
-
-    app.component('menu-builder', require('./components/MenuBuilder').default);
-    app.component('form-menu-builder-field', require('./components/MenuBuilderField.vue').default);
-    app.component('detail-menu-builder-field', require('./components/MenuBuilderField.vue').default);
+  Vue.component('menu-builder', require('./components/MenuBuilder').default);
+  Vue.component('form-menu-builder-field', require('./components/MenuBuilderField').default);
+  Vue.component('detail-menu-builder-field', require('./components/MenuBuilderField').default);
 });

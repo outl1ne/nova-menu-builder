@@ -50,19 +50,19 @@
           type="button"
           dusk="cancel-action-button"
           @click.prevent="$emit('closeModal')"
+          class="mr-3"
         />
 
-        <LoadingButton
-          class="ml-3"
-          type="submit"
-          ref="runButton"
-          component="DefaultButton"
+        <Button
+          type="button"
+          dusk="confirm-action-button"
+          state="default"
+          variant="solid"
           :disabled="isCopying"
           :loading="isCopying"
-          @click="copyMenuItemsFromMenu"
-        >
-          {{ __('novaMenuBuilder.copyMenuItemsButtonTitle') }}
-        </LoadingButton>
+          :label="__('novaMenuBuilder.copyMenuItemsButtonTitle')"
+          @click.prevent="copyMenuItemsFromMenu"
+        />
       </div>
     </ModalFooter>
   </Modal>
@@ -70,6 +70,7 @@
 
 <script>
 import api from '../../api';
+import { Button } from 'laravel-nova-ui';
 
 export default {
   props: ['showModal', 'activeLocale', 'locales', 'resourceName', 'resourceId', 'menuCount'],
@@ -80,6 +81,8 @@ export default {
     selectedLocale: void 0,
     localeOptions: [],
   }),
+
+  components: { Button },
 
   async mounted() {
     this.setLocaleDataBasedOnActiveLocale();

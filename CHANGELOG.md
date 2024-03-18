@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [7.2.1] - 2024-03-18
+### Fixed
+- Fixed drag and drop not working
+- Fixed parent menu items not showing all items
+
 ## [7.2.0] - 2024-02-09
 ### Added
 - Added Advance link to edit menu item resource

@@ -5,7 +5,6 @@
             :max-depth="maxDepth"
             @input="value = $event"
             @change="$emit('onMenuChange')"
-            :hooks="{ beforeMove: beforeMove }"
             class="px-3"
             classProp="classProp"
         >
@@ -125,14 +124,6 @@ export default {
 
         getEditUrl(item) {
             return `${this.novaPath}/resources/menu-items/${item.id}/edit`;
-        },
-
-        beforeMove({dragItem, pathFrom, pathTo}) {
-            if (dragItem.nestable) {
-                return true;
-            }
-
-            return pathTo.length === 1;
         },
     },
 };

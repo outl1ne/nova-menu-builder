@@ -14,19 +14,22 @@
     "cross-env": "^7.0.3",
     "form-backend-validation": "^2.4.0",
     "laravel-mix": "^6.0.49",
+    "laravel-nova-ui": "^0.4.12",
     "postcss": "^8.4.16",
     "postcss-import": "^15.0.0",
     "prettier": "^2.7.1",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
-    "tailwindcss": "^3.1.8",
     "terser-webpack-plugin": "^5.3.6",
-    "vue": "^3.2.39",
     "vue-loader": "^17.0.0",
-    "vue-multiselect": "^2.1.7",
     "vue-template-compiler": "^2.7.10",
-    "vue3-nestable": "^3.0.3",
     "vuex": "^4.0.2"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.1.8",
+    "vue": "^3.2.39",
+    "vue-multiselect": "^2.1.6",
+    "vue3-nestable": "^3.0.3"
   }
 }

@@ -3,14 +3,6 @@
         <ModalHeader class="flex flex-wrap justify-between">
             {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
-            <!--            <CheckboxWithLabel-->
-            <!--                :checked="newItem.nestable"-->
-            <!--                class="ml-auto mr-4"-->
-            <!--                @input="newItem.nestable = $event.target.checked"-->
-            <!--            >-->
-            <!--                <span class="ml-1">{{ __('novaMenuBuilder.nestableLabel') }}</span>-->
-            <!--            </CheckboxWithLabel>-->
-
             <CheckboxWithLabel :checked="newItem.is_active" @input="newItem.is_active = $event.target.checked">
                 <span class="ml-1">{{
                         newItem.is_active ? this.toggleLabels.checked : this.toggleLabels.unchecked
@@ -576,7 +568,7 @@ export default {
         buildTreeOptions(item, level = 0) {
             let options = [];
             if (level === 0 && item.parent) {
-                options.push({value: item.parent.id, label: item.parent.name});
+                options.push({value: null, label: item.parent.name});
                 level = 1;
             }
             if (item.child_items) {
