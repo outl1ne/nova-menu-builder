@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.6] - 20-03-2024
+
+### Changed
+
+- Fixed menu item duplication action (thanks to [@TriStarRiT](https://github.com/TriStarRiT))
+- Updated packages
+
 ## [7.1.5] - 29-01-2024
 
 ### Changed
