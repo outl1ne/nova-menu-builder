@@ -311,6 +311,7 @@ class MenuController extends Controller
         unset($data['id']);
         if ($parentId !== null) $data['parent_id'] = $parentId;
         if ($order !== null) $data['order'] = $order;
+        $data['data'] = json_decode($data['data'], true);
         $data['locale'] = $menuItem->locale;
 
         // Save the long way instead of ::create() to trigger observer(s)
