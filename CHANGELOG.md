@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.1.6] - 14-03-2024
+## [7.1.6] - 20-03-2024
 
 ### Changed
 
-- Sync & Multitenant
+- Fixed menu item duplication action (thanks to [@TriStarRiT](https://github.com/TriStarRiT))
+- Updated packages
 
 ## [7.1.5] - 29-01-2024
 
@@ -183,7 +184,7 @@ Initial Nova 4 compatible release. Still a beta and there may be bugs and visual
 
 ### Changed
 
-- Renamed namespaces from OptimistDigital to Marshmallow
+- Renamed namespaces from OptimistDigital to Outl1ne
 - Dropped PHP 7.X support
 - Dropped Nova 3.X support
 - Updated packages
