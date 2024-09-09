@@ -4,6 +4,7 @@
       {{ __(update ? 'novaMenuBuilder.updateModalTitle' : 'novaMenuBuilder.createModalTitle') }}
 
       <CheckboxWithLabel
+        v-show="maxDepth !== 1"
         class="ml-auto mr-4"
         :checked="newItem.nestable"
         @input="newItem.nestable = $event.target.checked"
@@ -213,6 +214,7 @@ export default {
     'resourceName',
     'resourceId',
     'isMenuItemUpdating',
+    'maxDepth',
   ],
 
   data: () => ({

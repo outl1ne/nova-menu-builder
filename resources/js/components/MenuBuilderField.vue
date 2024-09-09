@@ -30,6 +30,7 @@
     />
 
     <update-menu-item-modal
+      :max-depth="field.maxDepth"
       :linkType="linkType"
       :menuItemTypes="menuItemTypes"
       :newItem="newItem"
