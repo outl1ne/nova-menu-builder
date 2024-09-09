@@ -1,14 +1,14 @@
 <template>
   <div id="menu-builder-header">
     <div
-      class="locale-selection px-4 py-2 mr-4 bg-white dark:bg-gray-800 rounded-lg"
+      class="locale-selection px-4 py-1.5 mr-4 bg-white dark:bg-gray-800 rounded-lg overflow-x-auto w-full"
       v-if="Object.keys(locales).length > 1"
     >
       <div
         v-for="locale of Object.keys(locales)"
         :key="locale"
         @click.prevent="$emit('changeLocale', locale)"
-        class="cursor-pointer font-bold px-2 h-full flex items-center box-border"
+        class="cursor-pointer font-bold px-2 h-full flex items-center box-border whitespace-nowrap"
         :class="{
           'text-primary-500 border-primary-500': activeLocale === locale,
           'text-80 border-transparent': activeLocale !== locale,
@@ -25,7 +25,7 @@
 
     <DefaultButton
       :title="__('novaMenuBuilder.addMenuItem')"
-      class="mr-2 btn btn-default btn-icon bg-primary text-white flex-no-shrink"
+      class="mr-2 btn btn-default btn-icon bg-primary text-white flex-no-shrink whitespace-nowrap"
       @click.prevent="$emit('addMenuItem')"
     >
       {{ __('novaMenuBuilder.addMenuItem') }}
@@ -71,11 +71,21 @@ export default {
   right: 0;
   top: -46px;
   display: flex;
+  max-width: 80%;
+  place-content: end;
 
   .locale-selection {
     display: flex;
-    justify-content: center;
     align-items: center;
+
+    &::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #C1C1C1;
+      border-radius: 5px;
+    }
   }
 }
 
