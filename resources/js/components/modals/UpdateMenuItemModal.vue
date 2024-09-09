@@ -31,7 +31,7 @@
             <input
               :placeholder="__('novaMenuBuilder.menuItemName')"
               :class="{ 'o1-border-red-400': getError('name') }"
-              class="w-full form-control form-input form-input-bordered"
+              class="w-full form-control form-input form-control-bordered"
               id="name"
               type="text"
               v-model="newItem.name"
@@ -75,7 +75,7 @@
             <input
               :placeholder="__('novaMenuBuilder.menuItemUrlFieldName')"
               :class="{ 'o1-border-red-400': getError('value') }"
-              class="w-full form-control form-input form-input-bordered"
+              class="w-full form-control form-input form-control-bordered"
               id="url"
               type="text"
               v-model="newItem.value"

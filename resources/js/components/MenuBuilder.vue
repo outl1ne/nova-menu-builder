@@ -38,11 +38,11 @@
           </div>
         </div>
 
-        <div class="buttons md:o1-w-1/3 o1-flex o1-justify-end o1-content-center">
+        <div class="buttons o1-gap-x-2 md:o1-w-1/3 o1-flex o1-justify-end o1-content-center">
           <button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"
-            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+            class="text-gray-500 dark:text-gray-400 hover:[&:not(:disabled)]:text-primary-500 dark:hover:[&:not(:disabled)]:text-primary-500"
           >
             <Icon type="pencil-alt" />
           </button>
@@ -50,7 +50,7 @@
           <button
             :title="__('novaMenuBuilder.duplicate')"
             @click.prevent="$emit('duplicateMenuItem', item)"
-            class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
+            class="text-gray-500 dark:text-gray-400 hover:[&:not(:disabled)]:text-primary-500 dark:hover:[&:not(:disabled)]:text-primary-500"
           >
             <Icon type="duplicate" />
           </button>
@@ -58,7 +58,7 @@
           <button
             :title="__('novaMenuBuilder.delete')"
             @click.prevent="$emit('removeMenu', item)"
-            class="appearance-none cursor-pointer text-70 hover:text-primary mr-1"
+            class="text-gray-500 dark:text-gray-400 hover:[&:not(:disabled)]:text-primary-500 dark:hover:[&:not(:disabled)]:text-primary-500"
           >
             <Icon type="trash" />
           </button>
