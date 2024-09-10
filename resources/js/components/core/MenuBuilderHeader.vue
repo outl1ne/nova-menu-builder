@@ -15,7 +15,7 @@
         }"
         style="border-bottom-width: 2px"
       >
-        <span> {{ locales[locale] }} ({{ locale }}) </span>
+        <span v-html="getLocaleDisplay(locale)" />
       </div>
     </div>
 
@@ -62,6 +62,18 @@ export default {
       return localeCount > 1 || this.menuCount > 1;
     },
   },
+
+  methods: {
+    getLocaleDisplay(locale) {
+      const customDisplay = Nova.config('customLocaleDisplay');
+
+      if (customDisplay && customDisplay[locale]) {
+        return customDisplay[locale];
+      }
+
+      return `${this.locales[locale]} (${locale})`;
+    },
+  }
 };
 </script>
 
