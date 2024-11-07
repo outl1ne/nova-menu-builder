@@ -282,6 +282,27 @@ public static function getData($data = null)
 }
 ```
 
+### Custom locale display
+
+To customize the locale display you can use `Nova::provideToScript` to pass `customLocaleDisplay` as in the example below.
+
+```php
+// in app/Providers/NovaServiceProvider.php
+
+public function boot()
+{
+    Nova::serving(function () {
+        Nova::provideToScript([
+            // ...
+            'customLocaleDisplay' => [
+                'en' => <img src="/flag-en.png"/>,
+                'et' => <img src="/flag-et.png"/>,
+            ]
+        ]);
+    });
+}
+```
+
 ### Returning the menus in a JSON API
 
 #### nova_get_menus()
