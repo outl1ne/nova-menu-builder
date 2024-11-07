@@ -225,6 +225,7 @@ export default {
       withLabel: true,
       visible: true,
     },
+    overflowHiddenParent: null,
   }),
 
   components: { Button, Multiselect },
@@ -251,6 +252,18 @@ export default {
       unchecked: this.__('novaMenuBuilder.menuItemDisabled'),
     };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
+
+    if (!this.overflowHiddenParent) {
+      let parent = this.$refs.multiselect.$el.parentElement;
+      let parentWithOverflowHidden = null;
+      while (parent && !parentWithOverflowHidden) {
+        if (parent.classList.contains('overflow-hidden')) parentWithOverflowHidden = parent;
+        parent = parent.parentElement;
+      }
+      this.overflowHiddenParent = parentWithOverflowHidden;
+    }
+
+    if (this.overflowHiddenParent) this.overflowHiddenParent.style.overflow = 'visible';
   },
 
   computed: {
@@ -308,7 +321,9 @@ export default {
       this.$nextTick(this.repositionDropdown);
     },
 
-    handleClose() {},
+    handleClose() {
+      if (this.overflowHiddenParent) this.overflowHiddenParent.style.overflow = null;
+    },
 
     handleRemove() {
       this.$nextTick(this.repositionDropdown);
@@ -349,12 +364,12 @@ export default {
       const handlePositioning = () => {
         if (onOpen) ms.$refs.list.scrollTop = 0;
 
-        const { y, height } = el.getBoundingClientRect();
+        const { height } = el.getBoundingClientRect();
 
-        const top = y + height;
+        const top = height;
 
-        ms.$refs.list.style.position = 'fixed';
-        ms.$refs.list.style.width = `${el.clientWidth}px`;
+        ms.$refs.list.style.position = 'absolute';
+        ms.$refs.list.style.width = `${el.clientWidth + 1}px`;
         ms.$refs.list.style.top = `${top}px`;
         ms.$refs.list.style['border-radius'] = '0 0 5px 5px';
       };
@@ -532,7 +547,6 @@ $red500: #ef4444;
   .multiselect__content-wrapper {
     border-color: $slate300;
     transition: none;
-    height: 100%;
 
     .multiselect__content {
       overflow: hidden;
