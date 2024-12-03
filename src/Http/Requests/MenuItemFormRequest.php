@@ -52,6 +52,7 @@ class MenuItemFormRequest extends FormRequest
     private function getRulesFromMenuLinkable(string $menuLinkableClass, $menuItem = null)
     {
         $menusTableName = MenuBuilder::getMenusTableName();
+        $menuDatabaseTable = MenuBuilder::getDatabaseTableConnection($menusTableName);
         $menuItemRules = $menuLinkableClass ? $menuLinkableClass::getRules() : [];
 
         $fields = MenuBuilder::getFieldsFromMenuItemTypeClass($menuLinkableClass);
@@ -73,7 +74,7 @@ class MenuItemFormRequest extends FormRequest
         }
 
         return array_merge([
-            'menu_id' => "required|exists:$menusTableName,id",
+            'menu_id' => "required|exists:$menuDatabaseTable,id",
             'name' => 'required|min:1',
             'locale' => 'required',
             'value' => 'present',

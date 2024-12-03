@@ -20,6 +20,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | You can override the table connection for validation on the Nova Menu
+    | When you keep this as null we will just use your default connection.
+    |--------------------------------------------------------------------------
+    */
+    'menus_table_connection' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Locales
     |--------------------------------------------------------------------------
     |
