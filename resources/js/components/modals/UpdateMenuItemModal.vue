@@ -253,17 +253,19 @@ export default {
     };
     this.switchColor = { checked: '#21b978', unchecked: '#dae1e7', disabled: '#eef1f4' };
 
-    if (!this.overflowHiddenParent) {
-      let parent = this.$refs.multiselect.$el.parentElement;
-      let parentWithOverflowHidden = null;
-      while (parent && !parentWithOverflowHidden) {
-        if (parent.classList.contains('overflow-hidden')) parentWithOverflowHidden = parent;
-        parent = parent.parentElement;
+    this.$nextTick(() => {
+      if (!this.overflowHiddenParent && this.$refs.multiselect && this.$refs.multiselect.$el) {
+        let parent = this.$refs.multiselect.$el.parentElement;
+        let parentWithOverflowHidden = null;
+        while (parent && !parentWithOverflowHidden) {
+          if (parent.classList.contains('overflow-hidden')) parentWithOverflowHidden = parent;
+          parent = parent.parentElement;
+        }
+        this.overflowHiddenParent = parentWithOverflowHidden;
       }
-      this.overflowHiddenParent = parentWithOverflowHidden;
-    }
 
-    if (this.overflowHiddenParent) this.overflowHiddenParent.style.overflow = 'visible';
+      if (this.overflowHiddenParent) this.overflowHiddenParent.style.overflow = 'visible';
+    });
   },
 
   computed: {
