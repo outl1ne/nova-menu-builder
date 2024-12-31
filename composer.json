@@ -29,11 +29,12 @@
   "require": {
     "php": ">=8.0",
     "doctrine/dbal": ">=2.0.0",
-    "laravel/nova": "^4.0",
+    "laravel/nova": "^5.0",
     "outl1ne/nova-translations-loader": "^5.0.0"
   },
   "require-dev": {
-    "orchestra/testbench": "^7.0",
+    "laravel/nova-devtool": "^1.0",
+    "orchestra/testbench": "^8.30|^9.8",
     "phpunit/phpunit": "^9.0"
   },
   "autoload": {
