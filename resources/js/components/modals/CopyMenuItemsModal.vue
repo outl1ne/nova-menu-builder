@@ -45,11 +45,11 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <CancelButton
-          component="button"
-          type="button"
+        <Button
+          state="danger"
           dusk="cancel-action-button"
           @click.prevent="$emit('closeModal')"
+          :label="__('novaMenuBuilder.closeModalTitle')"
           class="mr-3"
         />
 

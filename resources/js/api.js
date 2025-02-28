@@ -16,7 +16,7 @@ export default {
   },
 
   async create(menuItem) {
-    return Nova.request().post(`/nova-vendor/nova-menu/items`, menuItem);
+     return Nova.request().post(`/nova-vendor/nova-menu/items`, menuItem);
   },
 
   async getMenuItem(menuItemId) {

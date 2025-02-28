@@ -19,17 +19,17 @@
       </div>
     </div>
 
-    <DefaultButton class="mr-4" @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
-      <Icon type="duplicate" />
-    </DefaultButton>
+    <span
+        class="mt-2 mr-4 cursor-pointer"
+        @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
+           <Icon name="Duplicate" type="outline" />
+    </span>
 
-    <DefaultButton
-      :title="__('novaMenuBuilder.addMenuItem')"
-      class="mr-2 btn btn-default btn-icon bg-primary text-white flex-no-shrink whitespace-nowrap"
-      @click.prevent="$emit('addMenuItem')"
-    >
-      {{ __('novaMenuBuilder.addMenuItem') }}
-    </DefaultButton>
+    <span class="cursor-pointer mt-2"
+        :title="__('novaMenuBuilder.addMenuItem')"
+            @click.prevent="$emit('addMenuItem')">
+       <Icon name="ViewGridAdd" type="outline" />
+    </span>
 
     <copy-menu-items-modal
       :resourceId="resourceId"
@@ -45,9 +45,11 @@
 
 <script>
 import CopyMenuItemsModal from '../modals/CopyMenuItemsModal';
+import { Button,Icon } from 'laravel-nova-ui';
+
 
 export default {
-  components: { CopyMenuItemsModal },
+  components: { Button, CopyMenuItemsModal,Icon },
 
   props: ['locales', 'activeLocale', 'resourceId', 'menuCount', 'showDuplicate'],
 
@@ -73,7 +75,7 @@ export default {
 
       return `${this.locales[locale]} (${locale})`;
     },
-  }
+  },
 };
 </script>
 
@@ -95,7 +97,7 @@ export default {
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #C1C1C1;
+      background: #c1c1c1;
       border-radius: 5px;
     }
   }

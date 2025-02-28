@@ -139,7 +139,6 @@
           <template #field>
             <SelectControl
               v-model:selected="newItem.target"
-              @change="newItem.target = $event"
               :options="[
                 {
                   value: '_self',
@@ -173,13 +172,13 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <CancelButton
-          component="button"
-          type="button"
-          dusk="cancel-action-button"
-          @click.prevent="$emit('closeModal')"
-          class="mr-3"
-        />
+          <Button
+              state="danger"
+              dusk="cancel-action-button"
+              @click.prevent="$emit('closeModal')"
+              :label="__('novaMenuBuilder.closeModalTitle')"
+              class="mr-3"
+          />
 
         <Button
           type="button"

@@ -197,6 +197,7 @@ export default {
     async confirmItemCreate() {
       try {
         this.errors = {};
+
         await api.create(this.newItemData);
         this.refreshData();
         this.showAddModal = false;
@@ -256,8 +257,9 @@ export default {
       this.newItem.value = modelId || '';
     },
 
-    updateLinkType(linkType) {
-      this.linkType = this.menuItemTypes.find(type => type.class === linkType) || {};
+    updateLinkType(event) {
+
+      this.linkType = this.menuItemTypes.find(type => type.class === event.target.value) || {};
       this.newItem.value = '';
     },
   },

@@ -17,12 +17,16 @@
       {{ __('novaMenuBuilder.noMenuItemsPlaceholder') }}
     </h3>
 
-    <DefaultButton class="mt-3" @click.prevent="$emit('onAddClick')">
+    <Button class="mt-3" @click.prevent="$emit('onAddClick')">
       {{ __('novaMenuBuilder.addMenuItem') }}
-    </DefaultButton>
+    </Button>
   </div>
 </template>
 
 <script>
-export default {};
+import { Button,Icon } from 'laravel-nova-ui';
+import CopyMenuItemsModal from "../modals/CopyMenuItemsModal.vue";
+export default {
+    components: { Button, Icon },
+};
 </script>
