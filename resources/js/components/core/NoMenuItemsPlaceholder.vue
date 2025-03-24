@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import { Button,Icon } from 'laravel-nova-ui';
-import CopyMenuItemsModal from "../modals/CopyMenuItemsModal.vue";
+import { Button, Icon } from 'laravel-nova-ui';
+import CopyMenuItemsModal from '../modals/CopyMenuItemsModal.vue';
 export default {
-    components: { Button, Icon },
+  components: { Button, Icon },
 };
 </script>

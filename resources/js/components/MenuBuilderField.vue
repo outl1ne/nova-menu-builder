@@ -258,7 +258,6 @@ export default {
     },
 
     updateLinkType(event) {
-
       this.linkType = this.menuItemTypes.find(type => type.class === event.target.value) || {};
       this.newItem.value = '';
     },

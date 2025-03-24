@@ -20,7 +20,7 @@
             @click.prevent="toggleMenuChildrenCascade(item)"
             class="o1-appearance-none o1-cursor-pointer o1-fill-current hover:o1-text-primary o1-flex o1-px-3 o1-items-center focus:o1-outline-none"
           >
-              <Icon :name="getIconName(item)" type="outline"/>
+            <Icon :name="getIconName(item)" type="outline" />
           </button>
 
           <div
@@ -84,15 +84,15 @@ export default {
       default: 10,
     },
   },
- computed: {
+  computed: {
     getIconName() {
-          return (item) => this.isCascadeOpen(item) ? 'SortDescending' : 'ViewList';
-    }
+      return item => (this.isCascadeOpen(item) ? 'SortDescending' : 'ViewList');
+    },
   },
   components: {
     VueNestable,
     VueNestableHandle,
-      Icon
+    Icon,
   },
 
   data: () => ({

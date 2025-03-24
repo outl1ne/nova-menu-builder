@@ -19,16 +19,12 @@
       </div>
     </div>
 
-    <span
-        class="mt-2 mr-4 cursor-pointer"
-        @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
-           <Icon name="Duplicate" type="outline" />
+    <span class="mt-2 mr-4 cursor-pointer" @click.prevent="showCopyModal = true" v-if="showCopyButton && showDuplicate">
+      <Icon name="Duplicate" type="outline" />
     </span>
 
-    <span class="cursor-pointer mt-2"
-        :title="__('novaMenuBuilder.addMenuItem')"
-            @click.prevent="$emit('addMenuItem')">
-       <Icon name="ViewGridAdd" type="outline" />
+    <span class="cursor-pointer mt-2" :title="__('novaMenuBuilder.addMenuItem')" @click.prevent="$emit('addMenuItem')">
+      <Icon name="ViewGridAdd" type="outline" />
     </span>
 
     <copy-menu-items-modal
@@ -45,11 +41,10 @@
 
 <script>
 import CopyMenuItemsModal from '../modals/CopyMenuItemsModal';
-import { Button,Icon } from 'laravel-nova-ui';
-
+import { Button, Icon } from 'laravel-nova-ui';
 
 export default {
-  components: { Button, CopyMenuItemsModal,Icon },
+  components: { Button, CopyMenuItemsModal, Icon },
 
   props: ['locales', 'activeLocale', 'resourceId', 'menuCount', 'showDuplicate'],
 
