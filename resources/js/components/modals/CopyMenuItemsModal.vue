@@ -17,7 +17,7 @@
             v-if="hasMultipleMenus"
             :options="menuOptions.map(v => ({ value: v.id, label: v.name }))"
             :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
-            v-model:selected="selectedMenu"
+            v-model="selectedMenu"
             @change="selectedMenu = $event"
           />
         </template>
@@ -36,7 +36,7 @@
           <SelectControl
             :options="localeOptions.map(v => ({ value: v.id, label: v.name }))"
             :placeholder="__('novaMenuBuilder.locale')"
-            v-model:selected="selectedLocale"
+            v-model="selectedLocale"
             @change="selectedLocale = $event"
           />
         </template>
