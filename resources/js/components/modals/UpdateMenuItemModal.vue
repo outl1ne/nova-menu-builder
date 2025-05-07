@@ -138,7 +138,7 @@
         >
           <template #field>
             <SelectControl
-              v-model:selected="newItem.target"
+              v-model="newItem.target"
               :options="[
                 {
                   value: '_self',
