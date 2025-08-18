@@ -11,7 +11,6 @@
     "@vue/babel-plugin-jsx": "^1.1.1",
     "axios": "^1.6.0",
     "cross-env": "^7.0.3",
-    "form-backend-validation": "^2.4.0",
     "laravel-nova-devtool": "file:vendor/laravel/nova-devtool",
     "laravel-nova-ui": "^0.4.12",
     "prettier": "^2.7.1",

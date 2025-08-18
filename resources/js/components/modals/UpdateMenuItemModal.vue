@@ -198,7 +198,7 @@
 
 <script>
 import { HandlesValidationErrors } from 'laravel-nova';
-import { Errors } from 'form-backend-validation';
+import { Errors } from 'laravel-nova';
 import { Button } from 'laravel-nova-ui';
 import Multiselect from 'vue-multiselect/src/Multiselect';
 
