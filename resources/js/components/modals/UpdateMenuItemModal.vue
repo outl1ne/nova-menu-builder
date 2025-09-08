@@ -51,7 +51,7 @@
         >
           <template #field>
             <SelectControl
-              v-model:selected="linkType.class"
+              v-model="linkType.class"
               :options="menuItemTypes.map(val => ({ value: val.class, label: __(val.name) }))"
               @change="e => $emit('onLinkTypeUpdate', e)"
             >
@@ -138,8 +138,7 @@
         >
           <template #field>
             <SelectControl
-              v-model:selected="newItem.target"
-              @change="newItem.target = $event"
+              v-model="newItem.target"
               :options="[
                 {
                   value: '_self',
@@ -173,13 +172,13 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <CancelButton
-          component="button"
-          type="button"
-          dusk="cancel-action-button"
-          @click.prevent="$emit('closeModal')"
-          class="mr-3"
-        />
+          <Button
+              state="danger"
+              dusk="cancel-action-button"
+              @click.prevent="$emit('closeModal')"
+              :label="__('novaMenuBuilder.closeModalTitle')"
+              class="mr-3"
+          />
 
         <Button
           type="button"

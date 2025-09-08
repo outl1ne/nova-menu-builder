@@ -17,7 +17,7 @@
             v-if="hasMultipleMenus"
             :options="menuOptions.map(v => ({ value: v.id, label: v.name }))"
             :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
-            v-model:selected="selectedMenu"
+            v-model="selectedMenu"
             @change="selectedMenu = $event"
           />
         </template>
@@ -36,7 +36,7 @@
           <SelectControl
             :options="localeOptions.map(v => ({ value: v.id, label: v.name }))"
             :placeholder="__('novaMenuBuilder.locale')"
-            v-model:selected="selectedLocale"
+            v-model="selectedLocale"
             @change="selectedLocale = $event"
           />
         </template>
@@ -45,11 +45,11 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <CancelButton
-          component="button"
-          type="button"
+        <Button
+          state="danger"
           dusk="cancel-action-button"
           @click.prevent="$emit('closeModal')"
+          :label="__('novaMenuBuilder.closeModalTitle')"
           class="mr-3"
         />
 

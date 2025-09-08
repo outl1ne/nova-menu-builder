@@ -78,7 +78,7 @@ class MenuItemFormRequest extends FormRequest
             'locale' => 'required',
             'value' => 'present',
             'class' => 'required',
-            'target' => 'required|in:_self,_blank'
+         //   'target' => 'required|in:_self,_blank'
         ], $dataRules);
     }
 }

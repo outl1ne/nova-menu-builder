@@ -126,6 +126,7 @@ class MenuController extends Controller
      **/
     public function createMenuItem(MenuItemFormRequest $request)
     {
+
         $menuItemModel = MenuBuilder::getMenuItemClass();
 
         $data = $request->getValues();

@@ -11,6 +11,8 @@ class MenuBuilderField extends Field
 
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
+        parent::__construct($name, $attribute, $resolveCallback);
+
         $menuModel = MenuBuilder::getMenuClass();
 
         $this->withMeta([
