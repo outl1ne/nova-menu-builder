@@ -50,15 +50,20 @@
           }"
         >
           <template #field>
-            <SelectControl
-              v-model:selected="linkType.class"
-              :options="menuItemTypes.map(val => ({ value: val.class, label: __(val.name) }))"
-              @change="e => $emit('onLinkTypeUpdate', e)"
+            <select 
+              v-model="selectedType"
+              @change="handleTypeChange"
+              class="w-full form-control form-input form-control-bordered"
             >
-              <option disabled="disabled" selected="selected" value="">
-                {{ __('novaMenuBuilder.chooseMenuItemType') }}
+              <option value="" disabled>{{ __('novaMenuBuilder.chooseMenuItemType') }}</option>
+              <option 
+                v-for="menuType in menuItemTypes" 
+                :key="menuType.class" 
+                :value="menuType.class"
+              >
+                {{ __(menuType.name) }}
               </option>
-            </SelectControl>
+            </select>
           </template>
         </DefaultField>
 
@@ -199,7 +204,7 @@
 <script>
 import { HandlesValidationErrors } from 'laravel-nova';
 import { Errors } from 'laravel-nova';
-import { Button } from 'laravel-nova-ui';
+import { Button, CancelButton } from 'laravel-nova-ui';
 import Multiselect from 'vue-multiselect/src/Multiselect';
 
 export default {
@@ -219,6 +224,7 @@ export default {
 
   data: () => ({
     toggleLabels: false,
+    selectedType: '',
     defaultFieldProps: {
       fullWidth: true,
       stacked: true,
@@ -228,9 +234,13 @@ export default {
     overflowHiddenParent: null,
   }),
 
-  components: { Button, Multiselect },
+  components: { Button, CancelButton, Multiselect },
 
   watch: {
+    'linkType.class'(newClass) {
+      this.selectedType = newClass || '';
+    },
+
     'newItem.name'(newName) {
       this.emitFieldValueChange('name', newName);
     },
@@ -314,6 +324,11 @@ export default {
   },
 
   methods: {
+    handleTypeChange(event) {
+      const value = event.target.value;
+      this.$emit('onLinkTypeUpdate', value);
+    },
+
     handleChange(value) {
       this.$emit('onLinkModelUpdate', value ? value.id : void 0);
       this.$nextTick(this.repositionDropdown);

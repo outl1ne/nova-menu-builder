@@ -18,7 +18,6 @@
             :options="menuOptions.map(v => ({ value: v.id, label: v.name }))"
             :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
             v-model:selected="selectedMenu"
-            @change="selectedMenu = $event"
           />
         </template>
       </DefaultField>
@@ -37,7 +36,6 @@
             :options="localeOptions.map(v => ({ value: v.id, label: v.name }))"
             :placeholder="__('novaMenuBuilder.locale')"
             v-model:selected="selectedLocale"
-            @change="selectedLocale = $event"
           />
         </template>
       </DefaultField>
@@ -124,7 +122,7 @@ export default {
         this.$emit('refreshItems');
         this.$emit('closeModal');
       } catch (e) {
-        console.info(e);
+        console.error('Copy failed:', e);
       }
       this.isCopying = false;
     },

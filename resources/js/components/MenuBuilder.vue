@@ -2,7 +2,7 @@
   <vue-nestable
     :value="value"
     :max-depth="maxDepth"
-    @input="value = $event"
+    @input="$emit('input', $event)"
     @change="$emit('onMenuChange')"
     :hooks="{
       beforeMove: beforeMove,

@@ -28,7 +28,8 @@ class MenuController extends Controller
 
     public function copyMenuItemsToMenu(Request $request)
     {
-        $menuModel = MenuBuilder::getMenuClass();
+        try {
+            $menuModel = MenuBuilder::getMenuClass();
 
         $data = $request->validate([
             'fromMenuId' => 'required',
@@ -47,7 +48,8 @@ class MenuController extends Controller
 
         if (!$fromMenu || !$toMenu) return response()->json(['error' => 'menu_not_found'], 404);
 
-        $maxOrder = $fromMenu->rootMenuItems()->max('order');
+        // Get max order from target menu to avoid conflicts
+        $maxOrder = MenuBuilder::getMenuItemClass()::where('menu_id', $toMenuId)->max('order') ?? 0;
         $i = 1;
 
         $recursivelyCloneMenuItems = function ($menuItems, $parentId = null) use ($toLocale, $toMenuId, $maxOrder, &$i, &$recursivelyCloneMenuItems) {
@@ -59,17 +61,38 @@ class MenuController extends Controller
                 $newMenuItem->order = $maxOrder + $i++;
                 $newMenuItem->save();
 
-                if ($menuItem->children->count() > 0) {
+                // Use already-loaded children from the with() clause
+                if ($menuItem->children && $menuItem->children->count() > 0) {
                     $recursivelyCloneMenuItems($menuItem->children, $newMenuItem->id);
                 }
             }
         };
 
-        // Clone all and add to toMenu
-        $rootMenuItems = $fromMenu->rootMenuItems()->where('locale', $fromLocale)->get();
+        // Clone all and add to toMenu  
+        $rootMenuItems = MenuBuilder::getMenuItemClass()::where('menu_id', $fromMenuId)
+            ->where('locale', $fromLocale)
+            ->whereNull('parent_id')
+            ->with(['children' => function ($query) use ($fromLocale) {
+                $query->where('locale', $fromLocale)->orderBy('order')
+                    ->with(['children' => function ($subQuery) use ($fromLocale) {
+                        $subQuery->where('locale', $fromLocale)->orderBy('order')
+                            ->with(['children' => function ($subSubQuery) use ($fromLocale) {
+                                $subSubQuery->where('locale', $fromLocale)->orderBy('order');
+                            }]);
+                    }]);
+            }])
+            ->orderBy('order')
+            ->get();
         $recursivelyCloneMenuItems($rootMenuItems);
 
         return response()->json(['success' => true], 200);
+        } catch (\Exception $e) {
+            \Log::error('Error copying menu items', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -90,6 +113,15 @@ class MenuController extends Controller
         $menuItems = $menu
             ->rootMenuItems()
             ->where('locale', $locale)
+            ->with(['children' => function ($query) use ($locale) {
+                $query->where('locale', $locale)->orderBy('order')
+                    ->with(['children' => function ($subQuery) use ($locale) {
+                        $subQuery->where('locale', $locale)->orderBy('order')
+                            ->with(['children' => function ($subSubQuery) use ($locale) {
+                                $subSubQuery->where('locale', $locale)->orderBy('order');
+                            }]);
+                    }]);
+            }])
             ->get()
             ->filter(function ($item) {
                 return class_exists($item->class);
@@ -109,13 +141,22 @@ class MenuController extends Controller
     {
         $items = $request->get('menuItems');
 
-        $i = 1;
-        foreach ($items as $item) {
-            $this->saveMenuItemWithNewOrder($i, $item);
-            $i++;
+        if (empty($items) || !is_array($items)) {
+            return response()->json(['error' => 'No menu items provided'], 400);
         }
 
-        return response()->json(['success' => true], 200);
+
+        try {
+            $i = 1;
+            foreach ($items as $item) {
+                $this->saveMenuItemWithNewOrder($i, $item, null); // null parent_id for root items
+                $i++;
+            }
+
+            return response()->json(['success' => true], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to save menu items: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -266,6 +307,21 @@ class MenuController extends Controller
     // Helpers
     // ------------------------------
 
+    private function buildNestedChildrenQuery($locale, $depth = 0)
+    {
+        if ($depth >= 10) {
+            return [];
+        }
+
+        return [
+            'children' => function ($query) use ($locale, $depth) {
+                $query->where('locale', $locale)
+                    ->orderBy('order')
+                    ->with($this->buildNestedChildrenQuery($locale, $depth + 1));
+            }
+        ];
+    }
+
     /**
      * Increase order number of every menu item that has higher order number than ours by one
      *
@@ -288,7 +344,13 @@ class MenuController extends Controller
 
     private function recursivelyOrderChildren($menuItem)
     {
-        if (count($menuItem['children']) > 0) {
+        // Handle both array and object data structures
+        if (is_object($menuItem)) {
+            $menuItem = (array) $menuItem;
+        }
+
+        // Check if children key exists and has items
+        if (isset($menuItem['children']) && is_array($menuItem['children']) && count($menuItem['children']) > 0) {
             foreach ($menuItem['children'] as $i => $child) {
                 $this->saveMenuItemWithNewOrder($i + 1, $child, $menuItem['id']);
             }
@@ -297,10 +359,26 @@ class MenuController extends Controller
 
     private function saveMenuItemWithNewOrder($orderNr, $menuItemData, $parentId = null)
     {
+        // Handle both array and object data structures
+        if (is_object($menuItemData)) {
+            $menuItemData = (array) $menuItemData;
+        }
+
+        if (!isset($menuItemData['id'])) {
+            return;
+        }
+
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemData['id']);
+        
+        if (!$menuItem) {
+            return;
+        }
+        
         $menuItem->order = $orderNr;
         $menuItem->parent_id = $parentId;
         $menuItem->save();
+        
+        // Process children if they exist
         $this->recursivelyOrderChildren($menuItemData);
     }
 
@@ -311,7 +389,11 @@ class MenuController extends Controller
         unset($data['id']);
         if ($parentId !== null) $data['parent_id'] = $parentId;
         if ($order !== null) $data['order'] = $order;
-        $data['data'] = json_decode($data['data'], true);
+        
+        // Ensure data is properly handled - if it's already an array, keep it, otherwise decode
+        if (is_string($data['data'])) {
+            $data['data'] = json_decode($data['data'], true);
+        }
         $data['locale'] = $menuItem->locale;
 
         // Save the long way instead of ::create() to trigger observer(s)
@@ -320,7 +402,14 @@ class MenuController extends Controller
         $newMenuItem->fill($data);
         $newMenuItem->save();
 
-        $children = $menuItem->children;
-        foreach ($children as $child) $this->recursivelyDuplicate($child, $newMenuItem->id);
+        // Load children with explicit query to ensure we get all children
+        $children = MenuBuilder::getMenuItemClass()::where('parent_id', $menuItem->id)
+            ->where('locale', $menuItem->locale)
+            ->orderBy('order')
+            ->get();
+            
+        foreach ($children as $child) {
+            $this->recursivelyDuplicate($child, $newMenuItem->id);
+        }
     }
 }
