@@ -51,8 +51,8 @@
         >
           <template #field>
             <select 
-              v-model="selectedType"
-              @change="handleTypeChange"
+              v-model="linkType.class"
+              @change="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-input form-control-bordered"
             >
               <option value="" disabled>{{ __('novaMenuBuilder.chooseMenuItemType') }}</option>
@@ -204,7 +204,7 @@
 <script>
 import { HandlesValidationErrors } from 'laravel-nova';
 import { Errors } from 'laravel-nova';
-import { Button, CancelButton } from 'laravel-nova-ui';
+import { Button } from 'laravel-nova-ui';
 import Multiselect from 'vue-multiselect/src/Multiselect';
 
 export default {
@@ -224,7 +224,6 @@ export default {
 
   data: () => ({
     toggleLabels: false,
-    selectedType: '',
     defaultFieldProps: {
       fullWidth: true,
       stacked: true,
@@ -234,13 +233,9 @@ export default {
     overflowHiddenParent: null,
   }),
 
-  components: { Button, CancelButton, Multiselect },
+  components: { Button, Multiselect },
 
   watch: {
-    'linkType.class'(newClass) {
-      this.selectedType = newClass || '';
-    },
-
     'newItem.name'(newName) {
       this.emitFieldValueChange('name', newName);
     },
@@ -324,11 +319,6 @@ export default {
   },
 
   methods: {
-    handleTypeChange(event) {
-      const value = event.target.value;
-      this.$emit('onLinkTypeUpdate', value);
-    },
-
     handleChange(value) {
       this.$emit('onLinkModelUpdate', value ? value.id : void 0);
       this.$nextTick(this.repositionDropdown);
