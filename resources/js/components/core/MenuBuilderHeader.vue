@@ -19,12 +19,12 @@
       </div>
     </div>
 
-    <Button 
-      class="mr-4" 
+    <Button
+      class="mr-4"
       variant="outline"
       state="default"
       icon="duplicate"
-      @click.prevent="showCopyModal = true" 
+      @click.prevent="showCopyModal = true"
       v-if="showCopyButton && showDuplicate"
     />
 
@@ -80,7 +80,7 @@ export default {
 
       return `${this.locales[locale]} (${locale})`;
     },
-  }
+  },
 };
 </script>
 
@@ -102,7 +102,7 @@ export default {
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #C1C1C1;
+      background: #c1c1c1;
       border-radius: 5px;
     }
   }

@@ -21,11 +21,7 @@
             @mousedown.stop
             class="o1-appearance-none o1-cursor-pointer o1-fill-current hover:o1-text-primary o1-flex o1-px-3 o1-items-center focus:o1-outline-none"
           >
-            <Button
-              variant="ghost"
-              state="default"
-              :icon="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'"
-            />
+            <Button variant="ghost" state="default" :icon="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
           </button>
 
           <div
@@ -43,7 +39,11 @@
           </div>
         </div>
 
-        <div class="buttons o1-gap-x-2 md:o1-w-1/3 o1-flex o1-justify-end o1-content-center" @mousedown.stop @dragstart.prevent>
+        <div
+          class="buttons o1-gap-x-2 md:o1-w-1/3 o1-flex o1-justify-end o1-content-center"
+          @mousedown.stop
+          @dragstart.prevent
+        >
           <Button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"

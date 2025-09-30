@@ -20,11 +20,7 @@
             class="w-full form-control form-input form-control-bordered"
           >
             <option value="" disabled>{{ __('novaMenuBuilder.menuResourceSingularLabel') }}</option>
-            <option 
-              v-for="menu in menuOptions" 
-              :key="menu.id" 
-              :value="menu.id"
-            >
+            <option v-for="menu in menuOptions" :key="menu.id" :value="menu.id">
               {{ menu.name }}
             </option>
           </select>
@@ -47,11 +43,7 @@
             class="w-full form-control form-input form-control-bordered"
           >
             <option value="" disabled>{{ __('novaMenuBuilder.locale') }}</option>
-            <option 
-              v-for="locale in localeOptions" 
-              :key="locale.id" 
-              :value="locale.id"
-            >
+            <option v-for="locale in localeOptions" :key="locale.id" :value="locale.id">
               {{ locale.name }}
             </option>
           </select>

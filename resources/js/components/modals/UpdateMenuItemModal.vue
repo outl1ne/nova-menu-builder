@@ -50,17 +50,13 @@
           }"
         >
           <template #field>
-            <select 
+            <select
               v-model="linkType.class"
               @change="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-input form-control-bordered"
             >
               <option value="" disabled>{{ __('novaMenuBuilder.chooseMenuItemType') }}</option>
-              <option 
-                v-for="menuType in menuItemTypes" 
-                :key="menuType.class" 
-                :value="menuType.class"
-              >
+              <option v-for="menuType in menuItemTypes" :key="menuType.class" :value="menuType.class">
                 {{ __(menuType.name) }}
               </option>
             </select>
