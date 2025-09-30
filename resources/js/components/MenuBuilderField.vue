@@ -116,7 +116,7 @@ export default {
       return {
         ...this.newItem,
         locale: this.selectedLocale,
-        class: this.linkType.class,
+        class: this.linkType.class || '',
         menu_id: this.resourceId,
       };
     },
@@ -227,6 +227,7 @@ export default {
     async updateMenu() {
       try {
         await api.saveItems(this.resourceId, this.menuItems);
+        await this.refreshData(); // Reload data from server after saving
         Nova.success(this.__('novaMenuBuilder.toastReorderSuccess'));
       } catch (e) {
         Nova.error(this.__('novaMenuBuilder.serverError'));

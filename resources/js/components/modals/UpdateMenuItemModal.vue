@@ -50,15 +50,16 @@
           }"
         >
           <template #field>
-            <SelectControl
-              v-model:selected="linkType.class"
-              :options="menuItemTypes.map(val => ({ value: val.class, label: __(val.name) }))"
-              @change="e => $emit('onLinkTypeUpdate', e)"
+            <select
+              v-model="linkType.class"
+              @change="e => $emit('onLinkTypeUpdate', e.target.value)"
+              class="w-full form-control form-input form-control-bordered"
             >
-              <option disabled="disabled" selected="selected" value="">
-                {{ __('novaMenuBuilder.chooseMenuItemType') }}
+              <option value="" disabled>{{ __('novaMenuBuilder.chooseMenuItemType') }}</option>
+              <option v-for="menuType in menuItemTypes" :key="menuType.class" :value="menuType.class">
+                {{ __(menuType.name) }}
               </option>
-            </SelectControl>
+            </select>
           </template>
         </DefaultField>
 

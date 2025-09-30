@@ -2,7 +2,7 @@
   <vue-nestable
     :value="value"
     :max-depth="maxDepth"
-    @input="value = $event"
+    @input="$emit('input', $event)"
     @change="$emit('onMenuChange')"
     :hooks="{
       beforeMove: beforeMove,
@@ -18,9 +18,10 @@
           <button
             v-if="hasChildren(item)"
             @click.prevent="toggleMenuChildrenCascade(item)"
+            @mousedown.stop
             class="o1-appearance-none o1-cursor-pointer o1-fill-current hover:o1-text-primary o1-flex o1-px-3 o1-items-center focus:o1-outline-none"
           >
-            <Icon :type="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
+            <Button variant="ghost" state="default" :icon="isCascadeOpen(item) ? 'chevron-down' : 'chevron-up'" />
           </button>
 
           <div
@@ -38,30 +39,37 @@
           </div>
         </div>
 
-        <div class="buttons o1-gap-x-2 md:o1-w-1/3 o1-flex o1-justify-end o1-content-center">
-          <button
+        <div
+          class="buttons o1-gap-x-2 md:o1-w-1/3 o1-flex o1-justify-end o1-content-center"
+          @mousedown.stop
+          @dragstart.prevent
+        >
+          <Button
             :title="__('novaMenuBuilder.edit')"
             @click.prevent="$emit('editMenu', item)"
-            class="text-gray-500 dark:text-gray-400 hover:[&:not(:disabled)]:text-primary-500 dark:hover:[&:not(:disabled)]:text-primary-500"
-          >
-            <Icon type="pencil-alt" />
-          </button>
+            @mousedown.stop
+            variant="ghost"
+            state="default"
+            icon="pencil"
+          />
 
-          <button
+          <Button
             :title="__('novaMenuBuilder.duplicate')"
             @click.prevent="$emit('duplicateMenuItem', item)"
-            class="text-gray-500 dark:text-gray-400 hover:[&:not(:disabled)]:text-primary-500 dark:hover:[&:not(:disabled)]:text-primary-500"
-          >
-            <Icon type="duplicate" />
-          </button>
+            @mousedown.stop
+            variant="ghost"
+            state="default"
+            icon="duplicate"
+          />
 
-          <button
+          <Button
             :title="__('novaMenuBuilder.delete')"
             @click.prevent="$emit('removeMenu', item)"
-            class="text-gray-500 dark:text-gray-400 hover:[&:not(:disabled)]:text-primary-500 dark:hover:[&:not(:disabled)]:text-primary-500"
-          >
-            <Icon type="trash" />
-          </button>
+            @mousedown.stop
+            variant="ghost"
+            state="default"
+            icon="trash"
+          />
         </div>
       </vue-nestable-handle>
     </template>
@@ -70,6 +78,7 @@
 
 <script>
 import { VueNestable, VueNestableHandle } from 'vue3-nestable';
+import { Button } from 'laravel-nova-ui';
 
 export default {
   props: {
@@ -87,6 +96,7 @@ export default {
   components: {
     VueNestable,
     VueNestableHandle,
+    Button,
   },
 
   data: () => ({

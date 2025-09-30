@@ -17,12 +17,20 @@
       {{ __('novaMenuBuilder.noMenuItemsPlaceholder') }}
     </h3>
 
-    <DefaultButton class="mt-3" @click.prevent="$emit('onAddClick')">
-      {{ __('novaMenuBuilder.addMenuItem') }}
-    </DefaultButton>
+    <Button
+      class="mt-3"
+      variant="solid"
+      state="default"
+      :label="__('novaMenuBuilder.addMenuItem')"
+      @click.prevent="$emit('onAddClick')"
+    />
   </div>
 </template>
 
 <script>
-export default {};
+import { Button } from 'laravel-nova-ui';
+
+export default {
+  components: { Button },
+};
 </script>

@@ -13,13 +13,17 @@
         }"
       >
         <template #field>
-          <SelectControl
+          <select
             v-if="hasMultipleMenus"
-            :options="menuOptions.map(v => ({ value: v.id, label: v.name }))"
-            :placeholder="__('novaMenuBuilder.menuResourceSingularLabel')"
-            v-model:selected="selectedMenu"
-            @change="selectedMenu = $event"
-          />
+            v-model="selectedMenu"
+            @change="selectedMenu = $event.target.value"
+            class="w-full form-control form-input form-control-bordered"
+          >
+            <option value="" disabled>{{ __('novaMenuBuilder.menuResourceSingularLabel') }}</option>
+            <option v-for="menu in menuOptions" :key="menu.id" :value="menu.id">
+              {{ menu.name }}
+            </option>
+          </select>
         </template>
       </DefaultField>
 
@@ -33,12 +37,16 @@
         }"
       >
         <template #field>
-          <SelectControl
-            :options="localeOptions.map(v => ({ value: v.id, label: v.name }))"
-            :placeholder="__('novaMenuBuilder.locale')"
-            v-model:selected="selectedLocale"
-            @change="selectedLocale = $event"
-          />
+          <select
+            v-model="selectedLocale"
+            @change="selectedLocale = $event.target.value"
+            class="w-full form-control form-input form-control-bordered"
+          >
+            <option value="" disabled>{{ __('novaMenuBuilder.locale') }}</option>
+            <option v-for="locale in localeOptions" :key="locale.id" :value="locale.id">
+              {{ locale.name }}
+            </option>
+          </select>
         </template>
       </DefaultField>
     </form>
