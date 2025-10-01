@@ -78,7 +78,7 @@
 
 <script>
 import { VueNestable, VueNestableHandle } from 'vue3-nestable';
-import { Button } from 'laravel-nova-ui';
+import { Button } from 'laravel-nova';
 
 export default {
   props: {

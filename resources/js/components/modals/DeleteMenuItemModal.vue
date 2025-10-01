@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { Button } from 'laravel-nova-ui';
+import { Button } from 'laravel-nova';
 
 export default {
   props: ['showModal', 'itemToDelete'],

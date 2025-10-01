@@ -51,7 +51,7 @@
 
 <script>
 import CopyMenuItemsModal from '../modals/CopyMenuItemsModal';
-import { Button } from 'laravel-nova-ui';
+import { Button } from 'laravel-nova';
 
 export default {
   components: { CopyMenuItemsModal, Button },

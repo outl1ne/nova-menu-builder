@@ -73,7 +73,7 @@
 
 <script>
 import api from '../../api';
-import { Button } from 'laravel-nova-ui';
+import { Button } from 'laravel-nova';
 
 export default {
   props: ['showModal', 'activeLocale', 'locales', 'resourceName', 'resourceId', 'menuCount'],
