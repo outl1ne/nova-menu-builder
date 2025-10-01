@@ -50,11 +50,7 @@
           }"
         >
           <template #field>
-            <select
-              v-model="linkType.class"
-              @change="e => $emit('onLinkTypeUpdate', e.target.value)"
-              class="w-full form-control form-input form-control-bordered"
-            >
+            <select v-model="linkType.class" class="w-full form-control form-input form-control-bordered">
               <option value="" disabled>{{ __('novaMenuBuilder.chooseMenuItemType') }}</option>
               <option v-for="menuType in menuItemTypes" :key="menuType.class" :value="menuType.class">
                 {{ __(menuType.name) }}
@@ -138,20 +134,24 @@
           }"
         >
           <template #field>
-            <SelectControl
-              v-model:selected="newItem.target"
-              @change="newItem.target = $event"
-              :options="[
-                {
-                  value: '_self',
-                  label: __('novaMenuBuilder.menuItemTargetSameWindow'),
-                },
-                {
-                  value: '_blank',
-                  label: __('novaMenuBuilder.menuItemTargetNewWindow'),
-                },
-              ]"
-            />
+            <select
+              v-if="hasMultipleMenus"
+              v-model="selectedMenu"
+              class="w-full form-control form-input form-control-bordered"
+            >
+              <option value="" disabled>{{ __('novaMenuBuilder.menuResourceSingularLabel') }}</option>
+              <option v-for="menu in menuOptions" :key="menu.id" :value="menu.id">
+                {{ menu.name }}
+              </option>
+            </select>
+            <select
+              class="w-full form-control form-input form-control-bordered"
+              v-model="newItem.target"
+              default="_self"
+            >
+              <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
+              <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
+            </select>
           </template>
         </DefaultField>
 

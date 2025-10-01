@@ -8,22 +8,13 @@
     "format": "prettier --write 'resources/**/*.{css,js,vue}'"
   },
   "devDependencies": {
-    "@vue/babel-plugin-jsx": "^1.1.1",
-    "axios": "^1.6.0",
-    "cross-env": "^7.0.3",
     "laravel-nova-devtool": "file:vendor/laravel/nova-devtool",
-    "laravel-nova-ui": "^0.4.12",
     "prettier": "^2.7.1",
-    "resolve-url-loader": "^5.0.0",
     "sass": "^1.54.9",
-    "sass-loader": "^13.0.2",
-    "tailwindcss": "^3.4.10",
-    "vue-loader": "^16.8.3",
-    "vue-template-compiler": "^2.7.10",
-    "vuex": "^4.1.0"
+    "sass-loader": "^16.0.0",
+    "vue-loader": "^16.8.3"
   },
   "dependencies": {
-    "vue": "^3.5.0",
     "vue-multiselect": "^2.1.6",
     "vue3-nestable": "^3.0.3"
   }

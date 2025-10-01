@@ -16,7 +16,6 @@
           <select
             v-if="hasMultipleMenus"
             v-model="selectedMenu"
-            @change="selectedMenu = $event.target.value"
             class="w-full form-control form-input form-control-bordered"
           >
             <option value="" disabled>{{ __('novaMenuBuilder.menuResourceSingularLabel') }}</option>
@@ -37,11 +36,7 @@
         }"
       >
         <template #field>
-          <select
-            v-model="selectedLocale"
-            @change="selectedLocale = $event.target.value"
-            class="w-full form-control form-input form-control-bordered"
-          >
+          <select v-model="selectedLocale" class="w-full form-control form-input form-control-bordered">
             <option value="" disabled>{{ __('novaMenuBuilder.locale') }}</option>
             <option v-for="locale in localeOptions" :key="locale.id" :value="locale.id">
               {{ locale.name }}
