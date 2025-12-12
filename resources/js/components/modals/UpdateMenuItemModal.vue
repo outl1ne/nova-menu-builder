@@ -138,20 +138,14 @@
           }"
         >
           <template #field>
-            <SelectControl
-              v-model:selected="newItem.target"
-              @change="newItem.target = $event"
-              :options="[
-                {
-                  value: '_self',
-                  label: __('novaMenuBuilder.menuItemTargetSameWindow'),
-                },
-                {
-                  value: '_blank',
-                  label: __('novaMenuBuilder.menuItemTargetNewWindow'),
-                },
-              ]"
-            />
+            <select
+              v-model="newItem.target"
+              @change="newItem.target = $event.target.value"
+              class="w-full form-control form-input form-control-bordered"
+            >
+              <option value="_blank">{{ __('novaMenuBuilder.menuItemTargetNewWindow') }}</option>
+              <option value="_self">{{ __('novaMenuBuilder.menuItemTargetSameWindow') }}</option>
+            </select>
           </template>
         </DefaultField>
 
