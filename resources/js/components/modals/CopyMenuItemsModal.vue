@@ -53,13 +53,7 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <CancelButton
-          component="button"
-          type="button"
-          dusk="cancel-action-button"
-          @click.prevent="$emit('closeModal')"
-          class="mr-3"
-        />
+        <Button variant="link" state="mellow" :label="__('Cancel')" @click.prevent="$emit('closeModal')" class="mr-3" />
 
         <Button
           type="button"

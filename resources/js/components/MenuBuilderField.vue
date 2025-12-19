@@ -258,8 +258,10 @@ export default {
     },
 
     updateLinkType(linkType) {
-      this.linkType = this.menuItemTypes.find(type => type.class === linkType) || {};
+      const foundType = this.menuItemTypes.find(type => type.class === linkType);
+      this.linkType = foundType || {};
       this.newItem.value = '';
+      this.newItem.data = {};
     },
   },
 };

@@ -56,7 +56,7 @@
         >
           <template #field>
             <select
-              v-model="linkType.class"
+              :value="linkType.class"
               @change="e => $emit('onLinkTypeUpdate', e.target.value)"
               class="w-full form-control form-input form-control-bordered"
             >
@@ -144,7 +144,7 @@
         >
           <template #field>
             <select
-              v-model="newItem.target"
+              :value="newItem.target"
               @change="newItem.target = $event.target.value"
               class="w-full form-control form-input form-control-bordered"
             >
@@ -173,16 +173,7 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <Button
-          variant="link"
-          state="mellow"
-          @click.prevent="$emit('closeModal')"
-          :disabled="isMenuItemUpdating"
-          :loading="isMenuItemUpdating"
-          class="mr-3"
-        >
-          {{ __('Cancel') }}
-        </Button>
+        <Button variant="link" state="mellow" :label="__('Cancel')" @click.prevent="$emit('closeModal')" class="mr-3" />
 
         <Button
           type="button"
