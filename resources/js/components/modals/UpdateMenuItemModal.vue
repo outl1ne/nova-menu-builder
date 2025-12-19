@@ -1,7 +1,8 @@
 <template>
   <Modal
     :show="showModal"
-    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg" align="flex justify-end"
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg"
+    align="flex justify-end"
     @close-via-escape="$emit('close-modal')"
   >
     <ModalHeader class="flex flex-wrap justify-between">
@@ -172,13 +173,16 @@
 
     <ModalFooter class="flex justify-end">
       <div class="ml-auto">
-        <CancelButton
-          component="button"
-          type="button"
-          dusk="cancel-action-button"
+        <Button
+          variant="link"
+          state="mellow"
           @click.prevent="$emit('closeModal')"
+          :disabled="isMenuItemUpdating"
+          :loading="isMenuItemUpdating"
           class="mr-3"
-        />
+        >
+          {{ __('Cancel') }}
+        </Button>
 
         <Button
           type="button"
