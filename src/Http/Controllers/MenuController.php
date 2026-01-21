@@ -81,7 +81,7 @@ class MenuController extends Controller
      **/
     public function getMenuItems(Request $request, $menuId)
     {
-        $locale = $request->get('locale');
+        $locale = $request->input('locale');
         $menu = MenuBuilder::getMenuClass()::find($menuId);
 
         if (empty($menu)) return response()->json(['menu' => 'menu_not_found'], 400);
@@ -107,7 +107,7 @@ class MenuController extends Controller
      **/
     public function saveMenuItems(Request $request, $menuId)
     {
-        $items = $request->get('menuItems');
+        $items = $request->input('menuItems');
 
         $i = 1;
         foreach ($items as $item) {
@@ -202,7 +202,7 @@ class MenuController extends Controller
     {
         $menu = MenuBuilder::getMenuClass()::find($menuId);
         if ($menu === null) return response()->json(['error' => 'menu_not_found'], 404);
-        $locale = $request->get('locale');
+        $locale = $request->input('locale');
         if ($locale === null) return response()->json(['error' => 'locale_required'], 400);
 
         $menuItemTypes = [];

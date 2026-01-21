@@ -33,7 +33,7 @@ class MenuItemFormRequest extends FormRequest
             ];
         }
 
-        $menuItemClass = $this->get('class');
+        $menuItemClass = $this->input('class');
         $menuItemId = $this->route('menuItem');
         $menuItem = MenuBuilder::getMenuItemClass()::find($menuItemId);
 
