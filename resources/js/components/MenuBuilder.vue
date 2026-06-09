@@ -71,6 +71,58 @@
 <script>
 import { VueNestable, VueNestableHandle } from 'vue3-nestable';
 
+// vue3-nestable reinterprets a *downward* same-level drag as "nest as the first
+// child of the target" whenever the target has children and the library thinks
+// it isn't collapsed. This menu builder collapses subtrees purely with the CSS
+// class `hide-cascade`, which the library's own `isCollapsed()` can't see, so it
+// ALWAYS treats parents as open drop targets. The reinterpreted (deeper) move
+// then either trips the `maxDepth` guard (and is silently dropped — no
+// `beforeMove`, no drop overlay) or buries the dragged item inside the target.
+// That is why items with children could only be dragged up (a plain swap) and
+// not down, even when visually collapsed.
+//
+// We extend the component and override getRealNextPath so a same-level move is
+// always a plain reorder/swap. Nesting is still available via horizontal drag
+// (tryIncreaseDepth). To instead keep "drop onto an open folder = nest" for
+// expanded items, restore the original branch but gate it on the target NOT
+// carrying the `hide-cascade` class instead of the library's isCollapsed().
+const ReorderableNestable = {
+  extends: VueNestable,
+  methods: {
+    getRealNextPath(prevPath, nextPath) {
+      const ppLastIndex = prevPath.length - 1;
+      const npLastIndex = nextPath.length - 1;
+
+      // Moving to a deeper level (e.g. horizontal drag to nest) keeps the
+      // library's original index-shifting behaviour.
+      if (prevPath.length < nextPath.length) {
+        let wasShifted = false;
+
+        return nextPath.map((nextIndex, i) => {
+          if (wasShifted) {
+            return i === npLastIndex ? nextIndex + 1 : nextIndex;
+          }
+
+          if (typeof prevPath[i] !== 'number') {
+            return nextIndex;
+          }
+
+          if (nextPath[i] > prevPath[i] && i === ppLastIndex) {
+            wasShifted = true;
+            return nextIndex - 1;
+          }
+
+          return nextIndex;
+        });
+      }
+
+      // Same-level move: always reorder. Never silently convert a downward drag
+      // into a nesting operation.
+      return nextPath;
+    },
+  },
+};
+
 export default {
   props: {
     value: {
@@ -85,7 +137,7 @@ export default {
   },
 
   components: {
-    VueNestable,
+    VueNestable: ReorderableNestable,
     VueNestableHandle,
   },
 
